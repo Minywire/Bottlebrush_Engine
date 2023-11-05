@@ -1,7 +1,7 @@
 ﻿// Bottlebrush_Engine.cpp : Defines the entry point for the application.
 //
 
-#include "Bottlebrush_Engine.h"
+#include "EntryPoint.h"
 
 using namespace std;
 
