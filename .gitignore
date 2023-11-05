@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/clion,clion+all,clion+iml,c++,visualstudio,visualstudiocode,openframeworks+visualstudio
-# Edit at https://www.toptal.com/developers/gitignore?templates=clion,clion+all,clion+iml,c++,visualstudio,visualstudiocode,openframeworks+visualstudio
+# Created by https://www.toptal.com/developers/gitignore/api/c++,clion,clion+all,clion+iml,visualstudio,visualstudiocode,openframeworks+visualstudio,cmake
+# Edit at https://www.toptal.com/developers/gitignore?templates=c++,clion,clion+all,clion+iml,visualstudio,visualstudiocode,openframeworks+visualstudio,cmake
 
 ### C++ ###
 # Prerequisites
@@ -262,6 +262,23 @@ fabric.properties
 modules.xml
 .idea/misc.xml
 *.ipr
+
+### CMake ###
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+### CMake Patch ###
+# External projects
+*-prefix/
 
 ### OpenFrameworks+VisualStudio ###
 # ignore generated binaries
@@ -740,4 +757,4 @@ FodyWeavers.xsd
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
 
-# End of https://www.toptal.com/developers/gitignore/api/clion,clion+all,clion+iml,c++,visualstudio,visualstudiocode,openframeworks+visualstudio
+# End of https://www.toptal.com/developers/gitignore/api/c++,clion,clion+all,clion+iml,visualstudio,visualstudiocode,openframeworks+visualstudio,cmake
