@@ -12,4 +12,4 @@ endif()
 project ("Bottlebrush_Engine")
 
 # Include sub-projects.
-add_subdirectory ("Bottlebrush_Engine")
+add_subdirectory (Bottlebrush_Engine)

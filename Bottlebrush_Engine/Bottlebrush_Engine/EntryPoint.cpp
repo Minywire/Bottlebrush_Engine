@@ -2,11 +2,12 @@
 //
 
 #include "EntryPoint.h"
-
+#include "RenderEngine/RenderEngine.h"
 using namespace std;
 
 int main()
 {
 	cout << "Hello CMake." << endl;
+    hello_world();
 	return 0;
 }
