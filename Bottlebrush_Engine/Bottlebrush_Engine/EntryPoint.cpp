@@ -1,4 +1,5 @@
-﻿#include <glad/glad.h>
+﻿#include "RenderEngine/RenderEngine.h"
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include <iostream>
@@ -12,6 +13,8 @@ const unsigned int SCR_HEIGHT = 600;
 
 int main()
 {
+    hello_world(); //from the RenderEngine lib, just testing things out
+
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
