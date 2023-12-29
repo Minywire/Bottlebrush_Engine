@@ -1,10 +1,7 @@
 //
 // Created by Marco Garzon Lara on 27/11/2023.
 //
-
-#ifndef BOTTLEBRUSH_ENGINE_RENDERENGINE_H
-#define BOTTLEBRUSH_ENGINE_RENDERENGINE_H
+#pragma once
 
 void hello_world();
 
-#endif //BOTTLEBRUSH_ENGINE_RENDERENGINE_H
