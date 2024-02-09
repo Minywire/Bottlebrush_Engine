@@ -30,7 +30,7 @@ include_directories(
         Vendors/glfw/include
         Vendors/glad/include
         Vendors/imGUI
-        Vendors/imGUI/backends
+        Vendors/imGUI/backends #yeah this is a bit messy since it's ALL under imGUI but it wouldn't work otherwise with our folder structure
 )
 
 file(GLOB VENDORS_SOURCES Vendors/glad/src/glad.c)
