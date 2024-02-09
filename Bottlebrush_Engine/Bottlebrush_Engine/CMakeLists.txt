@@ -12,6 +12,7 @@ option(GLFW_BUILD_EXAMPLES OFF)
 option(GLFW_BUILD_TESTS OFF)
 add_subdirectory(Vendors/glfw)
 add_subdirectory(Vendors/imGUI)
+add_subdirectory(Vendors/imGUI/backends)
 
 #compiler flags
 if(MSVC)
@@ -29,6 +30,7 @@ include_directories(
         Vendors/glfw/include
         Vendors/glad/include
         Vendors/imGUI
+        Vendors/imGUI/backends
 )
 
 file(GLOB VENDORS_SOURCES Vendors/glad/src/glad.c)
@@ -37,8 +39,7 @@ source_group("Vendors" FILES ${VENDORS_SOURCES})
 # Add source to this project's executable.
 add_executable(Bottlebrush_Engine "EntryPoint.cpp" ${VENDORS_SOURCES})
 
-target_link_libraries(Bottlebrush_Engine BBGUI)
-target_link_libraries(Bottlebrush_Engine RenderEngine glfw ${GLFW_LIBRARIES})
+target_link_libraries(Bottlebrush_Engine RenderEngine BBGUI glfw ${GLFW_LIBRARIES})
 
 if (CMAKE_VERSION VERSION_GREATER 3.13)
   set_property(TARGET Bottlebrush_Engine PROPERTY CXX_STANDARD 20)

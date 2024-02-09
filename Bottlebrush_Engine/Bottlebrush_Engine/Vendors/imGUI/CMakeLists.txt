@@ -17,11 +17,5 @@ set(SOURCES imconfig.h
             imgui_draw.cpp
     )
 
-#I hope this is the right OpenGL version...
-set(BACKEND backends/imgui_impl_glfw.h
-            backends/imgui_impl_opengl3.h
-            backends/imgui_impl_glfw.cpp
-            backends/imgui_impl_opengl3.cpp
-    )
-
-target_sources(imGUI PRIVATE ${SOURCES} ${BACKEND})
+target_sources(imGUI PRIVATE ${SOURCES})
+target_link_libraries(imGUI imGUIbackend)
