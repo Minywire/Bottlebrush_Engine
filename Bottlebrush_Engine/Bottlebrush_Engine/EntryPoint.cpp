@@ -66,6 +66,7 @@ int main()
         glfwPollEvents();
         updateBBGUIFrameStart(); //start of frame rendering for GUI
 
+        std::cout << "rendering time!" << "\n";
         //do render stuff here
 
         updateBBGUIFrameEnd(); //end of frame render for GUI
