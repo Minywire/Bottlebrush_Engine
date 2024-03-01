@@ -10,9 +10,10 @@ set(CMAKE_CXX_STANDARD 20)
 option(GLFW_BUILD_DOCS OFF)
 option(GLFW_BUILD_EXAMPLES OFF)
 option(GLFW_BUILD_TESTS OFF)
-add_subdirectory(Vendors/glfw)
-add_subdirectory(Vendors/imGUI)
-add_subdirectory(Vendors/imGUI/backends)
+
+add_subdirectory(BBGUI)
+add_subdirectory(RenderEngine)
+add_subdirectory(Vendors)
 
 #compiler flags
 if(MSVC)
@@ -33,19 +34,13 @@ include_directories(
         Vendors/imGUI/backends #yeah this is a bit messy since it's ALL under imGUI but it wouldn't work otherwise with our folder structure
 )
 
-file(GLOB VENDORS_SOURCES Vendors/glad/src/glad.c)
-source_group("Vendors" FILES ${VENDORS_SOURCES})
-
 # Add source to this project's executable.
-add_executable(Bottlebrush_Engine "EntryPoint.cpp" ${VENDORS_SOURCES})
+add_executable(${PROJECT_NAME} "EntryPoint.cpp")
 
-target_link_libraries(Bottlebrush_Engine RenderEngine BBGUI glfw ${GLFW_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} RenderEngine BBGUI glfw ${GLFW_LIBRARIES} glad)
 
 if (CMAKE_VERSION VERSION_GREATER 3.13)
-  set_property(TARGET Bottlebrush_Engine PROPERTY CXX_STANDARD 20)
+  set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 endif()
-
-add_subdirectory(BBGUI)
-add_subdirectory(RenderEngine)
 
 # TODO: Add tests and install targets if needed.
