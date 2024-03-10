@@ -47,5 +47,6 @@ endif()
 
 add_subdirectory(BBGUI)
 add_subdirectory(RenderEngine)
+add_subdirectory(__sample_tests) # Put this here for now just as a reference to some sample tests. @TODO: Delete later.
 
 # TODO: Add tests and install targets if needed.
