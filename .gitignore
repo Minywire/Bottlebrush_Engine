@@ -291,6 +291,7 @@ _deps
 
 [Bb]uild/
 [Oo]bj/
+!AssetLib/Obj
 [Dd]ebug*/
 [Rr]elease*/
 *.mode*
