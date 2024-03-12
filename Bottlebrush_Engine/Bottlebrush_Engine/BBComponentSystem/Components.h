@@ -6,11 +6,20 @@
 #include <string>
 
 /**
- * @brief Component that contains transform information.
+ * @brief Component that controls the position of an entity
+ */
+struct TransformComponent
+{
+    ///TODO: Add our vec3 definitions here for entity position
+};
+
+/**
+ * @brief Component that contains model information.
  */
 struct MeshComponent
 {
-    std::string ModelPath;
+    std::string modelPath;
+    std::string materialPath;
     //Depending on ASIMP implementation, more info will probably be added here
 };
 
