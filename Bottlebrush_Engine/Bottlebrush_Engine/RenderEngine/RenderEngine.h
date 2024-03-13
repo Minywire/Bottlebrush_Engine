@@ -5,3 +5,11 @@
 
 void hello_world();
 
+class RenderEngine
+{
+private:
+
+public:
+	void Test();
+	void Draw() const;
+};
