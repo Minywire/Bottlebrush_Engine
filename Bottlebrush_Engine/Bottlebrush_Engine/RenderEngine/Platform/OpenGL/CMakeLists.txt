@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.8)
 
+add_library(GLPlatform STATIC)
+
 file(GLOB SOURCES *.cpp *.h)
 
-target_sources(RenderEngine PRIVATE ${SOURCES})
+target_sources(GLPlatform PRIVATE ${SOURCES})

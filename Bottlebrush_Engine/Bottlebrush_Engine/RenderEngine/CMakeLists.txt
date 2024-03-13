@@ -9,3 +9,4 @@ file(GLOB SOURCES *.cpp *.h)
 add_subdirectory(Platform/OpenGL)
 
 target_sources(RenderEngine PRIVATE ${SOURCES})
+target_link_libraries(RenderEngine GLPlatform)
