@@ -1,3 +1,6 @@
+//
+//  Created by Alan Brunet 12/03/2024
+//
 #include "OpenGLIndexBuffer.h"
 
 #include "OpenGLRenderer.h"

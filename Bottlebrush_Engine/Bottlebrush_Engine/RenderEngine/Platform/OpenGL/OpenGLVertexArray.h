@@ -1,3 +1,6 @@
+//
+//  Created by Alan Brunet 12/03/2024
+//
 #pragma once
 
 #include "OpenGLVertexBuffer.h"
