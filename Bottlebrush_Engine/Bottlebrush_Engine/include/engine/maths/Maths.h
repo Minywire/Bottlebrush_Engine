@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <cstdint>
+#include <bit>
 
 namespace BBMaths {
 const float PI = 3.1415926535897932384f;

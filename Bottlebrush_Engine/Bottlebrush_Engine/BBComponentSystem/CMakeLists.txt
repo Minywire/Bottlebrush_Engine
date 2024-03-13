@@ -8,4 +8,4 @@ set(CMAKE_CXX_STANDARD 20)
 set(SOURCES Entity.cpp Entity.h Components.h)
 target_sources(BBComponentSystem PRIVATE ${SOURCES})
 
-target_link_libraries(BBComponentSystem EnTT)
+target_link_libraries(BBComponentSystem EnTT BBScene BBMaths)

@@ -20,11 +20,11 @@ struct MeshComponent
 {
     std::string modelPath;
     std::string materialPath;
-    //Depending on ASIMP implementation, more info will probably be added here
+    //Depending on ASSIMP implementation, more info will probably be added here
 };
 
 /**
- * @brieg Component that contains alias or tag.
+ * @brief Component that contains alias or tag.
  */
 struct TagComponent
 {

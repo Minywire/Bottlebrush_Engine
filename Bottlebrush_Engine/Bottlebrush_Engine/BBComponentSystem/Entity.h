@@ -3,19 +3,24 @@
 //
 #pragma once
 
+#include "../BBScene/Scene.h"
+#include <iostream>
 #include <entt/entt.hpp>
 
 class Entity
 {
 public:
-    Entity(entt::entity handle);
+    operator entt::entity () const;
 
-    Entity() = default;
+    Entity(entt::entity handle, Scene* scene);
 
-    bool HasComponent();
+    Entity();
+
+    template<typename T>
+    bool hasComponent();
 
     template<typename T, typename... Args>
-    T& AddComponent(Args&&... args);
+    T& addComponent(Args&&... args);
 
     template<typename T>
     const T& getComponent() const;
@@ -24,7 +29,8 @@ public:
     void removeComponent();
 
 private:
-    entt::entity entityHandle = entt::null; //!> The entity wrapped by Bottlebrush's Entity interface
+    entt::entity entityHandle; //!> The entity wrapped by Bottlebrush's Entity interface
+    Scene* parentScene; //! Scene which this entity belongs to
 
 };
 
