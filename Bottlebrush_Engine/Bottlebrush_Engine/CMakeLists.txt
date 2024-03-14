@@ -50,8 +50,8 @@ endif()
 
 add_subdirectory(BBScene)
 add_subdirectory(BBComponentSystem)
-add_subdirectory(src)
 add_subdirectory(BBGUI)
+add_subdirectory(BBMaths)
 add_subdirectory(RenderEngine)
 add_subdirectory(__sample_tests) # Put this here for now just as a reference to some sample tests. @TODO: Delete later.
 

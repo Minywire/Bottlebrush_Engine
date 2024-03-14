@@ -8,7 +8,7 @@ add_library(
 target_include_directories(
         BBMaths
         PUBLIC
-        ${PROJECT_SOURCE_DIR}/include/engine/maths
+        ${PROJECT_SOURCE_DIR}/BBMaths
 )
 
 target_sources(
