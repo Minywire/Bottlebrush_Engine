@@ -8,6 +8,7 @@
 
 /**
  * @brief Component that controls the position of an entity
+ * @author Marco Garzon Lara
  */
 struct TransformComponent
 {
@@ -15,18 +16,19 @@ struct TransformComponent
 };
 
 /**
- * @brief Component that contains model information.
+ * @brief Component that contains model path information.
+ * @author Marco Garzon Lara
  */
 struct MeshComponent
 {
     std::string modelPath;
     std::string materialPath;
-    //TODO: add way of storing mesh data here.
     //Depending on ASSIMP implementation, more info will probably be added here
 };
 
 /**
- * @brief Component that contains alias or tag.
+ * @brief Component that contains alias or tag for entity query.
+ * @author Marco Garzon Lara
  */
 struct TagComponent
 {
@@ -35,6 +37,7 @@ struct TagComponent
 
 /**
  * @brief Component that contains movement data for player
+ * @author Marco Garzon Lara
  */
 struct PlayerControllerComponent
 {
