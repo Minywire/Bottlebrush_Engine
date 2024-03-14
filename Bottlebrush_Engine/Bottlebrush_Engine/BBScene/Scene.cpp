@@ -9,12 +9,6 @@
 Scene::Scene()
 { }
 
-void Scene::deleteEntity(Entity entity)
-{
-    //todo see if theres a bool version of this to confirm deletion
-    registry.destroy(entity);
-}
-
 void Scene::deleteEntity(entt::entity entity)
 {
     //todo see if theres a bool version of this to confirm deletion
@@ -25,9 +19,9 @@ Entity Scene::createEntity()
 {
     entt::entity handle = registry.create();
 
-    Entity entity{ handle, this };
-    entity.addComponent<TransformComponent>();
-    entity.addComponent<TagComponent>();
+    Entity entity{ handle };
+    entity.addComponent<TransformComponent>(registry);
+    entity.addComponent<TagComponent>(registry);
     return entity;
 }
 
@@ -35,9 +29,9 @@ Entity Scene::createEntity(std::string tag)
 {
     entt::entity handle = registry.create();
 
-    Entity entity{ handle, this };
-    entity.addComponent<TransformComponent>();
-    entity.addComponent<TagComponent>(tag);
+    Entity entity{ handle };
+    entity.addComponent<TransformComponent>(registry);
+    entity.addComponent<TagComponent>(registry, tag);
 
     return entity;
 }

@@ -10,27 +10,26 @@
 class Entity
 {
 public:
-    operator entt::entity () const;
-
-    Entity(entt::entity handle, Scene* scene);
+    explicit operator entt::entity () const;
 
     Entity();
 
+    explicit Entity(entt::entity handle);
+
     template<typename T>
-    bool hasComponent();
+    bool hasComponent(const entt::registry& reg);
 
     template<typename T, typename... Args>
-    T& addComponent(Args&&... args);
+    T& addComponent(entt::registry& reg, Args&&... args);
 
     template<typename T>
-    const T& getComponent() const;
+    const T& getComponent(const entt::registry& reg) const;
 
     template<typename T>
-    void removeComponent();
+    void removeComponent(entt::registry& reg);
 
 private:
     entt::entity entityHandle; //!> The entity wrapped by Bottlebrush's Entity interface
-    Scene* parentScene; //! Scene which this entity belongs to
 
 };
 
