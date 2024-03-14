@@ -1,4 +1,4 @@
-#include "engine/maths/Vector3D.h"
+#include "Vector3D.h"
 
 namespace BBMaths {
 Vector3D& Vector3D::Set(float a, float b, float c) {

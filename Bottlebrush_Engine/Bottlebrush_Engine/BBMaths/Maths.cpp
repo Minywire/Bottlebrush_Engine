@@ -1,4 +1,4 @@
-#include "engine/maths/Maths.h"
+#include "Maths.h"
 
 namespace BBMaths {
 float Cos(float angle) { return std::cos(angle); }

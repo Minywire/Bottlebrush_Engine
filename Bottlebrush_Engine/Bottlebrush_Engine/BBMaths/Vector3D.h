@@ -1,7 +1,7 @@
 #ifndef BOTTLEBRUSH_ENGINE_VECTOR3D_H_
 #define BOTTLEBRUSH_ENGINE_VECTOR3D_H_
 
-#include "engine/maths/Maths.h"
+#include "Maths.h"
 
 namespace BBMaths {
 typedef float TypeVec3D;

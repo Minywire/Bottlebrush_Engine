@@ -1,4 +1,4 @@
-#include "engine/maths/Point3D.h"
+#include "Point3D.h"
 
 namespace BBMaths {
 Point3D& Point3D::operator=(const Point3D& p) {
