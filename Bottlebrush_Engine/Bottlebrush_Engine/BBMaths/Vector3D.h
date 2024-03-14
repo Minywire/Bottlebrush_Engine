@@ -2,6 +2,7 @@
 #define BOTTLEBRUSH_ENGINE_VECTOR3D_H_
 
 #include "Maths.h"
+#include "Vector2D.h"
 
 namespace BBMaths {
 typedef float TypeVec3D;
@@ -29,6 +30,18 @@ class Vec3D {
     y_ = v.y_;
     z_ = v.z_;
   }
+
+  Vec3D(const Vec2D<TypeVec2D>& v) {
+    x_ = v.x_;
+    y_ = v.y_;
+    z_ = 0.0f;
+  }
+
+  Vec3D(const Vec2D<TypeVec2D>& v, float c) {
+    x_ = v.x_;
+    y_ = v.y_;
+    z_ = c;
+  }
 };
 
 /// @class Vector3D
@@ -49,7 +62,15 @@ class Vector3D : public Vec3D<TypeVec3D> {
 
   Vector3D(const Vec3D<TypeVec3D>& v) : Vec3D<TypeVec3D>(v) {}
 
+  Vector3D(const Vector2D& v) : Vec3D<TypeVec3D>(v) {}
+
+  Vector3D(const Vector2D& v, float c) : Vec3D<TypeVec3D>(v, c) {}
+
   Vector3D& Set(float a, float b, float c);
+
+  Vector3D& Set(const Vector2D& v);
+
+  Vector3D& Set(const Vector2D& v, float c);
 
   Vector3D& Normalise();
 

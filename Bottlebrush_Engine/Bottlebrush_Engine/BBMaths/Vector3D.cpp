@@ -8,6 +8,20 @@ Vector3D& Vector3D::Set(float a, float b, float c) {
   return (*this);
 }
 
+Vector3D& Vector3D::Set(const Vector2D& v) {
+  x_ = v.x_;
+  y_ = v.y_;
+  z_ = 0.0f;
+  return (*this);
+}
+
+Vector3D& Vector3D::Set(const Vector2D& v, float c) {
+  x_ = v.x_;
+  y_ = v.y_;
+  z_ = c;
+  return (*this);
+}
+
 Vector3D& Vector3D::Normalise() {
   x_ = x_ * InverseMagnitude(*this);
   y_ = y_ * InverseMagnitude(*this);
