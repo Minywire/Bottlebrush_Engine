@@ -21,6 +21,7 @@ struct MeshComponent
 {
     std::string modelPath;
     std::string materialPath;
+    //TODO: add way of storing mesh data here.
     //Depending on ASSIMP implementation, more info will probably be added here
 };
 
