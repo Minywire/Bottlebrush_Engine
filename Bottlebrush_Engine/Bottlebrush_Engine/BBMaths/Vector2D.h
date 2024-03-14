@@ -22,7 +22,7 @@ class Vec2D {
     y_ = b;
   }
 
-  Vec2D(const Vec2D<TypeVec2D>& v) {
+  explicit Vec2D(const Vec2D<TypeVec2D>& v) {
     x_ = v.x_;
     y_ = v.y_;
   }
@@ -45,7 +45,7 @@ class Vector2D : public Vec2D<TypeVec2D> {
 
   Vector2D(float a, float b) : Vec2D<TypeVec2D>(a, b) {}
 
-  Vector2D(const Vec2D<TypeVec2D>& v) : Vec2D<TypeVec2D>(v) {}
+  explicit Vector2D(const Vec2D<TypeVec2D>& v) : Vec2D<TypeVec2D>(v) {}
 
   Vector2D& Set(float a, float b);
 

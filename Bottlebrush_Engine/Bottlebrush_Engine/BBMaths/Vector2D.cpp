@@ -71,26 +71,22 @@ Vector2D Rejection(const Vector2D& a, const Vector2D& b) {
   return (a - b * Dot(a, b) * 1.0f / Dot(b, b));
 }
 
-Vector2D operator-(const Vector2D& v) { return (Vector2D(-v.x_, -v.y_)); }
+Vector2D operator-(const Vector2D& v) { return {-v.x_, -v.y_}; }
 
 Vector2D operator+(const Vector2D& a, const Vector2D& b) {
-  return (Vector2D(a.x_ + b.x_, a.y_ + b.y_));
+  return {a.x_ + b.x_, a.y_ + b.y_};
 }
 
 Vector2D operator-(const Vector2D& a, const Vector2D& b) {
-  return (Vector2D(a.x_ - b.x_, a.y_ - b.y_));
+  return {a.x_ - b.x_, a.y_ - b.y_};
 }
 
-Vector2D operator*(const Vector2D& v, float n) {
-  return (Vector2D(v.x_ * n, v.y_ * n));
-}
+Vector2D operator*(const Vector2D& v, float n) { return {v.x_ * n, v.y_ * n}; }
 
-Vector2D operator*(float n, const Vector2D& v) {
-  return (Vector2D(n * v.x_, n * v.y_));
-}
+Vector2D operator*(float n, const Vector2D& v) { return {n * v.x_, n * v.y_}; }
 
 Vector2D operator/(const Vector2D& v, float n) {
   n = 1.0f / n;
-  return (Vector2D(v.x_ * n, v.y_ * n));
+  return {v.x_ * n, v.y_ * n};
 }
 }  // namespace BBMaths
