@@ -28,6 +28,7 @@ endif()
 
 # Vendor include directories
 include_directories(
+        include
         Vendors/assimp
         Vendors/glfw/include
         Vendors/glad/include
@@ -41,14 +42,16 @@ source_group("Vendors" FILES ${VENDORS_SOURCES})
 # Add source to this project's executable.
 add_executable(Bottlebrush_Engine "EntryPoint.cpp" ${VENDORS_SOURCES})
 
-target_link_libraries(Bottlebrush_Engine RenderEngine BBAssetImporter BBGUI glfw ${GLFW_LIBRARIES})
+target_link_libraries(Bottlebrush_Engine RenderEngine BBGUI BBMaths BBAssetImporter glfw ${GLFW_LIBRARIES})
 
 if (CMAKE_VERSION VERSION_GREATER 3.13)
   set_property(TARGET Bottlebrush_Engine PROPERTY CXX_STANDARD 20)
 endif()
 
 add_subdirectory(BBAssetImporter)
+add_subdirectory(src)
 add_subdirectory(BBGUI)
 add_subdirectory(RenderEngine)
+add_subdirectory(__sample_tests) # Put this here for now just as a reference to some sample tests. @TODO: Delete later.
 
 # TODO: Add tests and install targets if needed.
