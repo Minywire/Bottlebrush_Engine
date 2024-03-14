@@ -1,4 +1,4 @@
-#include "engine/maths/Point2D.h"
+#include "Point2D.h"
 
 namespace BBMaths {
 Point2D& Point2D::operator=(const Point2D& p) {
