@@ -25,13 +25,13 @@ class Vec3D {
     z_ = c;
   }
 
-  Vec3D(const Vec3D<TypeVec3D>& v) {
+  explicit Vec3D(const Vec3D<TypeVec3D>& v) {
     x_ = v.x_;
     y_ = v.y_;
     z_ = v.z_;
   }
 
-  Vec3D(const Vec2D<TypeVec2D>& v) {
+  explicit Vec3D(const Vec2D<TypeVec2D>& v) {
     x_ = v.x_;
     y_ = v.y_;
     z_ = 0.0f;
@@ -60,9 +60,9 @@ class Vector3D : public Vec3D<TypeVec3D> {
 
   Vector3D(float a, float b, float c) : Vec3D<TypeVec3D>(a, b, c) {}
 
-  Vector3D(const Vec3D<TypeVec3D>& v) : Vec3D<TypeVec3D>(v) {}
+  explicit Vector3D(const Vec3D<TypeVec3D>& v) : Vec3D<TypeVec3D>(v) {}
 
-  Vector3D(const Vector2D& v) : Vec3D<TypeVec3D>(v) {}
+  explicit Vector3D(const Vector2D& v) : Vec3D<TypeVec3D>(v) {}
 
   Vector3D(const Vector2D& v, float c) : Vec3D<TypeVec3D>(v, c) {}
 

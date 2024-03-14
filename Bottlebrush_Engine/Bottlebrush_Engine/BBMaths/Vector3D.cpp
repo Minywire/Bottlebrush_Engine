@@ -87,8 +87,8 @@ float Dot(const Vector3D& a, const Vector3D& b) {
 }
 
 Vector3D Cross(const Vector3D& a, const Vector3D& b) {
-  return (Vector3D(a.y_ * b.z_ - a.z_ * b.y_, a.z_ * b.x_ - a.x_ * b.z_,
-                   a.x_ * b.y_ - a.y_ * b.x_));
+  return {a.y_ * b.z_ - a.z_ * b.y_, a.z_ * b.x_ - a.x_ * b.z_,
+          a.x_ * b.y_ - a.y_ * b.x_};
 }
 
 float Magnitude(const Vector3D& v) {
@@ -111,28 +111,26 @@ Vector3D Rejection(const Vector3D& a, const Vector3D& b) {
   return (a - b * Dot(a, b) * 1.0f / Dot(b, b));
 }
 
-Vector3D operator-(const Vector3D& v) {
-  return (Vector3D(-v.x_, -v.y_, -v.z_));
-}
+Vector3D operator-(const Vector3D& v) { return {-v.x_, -v.y_, -v.z_}; }
 
 Vector3D operator+(const Vector3D& a, const Vector3D& b) {
-  return (Vector3D(a.x_ + b.x_, a.y_ + b.y_, a.z_ + b.z_));
+  return {a.x_ + b.x_, a.y_ + b.y_, a.z_ + b.z_};
 }
 
 Vector3D operator-(const Vector3D& a, const Vector3D& b) {
-  return (Vector3D(a.x_ - b.x_, a.y_ - b.y_, a.z_ - b.z_));
+  return {a.x_ - b.x_, a.y_ - b.y_, a.z_ - b.z_};
 }
 
 Vector3D operator*(const Vector3D& v, float n) {
-  return (Vector3D(v.x_ * n, v.y_ * n, v.z_ * n));
+  return {v.x_ * n, v.y_ * n, v.z_ * n};
 }
 
 Vector3D operator*(float n, const Vector3D& v) {
-  return (Vector3D(n * v.x_, n * v.y_, n * v.z_));
+  return {n * v.x_, n * v.y_, n * v.z_};
 }
 
 Vector3D operator/(const Vector3D& v, float n) {
   n = 1.0f / n;
-  return (Vector3D(v.x_ * n, v.y_ * n, v.z_ * n));
+  return {v.x_ * n, v.y_ * n, v.z_ * n};
 }
 }  // namespace BBMaths
