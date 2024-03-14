@@ -35,7 +35,7 @@ public:
     explicit Entity(entt::entity handle);
 
     /**
-     * Component presence checker
+     * @brief Checks whether an entity in a registry has components
      * @tparam T The entity type
      * @param reg The specified registry to find the entity component in
      * @return All of the entities containing the specified components
@@ -45,7 +45,7 @@ public:
     bool hasComponent(const entt::registry& reg);
 
     /**
-     *
+     * @brief Adds a component to specified entities in specified registry
      * @tparam T The type of component to be added
      * @tparam Args The components to be added to the entity
      * @param reg The specified registry which has the entity to add the component to
@@ -57,7 +57,7 @@ public:
     T& addComponent(entt::registry& reg, Args&&... args);
 
     /**
-     *
+     * @brief grabs a component from an entity in a registry
      * @tparam T The type of component
      * @param reg The specified registry to grab component from
      * @return T The component associated with an entity
@@ -67,13 +67,19 @@ public:
     const T& getComponent(const entt::registry& reg) const;
 
     /**
-     *
+     * @brief removes a component for an entity in a specified registry
      * @tparam T The type of component
      * @param reg The specified registry to remove the specific component from
      * @author Marco Garzon Lara
      */
     template<typename T>
     void removeComponent(entt::registry& reg);
+
+    /**
+     * @brief Returns the entity in this instance
+     * @return The entity in this class
+     */
+    const entt::entity& getEntity() const;
 
 private:
     entt::entity entityHandle; //!> The entity wrapped by Bottlebrush's Entity interface

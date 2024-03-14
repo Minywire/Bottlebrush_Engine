@@ -52,3 +52,8 @@ void Entity::removeComponent(entt::registry& reg)
     }
     return reg.remove<T>(entityHandle);
 }
+
+const entt::entity& Entity::getEntity() const
+{
+    return entityHandle;
+}

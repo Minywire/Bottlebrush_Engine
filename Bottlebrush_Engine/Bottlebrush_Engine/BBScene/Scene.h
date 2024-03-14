@@ -16,13 +16,6 @@ class Scene
 {
 public:
     /**
-	 * @brief Deletes Entity from the scene and the game (with our Entity interface)
-	 * @param entity The entity to be deleted
-     * @author Marco Garzon Lara
-	*/
-    void deleteEntity(Entity entity);
-
-    /**
      * @brief Deletes Entity from the scene and the game(with EnTT's Entity type)
      * @param entity The eneity to be deleted
      * @author Marco Garzon Lara
