@@ -94,10 +94,6 @@ class Vector3D : public Vec3D<TypeVec3D> {
 
   Vector3D& Set(float a, float b, float c);
 
-  Vector3D& Set(const Vector2D& v);
-
-  Vector3D& Set(const Vector2D& v, float c);
-
   Vector3D& Normalise();
 
   Vector3D& RotateAboutX(float angle);

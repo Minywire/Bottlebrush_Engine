@@ -9,38 +9,6 @@ Vector4D& Vector4D::Set(float a, float b, float c, float d) {
   return (*this);
 }
 
-Vector4D& Vector4D::Set(const Vector3D& v) {
-  x_ = v.x_;
-  y_ = v.y_;
-  z_ = v.z_;
-  w_ = 0.0f;
-  return (*this);
-}
-
-Vector4D& Vector4D::Set(const Vector3D& v, float d) {
-  x_ = v.x_;
-  y_ = v.y_;
-  z_ = v.z_;
-  w_ = d;
-  return (*this);
-}
-
-Vector4D& Vector4D::Set(const Vector2D& v) {
-  x_ = v.x_;
-  y_ = v.y_;
-  z_ = 0.0f;
-  w_ = 0.0f;
-  return (*this);
-}
-
-Vector4D& Vector4D::Set(const Vector2D& v, float c, float d) {
-  x_ = v.x_;
-  y_ = v.y_;
-  z_ = c;
-  w_ = d;
-  return (*this);
-}
-
 Vector4D& Vector4D::Normalise() {
   float n = InverseMagnitude(*this);
   x_ = x_ * n;
