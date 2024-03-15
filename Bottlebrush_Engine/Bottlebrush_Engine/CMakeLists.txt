@@ -27,7 +27,7 @@ endif()
 
 # Vendor include directories
 include_directories(
-        include
+        BBMaths
         Vendors/glfw/include
         Vendors/glad/include
         Vendors/imGUI
