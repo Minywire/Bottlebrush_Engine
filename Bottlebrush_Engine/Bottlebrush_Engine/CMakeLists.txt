@@ -28,8 +28,8 @@ endif()
 
 # Vendor include directories
 include_directories(
+        BBMaths
         Vendors/EnTT
-        include
         Vendors/glfw/include
         Vendors/glad/include
         Vendors/imGUI
