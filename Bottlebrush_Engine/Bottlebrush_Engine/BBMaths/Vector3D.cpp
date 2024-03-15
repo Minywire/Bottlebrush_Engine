@@ -23,27 +23,31 @@ Vector3D& Vector3D::Set(const Vector2D& v, float c) {
 }
 
 Vector3D& Vector3D::Normalise() {
-  x_ = x_ * InverseMagnitude(*this);
-  y_ = y_ * InverseMagnitude(*this);
-  z_ = z_ * InverseMagnitude(*this);
+  float n = InverseMagnitude(*this);
+  x_ = x_ * n;
+  y_ = y_ * n;
+  z_ = z_ * n;
   return (*this);
 }
 
 Vector3D& Vector3D::RotateAboutX(float angle) {
-  x_ = x_ * Cos(angle) - y_ * Sin(angle);
-  y_ = x_ * Sin(angle) + y_ * Cos(angle);
+  float y = y_, z = z_;
+  y_ = y * Cos(angle) - z * Sin(angle);
+  z_ = y * Sin(angle) + z * Cos(angle);
   return (*this);
 }
 
 Vector3D& Vector3D::RotateAboutY(float angle) {
-  x_ = x_ * Cos(angle) + z_ * Sin(angle);
-  z_ = z_ * Cos(angle) - x_ * Sin(angle);
+  float x = x_, z = z_;
+  x_ = x * Cos(angle) + z * Sin(angle);
+  z_ = z * Cos(angle) - x * Sin(angle);
   return (*this);
 }
 
 Vector3D& Vector3D::RotateAboutZ(float angle) {
-  y_ = y_ * Cos(angle) - z_ * Sin(angle);
-  z_ = y_ * Sin(angle) + z_ * Cos(angle);
+  float x = x_, y = y_;
+  x_ = x * Cos(angle) - y * Sin(angle);
+  y_ = x * Sin(angle) + y * Cos(angle);
   return (*this);
 }
 
