@@ -8,14 +8,16 @@ Vector2D& Vector2D::Set(float a, float b) {
 }
 
 Vector2D& Vector2D::Normalise() {
-  x_ = x_ * InverseMagnitude(*this);
-  y_ = y_ * InverseMagnitude(*this);
+  float n = InverseMagnitude(*this);
+  x_ = x_ * n;
+  y_ = y_ * n;
   return (*this);
 }
 
 Vector2D& Vector2D::Rotate(float angle) {
-  x_ = x_ * Cos(angle) - y_ * Sin(angle);
-  y_ = x_ * Sin(angle) + y_ * Cos(angle);
+  float x = x_, y = y_;
+  x_ = x * Cos(angle) - y * Sin(angle);
+  y_ = x * Sin(angle) + y * Cos(angle);
   return (*this);
 }
 
