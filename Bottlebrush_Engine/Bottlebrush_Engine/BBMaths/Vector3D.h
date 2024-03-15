@@ -2,6 +2,8 @@
 #define BOTTLEBRUSH_ENGINE_VECTOR3D_H_
 
 #include "Maths.h"
+#include "Point2D.h"
+#include "Point3D.h"
 #include "Vector2D.h"
 
 namespace BBMaths {
@@ -31,6 +33,12 @@ class Vec3D {
     z_ = v.z_;
   }
 
+  explicit Vec3D(const Euc3D<TypeEuc3D>& p) {
+    x_ = p.x_;
+    y_ = p.y_;
+    z_ = p.z_;
+  }
+
   explicit Vec3D(const Vec2D<TypeVec2D>& v) {
     x_ = v.x_;
     y_ = v.y_;
@@ -40,6 +48,18 @@ class Vec3D {
   Vec3D(const Vec2D<TypeVec2D>& v, float c) {
     x_ = v.x_;
     y_ = v.y_;
+    z_ = c;
+  }
+
+  explicit Vec3D(const Euc2D<TypeEuc2D>& p) {
+    x_ = p.x_;
+    y_ = p.y_;
+    z_ = 0.0f;
+  }
+
+  Vec3D(const Euc2D<TypeEuc2D>& p, float c) {
+    x_ = p.x_;
+    y_ = p.y_;
     z_ = c;
   }
 };
@@ -62,9 +82,15 @@ class Vector3D : public Vec3D<TypeVec3D> {
 
   explicit Vector3D(const Vec3D<TypeVec3D>& v) : Vec3D<TypeVec3D>(v) {}
 
-  explicit Vector3D(const Vector2D& v) : Vec3D<TypeVec3D>(v) {}
+  explicit Vector3D(const Euc3D<TypeEuc3D>& p) : Vec3D<TypeVec3D>(p) {}
 
-  Vector3D(const Vector2D& v, float c) : Vec3D<TypeVec3D>(v, c) {}
+  explicit Vector3D(const Vec2D<TypeVec2D>& v) : Vec3D<TypeVec3D>(v) {}
+
+  Vector3D(const Vec2D<TypeVec2D>& v, float c) : Vec3D<TypeVec3D>(v, c) {}
+
+  explicit Vector3D(const Euc2D<TypeEuc2D>& p) : Vec3D<TypeVec3D>(p) {}
+
+  Vector3D(const Euc2D<TypeEuc2D>& p, float c) : Vec3D<TypeVec3D>(p, c) {}
 
   Vector3D& Set(float a, float b, float c);
 
@@ -81,6 +107,12 @@ class Vector3D : public Vec3D<TypeVec3D> {
   Vector3D& RotateAboutZ(float angle);
 
   Vector3D& operator=(const Vector3D& v);
+
+  Vector3D& operator=(const Point3D& p);
+
+  Vector3D& operator=(const Vector2D& v);
+
+  Vector3D& operator=(const Point2D& p);
 
   Vector3D& operator+=(const Vector3D& v);
 
