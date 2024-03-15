@@ -9,10 +9,12 @@
 Scene::Scene()
 { }
 
-void Scene::deleteEntity(entt::entity entity)
+
+
+void Scene::deleteEntity(Entity entity)
 {
     //todo see if theres a bool version of this to confirm deletion
-    registry.destroy(entity);
+    entity.deleteEntity(registry);
 }
 
 Entity Scene::createEntity()

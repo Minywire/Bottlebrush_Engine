@@ -76,6 +76,12 @@ public:
     void removeComponent(entt::registry& reg);
 
     /**
+     * @brief Deletes an entity in the specified registry
+     * @param reg The specified registry to delete this entity from
+     */
+    void deleteEntity(entt::registry & reg);
+
+    /**
      * @brief Returns the entity in this instance
      * @return The entity in this class
      */

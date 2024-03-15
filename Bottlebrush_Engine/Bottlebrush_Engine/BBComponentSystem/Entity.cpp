@@ -57,3 +57,8 @@ const entt::entity& Entity::getEntity() const
 {
     return entityHandle;
 }
+
+void Entity::deleteEntity(entt::registry & reg)
+{
+    reg.destroy(entityHandle);
+}

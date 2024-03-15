@@ -10,17 +10,16 @@ class Entity;
  * @class Scene
  * @brief The scene 'graph' for a game instance created in Bottlebrush Engine
  * @author Marco Garzon Lara
- * @todo Add logic for scene entity deletion function using our Entity definition
  */
 class Scene
 {
 public:
     /**
-     * @brief Deletes Entity from the scene and the game(with EnTT's Entity type)
-     * @param entity The eneity to be deleted
+     * @brief Deletes Entity from the scene and the game(with our Entity type)
+     * @param entity The entity to be deleted
      * @author Marco Garzon Lara
     */
-    void deleteEntity(entt::entity entity);
+    void deleteEntity(Entity entity);
 
     /**
      *@brief Default constructor.
