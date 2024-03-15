@@ -14,8 +14,11 @@ protected:
 	// How many vertex points are being used
 	unsigned int m_Count;
 public:
+	IndexBuffer();
+	// Constructor
+	IndexBuffer(const unsigned int* data, unsigned int count);
 	// Deconstructor
-	virtual ~IndexBuffer() = 0;
+	virtual ~IndexBuffer() = default;
 
 	// Binding buffer to draw / add
 	virtual void Bind() const = 0;

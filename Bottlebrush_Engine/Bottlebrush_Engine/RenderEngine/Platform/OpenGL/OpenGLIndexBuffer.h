@@ -9,7 +9,7 @@
 // Saving memory space of referencing positions more than once.
 // IB must be called after Vertex Array Object (VAO) has been set up with VB and VBL
 
-class OpenGLIndexBuffer : IndexBuffer
+class OpenGLIndexBuffer : public IndexBuffer
 {
 private:
 	// OpenGL ID for IndexBuffer
@@ -20,13 +20,10 @@ public:
 	// Constructor
 	OpenGLIndexBuffer(const unsigned int* data, unsigned int count);
 	// Deconstructor
-	virtual ~OpenGLIndexBuffer() override;
+	~OpenGLIndexBuffer();
 
 	// Binding buffer to draw / add
 	virtual void Bind() const override;
 	// Unbinding buffer
 	virtual void UnBind() const override;
-
-	// returning the number of vertex points used
-	inline unsigned int GetCount() const { return m_Count; }
 };

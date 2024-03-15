@@ -22,19 +22,6 @@ struct VertexBufferElement
 	// floats are already normalised
 	unsigned char normalised;
 
-	// manually setting the byte count of GL types
-	static unsigned int GetSizeOfType(unsigned int type)
-	{
-		switch (type)
-		{
-		case GL_FLOAT:				return 4;
-		case GL_UNSIGNED_INT:		return 4;
-		case GL_UNSIGNED_BYTE:		return 1;
-		}
-		ASSERT(false);
-		return 0;
-	}
-
 	// Constructor
 	VertexBufferElement(unsigned int c, unsigned int t, bool n)
 		: 

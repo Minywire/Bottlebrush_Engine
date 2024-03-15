@@ -28,13 +28,13 @@ void OpenGLVertexArray::AddBuffer(const VertexBuffer& vb, VertexBufferLayout& la
 	vb.Bind();
 
 	// get vertex buffer layouts
-	const std::vector<OpenGLVertexBufferElement>& elements = layout.GetElements();
+	const std::vector<VertexBufferElement>& elements = layout.GetElements();
 	// pointer to next attribute in bytes
 	unsigned int offset = 0;
 
 	for (unsigned int i = 0; i < elements.size(); i++)
 	{
-		const OpenGLVertexBufferElement& element = elements[i];
+		const VertexBufferElement& element = elements[i];
 
 		// enabling the vertex attribute array
 		GLCall(glEnableVertexAttribArray(i));
@@ -47,7 +47,7 @@ void OpenGLVertexArray::AddBuffer(const VertexBuffer& vb, VertexBufferLayout& la
 			(const void*)offset));
 
 		// calc byte space taken up by this attribute
-		offset += element.count * OpenGLVertexBufferElement::GetSizeOfType(element.type);
+		offset += element.count * GetSizeOfType(element.type);
 	}
 }
 

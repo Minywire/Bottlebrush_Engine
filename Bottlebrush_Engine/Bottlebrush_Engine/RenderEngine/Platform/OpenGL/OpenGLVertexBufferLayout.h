@@ -5,54 +5,30 @@
 
 #include <vector>
 #include <glad/glad.h>
-#include "OpenGLRenderer.h"
+//#include "OpenGLRenderer.h"
+#include "OpenGLLogCall.h"
 #include <stdexcept>
 
 #include "../../VertexBufferLayout.h"
 
-// used to pass into glVertexAttribPointer() call
-struct OpenGLVertexBufferElement : public VertexBufferElement
+// manually setting the byte count of GL types
+static unsigned int GetSizeOfType(unsigned int type)
 {
-	// number of components per vertex attribute (2D position = 2. 3D position = 3)
-	// must be 1,2,3,4
-	unsigned int count;
-
-	// what GL_TYPE it is, e.g., GL_FLOAT, GL_UNSIGNED_INT
-	unsigned int type;
-
-	// normalised meaning does it need to be converted to scale 0-1
-	// colours being 0-225 needs to be normalised
-	// floats are already normalised
-	unsigned char normalised;
-
-	// manually setting the byte count of GL types
-	static unsigned int GetSizeOfType(unsigned int type)
+	switch (type)
 	{
-		switch (type)
-		{
-		case GL_FLOAT:				return 4;
-		case GL_UNSIGNED_INT:		return 4;
-		case GL_UNSIGNED_BYTE:		return 1;
-		}
-		ASSERT(false);
-		return 0;
+	case GL_FLOAT:				return 4;
+	case GL_UNSIGNED_INT:		return 4;
+	case GL_UNSIGNED_BYTE:		return 1;
 	}
-
-	// Constructor
-	OpenGLVertexBufferElement(unsigned int c, unsigned int t, bool n)
-		: 
-		count(c),
-		type(t),
-		normalised(n)
-	{}
-};
+	ASSERT(false);
+	return 0;
+}
 
 class OpenGLVertexBufferLayout : VertexBufferLayout
 {
 private:
 
 public:
-
 	// template for pushing the layout of vertex.
 	template<typename T>
 	void Push(unsigned int count)
@@ -66,7 +42,7 @@ public:
 	{
 		// float is normalised
 		m_Elements.push_back({ count, GL_FLOAT, GL_FALSE });
-		m_Stride += count * OpenGLVertexBufferElement::GetSizeOfType(GL_FLOAT);
+		m_Stride += count * GetSizeOfType(GL_FLOAT);
 	}
 
 	template<>
@@ -74,7 +50,7 @@ public:
 	{
 		// unsigned int is normalised
 		m_Elements.push_back({ count, GL_UNSIGNED_INT, GL_FALSE });
-		m_Stride += count * OpenGLVertexBufferElement::GetSizeOfType(GL_UNSIGNED_INT);
+		m_Stride += count * GetSizeOfType(GL_UNSIGNED_INT);
 	}
 
 	template<>
@@ -82,9 +58,6 @@ public:
 	{
 		// chars are not normalised
 		m_Elements.push_back({ count, GL_UNSIGNED_BYTE, GL_TRUE });
-		m_Stride += count * OpenGLVertexBufferElement::GetSizeOfType(GL_BYTE);
+		m_Stride += count * GetSizeOfType(GL_BYTE);
 	}
-
-	inline const std::vector<OpenGLVertexBufferElement> GetElements() const& { return m_Elements;  }
-	inline unsigned int GetStride() const { return m_Stride; }
 };

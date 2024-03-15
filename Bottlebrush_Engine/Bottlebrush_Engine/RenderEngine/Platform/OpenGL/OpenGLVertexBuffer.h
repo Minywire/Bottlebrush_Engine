@@ -3,6 +3,8 @@
 //
 #pragma once
 
+#include "../../VertexBuffer.h"
+
 // Buffer for each vertex 
 class OpenGLVertexBuffer : VertexBuffer
 {

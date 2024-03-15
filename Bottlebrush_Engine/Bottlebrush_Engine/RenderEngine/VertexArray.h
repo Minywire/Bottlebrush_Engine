@@ -14,7 +14,7 @@ protected:
 	unsigned int m_RendererID;
 public:
 	// Deconstructor
-	virtual ~VertexArray();
+	virtual ~VertexArray() = default;
 
 	// Adding Vertex and Layout buffers to this Vertex Array
 	virtual void AddBuffer(const VertexBuffer& vb, VertexBufferLayout& layout) = 0;

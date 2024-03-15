@@ -12,9 +12,7 @@ OpenGLVertexBuffer::OpenGLVertexBuffer(const void* data, unsigned int size)
 
     // bind that buffer just created
     Bind(); 
-    // old call
-     //GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RendererID));
-    // 
+
     // add data (positions) to the buffer that was just bound
     GLCall(glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW));
 }
