@@ -58,6 +58,27 @@ Vector3D& Vector3D::operator=(const Vector3D& v) {
   return (*this);
 }
 
+Vector3D& Vector3D::operator=(const Point3D& p) {
+  x_ = p.x_;
+  y_ = p.y_;
+  z_ = p.z_;
+  return (*this);
+}
+
+Vector3D& Vector3D::operator=(const Vector2D& v) {
+  x_ = v.x_;
+  y_ = v.y_;
+  z_ = 1.0f;
+  return (*this);
+}
+
+Vector3D& Vector3D::operator=(const Point2D& p) {
+  x_ = p.x_;
+  y_ = p.y_;
+  z_ = 0.0f;
+  return (*this);
+}
+
 Vector3D& Vector3D::operator+=(const Vector3D& v) {
   x_ += v.x_;
   y_ += v.y_;
