@@ -5,30 +5,12 @@
 
 #include <iostream>
 
-void GLClearError()
-{
-    while (glGetError() != GL_NO_ERROR);
-}
-
-bool GLLogCall(const char* function, const char* file, int line)
-{
-    while (GLenum error = glGetError())
-    {
-        std::cout << "[OpenGL Error] (" << error << ") " <<
-            function << " " <<
-            file << ":" <<
-            line << std::endl;
-        return false;
-    }
-    return true;
-}
-
 void OpenGLRenderer::Clear() const
 {
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void OpenGLRenderer::Draw(const OpenGLVertexArray& va, const OpenGLIndexBuffer& ib, const OpenGLShader& shader) const
+void OpenGLRenderer::Draw(const VertexArray& va, const IndexBuffer& ib, const OpenGLShader& shader) const
 {
     shader.Bind();
     va.Bind();

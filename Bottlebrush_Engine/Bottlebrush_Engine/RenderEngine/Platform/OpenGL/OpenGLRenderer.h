@@ -8,17 +8,9 @@
 #include "OpenGLVertexArray.h"
 #include "OpenGLIndexBuffer.h"
 #include "OpenGLShader.h"
+#include "OpenGLLogCall.h"
 
 #include "../../RenderEngine.h"
-
-// __debugbreak() = instrinctic to MSVC compiler?
-#define ASSERT(x) if (!(x)) __debugbreak();
-#define GLCall(x) GLClearError();\
-    x;\
-    ASSERT(GLLogCall(#x, __FILE__, __LINE__))
-
-void GLClearError();
-bool GLLogCall(const char* function, const char* file, int line);
 
 class OpenGLRenderer : RenderEngine
 {
@@ -26,5 +18,5 @@ private:
 
 public:
     void Clear() const;
-    void Draw(const OpenGLVertexArray& va, const OpenGLIndexBuffer& ib, const OpenGLShader& shader) const;
+    void Draw(const VertexArray& va, const IndexBuffer& ib, const OpenGLShader& shader) const;
 };
