@@ -1,12 +1,16 @@
+#include "Shader.h"
 //
 // Created by niamh on 26/12/2023.
 //
 
 #include "Shader.h"
 
-Shader::Shader(const std::string& filename)
+Shader::Shader(ShaderSourceFiles ssf)
 {
-    mFilePath = ParseFile(filename);
+    mSSF.VertexSource = ParseFile(ssf.VertexSource);
+    mSSF.FragmentSource = ParseFile(ssf.FragmentSource);
+    mSSF.ComputeSource = ParseFile(ssf.ComputeSource);
+    mSSF.GeometrySource = ParseFile(ssf.GeometrySource);
 }
 
 std::string Shader::ParseFile(const std::string& filename)
@@ -16,6 +20,10 @@ std::string Shader::ParseFile(const std::string& filename)
 
     // Get file extension (should be its own function)
     auto index = filename.rfind('.');
+    if (index == std::string::npos)
+    {
+        return "nullptr";
+    }
     auto ext = filename.substr(index + 1);
 
     if      (ext == "vert") path = SHADER_SOURCE_DIR "Vertex/";
@@ -26,12 +34,8 @@ std::string Shader::ParseFile(const std::string& filename)
     return (path + filename);
 }
 
-std::string Shader::LoadShader(const std::string& filepath)
+bool Shader::CheckSSFValid(std::string filename)
 {
-    // Load GLSL shader source from file
-    std::ifstream file_stream(filepath);
-    auto shader_file_contents = std::string(std::istreambuf_iterator<char>(file_stream),
-        std::istreambuf_iterator<char>());
-
-    return shader_file_contents;
+    if (filename == "nullptr") return false;
+    return true;
 }

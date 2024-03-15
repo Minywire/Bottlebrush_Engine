@@ -4,7 +4,6 @@ add_library(RenderEngine STATIC)
 
 file(GLOB SOURCES *.cpp *.h)
 
-
 add_subdirectory(Platform/OpenGL)
 
 target_sources(RenderEngine PRIVATE ${SOURCES})

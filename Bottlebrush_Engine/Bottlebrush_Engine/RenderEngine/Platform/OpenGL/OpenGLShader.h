@@ -18,7 +18,7 @@ enum class ShaderType
 class OpenGLShader : public Shader
 {
 public:
-	OpenGLShader(const std::string& filename);
+	OpenGLShader(ShaderSourceFiles ssf);
 	virtual ~OpenGLShader() override;
 
 	virtual void Bind() const override;
@@ -33,7 +33,10 @@ private:
 	std::string FindFailedCompiler(unsigned int type);
 	unsigned int CompileShader(unsigned int type, const std::string& source);
 	unsigned int DetermineShaderType(const std::string& filename);
+	std::string LoadShaderType(const std::string& filepath);
+	
 	void LinkShader();
+	void AttachShader(std::string shadertype, unsigned int& program);
 	unsigned int CreateShader();
 	int GetUniformLocation(const std::string& name);
 };

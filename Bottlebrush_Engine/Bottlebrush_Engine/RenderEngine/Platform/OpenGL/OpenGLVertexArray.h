@@ -4,8 +4,11 @@
 #pragma once
 
 #include "../../VertexArray.h"
+#include "OpenGLVertexBuffer.h"
 
-class OpenGLVertexArray : VertexArray
+class OpenGLVertexBufferLayout;
+
+class OpenGLVertexArray : public VertexArray
 {
 private:
 
@@ -16,7 +19,7 @@ public:
 	virtual ~OpenGLVertexArray() override;
 
 	// Adding Vertex and Layout buffers to this Vertex Array
-	virtual void AddBuffer(const VertexBuffer& vb, VertexBufferLayout& layout) override;
+	void AddBuffer(const OpenGLVertexBuffer& vb, OpenGLVertexBufferLayout& layout);
 
 	// Bind VA buffer to add / draw
 	void Bind() const;

@@ -14,12 +14,18 @@
 #include <cassert>
 #include <unordered_map>
 
-#include <glad/glad.h>
+struct ShaderSourceFiles
+{
+    std::string VertexSource;
+    std::string FragmentSource;
+    std::string ComputeSource;
+    std::string GeometrySource;
+};
 
 class Shader {
 public:
-    Shader(const std::string& filename);
-    virtual ~Shader() = 0;
+    Shader(ShaderSourceFiles ssf);
+    virtual ~Shader() = default;
 
     // is this needed?
     unsigned int GetShaderProgram() const { return mProgram; }
@@ -39,14 +45,14 @@ public:
 protected:
     // protected member variables
     unsigned int mProgram;
-    std::string mFilePath;
+    ShaderSourceFiles mSSF;
     int mStatus;
     int mLength;
     // caching for uniforms
     std::unordered_map<std::string, int> mUniformLocationCache;
 
     std::string ParseFile(const std::string& filename);
-    std::string LoadShader(const std::string& filepath);
+    bool CheckSSFValid(std::string source);
 };
 
 

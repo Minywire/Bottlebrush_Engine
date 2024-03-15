@@ -10,7 +10,7 @@ void OpenGLRenderer::Clear() const
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void OpenGLRenderer::Draw(const VertexArray& va, const IndexBuffer& ib, const OpenGLShader& shader) const
+void OpenGLRenderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
 {
     shader.Bind();
     va.Bind();

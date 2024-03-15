@@ -1,6 +1,9 @@
+
 //
 //  Created by Alan Brunet 12/03/2024
 //
+#define NUMSHADERTYPES 4
+
 #include "OpenGLShader.h"
 
 #include <iostream>
@@ -10,8 +13,8 @@
 
 #include "OpenGLRenderer.h"
 
-OpenGLShader::OpenGLShader(const std::string& filename) 
-    : Shader(filename)
+OpenGLShader::OpenGLShader(ShaderSourceFiles ssf)
+    : Shader(ssf)
 {
     mProgram = CreateShader();
 }
@@ -101,16 +104,35 @@ void OpenGLShader::LinkShader()
     assert(mStatus == true);
 }
 
-unsigned int OpenGLShader::CreateShader()
+void OpenGLShader::AttachShader(std::string shadertype, unsigned int& program)
 {
-    GLCall(unsigned int program = glCreateProgram());
-    unsigned int shader = CompileShader(DetermineShaderType(mFilePath),LoadShader(mFilePath));
+    unsigned int shader = CompileShader(DetermineShaderType(shadertype), LoadShaderType(shadertype));
 
     GLCall(glAttachShader(program, shader));
     LinkShader();
     GLCall(glValidateProgram(program));
 
     GLCall(glDeleteShader(shader));
+}
+
+std::string OpenGLShader::LoadShaderType(const std::string& filepath)
+{
+    // Load GLSL shader source from file
+    std::ifstream file_stream(filepath);
+    auto shader_file_contents = std::string(std::istreambuf_iterator<char>(file_stream),
+        std::istreambuf_iterator<char>());
+
+    return shader_file_contents;
+}
+
+unsigned int OpenGLShader::CreateShader()
+{
+    GLCall(unsigned int program = glCreateProgram());
+
+    if (CheckSSFValid(mSSF.VertexSource)) AttachShader(mSSF.VertexSource, program);
+    if (CheckSSFValid(mSSF.FragmentSource)) AttachShader(mSSF.FragmentSource, program);
+    if (CheckSSFValid(mSSF.ComputeSource)) AttachShader(mSSF.ComputeSource, program);
+    if (CheckSSFValid(mSSF.GeometrySource)) AttachShader(mSSF.GeometrySource, program);
 
     return program;
 }

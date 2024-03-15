@@ -5,8 +5,7 @@
 
 #include <vector>
 #include <glad/glad.h>
-//#include "OpenGLRenderer.h"
-#include "OpenGLLogCall.h"
+#include "OpenGLRenderer.h"
 #include <stdexcept>
 
 #include "../../VertexBufferLayout.h"
@@ -60,4 +59,7 @@ public:
 		m_Elements.push_back({ count, GL_UNSIGNED_BYTE, GL_TRUE });
 		m_Stride += count * GetSizeOfType(GL_BYTE);
 	}
+
+	inline const std::vector<VertexBufferElement> GetElements() const& { return m_Elements; }
+	inline unsigned int GetStride() const { return m_Stride; }
 };

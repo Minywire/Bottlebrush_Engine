@@ -20,7 +20,7 @@ OpenGLVertexArray::~OpenGLVertexArray()
 	GLCall(glDeleteVertexArrays(1, &m_RendererID));
 }
 
-void OpenGLVertexArray::AddBuffer(const VertexBuffer& vb, VertexBufferLayout& layout)
+void OpenGLVertexArray::AddBuffer(const OpenGLVertexBuffer& vb, OpenGLVertexBufferLayout& layout)
 {
 	// bind vertex array buffer first to add vertex buffers
 	Bind();
