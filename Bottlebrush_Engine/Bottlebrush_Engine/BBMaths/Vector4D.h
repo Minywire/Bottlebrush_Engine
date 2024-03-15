@@ -131,14 +131,6 @@ class Vector4D : public Vec4D<TypeVec4D> {
 
   Vector4D& Set(float a, float b, float c, float d);
 
-  Vector4D& Set(const Vector3D& v);
-
-  Vector4D& Set(const Vector3D& v, float d);
-
-  Vector4D& Set(const Vector2D& v);
-
-  Vector4D& Set(const Vector2D& v, float c, float d);
-
   Vector4D& Normalise();
 
   Vector4D& RotateAboutX(float angle);
