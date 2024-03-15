@@ -79,6 +79,38 @@ Vector4D& Vector4D::operator=(const Vector4D& v) {
   return (*this);
 }
 
+Vector4D& Vector4D::operator=(const Vector3D& v) {
+  x_ = v.x_;
+  y_ = v.y_;
+  z_ = v.z_;
+  w_ = 0.0f;
+  return (*this);
+}
+
+Vector4D& Vector4D::operator=(const Point3D& p) {
+  x_ = p.x_;
+  y_ = p.y_;
+  z_ = p.z_;
+  w_ = 1.0f;
+  return (*this);
+}
+
+Vector4D& Vector4D::operator=(const Vector2D& v) {
+  x_ = v.x_;
+  y_ = v.y_;
+  z_ = 0.0f;
+  w_ = 0.0f;
+  return (*this);
+}
+
+Vector4D& Vector4D::operator=(const Point2D& p) {
+  x_ = p.x_;
+  y_ = p.y_;
+  z_ = 0.0f;
+  w_ = 1.0f;
+  return (*this);
+}
+
 Vector4D& Vector4D::operator+=(const Vector4D& v) {
   x_ += v.x_;
   y_ += v.y_;
