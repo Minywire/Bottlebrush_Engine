@@ -27,6 +27,12 @@ Vector2D& Vector2D::operator=(const Vector2D& v) {
   return (*this);
 }
 
+Vector2D& Vector2D::operator=(const Point2D& p) {
+  x_ = p.x_;
+  y_ = p.y_;
+  return (*this);
+}
+
 Vector2D& Vector2D::operator+=(const Vector2D& v) {
   x_ += v.x_;
   y_ += v.y_;
