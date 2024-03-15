@@ -3,36 +3,37 @@
 //
 #pragma once
 
-#include <string>
-#include <unordered_map>
+#define SHADER_SOURCE_DIR "Bottlebrush_Engine/Bottlebrush_Engine/Shaders/"
 
-struct OpenGLShaderProgramSource
+#include "../../Shader.h"
+
+#include <string>
+
+
+enum class ShaderType
 {
-	std::string VertexSource;
-	std::string FragmentSource;
+	NONE = -1, VERTEX = 0, FRAGMENT = 1
 };
 
-class OpenGLShader
+class OpenGLShader : public Shader
 {
-private:
-	std::string m_FilePath;
-	unsigned int m_RendererID;
-	// caching for uniforms
-	std::unordered_map<std::string, int> m_UniformLocationCache;
 public:
-	OpenGLShader(const std::string& filepath);
-	~OpenGLShader();
+	OpenGLShader(const std::string& filename);
+	virtual ~OpenGLShader() override;
 
-	void Bind() const;
-	void Unbind() const;
+	virtual void Bind() const override;
+	virtual void Unbind() const override;
 
 	// set uniforms
-	void SetUniform1f(const std::string& name, float value);
-	void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
+	virtual void SetUniform1f(const std::string& name, float value) override;
+	virtual void SetUniform3f(const std::string& name, float v0, float v1, float v2) override;
+	virtual void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3) override;
 
 private:
-	OpenGLShaderProgramSource ParseShader(const std::string& filepath);
+	std::string FindFailedCompiler(unsigned int type);
 	unsigned int CompileShader(unsigned int type, const std::string& source);
-	unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
+	unsigned int DetermineShaderType(const std::string& filename);
+	void LinkShader();
+	unsigned int CreateShader();
 	int GetUniformLocation(const std::string& name);
 };

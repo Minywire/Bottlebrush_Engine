@@ -10,53 +10,37 @@
 
 #include "OpenGLRenderer.h"
 
-OpenGLShader::OpenGLShader(const std::string& filepath)
-	:
-	m_FilePath(filepath),
-	m_RendererID(0)
+OpenGLShader::OpenGLShader(const std::string& filename) 
+    : Shader(filename)
 {
-    OpenGLShaderProgramSource source = ParseShader(filepath);
-    m_RendererID = CreateShader(source.VertexSource, source.FragmentSource);
+    mProgram = CreateShader();
 }
 
 OpenGLShader::~OpenGLShader()
 {
-    GLCall(glDeleteProgram(m_RendererID));
+    GLCall(glDeleteProgram(mProgram));
 }
 
-OpenGLShaderProgramSource OpenGLShader::ParseShader(const std::string& filepath)
+void OpenGLShader::Bind() const
 {
-    std::ifstream stream(filepath);
+    GLCall(glUseProgram(mProgram));
+}
 
-    enum class ShaderType
+void OpenGLShader::Unbind() const
+{
+    GLCall(glUseProgram(0));
+}
+
+std::string OpenGLShader::FindFailedCompiler(unsigned int type)
+{
+    switch (type) 
     {
-        NONE = -1, VERTEX = 0, FRAGMENT = 1
-    };
-
-    std::string line;
-    std::stringstream ss[2];
-    ShaderType type = ShaderType::NONE;
-
-    while (getline(stream, line))
-    {
-        if (line.find("#shader") != std::string::npos)
-        {
-            if (line.find("vertex") != std::string::npos)
-            {
-                type = ShaderType::VERTEX;
-            }
-            else if (line.find("fragment") != std::string::npos)
-            {
-                type = ShaderType::FRAGMENT;
-            }
-        }
-        else
-        {
-            ss[(int)type] << line << '\n';
-        }
+        case GL_VERTEX_SHADER:      return "vertex";
+        case GL_FRAGMENT_SHADER:    return "fragment";
+        case GL_COMPUTE_SHADER:     return "compute";
+        case GL_GEOMETRY_SHADER:    return "geometry";
+        default:                    return "unknown";
     }
-
-    return { ss[0].str(), ss[1].str() };
 }
 
 unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& source)
@@ -76,7 +60,8 @@ unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& s
         char* message = (char*)_malloca(length * sizeof(char));
         GLCall(glGetShaderInfoLog(id, length, &length, message));
         std::cout << "failed to compile" <<
-            (type == GL_VERTEX_SHADER ? "vertex" : "fragment")
+            // TODO switch case on what shader
+            FindFailedCompiler(type)
             << " shader" << std::endl;
         std::cout << message << std::endl;
 
@@ -87,38 +72,58 @@ unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& s
     return id;
 }
 
+unsigned int OpenGLShader::DetermineShaderType(const std::string& filename)
+{
+    auto index = filename.rfind('.');
+    auto ext = filename.substr(index + 1);
 
+    if      (ext == "comp") return glCreateShader(GL_COMPUTE_SHADER);
+    else if (ext == "frag") return glCreateShader(GL_FRAGMENT_SHADER);
+    else if (ext == "geom") return glCreateShader(GL_GEOMETRY_SHADER);
+    else if (ext == "vert") return glCreateShader(GL_VERTEX_SHADER);
+    else                    assert(false);   
+    return false;
+}
 
-unsigned int OpenGLShader::CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
+void OpenGLShader::LinkShader()
+{
+    GLCall(glLinkProgram(mProgram));
+
+    // verify linking success
+    GLCall(glGetProgramiv(mProgram, GL_LINK_STATUS, &mStatus));
+    if (mStatus == false) {
+        GLCall(glGetProgramiv(mProgram, GL_INFO_LOG_LENGTH, &mLength));
+        // TODO: Do i need to do memory management stuff with this unique ptr?
+        std::unique_ptr<char[]> buffer(new char[mLength]);
+        GLCall(glGetProgramInfoLog(mProgram, mLength, nullptr, buffer.get()));
+        fprintf(stderr, "%s", buffer.get());
+    }
+    assert(mStatus == true);
+}
+
+unsigned int OpenGLShader::CreateShader()
 {
     GLCall(unsigned int program = glCreateProgram());
-    unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
-    unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
+    unsigned int shader = CompileShader(DetermineShaderType(mFilePath),LoadShader(mFilePath));
 
-    GLCall(glAttachShader(program, vs));
-    GLCall(glAttachShader(program, fs));
-    GLCall(glLinkProgram(program));
+    GLCall(glAttachShader(program, shader));
+    LinkShader();
     GLCall(glValidateProgram(program));
 
-    GLCall(glDeleteShader(vs));
-    GLCall(glDeleteShader(fs));
+    GLCall(glDeleteShader(shader));
 
     return program;
 }
 
-void OpenGLShader::Bind() const
-{
-    GLCall(glUseProgram(m_RendererID));
-}
-
-void OpenGLShader::Unbind() const
-{
-    GLCall(glUseProgram(0));
-}
 
 void OpenGLShader::SetUniform1f(const std::string& name, float value)
 {
     GLCall(glUniform1f(GetUniformLocation(name), value));
+}
+
+void OpenGLShader::SetUniform3f(const std::string& name, float v0, float v1, float v2)
+{
+    GLCall(glUniform3f(GetUniformLocation(name), v0, v1, v2));
 }
 
 void OpenGLShader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
@@ -129,14 +134,16 @@ void OpenGLShader::SetUniform4f(const std::string& name, float v0, float v1, flo
 
 int OpenGLShader::GetUniformLocation(const std::string& name)
 {
-    if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
-        return m_UniformLocationCache[name];
+    if (mUniformLocationCache.find(name) != mUniformLocationCache.end())
+        return mUniformLocationCache[name];
 
-    GLCall(int location = glGetUniformLocation(m_RendererID, name.c_str()));
+    GLCall(int location = glGetUniformLocation(mProgram, name.c_str()));
     if (location == -1)
         std::cout << "Warning: uniform '" << name << "' doesn't exist!" << std::endl;
 
-    m_UniformLocationCache[name] = location;
+    mUniformLocationCache[name] = location;
          
     return location;
 }
+
+

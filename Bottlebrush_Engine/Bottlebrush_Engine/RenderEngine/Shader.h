@@ -12,33 +12,41 @@
 #include <fstream>
 #include <memory>
 #include <cassert>
+#include <unordered_map>
 
 #include <glad/glad.h>
 
 class Shader {
 public:
-    Shader();
-    ~Shader();
+    Shader(const std::string& filename);
+    virtual ~Shader() = 0;
 
-    // Public member functions
-    Shader & Activate();
-    Shader & Attach(std::string const & filepath);
-    static GLuint Create(std::string const & filename);
-    GLuint GetShaderProgram() const;
-    Shader & Link();
+    // is this needed?
+    unsigned int GetShaderProgram() const { return mProgram; }
 
-    // Wrap calls to glUniform
-    void Bind(int location, float value);
+    // 
+    virtual void Bind() const = 0;
+    virtual void Unbind() const = 0;
+
+    virtual void SetUniform1f(const std::string& name, float value) = 0;
+    virtual void SetUniform3f(const std::string& name, float v0, float v1, float v2) = 0;
+    virtual void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3) = 0;
 
     // Disable Copying and Assignment
     Shader(Shader const &) = delete;
     Shader & operator=(Shader const &) = delete;
 
-private:
-    // private member variables
-    GLuint mProgram;
-    GLint mStatus{};
-    GLint mLength{};
+protected:
+    // protected member variables
+    unsigned int mProgram;
+    std::string mFilePath;
+    int mStatus;
+    int mLength;
+    // caching for uniforms
+    std::unordered_map<std::string, int> mUniformLocationCache;
+
+    std::string ParseFile(const std::string& filename);
+    std::string LoadShader(const std::string& filepath);
 };
 
 
