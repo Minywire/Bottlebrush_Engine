@@ -3,23 +3,20 @@
 //
 #pragma once
 
-#include "OpenGLVertexBuffer.h"
+#include "../../VertexArray.h"
 
-class OpenGLVertexBufferLayout;
-
-class OpenGLVertexArray
+class OpenGLVertexArray : VertexArray
 {
 private:
-	// OpenGL ID for VA
-	unsigned int m_RendererID;
+
 public:
 	// Constructor
 	OpenGLVertexArray();
 	// Deconstructor
-	~OpenGLVertexArray();
+	virtual ~OpenGLVertexArray() override;
 
 	// Adding Vertex and Layout buffers to this Vertex Array
-	void AddBuffer(const OpenGLVertexBuffer& vb, OpenGLVertexBufferLayout& layout);
+	virtual void AddBuffer(const VertexBuffer& vb, VertexBufferLayout& layout) override;
 
 	// Bind VA buffer to add / draw
 	void Bind() const;

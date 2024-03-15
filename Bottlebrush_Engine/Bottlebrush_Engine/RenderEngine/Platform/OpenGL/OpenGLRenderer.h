@@ -9,6 +9,8 @@
 #include "OpenGLIndexBuffer.h"
 #include "OpenGLShader.h"
 
+#include "../../RenderEngine.h"
+
 // __debugbreak() = instrinctic to MSVC compiler?
 #define ASSERT(x) if (!(x)) __debugbreak();
 #define GLCall(x) GLClearError();\
@@ -18,7 +20,7 @@
 void GLClearError();
 bool GLLogCall(const char* function, const char* file, int line);
 
-class OpenGLRenderer
+class OpenGLRenderer : RenderEngine
 {
 private:
 

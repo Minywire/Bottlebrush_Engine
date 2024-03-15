@@ -1,6 +1,7 @@
 //
 //  Created by Alan Brunet 12/03/2024
 //
+
 #include "OpenGLVertexArray.h"
 #include "OpenGLVertexArray.h"
 
@@ -19,7 +20,7 @@ OpenGLVertexArray::~OpenGLVertexArray()
 	GLCall(glDeleteVertexArrays(1, &m_RendererID));
 }
 
-void OpenGLVertexArray::AddBuffer(const OpenGLVertexBuffer& vb, OpenGLVertexBufferLayout& layout)
+void OpenGLVertexArray::AddBuffer(const VertexBuffer& vb, VertexBufferLayout& layout)
 {
 	// bind vertex array buffer first to add vertex buffers
 	Bind();

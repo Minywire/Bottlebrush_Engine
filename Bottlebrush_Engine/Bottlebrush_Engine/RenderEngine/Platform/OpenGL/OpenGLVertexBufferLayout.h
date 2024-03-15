@@ -8,8 +8,10 @@
 #include "OpenGLRenderer.h"
 #include <stdexcept>
 
+#include "../../VertexBufferLayout.h"
+
 // used to pass into glVertexAttribPointer() call
-struct OpenGLVertexBufferElement
+struct OpenGLVertexBufferElement : public VertexBufferElement
 {
 	// number of components per vertex attribute (2D position = 2. 3D position = 3)
 	// must be 1,2,3,4
@@ -45,19 +47,11 @@ struct OpenGLVertexBufferElement
 	{}
 };
 
-class OpenGLVertexBufferLayout
+class OpenGLVertexBufferLayout : VertexBufferLayout
 {
 private:
-	std::vector<OpenGLVertexBufferElement> m_Elements;
-
-	// OpenGL stride (in glVertexAttribPointer()) 
-	// is the byte space needed for the attribute, i.e, position, texure coord, colour
-	unsigned int m_Stride;
 
 public:
-	// Constructor
-	OpenGLVertexBufferLayout()
-		: m_Stride(0) {}
 
 	// template for pushing the layout of vertex.
 	template<typename T>

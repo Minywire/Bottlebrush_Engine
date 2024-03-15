@@ -4,7 +4,7 @@
 #pragma once
 
 // Buffer for each vertex 
-class OpenGLVertexBuffer
+class OpenGLVertexBuffer : VertexBuffer
 {
 private:
 	// OpenGL ID for buffers
@@ -13,10 +13,10 @@ public:
 	// Constructor
 	OpenGLVertexBuffer(const void* data, unsigned int size);
 	// Deconstructor
-	~OpenGLVertexBuffer();
+	virtual ~OpenGLVertexBuffer() override;
 
 	// Binding buffer
-	void Bind() const;
+	virtual void Bind() const override;
 	// Unbinding buffer
-	void UnBind() const;
+	virtual void UnBind() const override;
 };
