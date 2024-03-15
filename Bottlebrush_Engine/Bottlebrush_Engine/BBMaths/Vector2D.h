@@ -2,6 +2,7 @@
 #define BOTTLEBRUSH_ENGINE_VECTOR2D_H_
 
 #include "Maths.h"
+#include "Point2D.h"
 
 namespace BBMaths {
 typedef float TypeVec2D;
@@ -26,6 +27,11 @@ class Vec2D {
     x_ = v.x_;
     y_ = v.y_;
   }
+
+  explicit Vec2D(const Euc2D<TypeEuc2D>& p) {
+    x_ = p.x_;
+    y_ = p.y_;
+  }
 };
 
 /// @class Vector2D
@@ -47,6 +53,8 @@ class Vector2D : public Vec2D<TypeVec2D> {
 
   explicit Vector2D(const Vec2D<TypeVec2D>& v) : Vec2D<TypeVec2D>(v) {}
 
+  explicit Vector2D(const Euc2D<TypeEuc2D>& p) : Vec2D<TypeVec2D>(p) {}
+
   Vector2D& Set(float a, float b);
 
   Vector2D& Normalise();
@@ -54,6 +62,8 @@ class Vector2D : public Vec2D<TypeVec2D> {
   Vector2D& Rotate(float angle);
 
   Vector2D& operator=(const Vector2D& v);
+
+  Vector2D& operator=(const Point2D& p);
 
   Vector2D& operator+=(const Vector2D& v);
 
