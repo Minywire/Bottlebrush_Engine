@@ -6,6 +6,7 @@
 #include <cstdint>
 
 namespace BBMaths {
+
 const float kPiOver6 = 0.52359877559829887308f;
 const float kPiOver4 = 0.78539816339744830962f;
 const float kPiOver3 = 1.04719755119659774615f;
@@ -22,15 +23,34 @@ const float k7PiOver4 = 5.49778714378213816731f;
 const float k11PiOver6 = 5.75958653158128760385f;
 const float k2Pi = 6.28318530717958647693;
 
-float Cos(float angle);
+/// @brief Evaluates the trigonometric cosine function cos \a x for the given
+/// angle \a x in radians.
+/// @param x The angle in radians.
+/// @returns The value of \c x evaluated such that \a y = cos \a x.
+float Cos(float x);
 
-float Sin(float angle);
+/// @brief Evaluates the trigonometric sine function sin \a x for the given
+/// angle \a x in radians.
+/// @param x The angle in radians.
+/// @returns The value of \c x evaluated such that \a y = sin \a x.
+float Sin(float x);
 
-float Tan(float angle);
+/// @brief Evaluates the trigonometric tangent function tan \a x for the given
+/// angle \a x in radians.
+/// @param x The angle in radians.
+/// @returns The value of \c x evaluated such that \a y = tan \a x.
+float Tan(float x);
 
+/// @brief Evaluates the square root √\a x of the given value \a x.
+/// @param x The real-valued number.
+/// @returns The value of \c x evaluated such that \a y = √\a x.
 float Sqrt(float x);
 
+/// @brief Evaluates the inverse square root 1 / √\a x of the given value \a x.
+/// @param x The real-valued number.
+/// @returns The value of \c x evaluated such that \a y = 1 / √\a x.
 float InverseSqrt(float x);
+
 }  // namespace BBMaths
 
 #endif  // BOTTLEBRUSH_ENGINE_MATHS_H
