@@ -78,6 +78,10 @@ class Vec3D {
 /// The default constructor leaves the components of the vector undefined. If
 /// the values \c a, \c b, and \c c are provided in the constructor, they are
 /// assigned to the \a x, \a y, and \a z co-ordinates of the point.
+/// @see Point2D
+/// @see Point3D
+/// @see Vector2D
+/// @author Jaiden di Lanzo
 class Vector3D : public Vec3D<TypeVec3D> {
  public:
   inline Vector3D() = default;
