@@ -3,14 +3,10 @@
 //
 #include "IndexBuffer.h"
 
-IndexBuffer::IndexBuffer()
-{
-
-}
-
 IndexBuffer::IndexBuffer(const unsigned int* data, unsigned int count)
 	:
-	m_Count(count)
+	m_Count(count),
+	m_RendererID(0)
 {
 
 }

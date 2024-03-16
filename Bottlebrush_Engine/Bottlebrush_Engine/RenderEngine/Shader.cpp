@@ -18,12 +18,14 @@ std::string Shader::ParseFile(const std::string& filename)
     std::string path;
     std::string extension;
 
-    // Get file extension (should be its own function)
+    // index where . is
     auto index = filename.rfind('.');
+    // simple solution for file not valid? used with CheckSSFValid()
     if (index == std::string::npos)
     {
         return "nullptr";
     }
+    // Get file extension
     auto ext = filename.substr(index + 1);
 
     if      (ext == "vert") path = SHADER_SOURCE_DIR "Vertex/";

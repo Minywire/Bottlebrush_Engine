@@ -28,7 +28,7 @@ class OpenGLVertexBufferLayout : VertexBufferLayout
 private:
 
 public:
-	// template for pushing the layout of vertex.
+	/// template for pushing the layout of vertex.
 	template<typename T>
 	void Push(unsigned int count)
 	{
@@ -60,6 +60,8 @@ public:
 		m_Stride += count * GetSizeOfType(GL_BYTE);
 	}
 
+	/// Returns member variable m_Elements
 	inline const std::vector<VertexBufferElement> GetElements() const& { return m_Elements; }
+	/// Returns member variable m_Stride
 	inline unsigned int GetStride() const { return m_Stride; }
 };

@@ -6,8 +6,10 @@
 #include "VertexArray.h"
 #include "OpenGLVertexBuffer.h"
 
+/// forward declaration to avoid link errors
 class OpenGLVertexBufferLayout;
 
+/// Needed to hold an array of element buffers
 class OpenGLVertexArray : public VertexArray
 {
 private:

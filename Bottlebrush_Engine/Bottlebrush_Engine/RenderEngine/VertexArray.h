@@ -3,17 +3,18 @@
 //
 #pragma once
 
+/// Needed to hold an array of element buffers
 class VertexArray
 {
 protected:
-	// OpenGL ID for VA
+	// ID for Vertex Array
 	unsigned int m_RendererID;
 public:
 	// Deconstructor
 	virtual ~VertexArray() = default;
 
-	// Bind VA buffer to add / draw
+	// Bind Vertex Array buffer to add / draw
 	virtual void Bind() const = 0;
-	// Unbind VA
+	// Unbind Vertex Array buffer
 	virtual void Unbind() const = 0;
 };

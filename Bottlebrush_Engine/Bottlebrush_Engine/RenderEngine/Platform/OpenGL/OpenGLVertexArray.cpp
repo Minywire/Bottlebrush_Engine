@@ -38,7 +38,7 @@ void OpenGLVertexArray::AddBuffer(const OpenGLVertexBuffer& vb, OpenGLVertexBuff
 
 		// enabling the vertex attribute array
 		GLCall(glEnableVertexAttribArray(i));
-		// 
+		// Specify the layout of this attribute
 		GLCall(glVertexAttribPointer(i, 
 			element.count, 
 			element.type, 

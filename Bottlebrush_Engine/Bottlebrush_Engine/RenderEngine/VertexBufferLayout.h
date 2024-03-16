@@ -7,7 +7,7 @@
 #include "RenderEngine.h"
 #include <stdexcept>
 
-// used to pass into glVertexAttribPointer() call
+/// used to pass into glVertexAttribPointer() call
 struct VertexBufferElement
 {
 	// number of components per vertex attribute (2D position = 2. 3D position = 3)
@@ -31,17 +31,20 @@ struct VertexBufferElement
 	{}
 };
 
+/// This is used to contain a vector array of VertexBuffer Element details that is passed into API
+/// See child class for push_back() methods
 class VertexBufferLayout
 {
 protected:
+	/// 
 	std::vector<VertexBufferElement> m_Elements;
 
-	// OpenGL stride (in glVertexAttribPointer()) 
-	// is the byte space needed for the attribute, i.e, position, texure coord, colour
+	/// OpenGL stride (in glVertexAttribPointer()) 
+	/// is the byte space needed for the attribute, i.e, position, texure coord, colour
 	unsigned int m_Stride;
 
 public:
-	// Constructor
+	/// Constructor, defaulting member variable
 	VertexBufferLayout()
 		: m_Stride(0) {}
 

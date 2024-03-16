@@ -3,18 +3,18 @@
 //
 #pragma once
 
-// Buffer for each vertex 
+/// Buffer for each vertex 
 class VertexBuffer
 {
 protected:
-	// OpenGL ID for buffers
+	/// ID for buffers
 	unsigned int m_RendererID;
 public:
-	// Deconstructor
+	/// Deconstructor
 	virtual ~VertexBuffer() = default;
 
-	// Binding buffer
+	/// Binding buffer
 	virtual void Bind() const = 0;
-	// Unbinding buffer
+	/// Unbinding buffer
 	virtual void UnBind() const = 0;
 };

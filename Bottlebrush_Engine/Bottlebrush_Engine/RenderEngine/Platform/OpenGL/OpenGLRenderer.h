@@ -11,6 +11,8 @@
 #include "OpenGLIndexBuffer.h"
 #include "OpenGLShader.h"
 
+/// nameless namespace to avoid linking errors
+/// This is error checking on OpenGL side, good for debugging but not necessary
 namespace
 {
     // __debugbreak() = instrinctic to MSVC compiler?
@@ -41,11 +43,15 @@ namespace
 
 }
 
+/// child class that does the rendering of objects
+/// @TODO provide this with some Casting methods to child classes for buffers, shader, arrays.
 class OpenGLRenderer : RenderEngine
 {
 private:
 
 public:
+    /// glClearColor()
     void Clear() const;
+    /// This needs to be called within the draw loop 
     virtual void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const override;
 };

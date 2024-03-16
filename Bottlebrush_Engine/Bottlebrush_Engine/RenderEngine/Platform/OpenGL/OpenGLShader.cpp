@@ -61,8 +61,8 @@ unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& s
         GLCall(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
         char* message = (char*)_malloca(length * sizeof(char));
         GLCall(glGetShaderInfoLog(id, length, &length, message));
+
         std::cout << "failed to compile" <<
-            // TODO switch case on what shader
             FindFailedCompiler(type)
             << " shader" << std::endl;
         std::cout << message << std::endl;
@@ -103,9 +103,9 @@ void OpenGLShader::LinkShader()
     assert(m_Status == true);
 }
 
-void OpenGLShader::AttachShader(std::string shadertype, unsigned int& program)
+void OpenGLShader::AttachShader(std::string shadersource, unsigned int& program)
 {
-    unsigned int shader = CompileShader(DetermineShaderType(shadertype), LoadShaderType(shadertype));
+    unsigned int shader = CompileShader(DetermineShaderType(shadersource), LoadShaderType(shadersource));
 
     GLCall(glAttachShader(program, shader));
     LinkShader();
@@ -126,8 +126,10 @@ std::string OpenGLShader::LoadShaderType(const std::string& filepath)
 
 unsigned int OpenGLShader::CreateShader()
 {
+    // needs to be modifiable for glAttachShader
     GLCall(unsigned int program = glCreateProgram());
 
+    // check if source is valid, then attach the shader
     if (CheckSSFValid(m_SSF.VertexSource)) AttachShader(m_SSF.VertexSource, program);
     if (CheckSSFValid(m_SSF.FragmentSource)) AttachShader(m_SSF.FragmentSource, program);
     if (CheckSSFValid(m_SSF.ComputeSource)) AttachShader(m_SSF.ComputeSource, program);
@@ -155,13 +157,16 @@ void OpenGLShader::SetUniform4f(const std::string& name, float v0, float v1, flo
 
 int OpenGLShader::GetUniformLocation(const std::string& name)
 {
+    // see if it exists within our map first, else add it
     if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
         return m_UniformLocationCache[name];
 
+    // find the location
     GLCall(int location = glGetUniformLocation(m_Program, name.c_str()));
     if (location == -1)
         std::cout << "Warning: uniform '" << name << "' doesn't exist!" << std::endl;
 
+    // assign the location to the map
     m_UniformLocationCache[name] = location;
          
     return location;

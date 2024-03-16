@@ -12,11 +12,15 @@
 
 void hello_world();
 
+/// Base class for rendering objects
+/// @TODO provide this with some Casting methods to child classes for buffers, shader, arrays.
 class RenderEngine
 {
-private:
+protected:
 
 public:
+	/// will be deleted at some point, this is just for demostration of setting up render engine
 	void TestSetupValues();
+	/// This needs to be called within the draw loop 
 	virtual void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const = 0;
 };

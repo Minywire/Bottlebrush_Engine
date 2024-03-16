@@ -7,7 +7,8 @@
 
 OpenGLIndexBuffer::OpenGLIndexBuffer(const unsigned int* data, unsigned int count)
     :
-    m_Count(count)
+    m_Count(count),
+    m_RendererID(0)
 {
     // make sure GLuint is the same as commonly used unsigned int
     ASSERT(sizeof(unsigned int) == sizeof(GLuint));
