@@ -2,6 +2,7 @@
 #define BOTTLEBRUSH_ENGINE_POINT3D_H_
 
 namespace BBMaths {
+
 typedef float TypeEuc3D;
 
 /// @class Euc3D
@@ -34,11 +35,17 @@ class Euc3D {
 ///
 /// The \c Point3D class is used to represent singular three-dimensional
 /// Cartesian co-ordinates in Euclidean geometric space with real-valued
-/// components <i>x</i>, <i>y</i>, and <i>z</i>. A Cartesian point of this class
-/// is assumed to have a <i>w</i> co-ordinate of 1 in its four-dimensional
-/// representation. Three-dimensional directional vectors, where the <i>w</i>
-/// co-ordinate would be 0 in its four-dimensional representation, should be
-/// stored using the \c Vector3D class.
+/// components \a x, \a y, and \a z. A Cartesian point of this class is assumed
+/// to have a \a w co-ordinate of 1 in its four-dimensional representation.
+/// Three-dimensional directional vectors, where the \a w co-ordinate would be 0
+/// in its four-dimensional representation, should be stored using the \c
+/// Vector3D class.
+/// <p>
+/// The default constructor leaves the components of the point undefined. If the
+/// values \c a, \c b, and \c c are provided in the constructor, they are
+/// assigned to the \a x, \a y, and /a z co-ordinates of the point.
+/// @see Vector3D
+/// @author Jaiden di Lanzo
 class Point3D : public Euc3D<TypeEuc3D> {
  public:
   inline Point3D() = default;
@@ -47,28 +54,78 @@ class Point3D : public Euc3D<TypeEuc3D> {
 
   explicit Point3D(const Euc3D<TypeEuc3D>& p) : Euc3D<TypeEuc3D>(p) {}
 
-  Point3D& operator=(const Point3D& p);
+  /// @brief Assigns the \a x, \a y, and \a z components of the right-hand side
+  /// point \a a to the \a x, \a y, and \a z components of the left-hand side
+  /// point \a p.
+  /// @param a The right-hand side point.
+  /// @returns A reference to a \c Point3D object such that \a p =
+  /// (<em>x<sub>a</sub></em>, <em>y<sub>a</sub></em>, <em>z<sub>a</sub></em>).
+  Point3D& operator=(const Point3D& a);
 
-  Point3D& operator+=(const Point3D& p);
+  /// @brief Adds the \a x, \a y, and \a z components of the right-hand side
+  /// point \a a to the \a x, \a y, and \a z components of the left-hand side
+  /// point \a p.
+  /// @param a The right-hand side point.
+  /// @returns A reference to a \c Point3D object such that \a p = \a p + \a a.
+  Point3D& operator+=(const Point3D& a);
 
-  Point3D& operator-=(const Point3D& p);
+  /// @brief Subtracts the \a x, \a y, and \a z components of the right-hand
+  /// side point \a a from the \a x, \a y, and \a z components of the left-hand
+  /// side point \a p.
+  /// @param a The right-hand side point.
+  /// @returns A reference to a \c Point3D object such that \a p = \a p - \a a.
+  Point3D& operator-=(const Point3D& a);
 
+  /// @brief Multiplies the right-hand side scalar \a n with the \a x, \a y, and
+  /// \a z components of the left-hand side point \a p.
+  /// @param n The right-hand side scalar value.
+  /// @returns A reference to a \c Point3D object such that \a p = \a p ⋅ \a n.
   Point3D& operator*=(float n);
 
+  /// @brief Divides the \a x, \a y, and \a z components of the left-hand side
+  /// point \a p with the right-hand side scalar \a n.
+  /// @param n The right-hand side scalar value.
+  /// @returns A reference to a \c Point3D object such that \a p = \a p / \a n.
   Point3D& operator/=(float n);
 };
 
-Point3D operator-(const Point3D& p);
+/// @brief Negates the \a x, \a y, and \a z components of the point \a a.
+/// @param a A three-dimensional point.
+/// @returns A \c Point3D object such that \a p = -\a a.
+Point3D operator-(const Point3D& a);
 
+/// @brief Adds the \a x, \a y, and \a z components of the point \a a to the \a
+/// x, \a y, and \a z components of the point \a b.
+/// @param a A three-dimensional point.
+/// @param b A three-dimensional point.
+/// @returns A \c Point3D object such that \a p = \a a + \a b.
 Point3D operator+(const Point3D& a, const Point3D& b);
 
+/// @brief Subtracts the \a x, \a y, and \a z components of the point \a b from
+/// the \a x, \a y, and \a z components of the point \a a.
+/// @param a A three-dimensional point.
+/// @param b A three-dimensional point.
+/// @returns A \c Point3D object such that \a p = \a a - \a b.
 Point3D operator-(const Point3D& a, const Point3D& b);
 
-Point3D operator*(const Point3D& p, float n);
+/// @brief Multiplies the \a x, \a y, and \a z components of the point \a p with
+/// the the scalar \a n.
+/// @param n A scalar value.
+/// @returns A \c Point3D object such that \a p = \a a ⋅ \a n.
+Point3D operator*(const Point3D& a, float n);
 
-Point3D operator*(float n, const Point3D& p);
+/// @brief Multiplies the the scalar \a n with the \a x, \a y, and \a z
+/// components of the point \a p.
+/// @param n A scalar value.
+/// @returns A \c Point3D object such that \a p = \a n ⋅ \a a.
+Point3D operator*(float n, const Point3D& a);
 
-Point3D operator/(const Point3D& p, float n);
+/// @brief Divides the \a x, \a y, and \a z components of the point \a p with
+/// the scalar \a n.
+/// @param n A scalar value.
+/// @returns A \c Point3D object such that \a p = \a a / \a n.
+Point3D operator/(const Point3D& a, float n);
+
 }  // namespace BBMaths
 
 #endif  // BOTTLEBRUSH_ENGINE_POINT3D_H_
