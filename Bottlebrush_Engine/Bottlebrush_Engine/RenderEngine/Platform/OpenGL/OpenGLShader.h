@@ -5,15 +5,9 @@
 
 #define SHADER_SOURCE_DIR "Bottlebrush_Engine/Bottlebrush_Engine/Shaders/"
 
-#include "../../Shader.h"
+#include "Shader.h"
 
 #include <string>
-
-
-enum class ShaderType
-{
-	NONE = -1, VERTEX = 0, FRAGMENT = 1
-};
 
 class OpenGLShader : public Shader
 {

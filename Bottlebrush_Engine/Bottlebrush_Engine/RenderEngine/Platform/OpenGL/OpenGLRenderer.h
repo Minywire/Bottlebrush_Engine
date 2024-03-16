@@ -5,7 +5,7 @@
 
 #include <glad/glad.h>
 
-#include "../../RenderEngine.h"
+#include "RenderEngine.h"
 
 #include "OpenGLVertexArray.h"
 #include "OpenGLIndexBuffer.h"

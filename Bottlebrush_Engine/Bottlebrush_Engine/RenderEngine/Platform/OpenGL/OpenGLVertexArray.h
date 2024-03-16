@@ -3,7 +3,7 @@
 //
 #pragma once
 
-#include "../../VertexArray.h"
+#include "VertexArray.h"
 #include "OpenGLVertexBuffer.h"
 
 class OpenGLVertexBufferLayout;

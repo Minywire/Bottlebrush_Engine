@@ -10,8 +10,6 @@ protected:
 	// OpenGL ID for buffers
 	unsigned int m_RendererID;
 public:
-	// Constructor
-	//VertexBuffer(const void* data, unsigned int size);
 	// Deconstructor
 	virtual ~VertexBuffer() = default;
 

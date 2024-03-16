@@ -8,7 +8,7 @@
 #include "OpenGLRenderer.h"
 #include <stdexcept>
 
-#include "../../VertexBufferLayout.h"
+#include "VertexBufferLayout.h"
 
 // manually setting the byte count of GL types
 static unsigned int GetSizeOfType(unsigned int type)

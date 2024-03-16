@@ -1,16 +1,16 @@
-#include "Shader.h"
 //
 // Created by niamh on 26/12/2023.
+// Edited by Alan Brunet on 16/03/24
 //
 
 #include "Shader.h"
 
 Shader::Shader(ShaderSourceFiles ssf)
 {
-    mSSF.VertexSource = ParseFile(ssf.VertexSource);
-    mSSF.FragmentSource = ParseFile(ssf.FragmentSource);
-    mSSF.ComputeSource = ParseFile(ssf.ComputeSource);
-    mSSF.GeometrySource = ParseFile(ssf.GeometrySource);
+    m_SSF.VertexSource = ParseFile(ssf.VertexSource);
+    m_SSF.FragmentSource = ParseFile(ssf.FragmentSource);
+    m_SSF.ComputeSource = ParseFile(ssf.ComputeSource);
+    m_SSF.GeometrySource = ParseFile(ssf.GeometrySource);
 }
 
 std::string Shader::ParseFile(const std::string& filename)

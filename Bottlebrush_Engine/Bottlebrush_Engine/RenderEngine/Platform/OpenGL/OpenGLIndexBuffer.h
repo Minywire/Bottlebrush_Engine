@@ -3,12 +3,11 @@
 //
 #pragma once
 
-#include "../../IndexBuffer.h"
+#include "IndexBuffer.h"
 
 // indexing which positions in the VertexBuffer are being drawn.
 // Saving memory space of referencing positions more than once.
 // IB must be called after Vertex Array Object (VAO) has been set up with VB and VBL
-
 class OpenGLIndexBuffer : public IndexBuffer
 {
 private:

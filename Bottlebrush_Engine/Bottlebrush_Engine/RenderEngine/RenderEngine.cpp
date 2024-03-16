@@ -1,18 +1,18 @@
 //
 // Created by Marco Garzon Lara on 27/11/2023.
+// Edited by Alan Brunet on 16/03/24
 //
 #define OPENGL
 
 #ifdef OPENGL
     #define GRAPHICS_API "OpenGL"
-    #include "Platform/OpenGL/OpenGLRenderer.h"
-    #include "Platform/OpenGL/OpenGLShader.h"
-    #include "Platform/OpenGL/OpenGLVertexArray.h"
-    #include "Platform/OpenGL/OpenGLVertexBuffer.h"
-    #include "Platform/OpenGL/OpenGLIndexBuffer.h"
-    #include "Platform/OpenGL/OpenGLVertexBufferLayout.h"
+    #include "OpenGLRenderer.h"
+    #include "OpenGLShader.h"
+    #include "OpenGLVertexArray.h"
+    #include "OpenGLVertexBuffer.h"
+    #include "OpenGLIndexBuffer.h"
+    #include "OpenGLVertexBufferLayout.h"
 #endif // OPENGL
-
 
 #include "RenderEngine.h"
 
@@ -54,8 +54,8 @@ void RenderEngine::TestSetupValues()
         OpenGLIndexBuffer ib(indices, 6);
 
         ShaderSourceFiles ssf;
-        ssf.VertexSource = "basic.vert";
-        ssf.FragmentSource = "basic.frag";
+        ssf.VertexSource = "Basic.vert";
+        ssf.FragmentSource = "Basic.frag";
         OpenGLShader shader(ssf);
         // load frag aswell
         shader.Bind();
