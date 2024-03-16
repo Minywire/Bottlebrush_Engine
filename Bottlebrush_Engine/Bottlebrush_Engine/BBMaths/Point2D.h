@@ -50,7 +50,7 @@ class Point2D : public Euc2D<TypeEuc2D> {
 
   Point2D(float a, float b) : Euc2D<TypeEuc2D>(a, b) {}
 
-  explicit Point2D(const Euc2D<TypeEuc2D>& p) : Euc2D<TypeEuc2D>(p) {}
+  Point2D(const Point2D& p) = default;
 
   /// @brief Assigns the \a x and \a y components of the right-hand side point
   /// \a a to the \a x and \a y components of the left-hand side point \a p.
