@@ -108,6 +108,11 @@ class Vec4D {
 /// The default constructor leaves the components of the vector undefined. If
 /// the values \c a, \c b, \c c, and \c d are provided in the constructor, they
 /// are assigned to the \a x, \a y, \a z, and \a w co-ordinates of the point.
+/// @see Point2D
+/// @see Point3D
+/// @see Vector2D
+/// @see Vector3D
+/// @author Jaiden di Lanzo
 class Vector4D : public Vec4D<TypeVec4D> {
  public:
   inline Vector4D() = default;
