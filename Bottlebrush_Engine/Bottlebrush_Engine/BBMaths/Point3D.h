@@ -52,7 +52,7 @@ class Point3D : public Euc3D<TypeEuc3D> {
 
   Point3D(float a, float b, float c) : Euc3D<TypeEuc3D>(a, b, c) {}
 
-  explicit Point3D(const Euc3D<TypeEuc3D>& p) : Euc3D<TypeEuc3D>(p) {}
+  Point3D(const Point3D& p) = default;
 
   /// @brief Assigns the \a x, \a y, and \a z components of the right-hand side
   /// point \a a to the \a x, \a y, and \a z components of the left-hand side
