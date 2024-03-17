@@ -88,17 +88,17 @@ class Vector3D : public Vec3D<TypeVec3D> {
 
   Vector3D(float a, float b, float c) : Vec3D<TypeVec3D>(a, b, c) {}
 
-  explicit Vector3D(const Vec3D<TypeVec3D>& v) : Vec3D<TypeVec3D>(v) {}
+  Vector3D(const Vector3D& v) = default;
 
-  explicit Vector3D(const Euc3D<TypeEuc3D>& p) : Vec3D<TypeVec3D>(p) {}
+  explicit Vector3D(const Point3D& p) : Vec3D<TypeVec3D>(p) {}
 
-  explicit Vector3D(const Vec2D<TypeVec2D>& v) : Vec3D<TypeVec3D>(v) {}
+  explicit Vector3D(const Vector2D& v) : Vec3D<TypeVec3D>(v) {}
 
-  Vector3D(const Vec2D<TypeVec2D>& v, float c) : Vec3D<TypeVec3D>(v, c) {}
+  Vector3D(const Vector2D& v, float c) : Vec3D<TypeVec3D>(v, c) {}
 
-  explicit Vector3D(const Euc2D<TypeEuc2D>& p) : Vec3D<TypeVec3D>(p) {}
+  explicit Vector3D(const Point2D& p) : Vec3D<TypeVec3D>(p) {}
 
-  Vector3D(const Euc2D<TypeEuc2D>& p, float c) : Vec3D<TypeVec3D>(p, c) {}
+  Vector3D(const Point2D& p, float c) : Vec3D<TypeVec3D>(p, c) {}
 
   /// @brief Sets all three components of the 3D vector.
   /// <p>
@@ -155,7 +155,7 @@ class Vector3D : public Vec3D<TypeVec3D> {
   /// The return value is a reference to the \c Vector3D object.
   /// @param angle The angle, in radians, through which the vector is rotated.
   /// @returns A reference to a \c Vector3D object such that \b v = (\a x cos \a
-  /// θ + \a z sin \a θ, \a z cos \a θ - \a x sin \a θ, \a z).
+  /// θ - \a y sin \a θ, \a x sin \a θ - \a y cos \a θ, \a z).
   Vector3D& RotateAboutZ(float angle);
 
   /// @brief Assigns the \a x, \a y, and \a z components of the right-hand side
