@@ -7,17 +7,14 @@ namespace TestBBMaths::TestPoint2D {
 
 using namespace BBMaths;
 
-const float A[11] = {-5.0f, -4.0f, -3.0f, -2.0f, -1.0f, 0.0f,
-                     1.0f,  2.0f,  3.0f,  4.0f,  5.0f};
-const float B[11] = {-5.0f, -4.0f, -3.0f, -2.0f, -1.0f, 0.0f,
-                     1.0f,  2.0f,  3.0f,  4.0f,  5.0f};
+const float kStart = -5.0f, kEnd = 6.0f, kTolerance = 0.0001f;
 
 class TestPoint2D : public ::testing::TestWithParam<std::tuple<float, float>> {
 };
 
-INSTANTIATE_TEST_SUITE_P(Combinations, TestPoint2D,
-                         testing::Combine(testing::ValuesIn(A),
-                                          testing::ValuesIn(B)));
+INSTANTIATE_TEST_SUITE_P(Points, TestPoint2D,
+                         testing::Combine(testing::Range(kStart, kEnd),
+                                          testing::Range(kStart, kEnd)));
 
 TEST_P(TestPoint2D, TestAltCtor) {
   float a = std::get<0>(GetParam()), b = std::get<1>(GetParam());
