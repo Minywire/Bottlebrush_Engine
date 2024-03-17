@@ -104,7 +104,7 @@ TEST_P(TestVector3D, TestSet) {
   float a = std::get<0>(GetParam()), b = std::get<1>(GetParam()),
         c = std::get<2>(GetParam());
 
-  Vector3D v = Vector3D(0.0f, 0.0f, 0.0f);
+  Vector3D v = Vector3D();
 
   v.Set(a, b, c);
 
@@ -120,7 +120,7 @@ TEST_P(TestVector3D, TestNormalise) {
 
   Vector3D v = Vector3D(a, b, c);
 
-  if (a == 0 && b == 0) {
+  if (a == 0 && b == 0 && c == 0) {
     EXPECT_NO_FATAL_FAILURE(v.Normalise());
   } else {
     v.Normalise();
@@ -299,7 +299,7 @@ TEST_P(TestVector3D, TestInverseMagnitude) {
 
   Vector3D v = Vector3D(a, b, c);
 
-  if (a == 0 && b == 0) {
+  if (a == 0 && b == 0 && c == 0) {
     EXPECT_NO_FATAL_FAILURE(InverseMagnitude(v));
   } else {
     EXPECT_NEAR(1.0f / magnitude, InverseMagnitude(v), kTolerance);
@@ -322,7 +322,7 @@ TEST_P(TestVector3D, TestProjection) {
 
   Vector3D v = Vector3D(a, b, c), w = Vector3D(c, b, a);
 
-  if (a == 0 && b == 0) {
+  if (a == 0 && b == 0 && c == 0) {
     EXPECT_NO_FATAL_FAILURE(Projection(v, w));
   } else {
     Vector3D u = Projection(v, w);
@@ -342,7 +342,7 @@ TEST_P(TestVector3D, TestRejection) {
 
   Vector3D v = Vector3D(a, b, c), w = Vector3D(c, b, a);
 
-  if (a == 0 && b == 0) {
+  if (a == 0 && b == 0 && c == 0) {
     EXPECT_NO_FATAL_FAILURE(Rejection(v, w));
   } else {
     Vector3D u = Rejection(v, w);
@@ -373,9 +373,9 @@ TEST_P(TestVector3D, TestAddOp) {
 
   Vector3D v = Vector3D(a, b, c), w = Vector3D(0.0f, 0.0f, 0.0f), u = v + w;
 
-  EXPECT_EQ(w.x_ + v.x_, u.x_);
-  EXPECT_EQ(w.y_ + v.y_, u.y_);
-  EXPECT_EQ(w.z_ + v.z_, u.z_);
+  EXPECT_EQ(v.x_ + w.x_, u.x_);
+  EXPECT_EQ(v.y_ + w.y_, u.y_);
+  EXPECT_EQ(v.z_ + w.z_, u.z_);
 }
 
 TEST_P(TestVector3D, TestSubtractOp) {

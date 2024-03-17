@@ -48,7 +48,7 @@ TEST_P(TestVector2D, TestCopyCtorPoint2D) {
 TEST_P(TestVector2D, TestSet) {
   float a = std::get<0>(GetParam()), b = std::get<1>(GetParam());
 
-  Vector2D v = Vector2D(0.0f, 0.0f);
+  Vector2D v = Vector2D();
 
   v.Set(a, b);
 
@@ -229,8 +229,8 @@ TEST_P(TestVector2D, TestAddOp) {
 
   Vector2D v = Vector2D(a, b), w = Vector2D(0.0f, 0.0f), u = v + w;
 
-  EXPECT_EQ(w.x_ + v.x_, u.x_);
-  EXPECT_EQ(w.y_ + v.y_, u.y_);
+  EXPECT_EQ(v.x_ + w.x_, u.x_);
+  EXPECT_EQ(v.y_ + w.y_, u.y_);
 }
 
 TEST_P(TestVector2D, TestSubtractOp) {
