@@ -58,9 +58,9 @@ class Vector2D : public Vec2D<TypeVec2D> {
 
   Vector2D(float a, float b) : Vec2D<TypeVec2D>(a, b) {}
 
-  explicit Vector2D(const Vec2D<TypeVec2D>& v) : Vec2D<TypeVec2D>(v) {}
+  Vector2D(const Vector2D& v) = default;
 
-  explicit Vector2D(const Euc2D<TypeEuc2D>& p) : Vec2D<TypeVec2D>(p) {}
+  explicit Vector2D(const Point2D& p) : Vec2D<TypeVec2D>(p) {}
 
   /// @brief Sets both components of the 2D vector.
   /// <p>
