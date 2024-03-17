@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.8)
 
 add_executable(
-        AllTests
-        TestMaths.cpp TestPoint2D.cpp TestPoint3D.cpp TestVector2D.cpp TestVector3D.cpp
+        TestBBMaths
+        TestMaths.cpp TestPoint2D.cpp TestPoint3D.cpp TestVector2D.cpp TestVector3D.cpp TestVector4D.cpp
 )
 target_link_libraries(
-        AllTests
+        TestBBMaths
         BBMaths
         gtest gtest_main
 )
