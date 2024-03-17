@@ -55,7 +55,7 @@ Vector3D& Vector3D::operator=(const Point3D& a) {
 Vector3D& Vector3D::operator=(const Vector2D& a) {
   x_ = a.x_;
   y_ = a.y_;
-  z_ = 1.0f;
+  z_ = 0.0f;
   return (*this);
 }
 
