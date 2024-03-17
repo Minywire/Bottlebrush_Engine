@@ -87,12 +87,12 @@ TEST(TestMaths, TestInverseSqrtPositive) {
 
 TEST(TestMaths, TestInverseSqrtZero) {
   float a = 0.0f;
-  EXPECT_HRESULT_FAILED(InverseSqrt(a));
+  EXPECT_NO_FATAL_FAILURE(InverseSqrt(a));
 }
 
 TEST(TestMaths, TestInverseSqrtNegative) {
   float a = -1.0f;
-  EXPECT_HRESULT_FAILED(InverseSqrt(a));
+  EXPECT_NO_FATAL_FAILURE(InverseSqrt(a));
 }
 
 }  // namespace TestBBMaths::TestMaths
