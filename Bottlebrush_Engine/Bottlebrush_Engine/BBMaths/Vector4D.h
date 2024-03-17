@@ -119,25 +119,23 @@ class Vector4D : public Vec4D<TypeVec4D> {
 
   Vector4D(float a, float b, float c, float d) : Vec4D<TypeVec4D>(a, b, c, d) {}
 
-  explicit Vector4D(const Vec4D<TypeVec4D>& v) : Vec4D<TypeVec4D>(v) {}
+  Vector4D(const Vector4D& v) = default;
 
-  explicit Vector4D(const Vec3D<TypeVec3D>& v) : Vec4D<TypeVec4D>(v) {}
+  explicit Vector4D(const Vector3D& v) : Vec4D<TypeVec4D>(v) {}
 
-  Vector4D(const Vec3D<TypeVec3D>& v, float d) : Vec4D<TypeVec4D>(v, d) {}
+  Vector4D(const Vector3D& v, float d) : Vec4D<TypeVec4D>(v, d) {}
 
-  explicit Vector4D(const Euc3D<TypeEuc3D>& p) : Vec4D<TypeVec4D>(p) {}
+  explicit Vector4D(const Point3D& p) : Vec4D<TypeVec4D>(p) {}
 
-  Vector4D(const Euc3D<TypeEuc3D>& p, float d) : Vec4D<TypeVec4D>(p, d) {}
+  Vector4D(const Point3D& p, float d) : Vec4D<TypeVec4D>(p, d) {}
 
-  explicit Vector4D(const Vec2D<TypeVec2D>& v) : Vec4D<TypeVec4D>(v) {}
+  explicit Vector4D(const Vector2D& v) : Vec4D<TypeVec4D>(v) {}
 
-  Vector4D(const Vec2D<TypeVec2D>& v, float c, float d)
-      : Vec4D<TypeVec4D>(v, c, d) {}
+  Vector4D(const Vector2D& v, float c, float d) : Vec4D<TypeVec4D>(v, c, d) {}
 
-  explicit Vector4D(const Euc2D<TypeEuc2D>& p) : Vec4D<TypeVec4D>(p) {}
+  explicit Vector4D(const Point2D& p) : Vec4D<TypeVec4D>(p) {}
 
-  Vector4D(const Euc2D<TypeEuc2D>& p, float c, float d)
-      : Vec4D<TypeVec4D>(p, c, d) {}
+  Vector4D(const Point2D& p, float c, float d) : Vec4D<TypeVec4D>(p, c, d) {}
 
   /// @brief Sets all four components of the 4D vector.
   /// <p>
@@ -194,7 +192,7 @@ class Vector4D : public Vec4D<TypeVec4D> {
   /// The return value is a reference to the \c Vector4D object.
   /// @param angle The angle, in radians, through which the vector is rotated.
   /// @returns A reference to a \c Vector4D object such that \b v = (\a x cos \a
-  /// θ + \a z sin \a θ, \a z cos \a θ - \a x sin \a θ, \a z, \a w).
+  /// θ - \a y sin \a θ, \a x sin \a θ - \a y cos \a θ, \a z, \a w).
   Vector4D& RotateAboutZ(float angle);
 
   /// @brief Assigns the \a x, \a y, \a z and \a w components of the right-hand
