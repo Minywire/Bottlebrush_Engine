@@ -19,7 +19,7 @@ public:
      * @param entity The entity to be deleted
      * @author Marco Garzon Lara
     */
-    void deleteEntity(Entity entity);
+    void DeleteEntity(Entity entity);
 
     /**
      *@brief Default constructor.
@@ -31,7 +31,7 @@ public:
      * @return entity The entity created in the scene
      * @author Marco Garzon Lara
      */
-    Entity createEntity();
+    Entity CreateEntity();
 
     /**
      * @brief Creates an entity with a tag.
@@ -39,7 +39,7 @@ public:
      * @return entity The entity created in the scene
      * @author Marco Garzon Lara
      */
-    Entity createEntity(std::string tag);
+    Entity CreateEntity(std::string tag);
 
     /**
      *@brief Gets all entities with the provided components.

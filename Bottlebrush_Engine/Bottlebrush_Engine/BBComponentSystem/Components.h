@@ -12,7 +12,7 @@
  */
 struct TransformComponent
 {
-    ///TODO: Add our vec3 definitions here for entity position
+    ///TODO: Add Vec3D points here
 };
 
 /**
@@ -21,8 +21,8 @@ struct TransformComponent
  */
 struct MeshComponent
 {
-    std::string modelPath;
-    std::string materialPath;
+    std::string model_path;
+    std::string material_path;
     //Depending on ASSIMP implementation, more info will probably be added here
 };
 
@@ -41,8 +41,8 @@ struct TagComponent
  */
 struct PlayerControllerComponent
 {
-    float maxSpeed;
-    float currentSpeed;
-    float accelerationRate;
-    float decelerationRate;
+    float max_speed;
+    float current_speed;
+    float acceleration_rate;
+    float deceleration_rate;
 };

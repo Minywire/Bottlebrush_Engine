@@ -42,7 +42,7 @@ public:
      * @author Marco Garzon Lara
      */
     template<typename T>
-    bool hasComponent(const entt::registry& reg);
+    bool HasComponent(const entt::registry& reg);
 
     /**
      * @brief Adds a component to specified entities in specified registry
@@ -54,7 +54,7 @@ public:
      * @author Marco Garzon Lara
      */
     template<typename T, typename... Args>
-    T& addComponent(entt::registry& reg, Args&&... args);
+    T& AddComponent(entt::registry& reg, Args&&... args);
 
     /**
      * @brief grabs a component from an entity in a registry
@@ -64,7 +64,7 @@ public:
      * @author Marco Garzon Lara
      */
     template<typename T>
-    const T& getComponent(const entt::registry& reg) const;
+    const T& GetComponent(const entt::registry& reg) const;
 
     /**
      * @brief removes a component for an entity in a specified registry
@@ -73,22 +73,17 @@ public:
      * @author Marco Garzon Lara
      */
     template<typename T>
-    void removeComponent(entt::registry& reg);
+    void RemoveComponent(entt::registry& reg);
 
     /**
      * @brief Deletes an entity in the specified registry
      * @param reg The specified registry to delete this entity from
      */
-    void deleteEntity(entt::registry & reg);
+    void DeleteEntity(entt::registry & reg);
 
-    /**
-     * @brief Returns the entity in this instance
-     * @return The entity in this class
-     */
-    const entt::entity& getEntity() const;
 
 private:
-    entt::entity entityHandle; //!> The entity wrapped by Bottlebrush's Entity interface
+    entt::entity entity_handle; //!> The entity wrapped by Bottlebrush's Entity interface
 
 };
 
