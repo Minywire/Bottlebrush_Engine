@@ -10,6 +10,7 @@ set(CMAKE_CXX_STANDARD 20)
 option(GLFW_BUILD_DOCS OFF)
 option(GLFW_BUILD_EXAMPLES OFF)
 option(GLFW_BUILD_TESTS OFF)
+add_subdirectory(Vendors/EnTT)
 add_subdirectory(Vendors/glfw)
 add_subdirectory(Vendors/imGUI)
 add_subdirectory(Vendors/imGUI/backends)
@@ -27,6 +28,7 @@ endif()
 
 # Vendor include directories
 include_directories(
+        Vendors/EnTT
         include
         Vendors/glfw/include
         Vendors/glad/include
@@ -40,12 +42,14 @@ source_group("Vendors" FILES ${VENDORS_SOURCES})
 # Add source to this project's executable.
 add_executable(Bottlebrush_Engine "EntryPoint.cpp" ${VENDORS_SOURCES})
 
-target_link_libraries(Bottlebrush_Engine RenderEngine BBGUI BBMaths glfw ${GLFW_LIBRARIES})
+target_link_libraries(Bottlebrush_Engine BBScene BBComponentSystem RenderEngine BBGUI BBMaths glfw ${GLFW_LIBRARIES})
 
 if (CMAKE_VERSION VERSION_GREATER 3.13)
   set_property(TARGET Bottlebrush_Engine PROPERTY CXX_STANDARD 20)
 endif()
 
+add_subdirectory(BBScene)
+add_subdirectory(BBComponentSystem)
 add_subdirectory(src)
 add_subdirectory(BBGUI)
 add_subdirectory(RenderEngine)
