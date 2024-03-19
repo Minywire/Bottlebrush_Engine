@@ -3,7 +3,7 @@
 //
 #pragma once
 
-#include "../BBScene/Scene.h"
+#include "Scene.h"
 #include <iostream>
 #include <entt/entt.hpp>
 /**

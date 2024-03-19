@@ -1,9 +1,7 @@
 #ifndef BOTTLEBRUSH_ENGINE_MATHS_H
 #define BOTTLEBRUSH_ENGINE_MATHS_H
 
-#include <bit>
 #include <cmath>
-#include <cstdint>
 
 namespace BBMaths {
 
