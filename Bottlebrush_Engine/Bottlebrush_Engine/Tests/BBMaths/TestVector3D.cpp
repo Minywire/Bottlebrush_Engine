@@ -1,4 +1,4 @@
-#include <cmath>
+#include <numbers>
 #include <tuple>
 
 #include "Point2D.h"
@@ -135,7 +135,7 @@ TEST_P(TestVector3D, TestNormalise) {
 
 TEST_P(TestVector3D, TestRotateAboutX) {
   float a = std::get<0>(GetParam()), b = std::get<1>(GetParam()),
-        c = std::get<2>(GetParam()), angle = M_PI;
+        c = std::get<2>(GetParam()), angle = std::numbers::pi;
 
   Vector3D v = Vector3D(a, b, c);
 
@@ -148,7 +148,7 @@ TEST_P(TestVector3D, TestRotateAboutX) {
 
 TEST_P(TestVector3D, TestRotateAboutY) {
   float a = std::get<0>(GetParam()), b = std::get<1>(GetParam()),
-        c = std::get<2>(GetParam()), angle = M_PI;
+        c = std::get<2>(GetParam()), angle = std::numbers::pi;
 
   Vector3D v = Vector3D(a, b, c);
 
@@ -161,7 +161,7 @@ TEST_P(TestVector3D, TestRotateAboutY) {
 
 TEST_P(TestVector3D, TestRotateAboutZ) {
   float a = std::get<0>(GetParam()), b = std::get<1>(GetParam()),
-        c = std::get<2>(GetParam()), angle = M_PI;
+        c = std::get<2>(GetParam()), angle = std::numbers::pi;
 
   Vector3D v = Vector3D(a, b, c);
 
