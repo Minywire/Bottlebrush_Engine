@@ -1,3 +1,4 @@
+#include <numbers>
 #include <tuple>
 
 #include "Point2D.h"
@@ -74,7 +75,8 @@ TEST_P(TestVector2D, TestNormalise) {
 }
 
 TEST_P(TestVector2D, TestRotate) {
-  float a = std::get<0>(GetParam()), b = std::get<1>(GetParam()), angle = M_PI;
+  float a = std::get<0>(GetParam()), b = std::get<1>(GetParam()),
+        angle = std::numbers::pi;
 
   Vector2D v = Vector2D(a, b);
 
