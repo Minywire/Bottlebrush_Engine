@@ -1,7 +1,7 @@
 ﻿#include "RenderEngine/RenderEngine.h"
+#include "BBGUI/BBGUI.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
 #include <iostream>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -28,7 +28,7 @@ int main()
 
     // glfw window creation
     // --------------------
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Bottlebrush Engine", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -46,6 +46,8 @@ int main()
         return -1;
     }
 
+    initBBGUI(window);
+
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -61,9 +63,16 @@ int main()
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
-        glfwSwapBuffers(window);
         glfwPollEvents();
+        updateBBGUIFrameStart(); //start of frame rendering for GUI
+
+        //do render stuff here
+
+        updateBBGUIFrameEnd(); //end of frame render for GUI
+        glfwSwapBuffers(window);
     }
+
+    shutDownBBGUI(); //shut down the GUI
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
