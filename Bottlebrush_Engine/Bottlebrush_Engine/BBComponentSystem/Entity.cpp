@@ -26,7 +26,7 @@ bool Entity::HasComponent(const entt::registry& reg)
 template<typename T, typename... Args>
 T& Entity::AddComponent(entt::registry &reg, Args&&... args)
 {
-    if (hasComponent<T>())
+    if (HasComponent<T>())
     {
         std::cout << "Entity already has component." << std::endl;
     }
@@ -36,7 +36,7 @@ T& Entity::AddComponent(entt::registry &reg, Args&&... args)
 template<typename T>
 const T& Entity::GetComponent(const entt::registry& reg) const
 {
-    if (!hasComponent<T>())
+    if (!HasComponent<T>())
     {
         std::cout << "No components found in entity" << std::endl;
     }
@@ -46,7 +46,7 @@ const T& Entity::GetComponent(const entt::registry& reg) const
 template<typename T>
 void Entity::RemoveComponent(entt::registry& reg)
 {
-    if (!hasComponent<T>()) {
+    if (!HasComponent<T>()) {
         std::cout << "Entity has no components; Nothing to delete." << std::endl;
         return;
     }

@@ -3,8 +3,8 @@
 //
 
 #include "Scene.h"
-#include "../BBComponentSystem/Entity.h"
-#include "../BBComponentSystem/Components.h"
+#include "Entity.h"
+#include "Components.h"
 
 Scene::Scene()
 { }

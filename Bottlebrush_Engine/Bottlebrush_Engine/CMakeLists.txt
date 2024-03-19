@@ -26,10 +26,21 @@ else()
   endif()
 endif()
 
+include(FetchContent)
+FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG        v1.14.0
+)
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+
 # Vendor include directories
 include_directories(
+        BBComponentSystem BBMaths BBScene
         Vendors/EnTT
-        include
         Vendors/glfw/include
         Vendors/glad/include
         Vendors/imGUI
@@ -50,9 +61,8 @@ endif()
 
 add_subdirectory(BBScene)
 add_subdirectory(BBComponentSystem)
-add_subdirectory(src)
 add_subdirectory(BBGUI)
+add_subdirectory(BBMaths)
 add_subdirectory(RenderEngine)
-add_subdirectory(__sample_tests) # Put this here for now just as a reference to some sample tests. @TODO: Delete later.
-
+add_subdirectory(Tests/BBMaths)
 # TODO: Add tests and install targets if needed.

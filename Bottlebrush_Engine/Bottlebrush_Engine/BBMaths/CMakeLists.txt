@@ -8,11 +8,11 @@ add_library(
 target_include_directories(
         BBMaths
         PUBLIC
-        ${PROJECT_SOURCE_DIR}/include/engine/maths
+        ${PROJECT_SOURCE_DIR}/BBMaths
 )
 
 target_sources(
         BBMaths
         PRIVATE
-        Maths.cpp Point2D.cpp Point3D.cpp Vector2D.cpp Vector3D.cpp
+        Maths.cpp Point2D.cpp Point3D.cpp Vector2D.cpp Vector3D.cpp Vector4D.cpp
 )
