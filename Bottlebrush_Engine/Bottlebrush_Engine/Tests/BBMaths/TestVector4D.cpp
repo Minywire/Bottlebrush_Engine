@@ -1,3 +1,4 @@
+#include <numbers>
 #include <tuple>
 
 #include "Point2D.h"
@@ -185,7 +186,8 @@ TEST_P(TestVector4D, TestNormalise) {
 
 TEST_P(TestVector4D, TestRotateAboutX) {
   float a = std::get<0>(GetParam()), b = std::get<1>(GetParam()),
-        c = std::get<2>(GetParam()), d = std::get<3>(GetParam()), angle = M_PI;
+        c = std::get<2>(GetParam()), d = std::get<3>(GetParam()),
+        angle = std::numbers::pi;
 
   Vector4D v = Vector4D(a, b, c, d);
 
@@ -199,7 +201,8 @@ TEST_P(TestVector4D, TestRotateAboutX) {
 
 TEST_P(TestVector4D, TestRotateAboutY) {
   float a = std::get<0>(GetParam()), b = std::get<1>(GetParam()),
-        c = std::get<2>(GetParam()), d = std::get<3>(GetParam()), angle = M_PI;
+        c = std::get<2>(GetParam()), d = std::get<3>(GetParam()),
+        angle = std::numbers::pi;
 
   Vector4D v = Vector4D(a, b, c, d);
 
@@ -213,7 +216,8 @@ TEST_P(TestVector4D, TestRotateAboutY) {
 
 TEST_P(TestVector4D, TestRotateAboutZ) {
   float a = std::get<0>(GetParam()), b = std::get<1>(GetParam()),
-        c = std::get<2>(GetParam()), d = std::get<3>(GetParam()), angle = M_PI;
+        c = std::get<2>(GetParam()), d = std::get<3>(GetParam()),
+        angle = std::numbers::pi;
 
   Vector4D v = Vector4D(a, b, c, d);
 
