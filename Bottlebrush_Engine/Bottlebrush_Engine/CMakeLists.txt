@@ -39,7 +39,7 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 # Vendor include directories
 include_directories(
-        BBMaths
+        BBComponentSystem BBMaths BBScene
         Vendors/EnTT
         Vendors/glfw/include
         Vendors/glad/include
@@ -65,5 +65,4 @@ add_subdirectory(BBGUI)
 add_subdirectory(BBMaths)
 add_subdirectory(RenderEngine)
 add_subdirectory(Tests/BBMaths)
-
 # TODO: Add tests and install targets if needed.
