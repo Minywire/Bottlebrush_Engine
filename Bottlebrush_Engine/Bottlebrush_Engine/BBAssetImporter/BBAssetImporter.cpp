@@ -2,11 +2,10 @@
 // Created by Marco on 09/03/24.
 //
 #include "BBAssetImporter.h"
-BBAssetImporter::BBAssetImporter() {
-// import.SetPropertyInteger?
-}
+BBAssetImporter::BBAssetImporter() = default;
+
 bool BBAssetImporter::loadModel(const std::string &filePath) {
-  const aiScene* scene = import.ReadFile(filePath, aiProcess_Triangulate);
+  const aiScene* scene = import.ReadFile(filePath, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
 
   if(!scene) {
     return false;

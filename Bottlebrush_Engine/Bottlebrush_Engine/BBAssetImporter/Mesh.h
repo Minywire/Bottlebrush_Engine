@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include <../include/engine/maths/Vector3D.h>
-#include <../include/engine/maths/Vector2D.h>
+#include <../BBMaths/Vector3D.h>
+#include <../BBMaths/Vector2D.h>
 #include <string>
 #include <vector>
 #include <utility>
