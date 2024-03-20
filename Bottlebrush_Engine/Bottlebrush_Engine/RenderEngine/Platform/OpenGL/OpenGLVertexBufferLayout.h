@@ -19,7 +19,7 @@ static unsigned int GetSizeOfType(unsigned int type)
 	case GL_UNSIGNED_INT:		return 4;
 	case GL_UNSIGNED_BYTE:		return 1;
 	}
-	ASSERT(false);
+	assert(false);
 	return 0;
 }
 

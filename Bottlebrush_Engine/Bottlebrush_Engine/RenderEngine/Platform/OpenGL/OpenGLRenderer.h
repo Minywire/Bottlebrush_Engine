@@ -10,17 +10,18 @@
 #include "OpenGLVertexArray.h"
 #include "OpenGLIndexBuffer.h"
 #include "OpenGLShader.h"
+#include <cassert>
 
 /// nameless namespace to avoid linking errors
 /// This is error checking on OpenGL side, good for debugging but not necessary
 namespace
 {
     // __debugbreak() = instrinctic to MSVC compiler?
-    #define ASSERT(x) if (!(x)) __debugbreak();
+    //#define ASSERT(x) if (!(x)) __debugbreak();
 
     #define GLCall(x) GLClearError();\
         x;\
-        ASSERT(GLLogCall(#x, __FILE__, __LINE__))
+        assert(GLLogCall(#x, __FILE__, __LINE__))
 
 
     void GLClearError()
