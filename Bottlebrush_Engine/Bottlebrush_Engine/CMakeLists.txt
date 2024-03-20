@@ -11,6 +11,7 @@ option(GLFW_BUILD_DOCS OFF)
 option(GLFW_BUILD_EXAMPLES OFF)
 option(GLFW_BUILD_TESTS OFF)
 add_subdirectory(Vendors/assimp)
+add_subdirectory(Vendors/EnTT)
 add_subdirectory(Vendors/glfw)
 add_subdirectory(Vendors/imGUI)
 add_subdirectory(Vendors/imGUI/backends)
@@ -26,10 +27,23 @@ else()
   endif()
 endif()
 
+include(FetchContent)
+FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG        v1.14.0
+)
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+
 # Vendor include directories
 include_directories(
         include
         Vendors/assimp
+        BBComponentSystem BBMaths BBScene
+        Vendors/EnTT
         Vendors/glfw/include
         Vendors/glad/include
         Vendors/imGUI
@@ -42,7 +56,7 @@ source_group("Vendors" FILES ${VENDORS_SOURCES})
 # Add source to this project's executable.
 add_executable(Bottlebrush_Engine "EntryPoint.cpp" ${VENDORS_SOURCES})
 
-target_link_libraries(Bottlebrush_Engine RenderEngine BBGUI BBMaths BBAssetImporter glfw ${GLFW_LIBRARIES})
+target_link_libraries(Bottlebrush_Engine BBScene BBComponentSystem RenderEngine BBGUI BBMaths BBAssetImporter glfw ${GLFW_LIBRARIES})
 
 if (CMAKE_VERSION VERSION_GREATER 3.13)
   set_property(TARGET Bottlebrush_Engine PROPERTY CXX_STANDARD 20)
@@ -50,8 +64,10 @@ endif()
 
 add_subdirectory(BBAssetImporter)
 add_subdirectory(src)
+add_subdirectory(BBScene)
+add_subdirectory(BBComponentSystem)
 add_subdirectory(BBGUI)
+add_subdirectory(BBMaths)
 add_subdirectory(RenderEngine)
-add_subdirectory(__sample_tests) # Put this here for now just as a reference to some sample tests. @TODO: Delete later.
-
+add_subdirectory(Tests/BBMaths)
 # TODO: Add tests and install targets if needed.
