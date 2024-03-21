@@ -75,6 +75,17 @@ float Log10(float x);
 /// @returns The value of \c x evaluated such that \a y = log<sub>2</sub> \a x.
 float Log2(float x);
 
+/// @brief Evaluates Euler's number \a e raised to the power of the given value
+/// \a x.
+/// @param x The real-valued number.
+/// @returns The value of \c x evaluated such that \a y = \a e<sup>x</sup>.
+float Exp(float x);
+
+/// @brief Evaluates 2 raised to the power of the given value \a x.
+/// @param x The real-valued number.
+/// @returns The value of \c x evaluated such that \a y = 2<sup>\a x</sup>.
+float Exp2(float x);
+
 /// @brief Evaluates the square root √\a x of the given value \a x.
 /// @param x The real-valued number.
 /// @returns The value of \c x evaluated such that \a y = √\a x.

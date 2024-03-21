@@ -20,6 +20,10 @@ float Log10(float x) { return std::log10(x); }
 
 float Log2(float x) { return std::log2(x); }
 
+float Exp(float x) { return std::exp(x); }
+
+float Exp2(float x) { return std::exp2(x); }
+
 float Sqrt(float x) { return std::sqrt(x); }
 
 float InverseSqrt(float x) { return 1.0f / std::sqrt(x); }
