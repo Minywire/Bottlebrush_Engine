@@ -14,7 +14,7 @@ void OpenGLRenderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Sh
 {
     shader.Bind();
     va.Bind();
-    GLCall(glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr));
+    glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr);
 }
 
 void OpenGLRenderer::DisplayGPUInfo() const 
