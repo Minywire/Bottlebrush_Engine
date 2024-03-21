@@ -16,9 +16,6 @@
 /// This is error checking on OpenGL side, good for debugging but not necessary
 namespace
 {
-    // __debugbreak() = instrinctic to MSVC compiler?
-    //#define ASSERT(x) if (!(x)) __debugbreak();
-
     #define GLCall(x) GLClearError();\
         x;\
         assert(GLLogCall(#x, __FILE__, __LINE__))
@@ -46,7 +43,7 @@ namespace
 
 /// child class that does the rendering of objects
 /// @TODO provide this with some Casting methods to child classes for buffers, shader, arrays.
-class OpenGLRenderer : RenderEngine
+class OpenGLRenderer : public RenderEngine
 {
 private:
 
