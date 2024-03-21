@@ -1,7 +1,6 @@
 //
 //  Created by Alan Brunet 12/03/2024
 //
-#define NUMSHADERTYPES 4
 
 #include "OpenGLShader.h"
 #include "OpenGLRenderer.h"
@@ -130,7 +129,7 @@ std::string OpenGLShader::LoadShaderType(const std::string& filepath)
 unsigned int OpenGLShader::CreateShader()
 {
     // needs to be modifiable for glAttachShader
-    GLCall(unsigned int program = glCreateProgram());
+    GLCall(unsigned int program = glCreateProgram()); // not being used now?
 
     // check if source is valid, then attach the shader
     if (CheckSSFValid(m_SSF.VertexSource)) AttachShader(m_SSF.VertexSource, m_Program);
