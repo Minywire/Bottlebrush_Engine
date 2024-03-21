@@ -59,7 +59,7 @@ unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& s
     {
         int length;
         GLCall(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
-        char* message = (char*)_malloca(length * sizeof(char));
+        char* message = (char*) malloc(length * sizeof(char)); //MARCO: Changed this to malloc since it's just a message string that can be cleared in this scope
         GLCall(glGetShaderInfoLog(id, length, &length, message));
 
         std::cout << "failed to compile" <<
@@ -67,7 +67,10 @@ unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& s
             << " shader" << std::endl;
         std::cout << message << std::endl;
 
+        free(message); //clear the string
         GLCall(glDeleteShader(id));
+
+        free(message);
         return 0;
     }
 
@@ -130,14 +133,19 @@ unsigned int OpenGLShader::CreateShader()
     GLCall(unsigned int program = glCreateProgram());
 
     // check if source is valid, then attach the shader
-    if (CheckSSFValid(m_SSF.VertexSource)) AttachShader(m_SSF.VertexSource, program);
-    if (CheckSSFValid(m_SSF.FragmentSource)) AttachShader(m_SSF.FragmentSource, program);
-    if (CheckSSFValid(m_SSF.ComputeSource)) AttachShader(m_SSF.ComputeSource, program);
-    if (CheckSSFValid(m_SSF.GeometrySource)) AttachShader(m_SSF.GeometrySource, program);
+    if (CheckSSFValid(m_SSF.VertexSource)) AttachShader(m_SSF.VertexSource, m_Program);
+    if (CheckSSFValid(m_SSF.FragmentSource)) AttachShader(m_SSF.FragmentSource, m_Program);
+    if (CheckSSFValid(m_SSF.ComputeSource)) AttachShader(m_SSF.ComputeSource, m_Program);
+    if (CheckSSFValid(m_SSF.GeometrySource)) AttachShader(m_SSF.GeometrySource, m_Program);
 
-    return program;
+    return m_Program;
 }
 
+
+void OpenGLShader::SetUniform1i(const std::string& name, int value)
+{
+    GLCall(glUniform1i(GetUniformLocation(name), value));
+}
 
 void OpenGLShader::SetUniform1f(const std::string& name, float value)
 {
@@ -160,9 +168,9 @@ int OpenGLShader::GetUniformLocation(const std::string& name)
     // see if it exists within our map first, else add it
     if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
         return m_UniformLocationCache[name];
-
+    int location = 0;
     // find the location
-    GLCall(int location = glGetUniformLocation(m_Program, name.c_str()));
+    GLCall(location = glGetUniformLocation(m_Program, name.c_str()));
     if (location == -1)
         std::cout << "Warning: uniform '" << name << "' doesn't exist!" << std::endl;
 

@@ -10,17 +10,15 @@
 #include "OpenGLVertexArray.h"
 #include "OpenGLIndexBuffer.h"
 #include "OpenGLShader.h"
+#include <cassert>
 
 /// nameless namespace to avoid linking errors
 /// This is error checking on OpenGL side, good for debugging but not necessary
 namespace
 {
-    // __debugbreak() = instrinctic to MSVC compiler?
-    #define ASSERT(x) if (!(x)) __debugbreak();
-
     #define GLCall(x) GLClearError();\
         x;\
-        ASSERT(GLLogCall(#x, __FILE__, __LINE__))
+        assert(GLLogCall(#x, __FILE__, __LINE__))
 
 
     void GLClearError()
@@ -45,7 +43,7 @@ namespace
 
 /// child class that does the rendering of objects
 /// @TODO provide this with some Casting methods to child classes for buffers, shader, arrays.
-class OpenGLRenderer : RenderEngine
+class OpenGLRenderer : public RenderEngine
 {
 private:
 
@@ -54,4 +52,6 @@ public:
     void Clear() const;
     /// This needs to be called within the draw loop 
     virtual void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const override;
+    /// This just display current graphics API - version, vendor, and renderer
+    virtual void DisplayGPUInfo() const override;
 };
