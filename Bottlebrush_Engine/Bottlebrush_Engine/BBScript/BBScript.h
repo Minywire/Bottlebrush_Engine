@@ -6,4 +6,4 @@
 #include <lua-5.4.6/lua.hpp>
 #include <sol.hpp>
 
-
+void SolRegistry(); //This is where the sol state registers functions

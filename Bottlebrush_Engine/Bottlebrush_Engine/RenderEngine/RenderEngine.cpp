@@ -68,21 +68,21 @@ void RenderEngine::TestSetupValues()
         ssf.FragmentSource = "Basic.frag";
 
         // calling the constructor will read the files within ssf and apply them
-        OpenGLShader shader(ssf);
+        std::unique_ptr<Shader> shader = std::make_unique<OpenGLShader>(ssf);
 
         // basic.frag has a uniform declaration
-        shader.Bind();
-        shader.SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f, 1.0f);
+        shader->Bind();
+        shader->SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f, 1.0f);
 
         // clearing all buffer bindings
         vao.Unbind();
-        shader.Unbind();
+        shader->Unbind();
         vb.UnBind();
         ib.UnBind();
 
-        OpenGLRenderer r;
+        std::unique_ptr<RenderEngine> r = std::make_unique<OpenGLRenderer>();
 
         // this needs to be called within the main draw loop
-        r.Draw(vao, ib, shader);
+        r->Draw(vao, ib, *shader);
     }
 }

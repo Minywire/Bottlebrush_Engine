@@ -41,7 +41,7 @@ namespace
 
 /// child class that does the rendering of objects
 /// @TODO provide this with some Casting methods to child classes for buffers, shader, arrays.
-class OpenGLRenderer : RenderEngine
+class OpenGLRenderer : public RenderEngine
 {
 private:
 
