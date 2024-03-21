@@ -23,4 +23,6 @@ public:
 	void TestSetupValues();
 	/// This needs to be called within the draw loop 
 	virtual void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const = 0;
+	/// This just display current graphics API - version, vendor, and renderer
+	virtual void DisplayGPUInfo() const = 0;
 };

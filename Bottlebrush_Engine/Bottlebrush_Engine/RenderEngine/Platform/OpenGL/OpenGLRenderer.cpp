@@ -16,3 +16,10 @@ void OpenGLRenderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Sh
     va.Bind();
     GLCall(glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr));
 }
+
+void OpenGLRenderer::DisplayGPUInfo() const 
+{
+    std::cout << "GL Version - " << glGetString(GL_VERSION) << std::endl;
+    std::cout << "GL Vender - " << glGetString(GL_VENDOR) << std::endl;
+    std::cout << "GL Renderer - " << glGetString(GL_RENDERER) << std::endl;
+}
