@@ -39,6 +39,24 @@ float Sin(float x);
 /// @returns The value of \c x evaluated such that \a y = tan \a x.
 float Tan(float x);
 
+/// @brief Evaluates the trigonometric inverse cosine function cos<sup>-1</sup>
+/// \a x for the given angle \a x in radians.
+/// @param x The angle in radians.
+/// @returns The value of \c x evaluated such that \a y = cos<sup>-1</sup> \a x.
+float ArcCos(float x);
+
+/// @brief Evaluates the trigonometric inverse sine function sin<sup>-1</sup> \a
+/// x for the given angle \a x in radians.
+/// @param x The angle in radians.
+/// @returns The value of \c x evaluated such that \a y = sin<sup>-1</sup> \a x.
+float ArcSin(float x);
+
+/// @brief Evaluates the trigonometric inverse tangent function tan<sup>-1</sup>
+/// \a x for the given angle \a x in radians.
+/// @param x The angle in radians.
+/// @returns The value of \c x evaluated such that \a y = tan<sup>-1</sup> \a x.
+float ArcTan(float x);
+
 /// @brief Evaluates the square root √\a x of the given value \a x.
 /// @param x The real-valued number.
 /// @returns The value of \c x evaluated such that \a y = √\a x.
