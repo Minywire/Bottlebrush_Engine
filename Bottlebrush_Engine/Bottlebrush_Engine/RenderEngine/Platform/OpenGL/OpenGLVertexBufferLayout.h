@@ -19,7 +19,7 @@ static unsigned int GetSizeOfType(unsigned int type)
 	case GL_UNSIGNED_INT:		return 4;
 	case GL_UNSIGNED_BYTE:		return 1;
 	}
-	//ASSERT(false);
+	assert(false && "This shit broken broken bro.");
 	return 0;
 }
 
@@ -30,11 +30,7 @@ private:
 public:
 	/// template for pushing the layout of vertex.
 	template<typename T>
-	void Push(unsigned int count)
-	{
-		// if T type is unmatched
-		std::runtime_error("false");
-	}
+	void Push(unsigned int count);
 
 	template<>
 	void Push<float>(unsigned int count)

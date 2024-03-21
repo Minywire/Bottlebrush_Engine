@@ -40,7 +40,7 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 # Vendor include directories
 include_directories(
-        BBComponentSystem BBMaths BBScene BBScript
+        BBComponentSystem BBMaths BBScene BBScript RenderEngine
         Vendors/Lua
         Vendors/EnTT
         Vendors/glfw/include
@@ -58,6 +58,7 @@ source_group("Vendors" FILES ${VENDORS_SOURCES})
 add_executable(Bottlebrush_Engine "EntryPoint.cpp" ${VENDORS_SOURCES})
 
 target_link_libraries(Bottlebrush_Engine BBScene BBComponentSystem RenderEngine BBGUI BBMaths BBScript glfw ${GLFW_LIBRARIES} LUA)
+
 
 if (CMAKE_VERSION VERSION_GREATER 3.13)
   set_property(TARGET Bottlebrush_Engine PROPERTY CXX_STANDARD 20)
