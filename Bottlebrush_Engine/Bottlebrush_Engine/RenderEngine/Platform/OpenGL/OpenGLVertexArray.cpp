@@ -20,7 +20,7 @@ OpenGLVertexArray::~OpenGLVertexArray()
 	GLCall(glDeleteVertexArrays(1, &m_RendererID));
 }
 
-void OpenGLVertexArray::AddBuffer(const OpenGLVertexBuffer& vb, OpenGLVertexBufferLayout& layout)
+void OpenGLVertexArray::AddBuffer(const OpenGLVertexBuffer & vb, OpenGLVertexBufferLayout & layout)
 {
 	// bind vertex array buffer first to add vertex buffers
 	Bind();
@@ -28,7 +28,7 @@ void OpenGLVertexArray::AddBuffer(const OpenGLVertexBuffer& vb, OpenGLVertexBuff
 	vb.Bind();
 
 	// get vertex buffer layouts
-	const std::vector<VertexBufferElement>& elements = layout.GetElements();
+    const std::vector<VertexBufferElement>& elements = layout.GetElements();
 	// pointer to next attribute in bytes
 	unsigned int offset = 0;
 

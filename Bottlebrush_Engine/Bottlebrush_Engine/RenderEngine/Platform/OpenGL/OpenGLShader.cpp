@@ -12,8 +12,7 @@
 #include <sstream>
 
 
-OpenGLShader::OpenGLShader(ShaderSourceFiles ssf)
-    : Shader(ssf)
+OpenGLShader::OpenGLShader(ShaderSourceFiles ssf) : Shader(ssf)
 {
     m_Program = CreateShader();
 }
@@ -133,10 +132,10 @@ unsigned int OpenGLShader::CreateShader()
     GLCall(unsigned int program = glCreateProgram());
 
     // check if source is valid, then attach the shader
-    if (CheckSSFValid(m_SSF.VertexSource)) AttachShader(m_SSF.VertexSource, m_Program);
-    if (CheckSSFValid(m_SSF.FragmentSource)) AttachShader(m_SSF.FragmentSource, m_Program);
-    if (CheckSSFValid(m_SSF.ComputeSource)) AttachShader(m_SSF.ComputeSource, m_Program);
-    if (CheckSSFValid(m_SSF.GeometrySource)) AttachShader(m_SSF.GeometrySource, m_Program);
+    if (CheckSSFValid(m_SSF.VertexSource)) { AttachShader(m_SSF.VertexSource, m_Program); }
+    if (CheckSSFValid(m_SSF.FragmentSource)) { AttachShader(m_SSF.FragmentSource, m_Program); }
+    if (CheckSSFValid(m_SSF.ComputeSource)) { AttachShader(m_SSF.ComputeSource, m_Program); }
+    if (CheckSSFValid(m_SSF.GeometrySource)) { AttachShader(m_SSF.GeometrySource, m_Program); }
 
     return m_Program;
 }

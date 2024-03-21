@@ -38,6 +38,10 @@ std::string Shader::ParseFile(const std::string& filename)
 
 bool Shader::CheckSSFValid(std::string filename)
 {
-    if (filename == "nullptr") return false;
+    if (filename == "nullptr")
+    {
+        return false;
+    }
+
     return true;
 }
