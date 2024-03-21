@@ -6,14 +6,14 @@
 #include "VertexBuffer.h"
 
 // Buffer for each vertex 
-class OpenGLVertexBuffer : VertexBuffer
+class OpenGLVertexBuffer : public VertexBuffer
 {
 private:
 	// OpenGL ID for buffers
 	unsigned int m_RendererID;
 public:
 	// Constructor
-	OpenGLVertexBuffer(const void* data, unsigned int size);
+	OpenGLVertexBuffer(float* data, unsigned int size);
 	// Deconstructor
 	virtual ~OpenGLVertexBuffer() override;
 
