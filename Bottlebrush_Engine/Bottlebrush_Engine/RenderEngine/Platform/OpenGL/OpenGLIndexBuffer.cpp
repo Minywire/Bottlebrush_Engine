@@ -11,7 +11,7 @@ OpenGLIndexBuffer::OpenGLIndexBuffer(const unsigned int* data, unsigned int coun
     m_RendererID(0)
 {
     // make sure GLuint is the same as commonly used unsigned int
-    ASSERT(sizeof(unsigned int) == sizeof(GLuint));
+    assert(sizeof(unsigned int) == sizeof(GLuint));
 
     // Generate 1 buffer for Index Buffer
     GLCall(glGenBuffers(1, &m_RendererID));

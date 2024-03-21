@@ -40,6 +40,7 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 # Vendor include directories
 include_directories(
+        BBComponentSystem BBMaths BBScene RenderEngine
         include
         Vendors/assimp
         BBComponentSystem BBMaths BBScene

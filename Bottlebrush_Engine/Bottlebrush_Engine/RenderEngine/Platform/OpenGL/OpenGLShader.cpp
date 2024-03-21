@@ -59,7 +59,7 @@ unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& s
     {
         int length;
         GLCall(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
-        char* message = (char*)_malloca(length * sizeof(char));
+        char* message = (char*) malloc(length * sizeof(char)); //MARCO: Changed this to malloc since it's just a message string that can be cleared in this scope
         GLCall(glGetShaderInfoLog(id, length, &length, message));
 
         std::cout << "failed to compile" <<
@@ -67,6 +67,7 @@ unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& s
             << " shader" << std::endl;
         std::cout << message << std::endl;
 
+        free(message); //clear the string
         GLCall(glDeleteShader(id));
         return 0;
     }
@@ -138,6 +139,11 @@ unsigned int OpenGLShader::CreateShader()
     return program;
 }
 
+
+void OpenGLShader::SetUniform1i(const std::string& name, int value)
+{
+    GLCall(glUniform1i(GetUniformLocation(name), value));
+}
 
 void OpenGLShader::SetUniform1f(const std::string& name, float value)
 {
