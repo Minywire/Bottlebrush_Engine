@@ -96,6 +96,18 @@ float Sqrt(float x);
 /// @returns The value of \c x evaluated such that \a y = 1 / √\a x.
 float InverseSqrt(float x);
 
+/// @brief Evaluates the conversion from degrees to radians.
+/// @param degrees The real-valued number in degrees.
+/// @returns The value of \c degrees evaluated such that \a R = \a D ⋅ \a π /
+/// 180.
+float DegToRad(float degrees);
+
+/// @brief Evaluates the conversion from radians to degrees.
+/// @param degrees The real-valued number in radians.
+/// @returns The value of \c radians evaluated such that \a D = \a R ⋅ 180 / \a
+/// π.
+float RadToDeg(float radians);
+
 }  // namespace BBMaths
 
 #endif  // BOTTLEBRUSH_ENGINE_MATHS_H

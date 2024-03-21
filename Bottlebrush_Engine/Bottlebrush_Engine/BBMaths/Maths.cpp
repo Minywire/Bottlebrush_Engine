@@ -28,4 +28,8 @@ float Sqrt(float x) { return std::sqrt(x); }
 
 float InverseSqrt(float x) { return 1.0f / std::sqrt(x); }
 
+float DegToRad(float degrees) { return degrees * kPi / 180.0f; }
+
+float RadToDeg(float radians) { return radians * 180.0f / kPi; }
+
 }  // namespace BBMaths
