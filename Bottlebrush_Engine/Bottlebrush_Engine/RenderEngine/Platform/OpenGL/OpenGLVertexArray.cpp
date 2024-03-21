@@ -3,7 +3,6 @@
 //
 
 #include "OpenGLVertexArray.h"
-#include "OpenGLVertexArray.h"
 
 #include "OpenGLVertexBufferLayout.h"
 #include "OpenGLRenderer.h"

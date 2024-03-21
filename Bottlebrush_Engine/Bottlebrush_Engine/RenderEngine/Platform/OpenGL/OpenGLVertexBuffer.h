@@ -6,7 +6,7 @@
 #include "VertexBuffer.h"
 
 // Buffer for each vertex 
-class OpenGLVertexBuffer : VertexBuffer
+class OpenGLVertexBuffer : public VertexBuffer
 {
 private:
 	// OpenGL ID for buffers

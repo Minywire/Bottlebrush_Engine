@@ -27,12 +27,12 @@ void OpenGLVertexBufferLayout::Push<unsigned char>(unsigned int count)
     m_Stride += count * GetSizeOfType(GL_BYTE);
 }
 
-inline std::vector<VertexBufferElement> OpenGLVertexBufferLayout::GetElements() const &
+std::vector<VertexBufferElement> OpenGLVertexBufferLayout::GetElements() const &
 {
     return m_Elements;
 }
 
-inline unsigned int OpenGLVertexBufferLayout::GetStride() const
+unsigned int OpenGLVertexBufferLayout::GetStride() const
 {
     return m_Stride;
 }
