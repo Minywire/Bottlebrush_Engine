@@ -14,6 +14,12 @@ float ArcSin(float x) { return std::asin(x); }
 
 float ArcTan(float x) { return std::atan(x); }
 
+float Log(float x) { return std::log(x); }
+
+float Log10(float x) { return std::log10(x); }
+
+float Log2(float x) { return std::log2(x); }
+
 float Sqrt(float x) { return std::sqrt(x); }
 
 float InverseSqrt(float x) { return 1.0f / std::sqrt(x); }

@@ -57,6 +57,24 @@ float ArcSin(float x);
 /// @returns The value of \c x evaluated such that \a y = tan<sup>-1</sup> \a x.
 float ArcTan(float x);
 
+/// @brief Evaluates the natural base \a e logarithm \a ln \a x for the given
+/// value \a x.
+/// @param x The real-valued number.
+/// @returns The value of \c x evaluated such that \a y = \a ln \a x.
+float Log(float x);
+
+/// @brief Evaluates the common base 10 logarithm log<sub>10</sub> \a x for the
+/// given value \a x.
+/// @param x The real-valued number.
+/// @returns The value of \c x evaluated such that \a y = log<sub>10</sub> \a x.
+float Log10(float x);
+
+/// @brief Evaluates the binary base 2 logarithm log<sub>2</sub> \a x for the
+/// given value \a x.
+/// @param x The real-valued number.
+/// @returns The value of \c x evaluated such that \a y = log<sub>2</sub> \a x.
+float Log2(float x);
+
 /// @brief Evaluates the square root √\a x of the given value \a x.
 /// @param x The real-valued number.
 /// @returns The value of \c x evaluated such that \a y = √\a x.
