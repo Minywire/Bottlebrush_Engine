@@ -10,13 +10,13 @@
 OpenGLVertexArray::OpenGLVertexArray()
 {
 	// generate 1 vertex array buffer
-	GLCall(glGenVertexArrays(1, &m_RendererID));
+	glGenVertexArrays(1, &m_RendererID);
 }
 
 OpenGLVertexArray::~OpenGLVertexArray()
 {
 	// delete 1 vertex array buffer
-	GLCall(glDeleteVertexArrays(1, &m_RendererID));
+	glDeleteVertexArrays(1, &m_RendererID);
 }
 
 void OpenGLVertexArray::AddBuffer(const OpenGLVertexBuffer & vb, OpenGLVertexBufferLayout & layout)
@@ -36,14 +36,14 @@ void OpenGLVertexArray::AddBuffer(const OpenGLVertexBuffer & vb, OpenGLVertexBuf
 		const VertexBufferElement& element = elements[i];
 
 		// enabling the vertex attribute array
-		GLCall(glEnableVertexAttribArray(i));
+		glEnableVertexAttribArray(i);
 		// Specify the layout of this attribute
-		GLCall(glVertexAttribPointer(i, 
+		glVertexAttribPointer(i, 
 			element.count, 
 			element.type, 
 			element.normalised, 
 			layout.GetStride(), 
-			(const void*)offset));
+			(const void*)offset);
 
 		// calc byte space taken up by this attribute
 		offset += element.count * GetSizeOfType(element.type);
@@ -53,10 +53,10 @@ void OpenGLVertexArray::AddBuffer(const OpenGLVertexBuffer & vb, OpenGLVertexBuf
 void OpenGLVertexArray::Bind() const
 {
 	// Binding this vertex array to draw / add
-	GLCall(glBindVertexArray(m_RendererID));
+	glBindVertexArray(m_RendererID);
 }
 
 void OpenGLVertexArray::Unbind() const
 {
-	GLCall(glBindVertexArray(0));
+	glBindVertexArray(0);
 }
