@@ -33,7 +33,7 @@ public:
 	void Push(unsigned int count)
 	{
 		// if T type is unmatched
-		std::runtime_error("false"); //MARCO: This is meant to be a string? I've changed it to string to avoid type errors 21/03/2024
+		std::runtime_error("Vertex Buffer Layout Push() does not have that type"); //MARCO: This is meant to be a string? I've changed it to string to avoid type errors 21/03/2024
 	}
 
 	template<>
