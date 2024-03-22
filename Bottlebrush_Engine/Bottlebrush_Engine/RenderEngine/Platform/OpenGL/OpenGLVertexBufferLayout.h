@@ -9,19 +9,6 @@
 
 #include "VertexBufferLayout.h"
 
-// manually setting the byte count of GL types
-static unsigned int GetSizeOfType(unsigned int type)
-{
-	switch (type)
-	{
-	case GL_FLOAT:				return 4;
-	case GL_UNSIGNED_INT:		return 4;
-	case GL_UNSIGNED_BYTE:		return 1;
-	}
-	assert(false && "This is false.");
-	return 0;
-}
-
 class OpenGLVertexBufferLayout : public VertexBufferLayout
 {
 private:
@@ -39,8 +26,8 @@ private:
 	void Push(unsigned int count);
 
 	/// Returns member variable m_Elements
-	std::vector<VertexBufferElement> GetElements() const &;
+	virtual std::vector<VertexBufferElement> GetElements() const & override;
 
 	/// Returns member variable m_Stride
-	unsigned int GetStride() const;
+	virtual unsigned int GetStride() const override;
 };

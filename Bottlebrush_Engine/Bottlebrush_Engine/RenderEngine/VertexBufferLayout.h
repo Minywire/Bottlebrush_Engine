@@ -4,7 +4,6 @@
 #pragma once
 
 #include <vector>
-#include "RenderEngine.h"
 
 /// used to pass into glVertexAttribPointer() call
 struct VertexBufferElement
@@ -30,11 +29,15 @@ struct VertexBufferElement
 /// See child class for push_back() methods
 class VertexBufferLayout
 {
-protected:
-	
 
 public:
 	/// Constructor, defaulting member variable
 	VertexBufferLayout();
+
+	/// Returns member variable m_Elements
+    virtual std::vector<VertexBufferElement> GetElements() const&;
+
+	/// Returns member variable m_Stride
+    virtual unsigned int GetStride() const = 0;
 	
 };

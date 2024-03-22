@@ -16,6 +16,4 @@ public:
 	virtual void Bind() const = 0;
 	/// Unbinding buffer
 	virtual void UnBind() const = 0;
-
-	static VertexBuffer* Create(float* vertices, unsigned int size);
 };

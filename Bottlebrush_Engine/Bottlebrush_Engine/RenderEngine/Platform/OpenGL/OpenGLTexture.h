@@ -12,4 +12,7 @@ public:
 
 	virtual void Bind(unsigned int slot = 0) const override;
 	virtual void Unbind() const override;
+
+	virtual int GetWidth() const override;
+    virtual int GetHeight() const override;
 };

@@ -4,7 +4,6 @@
 
 #include "OpenGLVertexArray.h"
 
-#include "OpenGLVertexBufferLayout.h"
 #include "OpenGLRenderer.h"
 
 OpenGLVertexArray::OpenGLVertexArray()
@@ -19,7 +18,7 @@ OpenGLVertexArray::~OpenGLVertexArray()
 	glDeleteVertexArrays(1, &m_RendererID);
 }
 
-void OpenGLVertexArray::AddBuffer(const OpenGLVertexBuffer & vb, OpenGLVertexBufferLayout & layout)
+void OpenGLVertexArray::AddBuffer(const VertexBuffer& vb, VertexBufferLayout& layout)
 {
 	// bind vertex array buffer first to add vertex buffers
 	Bind();

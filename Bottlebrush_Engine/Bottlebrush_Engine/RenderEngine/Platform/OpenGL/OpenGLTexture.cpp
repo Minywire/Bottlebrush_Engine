@@ -52,3 +52,13 @@ void OpenGLTexture::Unbind() const
 {
     glBindTexture(GL_TEXTURE_2D, 0); 
 }
+
+int OpenGLTexture::GetWidth() const 
+{ 
+    return m_Width; 
+}
+
+int OpenGLTexture::GetHeight() const 
+{ 
+    return m_Height; 
+}
