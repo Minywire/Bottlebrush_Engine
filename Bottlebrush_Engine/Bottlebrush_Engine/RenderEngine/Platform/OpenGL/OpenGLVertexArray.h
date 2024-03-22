@@ -21,7 +21,7 @@ public:
 	virtual ~OpenGLVertexArray() override;
 
 	// Adding Vertex and Layout buffers to this Vertex Array
-	void AddBuffer(const OpenGLVertexBuffer& vb, OpenGLVertexBufferLayout& layout);
+    void AddBuffer(const OpenGLVertexBuffer& vb, OpenGLVertexBufferLayout& layout);
 
 	// Bind VA buffer to add / draw
 	void Bind() const;

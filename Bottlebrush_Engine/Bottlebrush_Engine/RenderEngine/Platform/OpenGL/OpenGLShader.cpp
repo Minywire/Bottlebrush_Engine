@@ -1,7 +1,6 @@
 //
 //  Created by Alan Brunet 12/03/2024
 //
-#define NUMSHADERTYPES 4
 
 #include "OpenGLShader.h"
 #include "OpenGLRenderer.h"
@@ -12,25 +11,24 @@
 #include <sstream>
 
 
-OpenGLShader::OpenGLShader(ShaderSourceFiles ssf)
-    : Shader(ssf)
+OpenGLShader::OpenGLShader(ShaderSourceFiles ssf) : Shader(ssf)
 {
     m_Program = CreateShader();
 }
 
 OpenGLShader::~OpenGLShader()
 {
-    GLCall(glDeleteProgram(m_Program));
+    glDeleteProgram(m_Program);
 }
 
 void OpenGLShader::Bind() const
 {
-    GLCall(glUseProgram(m_Program));
+    glUseProgram(m_Program);
 }
 
 void OpenGLShader::Unbind() const
 {
-    GLCall(glUseProgram(0));
+    glUseProgram(0);
 }
 
 std::string OpenGLShader::FindFailedCompiler(unsigned int type)
@@ -49,18 +47,18 @@ unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& s
 {
     unsigned int id = glCreateShader(type);
     const char* src = source.c_str();
-    GLCall(glShaderSource(id, 1, &src, nullptr));
-    GLCall(glCompileShader(id));
+    glShaderSource(id, 1, &src, nullptr);
+    glCompileShader(id);
 
     // error checking
     int result;
-    GLCall(glGetShaderiv(id, GL_COMPILE_STATUS, &result));
+    glGetShaderiv(id, GL_COMPILE_STATUS, &result);
     if (!result)
     {
         int length;
-        GLCall(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
+        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
         char* message = (char*) malloc(length * sizeof(char)); //MARCO: Changed this to malloc since it's just a message string that can be cleared in this scope
-        GLCall(glGetShaderInfoLog(id, length, &length, message));
+        glGetShaderInfoLog(id, length, &length, message);
 
         std::cout << "failed to compile" <<
             FindFailedCompiler(type)
@@ -68,7 +66,7 @@ unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& s
         std::cout << message << std::endl;
 
         free(message); //clear the string
-        GLCall(glDeleteShader(id));
+        glDeleteShader(id);
 
         free(message);
         return 0;
@@ -92,15 +90,15 @@ unsigned int OpenGLShader::DetermineShaderType(const std::string& filename)
 
 void OpenGLShader::LinkShader()
 {
-    GLCall(glLinkProgram(m_Program));
+    glLinkProgram(m_Program);
 
     // verify linking success
-    GLCall(glGetProgramiv(m_Program, GL_LINK_STATUS, &m_Status));
+    glGetProgramiv(m_Program, GL_LINK_STATUS, &m_Status);
     if (m_Status == false) {
-        GLCall(glGetProgramiv(m_Program, GL_INFO_LOG_LENGTH, &m_Length));
+        glGetProgramiv(m_Program, GL_INFO_LOG_LENGTH, &m_Length);
         // TODO: Do i need to do memory management stuff with this unique ptr?
         std::unique_ptr<char[]> buffer(new char[m_Length]);
-        GLCall(glGetProgramInfoLog(m_Program, m_Length, nullptr, buffer.get()));
+        glGetProgramInfoLog(m_Program, m_Length, nullptr, buffer.get());
         fprintf(stderr, "%s", buffer.get());
     }
     assert(m_Status == true);
@@ -110,11 +108,11 @@ void OpenGLShader::AttachShader(std::string shadersource, unsigned int& program)
 {
     unsigned int shader = CompileShader(DetermineShaderType(shadersource), LoadShaderType(shadersource));
 
-    GLCall(glAttachShader(program, shader));
+    glAttachShader(program, shader);
     LinkShader();
-    GLCall(glValidateProgram(program));
+    glValidateProgram(program);
 
-    GLCall(glDeleteShader(shader));
+    glDeleteShader(shader);
 }
 
 std::string OpenGLShader::LoadShaderType(const std::string& filepath)
@@ -130,13 +128,13 @@ std::string OpenGLShader::LoadShaderType(const std::string& filepath)
 unsigned int OpenGLShader::CreateShader()
 {
     // needs to be modifiable for glAttachShader
-    GLCall(unsigned int program = glCreateProgram());
+    unsigned int program = glCreateProgram();
 
     // check if source is valid, then attach the shader
-    if (CheckSSFValid(m_SSF.VertexSource)) AttachShader(m_SSF.VertexSource, m_Program);
-    if (CheckSSFValid(m_SSF.FragmentSource)) AttachShader(m_SSF.FragmentSource, m_Program);
-    if (CheckSSFValid(m_SSF.ComputeSource)) AttachShader(m_SSF.ComputeSource, m_Program);
-    if (CheckSSFValid(m_SSF.GeometrySource)) AttachShader(m_SSF.GeometrySource, m_Program);
+    if (CheckSSFValid(m_SSF.VertexSource)) { AttachShader(m_SSF.VertexSource, m_Program); }
+    if (CheckSSFValid(m_SSF.FragmentSource)) { AttachShader(m_SSF.FragmentSource, m_Program); }
+    if (CheckSSFValid(m_SSF.ComputeSource)) { AttachShader(m_SSF.ComputeSource, m_Program); }
+    if (CheckSSFValid(m_SSF.GeometrySource)) { AttachShader(m_SSF.GeometrySource, m_Program); }
 
     return m_Program;
 }
@@ -144,22 +142,22 @@ unsigned int OpenGLShader::CreateShader()
 
 void OpenGLShader::SetUniform1i(const std::string& name, int value)
 {
-    GLCall(glUniform1i(GetUniformLocation(name), value));
+    glUniform1i(GetUniformLocation(name), value);
 }
 
 void OpenGLShader::SetUniform1f(const std::string& name, float value)
 {
-    GLCall(glUniform1f(GetUniformLocation(name), value));
+    glUniform1f(GetUniformLocation(name), value);
 }
 
 void OpenGLShader::SetUniform3f(const std::string& name, float v0, float v1, float v2)
 {
-    GLCall(glUniform3f(GetUniformLocation(name), v0, v1, v2));
+    glUniform3f(GetUniformLocation(name), v0, v1, v2);
 }
 
 void OpenGLShader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
 {
-    GLCall(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3));
+    glUniform4f(GetUniformLocation(name), v0, v1, v2, v3);
 }
 
 
@@ -170,7 +168,7 @@ int OpenGLShader::GetUniformLocation(const std::string& name)
         return m_UniformLocationCache[name];
     int location = 0;
     // find the location
-    GLCall(location = glGetUniformLocation(m_Program, name.c_str()));
+    location = glGetUniformLocation(m_Program, name.c_str());
     if (location == -1)
         std::cout << "Warning: uniform '" << name << "' doesn't exist!" << std::endl;
 
