@@ -9,11 +9,13 @@ Texture* Texture::Create(const std::string& path)
   return new OpenGLTexture(path);
 }
 
-int Texture::GetWidth() const {
-
+int Texture::GetWidth() const 
+{
+	return m_Width;
 }
 
 
-int Texture::GetHieght() const {
-
+int Texture::GetHieght() const 
+{ 
+	return m_Height;
 }

@@ -20,5 +20,5 @@ protected:
 	static Texture* Create(const std::string& path);
 
 	int GetWidth() const;
-        int GetHieght() const;
+    int GetHieght() const;
 };
