@@ -3,12 +3,12 @@
 //
 #pragma once
 
-#include "OpenGLShader.h"
-#include "OpenGLVertexArray.h"
-#include "OpenGLVertexBuffer.h"
-#include "OpenGLIndexBuffer.h"
-#include "OpenGLVertexBufferLayout.h"
-#include "OpenGLTexture.h"
+#include "Platform/OpenGL/OpenGLShader.h"
+#include "Platform/OpenGL/OpenGLVertexArray.h"
+#include "Platform/OpenGL/OpenGLVertexBuffer.h"
+#include "Platform/OpenGL/OpenGLIndexBuffer.h"
+#include "Platform/OpenGL/OpenGLVertexBufferLayout.h"
+#include "Platform/OpenGL/OpenGLTexture.h"
 
 #include "Shader.h"
 #include "VertexArray.h"
@@ -29,5 +29,28 @@ public:
     static std::unique_ptr<VertexBufferLayout> CreateVertexBufferLayout();
     static std::unique_ptr<IndexBuffer> CreateIndexBuffer(const unsigned int* data, unsigned int count);
     static std::unique_ptr<Texture> CreateTextureBuffer(const std::string& path);
-    static std::unique_ptr<Shader> CreateShaderBuffer(ShaderSourceFiles ssf);
+    static std::unique_ptr<Shader> CreateShaderBuffer(const ShaderSourceFiles& ssf);
+};
+
+template<>
+class GraphicsFactory<GraphicsAPI::OpenGL> {
+public:
+    static std::unique_ptr<VertexBuffer> CreateVertexBuffer(float* vertices, unsigned int size) {
+        return std::make_unique<OpenGLVertexBuffer>(vertices, size);
+    }
+    static std::unique_ptr<VertexArray> CreateVertexArray() {
+        return std::make_unique<OpenGLVertexArray>();
+    }
+    static std::unique_ptr<VertexBufferLayout> CreateVertexBufferLayout() {
+        return std::make_unique<OpenGLVertexBufferLayout>();
+    }
+    static std::unique_ptr<IndexBuffer> CreateIndexBuffer(const unsigned int* data, unsigned int count) {
+        return std::make_unique<OpenGLIndexBuffer>(data, count);
+    }
+    static std::unique_ptr<Texture> CreateTextureBuffer(const std::string& path) {
+        return std::make_unique<OpenGLTexture>(path);
+    }
+    static std::unique_ptr<Shader> CreateShaderBuffer(const ShaderSourceFiles& ssf) {
+        return std::make_unique<OpenGLShader>(ssf);
+    }
 };

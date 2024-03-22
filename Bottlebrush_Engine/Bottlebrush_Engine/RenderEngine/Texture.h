@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OpenGLRenderer.h"
+#include "Platform/OpenGL/OpenGLRenderer.h"
 
 class Texture
 {

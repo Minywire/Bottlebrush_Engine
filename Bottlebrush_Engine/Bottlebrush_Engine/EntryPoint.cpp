@@ -1,4 +1,5 @@
 ﻿#include "RenderEngine/RenderEngine.h"
+#include "GraphicsFactory.h"
 #include "BBGUI/BBGUI.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -66,6 +67,14 @@ int main()
         glfwPollEvents();
         updateBBGUIFrameStart(); //start of frame rendering for GUI
 
+
+        std::vector<float> test_triagnel = {
+                1,1,0,
+                0,0,0,
+                1,0,0
+        };
+
+        std::unique_ptr<VertexBuffer> vertex_buffer = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexBuffer(test_triagnel.data(), test_triagnel.size());
         //do render stuff here
 
         updateBBGUIFrameEnd(); //end of frame render for GUI
