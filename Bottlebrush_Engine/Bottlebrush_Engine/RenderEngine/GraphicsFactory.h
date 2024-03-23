@@ -54,3 +54,4 @@ public:
         return std::make_unique<OpenGLShader>(ssf);
     }
 };
+

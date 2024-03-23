@@ -17,19 +17,22 @@ public:
 	/// Constructor that gets full path name and registers it to member variable m_SSF
 	OpenGLShader(ShaderSourceFiles ssf);
 	/// Deconstructor
-	virtual ~OpenGLShader() override;
+	~OpenGLShader();
 
 	/// Binds the Shader to use / add
-	virtual void Bind() const override;
+    void Bind() const override;
 	/// Unbinds the Shader
-	virtual void Unbind() const override;
+	void Unbind() const override;
 
 	/// Sets uniforms found in shader files to values passed in
-	virtual void SetUniform1i(const std::string& name, int value) override;
-	virtual void SetUniform1f(const std::string& name, float value) override;
-	virtual void SetUniform3f(const std::string& name, float v0, float v1, float v2) override;
-	virtual void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3) override;
+	void SetUniform1i(const std::string& name, int value) override;
+	void SetUniform1f(const std::string& name, float value) override;
+	void SetUniform3f(const std::string& name, float v0, float v1, float v2) override;
+	void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3) override;
 
+    std::string ParseFile(const std::string& filename);
+
+    bool CheckSSFValid(std::string filename);
 private:
 	/// protected member methods
 	/// Used to find which shader type failed compiling
@@ -48,7 +51,7 @@ private:
 
 	/// Returns a string containing all within a Shader file
 	std::string LoadShaderType(const std::string& filepath);
-	
+
 	/// Links a shader to m_Program
 	void LinkShader();
 
@@ -62,4 +65,5 @@ private:
 
 	/// Finds the declared Uniform name within the shader files
 	int GetUniformLocation(const std::string& name);
+
 };

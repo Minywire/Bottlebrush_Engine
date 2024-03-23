@@ -13,7 +13,11 @@
 
 OpenGLShader::OpenGLShader(ShaderSourceFiles ssf) : Shader(ssf)
 {
-    m_Program = CreateShader();
+    m_SSF.VertexSource = ParseFile(ssf.VertexSource);
+    m_SSF.FragmentSource = ParseFile(ssf.FragmentSource);
+    m_SSF.ComputeSource = ParseFile(ssf.ComputeSource);
+    m_SSF.GeometrySource = ParseFile(ssf.GeometrySource);
+    //m_Program = CreateShader();
 }
 
 OpenGLShader::~OpenGLShader()
@@ -177,5 +181,39 @@ int OpenGLShader::GetUniformLocation(const std::string& name)
          
     return location;
 }
+
+std::string OpenGLShader::ParseFile(const std::string& filename)
+{
+    std::string path;
+    std::string extension;
+
+    // index where . is
+    auto index = filename.rfind('.');
+    // simple solution for file not valid? used with CheckSSFValid()
+    if (index == std::string::npos)
+    {
+        return "nullptr";
+    }
+    // Get file extension
+    auto ext = filename.substr(index + 1);
+
+    if      (ext == "vert") path = SHADER_SOURCE_DIR "Vertex/";
+    else if (ext == "frag") path = SHADER_SOURCE_DIR "Fragment/";
+    else if (ext == "geom") path = SHADER_SOURCE_DIR "Geometry/";
+    else if (ext == "comp") path = SHADER_SOURCE_DIR "Compute/";
+
+    return (path + filename);
+}
+
+bool OpenGLShader::CheckSSFValid(std::string filename)
+{
+    if (filename == "nullptr")
+    {
+        return false;
+    }
+
+    return true;
+}
+
 
 

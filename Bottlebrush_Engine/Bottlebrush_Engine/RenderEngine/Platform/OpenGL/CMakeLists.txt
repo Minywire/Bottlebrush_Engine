@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
 
-add_library(GLPlatform STATIC
-        OpenGLVertexBufferLayout.cpp)
+add_library(GLPlatform STATIC)
 
 file(GLOB SOURCES *.cpp *.h)
 

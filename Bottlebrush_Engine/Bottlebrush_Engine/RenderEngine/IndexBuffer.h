@@ -16,16 +16,16 @@ protected:
 public:
 	/// do not use this constructor
 	IndexBuffer() = default;
-	/// Constructor
-	IndexBuffer(const unsigned int* data, unsigned int count);
-	/// Deconstructor
+
+	/// Deconstructor/// Constructor
+    IndexBuffer(const unsigned int* data, unsigned int count);
 	virtual ~IndexBuffer() = default;
 
 	/// Binding buffer to draw / add
-	virtual void Bind() const = 0;
+	virtual void Bind() const;
 	/// Unbinding buffer
-	virtual void UnBind() const = 0;
+	virtual void UnBind() const;
 
 	/// returning the number of vertex points used
-	inline unsigned int GetCount() const { return m_Count; }
+	virtual unsigned int GetCount() const;
 };

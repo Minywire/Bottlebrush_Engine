@@ -63,9 +63,10 @@ protected:
     /// caching for uniforms
     std::unordered_map<std::string, int> m_UniformLocationCache;
 
-    /// Returns the full path name
+    virtual /// Returns the full path name
     std::string ParseFile(const std::string& filename);
-    /// Validity check on path name
+
+    virtual /// Validity check on path name
     bool CheckSSFValid(std::string source);
 };
 
