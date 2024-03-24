@@ -6,8 +6,6 @@
 #ifndef BOTTLEBRUSH_ENGINE_SHADER_H
 #define BOTTLEBRUSH_ENGINE_SHADER_H
 
-#define SHADER_SOURCE_DIR "Bottlebrush_Engine/Bottlebrush_Engine/Shaders/"
-
 #include <string>
 #include <iostream>
 #include <fstream>

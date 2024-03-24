@@ -66,7 +66,7 @@ private:
 	std::string LoadShaderType(const std::string& filepath);
 
 	/// Links a shader to m_Program
-	void LinkShader();
+	void LinkShader(unsigned int& program);
 
 	/// Attaches to a Shader program
 	/// @param shadersource is the full string from a shader file

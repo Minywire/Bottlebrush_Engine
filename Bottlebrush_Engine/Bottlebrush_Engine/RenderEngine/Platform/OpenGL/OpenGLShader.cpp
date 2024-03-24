@@ -83,25 +83,25 @@ unsigned int OpenGLShader::DetermineShaderType(const std::string& filename)
     auto index = filename.rfind('.');
     auto ext = filename.substr(index + 1);
 
-    if      (ext == "comp") return glCreateShader(GL_COMPUTE_SHADER);
-    else if (ext == "frag") return glCreateShader(GL_FRAGMENT_SHADER);
-    else if (ext == "geom") return glCreateShader(GL_GEOMETRY_SHADER);
-    else if (ext == "vert") return glCreateShader(GL_VERTEX_SHADER);
+    if      (ext == "comp") return GL_COMPUTE_SHADER;
+    else if (ext == "frag") return GL_FRAGMENT_SHADER;
+    else if (ext == "geom") return GL_GEOMETRY_SHADER;
+    else if (ext == "vert") return GL_VERTEX_SHADER;
     else                    assert(false);   
     return false;
 }
 
-void OpenGLShader::LinkShader()
+void OpenGLShader::LinkShader(unsigned int& program)
 {
-    glLinkProgram(m_Program);
+    glLinkProgram(program);
 
     // verify linking success
-    glGetProgramiv(m_Program, GL_LINK_STATUS, &m_Status);
+    glGetProgramiv(program, GL_LINK_STATUS, &m_Status);
     if (m_Status == false) {
-        glGetProgramiv(m_Program, GL_INFO_LOG_LENGTH, &m_Length);
+        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &m_Length);
         // TODO: Do i need to do memory management stuff with this unique ptr?
         std::unique_ptr<char[]> buffer(new char[m_Length]);
-        glGetProgramInfoLog(m_Program, m_Length, nullptr, buffer.get());
+        glGetProgramInfoLog(program, m_Length, nullptr, buffer.get());
         fprintf(stderr, "%s", buffer.get());
     }
     // this m_Status gets set to a negative value, causing assert to be called
@@ -113,7 +113,7 @@ void OpenGLShader::AttachShader(std::string shadersource, unsigned int& program)
     unsigned int shader = CompileShader(DetermineShaderType(shadersource), LoadShaderType(shadersource));
 
     glAttachShader(program, shader);
-    LinkShader();
+    LinkShader(program);
     glValidateProgram(program);
 
     glDeleteShader(shader);
@@ -135,10 +135,22 @@ unsigned int OpenGLShader::CreateShader()
     unsigned int program = glCreateProgram();
 
     // check if source is valid, then attach the shader
-    if (CheckSSFValid(m_SSF.VertexSource)) { AttachShader(m_SSF.VertexSource, program); }
-    if (CheckSSFValid(m_SSF.FragmentSource)) { AttachShader(m_SSF.FragmentSource, program); }
-    if (CheckSSFValid(m_SSF.ComputeSource)) { AttachShader(m_SSF.ComputeSource, program); }
-    if (CheckSSFValid(m_SSF.GeometrySource)) { AttachShader(m_SSF.GeometrySource, program); }
+    if (CheckSSFValid(m_SSF.VertexSource)) 
+    { 
+      AttachShader(m_SSF.VertexSource, program); 
+    }
+    if (CheckSSFValid(m_SSF.FragmentSource)) 
+    {
+      AttachShader(m_SSF.FragmentSource, program); 
+    }
+    if (CheckSSFValid(m_SSF.ComputeSource)) 
+    { 
+      AttachShader(m_SSF.ComputeSource, program); 
+    }
+    if (CheckSSFValid(m_SSF.GeometrySource)) 
+    { 
+      AttachShader(m_SSF.GeometrySource, program); 
+    }
 
     return program;
 }
@@ -196,12 +208,11 @@ std::string OpenGLShader::ParseFile(const std::string& filename)
     }
     // Get file extension
     auto ext = filename.substr(index + 1);
-
-    if      (ext == "vert") path = SHADER_SOURCE_DIR "Vertex/";
-    else if (ext == "frag") path = SHADER_SOURCE_DIR "Fragment/";
-    else if (ext == "geom") path = SHADER_SOURCE_DIR "Geometry/";
-    else if (ext == "comp") path = SHADER_SOURCE_DIR "Compute/";
-
+    if      (ext == "vert") path = "Shaders/Vertex/";
+    else if (ext == "frag") path = "Shaders/Fragment/";
+    else if (ext == "geom") path = "Shaders/Geometry/";
+    else if (ext == "comp") path = "Shaders/Compute/";
+    
     return (path + filename);
 }
 
