@@ -29,10 +29,11 @@ struct ShaderSourceFiles
 /// Needs Shader files to construct.
 class Shader {
 public:
+    Shader(){};
     /// Constructor that gets full path name and registers it to member variable m_SSF
-    Shader(ShaderSourceFiles ssf);
+    Shader(ShaderSourceFiles ssf){};
     /// Deconstructor
-    virtual ~Shader() = default;
+    virtual ~Shader(){};
 
     /// Binds the Shader to use / add
     virtual void Bind() const = 0;
@@ -55,7 +56,7 @@ protected:
     /// Unique ID for graphics API
     unsigned int m_Program;
     /// Shader file names
-    ShaderSourceFiles m_SSF;
+    
     /// Used to check if shader loads correctly
     int m_Status;
     /// For checking errors
@@ -63,11 +64,11 @@ protected:
     /// caching for uniforms
     std::unordered_map<std::string, int> m_UniformLocationCache;
 
-    virtual /// Returns the full path name
-    std::string ParseFile(const std::string& filename);
+    /// Returns the full path name
+    virtual std::string ParseFile(const std::string& filename) = 0;
 
-    virtual /// Validity check on path name
-    bool CheckSSFValid(std::string source);
+    /// Validity check on path name
+    virtual bool CheckSSFValid(std::string source) = 0;
 };
 
 

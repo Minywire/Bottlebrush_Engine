@@ -17,7 +17,7 @@ public:
 	/// Constructor that gets full path name and registers it to member variable m_SSF
 	OpenGLShader(ShaderSourceFiles ssf);
 	/// Deconstructor
-	~OpenGLShader();
+	~OpenGLShader() override;
 
 	/// Binds the Shader to use / add
     void Bind() const override;
@@ -30,10 +30,12 @@ public:
 	void SetUniform3f(const std::string& name, float v0, float v1, float v2) override;
 	void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3) override;
 
-    std::string ParseFile(const std::string& filename);
+    std::string ParseFile(const std::string& filename) override;
 
-    bool CheckSSFValid(std::string filename);
+    bool CheckSSFValid(std::string filename) override;
 private:
+    ShaderSourceFiles m_SSF;
+
 	/// protected member methods
 	/// Used to find which shader type failed compiling
 	std::string FindFailedCompiler(unsigned int type);

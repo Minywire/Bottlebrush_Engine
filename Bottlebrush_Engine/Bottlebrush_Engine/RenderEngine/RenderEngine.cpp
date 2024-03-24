@@ -29,24 +29,22 @@ void RenderEngine::TestSetupValues()
         2, 3, 0
     };
     
-    /*
+    
+    
     // vertex array object
-    std::unique_ptr<VertexArray> vertex_array =
-        GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexArray();
+    std::unique_ptr<VertexArray> vertex_array = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexArray();
     //OpenGLVertexArray vao;
     
     // 4 vertex and 2 points (2D)
-    std::unique_ptr<VertexBuffer> vertex_buffer =
-        GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexBuffer(
-            positions, 4 * 2 * sizeof(float));
-
+    std::unique_ptr<VertexBuffer> vertex_buffer = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexBuffer(positions, 4 * 2 * sizeof(float));
+    
     // define the format of each vertex data 
     // i.e., 2 = 2 points of positions for each vertex (can use different numbers for different attributes)
-    std::unique_ptr<VertexBufferLayout> vbLayout =
-        GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexBufferLayout();
-
+    //std::unique_ptr<VertexBufferLayout> vbLayout = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexBufferLayout();
+    OpenGLVertexBufferLayout* vbLayout;
+    
     //@TODO This template belongs in the child class, how to access?
-    //vbLayout->Push<float>(2);
+    vbLayout->Push(2, DataType::FLOAT);
     
     // add current buffer with its layout specs to the vertex array
     vertex_array->AddBuffer(*vertex_buffer, *vbLayout);
@@ -77,7 +75,7 @@ void RenderEngine::TestSetupValues()
     // this needs to be called within the main draw loop
     r->Draw(*vertex_array, *ib, *shader);
 
-    */
-
+    
+    
     
 }

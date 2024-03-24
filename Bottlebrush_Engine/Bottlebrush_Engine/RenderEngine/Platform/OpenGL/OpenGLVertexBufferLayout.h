@@ -4,8 +4,8 @@
 #pragma once
 
 #include <vector>
-#include <glad/glad.h>
-#include "OpenGLRenderer.h"
+
+//#include "OpenGLRenderer.h"
 
 #include "VertexBufferLayout.h"
 
@@ -21,9 +21,14 @@ private:
 	unsigned int m_Stride;
 
  public:
+    OpenGLVertexBufferLayout();
+	/// Deconstructor
+    virtual ~OpenGLVertexBufferLayout() override;
+	// manually setting the byte count of GL types
+	virtual unsigned int GetSizeOfType(unsigned int type) override;
+
 	/// template for pushing the layout of vertex.
-	template<typename T>
-	void Push(unsigned int count);
+	virtual void Push(unsigned int count, DataType dt) override;
 
 	/// Returns member variable m_Elements
 	virtual std::vector<VertexBufferElement> GetElements() const & override;

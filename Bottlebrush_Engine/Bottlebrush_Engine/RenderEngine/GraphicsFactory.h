@@ -10,12 +10,12 @@
 #include "Platform/OpenGL/OpenGLVertexBufferLayout.h"
 #include "Platform/OpenGL/OpenGLTexture.h"
 
-#include "Shader.h"
-#include "VertexArray.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "VertexBufferLayout.h"
-#include "Texture.h"
+//#include "Shader.h"
+//#include "VertexArray.h"
+//#include "VertexBuffer.h"
+//#include "IndexBuffer.h"
+//#include "VertexBufferLayout.h"
+//#include "Texture.h"
 
 enum class GraphicsAPI {
 	OpenGL, Vulkan

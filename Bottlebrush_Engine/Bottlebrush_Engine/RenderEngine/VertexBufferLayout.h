@@ -5,6 +5,10 @@
 
 #include <vector>
 
+enum class DataType {
+	FLOAT, UINT, UCHAR
+};
+
 /// used to pass into glVertexAttribPointer() call
 struct VertexBufferElement
 {
@@ -32,10 +36,18 @@ class VertexBufferLayout
 
 public:
 	/// Constructor, defaulting member variable
-	VertexBufferLayout();
+	VertexBufferLayout(){};
+
+	/// Deconstructor
+    virtual ~VertexBufferLayout(){};
+
+	virtual unsigned int GetSizeOfType(unsigned int type) = 0;
+
+	/// template for pushing the layout of vertex.
+    virtual void Push(unsigned int count, DataType dt) = 0;
 
 	/// Returns member variable m_Elements
-    virtual std::vector<VertexBufferElement> GetElements() const&;
+    virtual std::vector<VertexBufferElement> GetElements() const& = 0;
 
 	/// Returns member variable m_Stride
     virtual unsigned int GetStride() const = 0;

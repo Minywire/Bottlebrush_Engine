@@ -6,9 +6,6 @@
 #include "OpenGLRenderer.h"
 
 OpenGLIndexBuffer::OpenGLIndexBuffer(const unsigned int* data, unsigned int count)
-    :
-    m_Count(count),
-    m_RendererID(0)
 {
     // make sure GLuint is the same as commonly used unsigned int
     assert(sizeof(unsigned int) == sizeof(GLuint));
@@ -38,4 +35,9 @@ void OpenGLIndexBuffer::Bind() const
 void OpenGLIndexBuffer::UnBind() const
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+unsigned int OpenGLIndexBuffer::GetCount() const 
+{ 
+    return m_Count;
 }

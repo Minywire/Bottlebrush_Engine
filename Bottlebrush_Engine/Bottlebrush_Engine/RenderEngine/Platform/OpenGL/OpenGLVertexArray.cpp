@@ -40,14 +40,14 @@ void OpenGLVertexArray::AddBuffer(const VertexBuffer& vb, VertexBufferLayout& la
 		glVertexAttribPointer(
         i,
         element.count,
-            element.type,
+        element.type,
         element.normalised,
         layout.GetStride(),
-    (const void*)offset
+		(const void*)offset
         );
 
 		// calc byte space taken up by this attribute
-		offset += element.count * GetSizeOfType(element.type);
+		offset += element.count * layout.GetSizeOfType(element.type);
 	}
 }
 

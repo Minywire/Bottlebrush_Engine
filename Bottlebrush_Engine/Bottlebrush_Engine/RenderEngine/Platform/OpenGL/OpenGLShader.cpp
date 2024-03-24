@@ -11,13 +11,13 @@
 #include <sstream>
 
 
-OpenGLShader::OpenGLShader(ShaderSourceFiles ssf) : Shader(ssf)
+OpenGLShader::OpenGLShader(ShaderSourceFiles ssf) 
 {
     m_SSF.VertexSource = ParseFile(ssf.VertexSource);
     m_SSF.FragmentSource = ParseFile(ssf.FragmentSource);
     m_SSF.ComputeSource = ParseFile(ssf.ComputeSource);
     m_SSF.GeometrySource = ParseFile(ssf.GeometrySource);
-    //m_Program = CreateShader();
+    m_Program = CreateShader();
 }
 
 OpenGLShader::~OpenGLShader()
@@ -69,10 +69,9 @@ unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& s
             << " shader" << std::endl;
         std::cout << message << std::endl;
 
-        free(message); //clear the string
         glDeleteShader(id);
 
-        free(message);
+        free(message); //clear the string
         return 0;
     }
 
@@ -105,7 +104,7 @@ void OpenGLShader::LinkShader()
         glGetProgramInfoLog(m_Program, m_Length, nullptr, buffer.get());
         fprintf(stderr, "%s", buffer.get());
     }
-    assert(m_Status == true);
+    //assert(m_Status == true);
 }
 
 void OpenGLShader::AttachShader(std::string shadersource, unsigned int& program)
@@ -135,12 +134,12 @@ unsigned int OpenGLShader::CreateShader()
     unsigned int program = glCreateProgram();
 
     // check if source is valid, then attach the shader
-    if (CheckSSFValid(m_SSF.VertexSource)) { AttachShader(m_SSF.VertexSource, m_Program); }
-    if (CheckSSFValid(m_SSF.FragmentSource)) { AttachShader(m_SSF.FragmentSource, m_Program); }
-    if (CheckSSFValid(m_SSF.ComputeSource)) { AttachShader(m_SSF.ComputeSource, m_Program); }
-    if (CheckSSFValid(m_SSF.GeometrySource)) { AttachShader(m_SSF.GeometrySource, m_Program); }
+    if (CheckSSFValid(m_SSF.VertexSource)) { AttachShader(m_SSF.VertexSource, program); }
+    if (CheckSSFValid(m_SSF.FragmentSource)) { AttachShader(m_SSF.FragmentSource, program); }
+    if (CheckSSFValid(m_SSF.ComputeSource)) { AttachShader(m_SSF.ComputeSource, program); }
+    if (CheckSSFValid(m_SSF.GeometrySource)) { AttachShader(m_SSF.GeometrySource, program); }
 
-    return m_Program;
+    return program;
 }
 
 
