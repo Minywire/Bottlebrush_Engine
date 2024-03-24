@@ -52,10 +52,17 @@ int main()
     
     // drawing a square, 4 vertex positions,
     float positions[] = {
+        0.5f, 0.5f, 0.5f,  // 0
+        0.0f,  0.5f, 0.5f,  // 1
+        0.0f,  0.0f, 0.5f,   // 2
+        0.5f, 0.0f, 0.5f,  // 3
+    };
+
+    float positions2[] = {
         -0.5f, -0.5f, 0.5f,  // 0
-        0.5f,  -0.5f, 0.5f,  // 1
-        0.5f,  0.5f, 0.5f,   // 2
-        -0.5f, 0.5f, 0.5f,  // 3
+        0.0f,  -0.5f, 0.5f,  // 1
+        0.0f,  0.0f,  0.5f,  // 2
+        -0.5f, 0.0f,  0.5f,  // 3
     };
 
     unsigned int layoutsizes[] = {3};
@@ -69,6 +76,17 @@ int main()
     r->PushLayout(1, layoutsizes);
     r->SetIndexBuffer(indices, 6);
     r->SetShaderSource("Basic.vert", "Basic.frag");
+    r->SetColour(0.2f, 0.3f, 0.8f, 1.0f);
+    r->ClearBuffers();
+
+    std::unique_ptr<RenderEngine> r2 = GraphicsFactory<GraphicsAPI::OpenGL>::CreateRenderer();
+
+    r2->SetVertexBuffer(positions2, 4, 3);
+    r2->PushLayout(1, layoutsizes);
+    r2->SetIndexBuffer(indices, 6);
+    r2->SetShaderSource("Basic.vert", "Basic.frag");
+    r2->SetColour(0.8f, 0.3f, 0.8f, 1.0f);
+    r2->ClearBuffers();
 
     // render loop
     // -----------
@@ -86,6 +104,7 @@ int main()
         // this needs to be called within the main draw loop
         //r->Draw(*vertex_array, *ib, *shader);
         r->Draw();
+        r2->Draw();
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------

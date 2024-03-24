@@ -42,6 +42,7 @@ public:
 		std::string computesource = "nullptr",
         std::string geometrysource = "nullptr");
     void ClearBuffers();
+    void SetColour(float r, float g, float b, float a);
 
 	/// glClearColor()
     virtual void Clear() const = 0;

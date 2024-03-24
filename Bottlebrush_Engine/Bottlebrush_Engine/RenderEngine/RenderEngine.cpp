@@ -55,11 +55,15 @@ void RenderEngine::SetShaderSource(
     // calling the constructor will read the files within ssf and apply them
     m_SH = GraphicsFactory<GraphicsAPI::OpenGL>::CreateShaderBuffer(ssf);
 
+    
+}
+
+void RenderEngine::SetColour(float r, float g, float b, float a)
+{
     // basic.frag has a uniform declaration
     m_SH->Bind();
-    m_SH->SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f, 1.0f);
-
-   
+    //m_SH->SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f, 1.0f);
+    m_SH->SetUniform4f("u_Color", r, g, b, a);
 }
 
 void RenderEngine::SetIndexBuffer(unsigned int indices[], unsigned int indicesSize)
@@ -70,9 +74,9 @@ void RenderEngine::SetIndexBuffer(unsigned int indices[], unsigned int indicesSi
 void RenderEngine::ClearBuffers() 
 { 
      // clearing all buffer bindings
+    m_VA->Unbind();
     m_SH->Unbind();
     m_IB->UnBind();
-    m_VA->Unbind();
     m_VB->UnBind();
 }
 
