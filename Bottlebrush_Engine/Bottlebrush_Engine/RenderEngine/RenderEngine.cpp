@@ -40,8 +40,8 @@ void RenderEngine::TestSetupValues()
     
     // define the format of each vertex data 
     // i.e., 2 = 2 points of positions for each vertex (can use different numbers for different attributes)
-    //std::unique_ptr<VertexBufferLayout> vbLayout = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexBufferLayout();
-    OpenGLVertexBufferLayout* vbLayout;
+    std::unique_ptr<VertexBufferLayout> vbLayout = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexBufferLayout();
+    //OpenGLVertexBufferLayout* vbLayout;
     
     //@TODO This template belongs in the child class, how to access?
     vbLayout->Push(2, DataType::FLOAT);
