@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include "Maths.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -48,60 +49,26 @@ int main()
     }
 
     initBBGUI(window);
-
     
-    // drawing a square, 4 vertex positions
+    // drawing a square, 4 vertex positions,
     float positions[] = {
-        -0.5f, -0.5f,  // 0
-        0.5f,  -0.5f,  // 1
-        0.5f,  0.5f,   // 2
-        -0.5f, 0.5f,   // 3
+        -0.5f, -0.5f, 0.5f,  // 0
+        0.5f,  -0.5f, 0.5f,  // 1
+        0.5f,  0.5f, 0.5f,   // 2
+        -0.5f, 0.5f, 0.5f,  // 3
     };
+
+    unsigned int layoutsizes[] = {3};
 
     // index buffer for vertex positions
     unsigned int indices[] = {0, 1, 2, 2, 3, 0};
 
-    // vertex array object
-    std::unique_ptr<VertexArray> vertex_array = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexArray();
-    // OpenGLVertexArray vao;
+    std::unique_ptr<RenderEngine> r = GraphicsFactory<GraphicsAPI::OpenGL>::CreateRenderer();
 
-    // 4 vertex and 2 points (2D)
-    std::unique_ptr<VertexBuffer> vertex_buffer = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexBuffer(positions, 4 * 2 * sizeof(float));
-    
-    // define the format of each vertex data
-    // i.e., 2 = 2 points of positions for each vertex (can use different
-    // numbers for different attributes)
-    std::unique_ptr<VertexBufferLayout> vbLayout = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexBufferLayout();
-    //OpenGLVertexBufferLayout* vbLayout;
-    
-    //@TODO This template belongs in the child class, how to access?
-    vbLayout->Push(2, DataType::FLOAT);
-    
-    // add current buffer with its layout specs to the vertex array
-    vertex_array->AddBuffer(*vertex_buffer, *vbLayout);
-    
-    // 6 = the count of elements in indices
-    std::unique_ptr<IndexBuffer> ib = GraphicsFactory<GraphicsAPI::OpenGL>::CreateIndexBuffer(indices, 6);
-    
-    // setup source shader files locations
-    ShaderSourceFiles ssf;
-    ssf.VertexSource = "Basic.vert";
-    ssf.FragmentSource = "Basic.frag";
-    
-    // calling the constructor will read the files within ssf and apply them
-    std::unique_ptr<Shader> shader = std::make_unique<OpenGLShader>(ssf);
-
-    // basic.frag has a uniform declaration
-    shader->Bind();
-    shader->SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f, 1.0f);
-
-    // clearing all buffer bindings
-    vertex_array->Unbind();
-    shader->Unbind();
-    vertex_buffer->UnBind();
-    ib->UnBind();
-
-    std::unique_ptr<RenderEngine> r = std::make_unique<OpenGLRenderer>();
+    r->SetVertexBuffer(positions, 4, 3);
+    r->PushLayout(1, layoutsizes);
+    r->SetIndexBuffer(indices, 6);
+    r->SetShaderSource("Basic.vert", "Basic.frag");
 
     // render loop
     // -----------
@@ -117,7 +84,8 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         // this needs to be called within the main draw loop
-        r->Draw(*vertex_array, *ib, *shader);
+        //r->Draw(*vertex_array, *ib, *shader);
+        r->Draw();
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------

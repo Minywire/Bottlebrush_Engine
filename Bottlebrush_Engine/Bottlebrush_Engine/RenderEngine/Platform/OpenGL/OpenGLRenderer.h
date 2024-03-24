@@ -6,10 +6,10 @@
 #include <glad/glad.h>
 
 #include "RenderEngine.h"
-
-#include "OpenGLVertexArray.h"
-#include "OpenGLIndexBuffer.h"
-#include "OpenGLShader.h"
+//#include "GraphicsFactory.h"
+//#include "OpenGLVertexArray.h"
+//#include "OpenGLIndexBuffer.h"
+//#include "OpenGLShader.h"
 
 
 
@@ -20,10 +20,16 @@ class OpenGLRenderer : public RenderEngine
 private:
 
 public:
+
+    OpenGLRenderer();
+
+    ~OpenGLRenderer() override;
+
     /// glClearColor()
-    void Clear() const;
+    void Clear() const override;
     /// This needs to be called within the draw loop 
-    void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const override;
+    //void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const override;
+    void Draw() const override;
     /// This just display current graphics API - version, vendor, and renderer
     void DisplayGPUInfo() const override;
 };
