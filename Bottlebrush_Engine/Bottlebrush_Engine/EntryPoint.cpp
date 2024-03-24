@@ -124,17 +124,6 @@ int main()
         glfwPollEvents();
         updateBBGUIFrameStart(); //start of frame rendering for GUI
 
-
-        std::vector<float> test_triagnel = {
-                -0.5,-0.5,0.0,
-                0.0,0.5,0,
-                0.5,-0.5,0.0
-        };
-
-        std::unique_ptr<VertexArray> array_buffer = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexArray();
-        std::unique_ptr<VertexBuffer> vertex_buffer = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexBuffer(test_triagnel.data(), test_triagnel.size());
-        //do render stuff here
-
         updateBBGUIFrameEnd(); //end of frame render for GUI
         glfwSwapBuffers(window);
     }

@@ -15,6 +15,13 @@ void hello_world() {
 
 void RenderEngine::TestSetupValues()
 {
+    /********************************************************************************************************************
+    *
+    *  THIS IS AN EXAMPLE OF HOW TO SETUP AND DRAW AN OBJECT. INSTANTIATION SHOULD HAPPEN OUTSIDE THE MAIN LOOP.
+    *  ONLY THE DRAW CALL NEEDS TO BE WITHIN THE MAIN LOOP I.E., RENDERENGINE::DRAW();
+    *
+    *********************************************************************************************************************
+  
     // drawing a square, 4 vertex positions
     float positions[] = {
             -0.5f, -0.5f, // 0
@@ -28,9 +35,7 @@ void RenderEngine::TestSetupValues()
         0, 1, 2,
         2, 3, 0
     };
-    
-    
-    /*
+
     // vertex array object
     std::unique_ptr<VertexArray> vertex_array = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexArray();
     //OpenGLVertexArray vao;
