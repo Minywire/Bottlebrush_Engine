@@ -9,6 +9,7 @@
 #include "Platform/OpenGL/OpenGLIndexBuffer.h"
 #include "Platform/OpenGL/OpenGLVertexBufferLayout.h"
 #include "Platform/OpenGL/OpenGLTexture.h"
+#include "Platform/OpenGL/OpenGLRenderer.h"
 
 //#include "Shader.h"
 //#include "VertexArray.h"

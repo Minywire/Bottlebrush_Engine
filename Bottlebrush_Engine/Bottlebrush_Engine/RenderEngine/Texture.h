@@ -1,16 +1,9 @@
 #pragma once
 
-#include "Platform/OpenGL/OpenGLRenderer.h"
-
 class Texture
 {
 protected:
-	unsigned int m_RendererID;
-	std::string m_Filepath;
-	unsigned char* m_LocalBuffer;
-	// BPP = bytes per pixel
-	int m_Width, m_Height, m_BPP;
-
+	
 public:
 	virtual ~Texture() = 0;
 

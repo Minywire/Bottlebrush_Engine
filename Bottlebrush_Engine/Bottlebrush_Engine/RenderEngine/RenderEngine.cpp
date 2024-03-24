@@ -30,7 +30,7 @@ void RenderEngine::TestSetupValues()
     };
     
     
-    
+    /*
     // vertex array object
     std::unique_ptr<VertexArray> vertex_array = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexArray();
     //OpenGLVertexArray vao;
@@ -75,7 +75,7 @@ void RenderEngine::TestSetupValues()
     // this needs to be called within the main draw loop
     r->Draw(*vertex_array, *ib, *shader);
 
-    
+    */
     
     
 }

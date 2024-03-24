@@ -10,8 +10,7 @@
 class VertexArray
 {
 protected:
-	// ID for Vertex Array
-	unsigned int m_RendererID;
+	
 public:
 	// Deconstructor
 	virtual ~VertexArray() = default;

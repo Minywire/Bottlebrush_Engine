@@ -13,18 +13,20 @@ class OpenGLVertexBufferLayout;
 class OpenGLVertexArray : public VertexArray
 {
 private:
+	// ID for Vertex Array
+	unsigned int m_RendererID;
 
 public:
 	// Constructor
 	OpenGLVertexArray();
 	// Deconstructor
-	virtual ~OpenGLVertexArray() override;
+	~OpenGLVertexArray() override;
 
 	// Adding Vertex and Layout buffers to this Vertex Array
-    virtual void AddBuffer(const VertexBuffer& vb, VertexBufferLayout& layout) override;
+    void AddBuffer(const VertexBuffer& vb, VertexBufferLayout& layout) override;
 
 	// Bind VA buffer to add / draw
-	virtual void Bind() const override;
+	void Bind() const override;
 	// Unbind VA
-	virtual void Unbind() const override;
+	void Unbind() const override;
 };

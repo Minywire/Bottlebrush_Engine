@@ -5,7 +5,7 @@
 #include "OpenGLVertexBufferLayout.h"
 #include <cassert>
 
-OpenGLVertexBufferLayout::OpenGLVertexBufferLayout() {
+OpenGLVertexBufferLayout::OpenGLVertexBufferLayout() : m_Stride(0) {
 
 }
 

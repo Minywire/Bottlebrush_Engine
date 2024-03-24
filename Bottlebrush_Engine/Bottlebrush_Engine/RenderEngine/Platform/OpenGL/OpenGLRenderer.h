@@ -23,7 +23,7 @@ public:
     /// glClearColor()
     void Clear() const;
     /// This needs to be called within the draw loop 
-    virtual void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const override;
+    void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const override;
     /// This just display current graphics API - version, vendor, and renderer
-    virtual void DisplayGPUInfo() const override;
+    void DisplayGPUInfo() const override;
 };

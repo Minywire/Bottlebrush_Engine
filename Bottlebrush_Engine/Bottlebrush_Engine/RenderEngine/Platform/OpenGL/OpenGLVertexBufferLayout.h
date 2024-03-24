@@ -23,16 +23,16 @@ private:
  public:
     OpenGLVertexBufferLayout();
 	/// Deconstructor
-    virtual ~OpenGLVertexBufferLayout() override;
+    ~OpenGLVertexBufferLayout() override;
 	// manually setting the byte count of GL types
-	virtual unsigned int GetSizeOfType(unsigned int type) override;
+	unsigned int GetSizeOfType(unsigned int type) override;
 
 	/// template for pushing the layout of vertex.
-	virtual void Push(unsigned int count, DataType dt) override;
+	void Push(unsigned int count, DataType dt) override;
 
 	/// Returns member variable m_Elements
-	virtual std::vector<VertexBufferElement> GetElements() const & override;
+	std::vector<VertexBufferElement> GetElements() const & override;
 
 	/// Returns member variable m_Stride
-	virtual unsigned int GetStride() const override;
+	unsigned int GetStride() const override;
 };

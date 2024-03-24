@@ -51,18 +51,7 @@ public:
     Shader & operator=(Shader const &) = delete;
 
 protected:
-    /// protected member variables
-
-    /// Unique ID for graphics API
-    unsigned int m_Program;
-    /// Shader file names
     
-    /// Used to check if shader loads correctly
-    int m_Status;
-    /// For checking errors
-    int m_Length;
-    /// caching for uniforms
-    std::unordered_map<std::string, int> m_UniformLocationCache;
 
     /// Returns the full path name
     virtual std::string ParseFile(const std::string& filename) = 0;

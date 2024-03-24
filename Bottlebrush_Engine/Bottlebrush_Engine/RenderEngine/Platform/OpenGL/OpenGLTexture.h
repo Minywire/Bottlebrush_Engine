@@ -1,18 +1,24 @@
 #pragma once
 
 #include "Texture.h"
+#include <string>
 
 class OpenGLTexture : public Texture
 {
 private:
+	unsigned int m_RendererID;
+	std::string m_Filepath;
+	unsigned char* m_LocalBuffer;
+	// BPP = bytes per pixel
+	int m_Width, m_Height, m_BPP;
 
-public:
+ public:
 	OpenGLTexture(const std::string& path);
-	virtual ~OpenGLTexture() override;
+	~OpenGLTexture() override;
 
-	virtual void Bind(unsigned int slot = 0) const override;
-	virtual void Unbind() const override;
+	void Bind(unsigned int slot = 0) const override;
+	void Unbind() const override;
 
-	virtual int GetWidth() const override;
-    virtual int GetHeight() const override;
+	int GetWidth() const override;
+    int GetHeight() const override;
 };

@@ -104,6 +104,7 @@ void OpenGLShader::LinkShader()
         glGetProgramInfoLog(m_Program, m_Length, nullptr, buffer.get());
         fprintf(stderr, "%s", buffer.get());
     }
+    // this m_Status gets set to a negative value, causing assert to be called
     //assert(m_Status == true);
 }
 

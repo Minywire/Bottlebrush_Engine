@@ -34,7 +34,18 @@ public:
 
     bool CheckSSFValid(std::string filename) override;
 private:
-    ShaderSourceFiles m_SSF;
+	/// Struct for carrying file locations
+	ShaderSourceFiles m_SSF;
+
+	/// Unique ID for graphics API
+	unsigned int m_Program;
+
+	/// Used to check if shader loads correctly
+	int m_Status;
+	/// For checking errors
+	int m_Length;
+	/// caching for uniforms
+	std::unordered_map<std::string, int> m_UniformLocationCache;
 
 	/// protected member methods
 	/// Used to find which shader type failed compiling

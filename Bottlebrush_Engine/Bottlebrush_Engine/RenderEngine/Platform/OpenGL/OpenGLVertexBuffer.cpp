@@ -5,7 +5,7 @@
 
 #include "OpenGLRenderer.h"
 
-OpenGLVertexBuffer::OpenGLVertexBuffer(float* data, unsigned int size)
+OpenGLVertexBuffer::OpenGLVertexBuffer(const void* data, unsigned int size)
 {
     // generate 1 buffer for a Vertex
     glGenBuffers(1, &m_RendererID);

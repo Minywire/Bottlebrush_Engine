@@ -13,12 +13,12 @@ private:
 	unsigned int m_RendererID;
 public:
 	// Constructor
-	OpenGLVertexBuffer(float* data, unsigned int size);
+	OpenGLVertexBuffer(const void* data, unsigned int size);
 	// Deconstructor
-	virtual ~OpenGLVertexBuffer() override;
+	~OpenGLVertexBuffer() override;
 
 	// Binding buffer
-	virtual void Bind() const override;
+	void Bind() const override;
 	// Unbinding buffer
-	virtual void UnBind() const override;
+	void UnBind() const override;
 };

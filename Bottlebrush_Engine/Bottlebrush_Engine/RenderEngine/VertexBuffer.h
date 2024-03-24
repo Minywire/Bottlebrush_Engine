@@ -8,6 +8,7 @@ class VertexBuffer
 {
 protected:
 	
+
 public:
 	/// Deconstructor
 	virtual ~VertexBuffer() = default;

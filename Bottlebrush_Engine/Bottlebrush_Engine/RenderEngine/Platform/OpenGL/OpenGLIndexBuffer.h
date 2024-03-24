@@ -15,6 +15,7 @@ private:
 	unsigned int m_RendererID;
 	/// How many vertex points are being used
 	unsigned int m_Count;
+
 public:
 	/// Constructor
 	OpenGLIndexBuffer(const unsigned int* data, unsigned int count);
@@ -22,10 +23,10 @@ public:
 	~OpenGLIndexBuffer() override;
 
 	/// Binding buffer to draw / add
-	virtual void Bind() const override;
+	void Bind() const override;
 	/// Unbinding buffer
-	virtual void UnBind() const override;
+	void UnBind() const override;
 
 	/// returning the number of vertex points used
-    virtual unsigned int GetCount() const override;
+    unsigned int GetCount() const override;
 };

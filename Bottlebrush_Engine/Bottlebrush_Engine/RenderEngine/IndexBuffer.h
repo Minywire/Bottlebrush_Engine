@@ -9,16 +9,14 @@
 class IndexBuffer
 {
 protected:
-	/// OpenGL ID for IndexBuffer
-	unsigned int m_RendererID;
-	/// How many vertex points are being used
-	unsigned int m_Count;
-public:
-	/// do not use this constructor
-	//IndexBuffer();
+	
+
+ public:
+	/// Default Constructor
+	IndexBuffer(){};
 
 	/// Deconstructor/// Constructor
-    //IndexBuffer(const unsigned int* data, unsigned int count);
+    IndexBuffer(const unsigned int* data, unsigned int count) {};
 
 	virtual ~IndexBuffer(){};
 

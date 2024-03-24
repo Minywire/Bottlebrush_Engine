@@ -1,5 +1,7 @@
 #include "OpenGLTexture.h"
 
+#include "OpenGLRenderer.h"
+
 OpenGLTexture::OpenGLTexture(const std::string& path)
 {
     /* 

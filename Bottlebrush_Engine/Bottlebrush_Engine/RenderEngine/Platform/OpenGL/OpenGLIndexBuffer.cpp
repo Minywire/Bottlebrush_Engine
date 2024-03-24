@@ -6,6 +6,7 @@
 #include "OpenGLRenderer.h"
 
 OpenGLIndexBuffer::OpenGLIndexBuffer(const unsigned int* data, unsigned int count)
+    : m_Count(count)
 {
     // make sure GLuint is the same as commonly used unsigned int
     assert(sizeof(unsigned int) == sizeof(GLuint));
