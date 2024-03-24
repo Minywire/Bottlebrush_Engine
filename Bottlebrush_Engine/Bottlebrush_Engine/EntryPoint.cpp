@@ -4,7 +4,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include "Maths.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -52,17 +51,17 @@ int main()
     
     // drawing a square, 4 vertex positions,
     float positions[] = {
-        0.5f, 0.5f, 0.5f,  // 0
-        0.0f,  0.5f, 0.5f,  // 1
-        0.0f,  0.0f, 0.5f,   // 2
-        0.5f, 0.0f, 0.5f,  // 3
+        0.5f,  0.5f,  0.5f,  // 0
+        0.0f,  0.5f,  0.5f,  // 1
+        0.0f,  0.0f,  0.5f,   // 2
+        0.5f,  0.0f,  0.5f,  // 3
     };
 
     float positions2[] = {
-        -0.5f, -0.5f, 0.5f,  // 0
-        0.0f,  -0.5f, 0.5f,  // 1
-        0.0f,  0.0f,  0.5f,  // 2
-        -0.5f, 0.0f,  0.5f,  // 3
+        -0.5f, -0.5f,  0.5f,  // 0
+         0.0f, -0.5f,  0.5f,  // 1
+         0.0f,  0.0f,  0.5f,  // 2
+        -0.5f,  0.0f,  0.5f,  // 3
     };
 
     unsigned int layoutsizes[] = {3};
