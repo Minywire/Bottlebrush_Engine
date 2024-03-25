@@ -5,14 +5,17 @@
 
 #include <vector>
 
-//#include "OpenGLRenderer.h"
-
 #include "VertexBufferLayout.h"
 
+/// @author Alan Brunet
+/// @brief This is used to contain a vector array of VertexBuffer Element
+/// details that is passed into API
+/// @see glVertexAttribPointer() https://docs.gl/gl4/glVertexAttribPointer
 class OpenGLVertexBufferLayout : public VertexBufferLayout
 {
 private:
-	///
+	/// vector of buffer elements
+	/// @see struct VertexBufferElement
 	std::vector<VertexBufferElement> m_Elements;
 
 	/// OpenGL stride (in glVertexAttribPointer())
@@ -24,15 +27,20 @@ private:
     OpenGLVertexBufferLayout();
 	/// Deconstructor
     ~OpenGLVertexBufferLayout() override;
-	// manually setting the byte count of GL types
+
+    /// @author Alan Brunet
+    /// @brief Setting the byte count of types
 	unsigned int GetSizeOfType(unsigned int type) override;
 
-	/// template for pushing the layout of vertex.
+	/// @author Alan Brunet
+    /// @brief For pushing the layout of vertex onto the VertexBufferElement vector
 	void Push(unsigned int count, DataType dt) override;
 
-	/// Returns member variable m_Elements
+	/// @author Alan Brunet
+    /// @return member variable m_Elements
 	std::vector<VertexBufferElement> GetElements() const & override;
 
-	/// Returns member variable m_Stride
+	/// @author Alan Brunet
+    /// @return member variable m_Stride
 	unsigned int GetStride() const override;
 };

@@ -11,17 +11,15 @@
 #include "Platform/OpenGL/OpenGLTexture.h"
 #include "Platform/OpenGL/OpenGLRenderer.h"
 
-//#include "Shader.h"
-//#include "VertexArray.h"
-//#include "VertexBuffer.h"
-//#include "IndexBuffer.h"
-//#include "VertexBufferLayout.h"
-//#include "Texture.h"
-
+/// @author Alan Brunet
+/// @brief Enum class to define which Graphics API to be used
 enum class GraphicsAPI {
 	OpenGL, Vulkan
 };
 
+/// @author Alan Brunet
+/// @brief Factory class to determine which Rendering API to be point to. 
+/// Each Create function will return a unique pointer to the specified Graphics API component
 template <GraphicsAPI>
 class GraphicsFactory {
 public:
@@ -30,7 +28,7 @@ public:
 	static std::unique_ptr<VertexArray> CreateVertexArray();
     static std::unique_ptr<VertexBufferLayout> CreateVertexBufferLayout();
     static std::unique_ptr<IndexBuffer> CreateIndexBuffer(const unsigned int* data, unsigned int count);
-    static std::unique_ptr<Texture> CreateTextureBuffer(const std::string& path);
+    static std::unique_ptr<Texture> CreateTextureBuffer(int width, int height, int bbp);
     static std::unique_ptr<Shader> CreateShaderBuffer(const ShaderSourceFiles& ssf);
 };
 
@@ -52,8 +50,8 @@ public:
     static std::unique_ptr<IndexBuffer> CreateIndexBuffer(const unsigned int* data, unsigned int count) {
         return std::make_unique<OpenGLIndexBuffer>(data, count);
     }
-    static std::unique_ptr<Texture> CreateTextureBuffer(const std::string& path) {
-        return std::make_unique<OpenGLTexture>(path);
+    static std::unique_ptr<Texture> CreateTextureBuffer(int width, int height, int bpp) {
+        return std::make_unique<OpenGLTexture>(width, height, bpp);
     }
     static std::unique_ptr<Shader> CreateShaderBuffer(const ShaderSourceFiles& ssf) {
         return std::make_unique<OpenGLShader>(ssf);

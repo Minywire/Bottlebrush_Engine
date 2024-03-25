@@ -3,7 +3,8 @@
 //
 #pragma once
 
-/// indexing which positions in the VertexBuffer are being drawn.
+/// @author Alan Brunet
+/// @brief indexing which positions in the VertexBuffer are being drawn.
 /// Saving memory space of referencing positions more than once.
 /// IB must be called after Vertex Array Object (VAO) has been set up with VB and VBL
 class IndexBuffer
@@ -14,17 +15,20 @@ protected:
  public:
 	/// Default Constructor
 	IndexBuffer(){};
-
-	/// Deconstructor/// Constructor
+	/// Constructor
     IndexBuffer(const unsigned int* data, unsigned int count) {};
-
+	/// Deconstructor
 	virtual ~IndexBuffer(){};
 
-	/// Binding buffer to draw / add
+	/// @author Alan Brunet
+	/// @brief Binding buffer to draw / add
 	virtual void Bind() const = 0;
-	/// Unbinding buffer
+
+	/// @author Alan Brunet
+	/// @brief Unbinding buffer
 	virtual void UnBind() const = 0;
 
-	/// returning the number of vertex points used
+	/// @author Alan Brunet
+	/// @brief returning the number of vertex points used
 	virtual unsigned int GetCount() const = 0;
 };

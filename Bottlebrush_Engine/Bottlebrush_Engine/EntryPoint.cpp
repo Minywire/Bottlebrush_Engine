@@ -1,4 +1,4 @@
-﻿#include "RenderEngine.h"
+﻿//#include "RenderEngine.h"
 #include "GraphicsFactory.h"
 #include "BBGUI/BBGUI.h"
 #include <glad/glad.h>
@@ -14,8 +14,6 @@ const unsigned int SCR_HEIGHT = 600;
 
 int main()
 {
-    hello_world(); //from the RenderEngine lib, just testing things out
-
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
@@ -68,6 +66,8 @@ int main()
 
     // index buffer for vertex positions
     unsigned int indices[] = {0, 1, 2, 2, 3, 0};
+
+    //@TODO Implement and test Texture.h
 
     std::unique_ptr<RenderEngine> r = GraphicsFactory<GraphicsAPI::OpenGL>::CreateRenderer();
 

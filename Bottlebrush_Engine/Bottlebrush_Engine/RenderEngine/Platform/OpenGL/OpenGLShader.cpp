@@ -35,7 +35,7 @@ void OpenGLShader::Unbind() const
     glUseProgram(0);
 }
 
-std::string OpenGLShader::FindFailedCompiler(unsigned int type)
+std::string OpenGLShader::FindFailedShader(unsigned int type)
 {
     switch (type) 
     {
@@ -65,7 +65,7 @@ unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& s
         glGetShaderInfoLog(id, length, &length, message);
 
         std::cout << "failed to compile" <<
-            FindFailedCompiler(type)
+            FindFailedShader(type)
             << " shader" << std::endl;
         std::cout << message << std::endl;
 
@@ -102,7 +102,7 @@ void OpenGLShader::LinkShader(unsigned int& program)
         // TODO: Do i need to do memory management stuff with this unique ptr?
         std::unique_ptr<char[]> buffer(new char[m_Length]);
         glGetProgramInfoLog(program, m_Length, nullptr, buffer.get());
-        fprintf(stderr, "%s", buffer.get());
+        fprintf(stderr, "Link unsuccessful: %s", buffer.get());
     }
     // this m_Status gets set to a negative value, causing assert to be called
     //assert(m_Status == true);
@@ -206,6 +206,7 @@ std::string OpenGLShader::ParseFile(const std::string& filename)
     {
         return "nullptr";
     }
+
     // Get file extension
     auto ext = filename.substr(index + 1);
     if      (ext == "vert") path = "Shaders/Vertex/";

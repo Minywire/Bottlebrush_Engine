@@ -5,20 +5,32 @@
 
 #include "VertexBuffer.h"
 
-// Buffer for each vertex 
+/// @author Alan Brunet
+/// @brief Buffer data for each vertex.
+/// It must have positions (2D or 3D), it can also have normals and texcoords /
+/// colour
 class OpenGLVertexBuffer : public VertexBuffer
 {
 private:
-	// OpenGL ID for buffers
+	/// OpenGL ID for buffers
 	unsigned int m_RendererID;
 public:
-	// Constructor
+	/// @author Alan Brunet
+    /// @brief Constructor that generates the buffer and sets the data.
+    /// Called from GraphicsFractory when creating
+    /// @param data is the stream on data of vertex
+	/// @param size is the Vertex Count * the Vertex data size * sizeof(float).
 	OpenGLVertexBuffer(const void* data, unsigned int size);
-	// Deconstructor
+
+	/// @author Alan Brunet
+    /// @brief Deconstructor
 	~OpenGLVertexBuffer() override;
 
-	// Binding buffer
+	/// @author Alan Brunet
+    /// @brief Binding buffer
 	void Bind() const override;
-	// Unbinding buffer
+
+    /// @author Alan Brunet
+    /// @brief Unbinding buffer
 	void UnBind() const override;
 };
