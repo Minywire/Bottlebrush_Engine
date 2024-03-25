@@ -54,6 +54,9 @@ unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& s
     glShaderSource(id, 1, &src, nullptr);
     glCompileShader(id);
 
+    //@DEBUG only
+    std::cout << "Shader Source:\n" << source << std::endl;
+
     // error checking
     int result;
     glGetShaderiv(id, GL_COMPILE_STATUS, &result);
