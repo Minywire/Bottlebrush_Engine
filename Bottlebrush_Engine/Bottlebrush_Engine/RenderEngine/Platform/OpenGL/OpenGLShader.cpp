@@ -12,11 +12,8 @@
 
 
 OpenGLShader::OpenGLShader(ShaderSourceFiles ssf) 
+    : m_SSF(ssf)
 {
-    m_SSF.VertexSource = ParseFile(ssf.VertexSource);
-    m_SSF.FragmentSource = ParseFile(ssf.FragmentSource);
-    m_SSF.ComputeSource = ParseFile(ssf.ComputeSource);
-    m_SSF.GeometrySource = ParseFile(ssf.GeometrySource);
     m_Program = CreateShader();
 }
 
@@ -35,7 +32,7 @@ void OpenGLShader::Unbind() const
     glUseProgram(0);
 }
 
-std::string OpenGLShader::FindFailedShader(unsigned int type)
+std::string OpenGLShader::ShaderTypeToString(unsigned int type)
 {
     switch (type) 
     {
@@ -68,7 +65,7 @@ unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& s
         glGetShaderInfoLog(id, length, &length, message);
 
         std::cout << "failed to compile" <<
-            FindFailedShader(type)
+            ShaderTypeToString(type)
             << " shader" << std::endl;
         std::cout << message << std::endl;
 
@@ -111,9 +108,9 @@ void OpenGLShader::LinkShader(unsigned int& program)
     //assert(m_Status == true);
 }
 
-void OpenGLShader::AttachShader(std::string shadersource, unsigned int& program)
+void OpenGLShader::AttachShader(const std::string& shadersource, unsigned int& program)
 {
-    unsigned int shader = CompileShader(DetermineShaderType(shadersource), LoadShaderType(shadersource));
+    unsigned int shader = CompileShader(DetermineShaderType(shadersource), LoadShaderType(GenFilePath(shadersource)));
 
     glAttachShader(program, shader);
     LinkShader(program);
@@ -122,8 +119,11 @@ void OpenGLShader::AttachShader(std::string shadersource, unsigned int& program)
     glDeleteShader(shader);
 }
 
-std::string OpenGLShader::LoadShaderType(const std::string& filepath)
+std::string OpenGLShader::LoadShaderType(const std::filesystem::path& filepath)
 {
+    //@DEBUG only
+    std::cout << "Path: " << filepath << std::endl;
+
     // Load GLSL shader source from file
     std::ifstream file_stream(filepath);
     auto shader_file_contents = std::string(std::istreambuf_iterator<char>(file_stream),
@@ -197,17 +197,16 @@ int OpenGLShader::GetUniformLocation(const std::string& name)
     return location;
 }
 
-std::string OpenGLShader::ParseFile(const std::string& filename)
+std::filesystem::path OpenGLShader::GenFilePath(const std::string& filename)
 {
     std::string path;
-    std::string extension;
 
     // index where . is
     auto index = filename.rfind('.');
     // simple solution for file not valid? used with CheckSSFValid()
     if (index == std::string::npos)
     {
-        return "nullptr";
+        return std::filesystem::path("nullptr");
     }
 
     // Get file extension
@@ -220,7 +219,7 @@ std::string OpenGLShader::ParseFile(const std::string& filename)
     return (path + filename);
 }
 
-bool OpenGLShader::CheckSSFValid(std::string filename)
+bool OpenGLShader::CheckSSFValid(const std::string& filename)
 {
     if (filename == "nullptr")
     {

@@ -12,6 +12,7 @@
 #include <memory>
 #include <cassert>
 #include <unordered_map>
+#include <filesystem>
 
 /// @author Alan Brunet
 /// @brief Contains the filenames of each shader type.
@@ -76,7 +77,7 @@ protected:
 	/// @param type takes in a Graphic API shader type
 	/// @see CompileShader()
 	/// @return the string of what Shader type has failed
-    virtual std::string FindFailedShader(unsigned int type) = 0;
+    virtual std::string ShaderTypeToString(unsigned int type) = 0;
 
 	/// @author Alan Brunet
     /// @brief Compiles a Shader, using a source shader file
@@ -96,9 +97,9 @@ protected:
 	/// @author Alan Brunet
 	/// @brief Takes in a filepath that will be loaded
     /// @param full filepath of the shader program source
-    /// @see ParseFile()
+    /// @see GenFilePath()
     /// @return a string containing all within a Shader file
-	virtual std::string LoadShaderType(const std::string& filepath) = 0;
+	virtual std::string LoadShaderType(const std::filesystem::path& filepath) = 0;
 
 	/// @author Alan Brunet
     /// @brief Links a shader, performs a check after link process
@@ -111,7 +112,7 @@ protected:
 	/// @param shadersource is the full string from a shader program file
 	/// @see LoadShaderType()
 	/// @param program is a modifiable int to attach shaders to
-	virtual void AttachShader(std::string shadersource, unsigned int& program) = 0;
+	virtual void AttachShader(const std::string& shadersource, unsigned int& program) = 0;
 
     /// @author Alan Brunet
     /// @brief using member struct ShaderSourceFiles, it checks their validity, 
@@ -128,14 +129,14 @@ protected:
     /// @brief Takes in a filename and returns the full path directory
     /// @param filename Just a filename to be used as a Shader Program. e.g., "Basic.vert"
     /// @return Returns the full path name
-    virtual std::string ParseFile(const std::string& filename) = 0;
+    virtual std::filesystem::path GenFilePath(const std::string& filename) = 0;
 
     /// @author Alan Brunet
     /// @brief Validity check on path name
     /// @param source is the ShaderSourceFile filename
     /// @see CreateShader()
     /// @return True or False on valid filepath
-    virtual bool CheckSSFValid(std::string source) = 0;
+    virtual bool CheckSSFValid(const std::string& source) = 0;
 };
 
 

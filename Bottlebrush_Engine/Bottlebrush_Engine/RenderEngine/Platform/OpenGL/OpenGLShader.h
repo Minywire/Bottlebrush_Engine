@@ -68,7 +68,7 @@ private:
 	/// @param type takes in a Graphic API shader type
 	/// @see CompileShader()
 	/// @return the string of what Shader type has failed
-	std::string FindFailedShader(unsigned int type) override;
+	std::string ShaderTypeToString(unsigned int type) override;
 
 	/// @author Alan Brunet
     /// @brief Compiles a Shader, using a source shader file
@@ -88,9 +88,9 @@ private:
 	/// @author Alan Brunet
 	/// @brief Takes in a filepath that will be loaded
     /// @param full filepath of the shader program source
-    /// @see ParseFile()
+    /// @see GenFilePath()
     /// @return a string containing all within a Shader file
-	std::string LoadShaderType(const std::string& filepath) override;
+	std::string LoadShaderType(const std::filesystem::path& filepath) override;
 
 	/// @author Alan Brunet
     /// @brief Links a shader, performs a check after link process
@@ -103,7 +103,7 @@ private:
 	/// @param shadersource is the full string from a shader program file
 	/// @see LoadShaderType()
 	/// @param program is a modifiable int to attach shaders to
-	void AttachShader(std::string shadersource, unsigned int& program) override;
+	void AttachShader(const std::string& shadersource, unsigned int& program) override;
 
 	/// @author Alan Brunet
     /// @brief using member struct ShaderSourceFiles, it checks their validity, 
@@ -117,15 +117,15 @@ private:
 	int GetUniformLocation(const std::string& name)override;
 
 	/// @author Alan Brunet
-    /// @brief Takes in a filename and returns the full path directory
+    /// @brief Takes in a filename and returns the full path class
     /// @param filename Just a filename to be used as a Shader Program. e.g., "Basic.vert"
-    /// @return Returns the full path name
-	std::string ParseFile(const std::string& filename) override;
+    /// @return Returns the full path class
+	std::filesystem::path GenFilePath(const std::string& filename) override;
 
 	/// @author Alan Brunet
     /// @brief Validity check on path name
     /// @param source is the ShaderSourceFile filename
     /// @see CreateShader()
     /// @return True or False on valid filepath
-    bool CheckSSFValid(std::string filename) override;
+    bool CheckSSFValid(const std::string& filename) override;
 };
