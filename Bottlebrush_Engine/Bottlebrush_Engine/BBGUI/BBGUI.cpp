@@ -30,6 +30,11 @@ void updateBBGUIFrameStart()
     ImGui::ShowDemoWindow(); // Show demo window
 }
 
+/*void BBGui::Text(const std::string_view str)
+{
+    ImGui::Text(str);
+}*/
+
 void updateBBGUIFrameEnd()
 {
     // Rendering

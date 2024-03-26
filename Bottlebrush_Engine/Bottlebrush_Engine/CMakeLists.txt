@@ -11,6 +11,7 @@ option(GLFW_BUILD_DOCS OFF)
 option(GLFW_BUILD_EXAMPLES OFF)
 option(GLFW_BUILD_TESTS OFF)
 add_subdirectory(Vendors/assimp)
+add_subdirectory(Vendors/Lua)
 add_subdirectory(Vendors/EnTT)
 add_subdirectory(Vendors/glfw)
 add_subdirectory(Vendors/imGUI)
@@ -40,15 +41,17 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 # Vendor include directories
 include_directories(
-        BBComponentSystem BBMaths BBScene RenderEngine
+        BBComponentSystem BBMaths BBScene BBScript RenderEngine
         include
         Vendors/assimp
-        BBComponentSystem BBMaths BBScene
+        Vendors/Lua
         Vendors/EnTT
         Vendors/glfw/include
         Vendors/glad/include
         Vendors/imGUI
-        Vendors/imGUI/backends #yeah this is a bit messy since it's ALL under imGUI but it wouldn't work otherwise with our folder structure
+        Vendors/imGUI/backends
+        Vendors/Lua/sol2-3.3.0/include/sol
+        #yeah this is a bit messy since it's ALL under imGUI but it wouldn't work otherwise with our folder structure
 )
 
 file(GLOB VENDORS_SOURCES Vendors/glad/src/glad.c)
@@ -57,13 +60,15 @@ source_group("Vendors" FILES ${VENDORS_SOURCES})
 # Add source to this project's executable.
 add_executable(Bottlebrush_Engine "EntryPoint.cpp" ${VENDORS_SOURCES})
 
-target_link_libraries(Bottlebrush_Engine BBScene BBComponentSystem RenderEngine BBGUI BBMaths BBAssetImporter glfw ${GLFW_LIBRARIES})
+target_link_libraries(Bottlebrush_Engine BBScene BBComponentSystem RenderEngine BBGUI BBMaths BBScript BBAssetImporter glfw ${GLFW_LIBRARIES} LUA)
+
 
 if (CMAKE_VERSION VERSION_GREATER 3.13)
   set_property(TARGET Bottlebrush_Engine PROPERTY CXX_STANDARD 20)
 endif()
 
 add_subdirectory(BBAssetImporter)
+add_subdirectory(BBScript)
 add_subdirectory(BBScene)
 add_subdirectory(BBComponentSystem)
 add_subdirectory(BBGUI)
