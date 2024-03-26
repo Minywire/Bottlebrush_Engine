@@ -200,7 +200,7 @@ std::filesystem::path OpenGLShader::GenFilePath(const std::string& filename)
     // simple solution for file not valid? used with CheckSSFValid()
     if (index == std::string::npos)
     {
-        return std::filesystem::path("nullptr");
+        return "nullptr";
     }
 
     // Get file extension
