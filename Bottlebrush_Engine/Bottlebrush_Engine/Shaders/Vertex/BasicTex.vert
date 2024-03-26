@@ -10,4 +10,4 @@ void main()
 {
 	gl_Position = position;
 	v_TexCoord = texCoord;
-};
+}

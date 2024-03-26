@@ -7,4 +7,4 @@ uniform vec4 u_Color;
 void main()
 {
    color = u_Color;
-};
+}
