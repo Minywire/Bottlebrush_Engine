@@ -16,7 +16,7 @@ protected:
 	
 public:
 	/// Deconstructor
-	virtual ~VertexArray() = 0{};
+	~VertexArray(){};
 
 	/// @author Alan Brunet
     /// @brief Adds the vertex Buffer and applies its layout

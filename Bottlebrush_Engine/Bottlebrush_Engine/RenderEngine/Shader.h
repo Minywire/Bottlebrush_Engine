@@ -33,7 +33,7 @@ class Shader {
 public:
     Shader(){};
     /// Deconstructor
-    virtual ~Shader(){};
+    ~Shader(){};
 
     /// @author Alan Brunet
     /// @brief Binds the Shader to use / add

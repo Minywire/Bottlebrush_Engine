@@ -15,7 +15,7 @@ private:
 	/// @author Alan Brunet
     /// @brief Constructor that generates a texture buffer
 	OpenGLTexture(int width, int height, int bpp);
-	~OpenGLTexture() override;
+	~OpenGLTexture();
 
 	/// @author Alan Brunet
     /// @brief Creates a texture from a given texture image data.

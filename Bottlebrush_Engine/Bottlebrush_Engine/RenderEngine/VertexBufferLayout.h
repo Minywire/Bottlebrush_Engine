@@ -49,7 +49,7 @@ public:
 	VertexBufferLayout(){};
 
 	/// Deconstructor
-    virtual ~VertexBufferLayout() = 0{};
+    ~VertexBufferLayout(){};
 
 	/// @author Alan Brunet
     /// @brief Setting the byte count of types

@@ -8,7 +8,7 @@ protected:
 
 public:
 	Texture(){};
-	virtual ~Texture() = 0 {};
+	~Texture(){};
 
 	/// @author Alan Brunet
     /// @brief Creates a texture from a given texture image data.

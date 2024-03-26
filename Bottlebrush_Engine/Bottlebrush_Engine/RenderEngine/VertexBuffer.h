@@ -13,7 +13,7 @@ protected:
 
 public:
 	/// Deconstructor
-	virtual ~VertexBuffer() = default;
+	~VertexBuffer(){};
 
 	/// @author Alan Brunet
     /// @brief Binding buffer

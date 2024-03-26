@@ -18,7 +18,7 @@ protected:
 	/// Constructor
     IndexBuffer(const unsigned int* data, unsigned int count) {};
 	/// Deconstructor
-	virtual ~IndexBuffer(){};
+	~IndexBuffer(){};
 
 	/// @author Alan Brunet
 	/// @brief Binding buffer to draw / add

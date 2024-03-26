@@ -20,7 +20,7 @@ protected:
 	
 public:
     RenderEngine(){};
-	virtual ~RenderEngine(){};
+    ~RenderEngine(){};
 
 	/// will be deleted at some point, this is just for demostration of setting up render engine
 	void TestSetupValues();
