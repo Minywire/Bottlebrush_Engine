@@ -29,7 +29,7 @@ public:
 
 	/// @author Alan Brunet
 	/// @brief Unbinding buffer
-	void UnBind() const override;
+	void Unbind() const override;
 
 	/// @author Alan Brunet
 	/// @brief returning the number of vertex points used

@@ -13,8 +13,20 @@
 class OpenGLRenderer : public RenderEngine
 {
 private:
+    /// Vertex Array pointer
+    std::unique_ptr<VertexArray> m_VA;
+    /// Vertex Buffer pointer
+    std::unique_ptr<VertexBuffer> m_VB;
+    /// Index Buffer pointer
+    std::unique_ptr<IndexBuffer> m_IB;
+    /// Vertex Buffer Layout pointer
+    std::unique_ptr<VertexBufferLayout> m_VBL;
+    /// Shader pointer
+    std::unique_ptr<Shader> m_SH;
+    /// Texture Buffer pointer
+    std::unique_ptr<Texture> m_TX;
 
-public:
+ public:
     OpenGLRenderer();
     ~OpenGLRenderer() override;
 
@@ -53,6 +65,7 @@ public:
     /// @param sizes[] needs to specify how many elements are part of that
     /// attribute. i.e., vec3 pos = 3, vec2 pos = 2. Next element the size of
     /// texcoord = 2. Next element the size normal = 3
+    /// @TODO DataType is hard coded currently in implementation.
     void PushLayout(unsigned int count, unsigned int sizes[]) override;
 
     /// @author Alan Brunet
@@ -78,6 +91,18 @@ public:
                          std::string fragmentsource = "nullptr",
                          std::string computesource = "nullptr",
                          std::string geometrysource = "nullptr") override;
+
+    /// @author Alan Brunet
+    /// @brief Creates a texture from a given image, and an assigned slot
+    /// which is defaulted to zero
+    /// @param width is image width
+    /// @param height is image height
+    /// @param bpp is bytes per pixel
+    /// @param imagedata is the raw data from an image
+    /// @param slot for overlapping image textures if not 0.
+    /// Defaulted to zero
+    void SetTexture(int width, int height, int bpp, unsigned char* imagedata,
+                    unsigned int slot = 0) override;
 
     /// @author Alan Brunet
     /// @brief Must be called last to unbind all data. So it does not flow data

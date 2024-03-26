@@ -26,7 +26,7 @@ protected:
 
 	/// @author Alan Brunet
 	/// @brief Unbinding buffer
-	virtual void UnBind() const = 0;
+	virtual void Unbind() const = 0;
 
 	/// @author Alan Brunet
 	/// @brief returning the number of vertex points used

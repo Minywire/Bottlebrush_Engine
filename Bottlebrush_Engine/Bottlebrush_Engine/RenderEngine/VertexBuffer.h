@@ -21,5 +21,5 @@ public:
 
 	/// @author Alan Brunet
     /// @brief Unbinding buffer
-	virtual void UnBind() const = 0;
+	virtual void Unbind() const = 0;
 };

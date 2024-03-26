@@ -32,5 +32,5 @@ public:
 
     /// @author Alan Brunet
     /// @brief Unbinding buffer
-	void UnBind() const override;
+	void Unbind() const override;
 };

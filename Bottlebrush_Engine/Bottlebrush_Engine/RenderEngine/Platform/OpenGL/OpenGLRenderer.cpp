@@ -63,6 +63,7 @@ void OpenGLRenderer::PushLayout(unsigned int count, unsigned int sizes[])
 
     for (unsigned int i = 0; i < count; i++) 
     {
+        //@TODO DataType is hard coded currently.
         m_VBL->Push(sizes[i], DataType::FLOAT);
     }
 
@@ -93,19 +94,27 @@ void OpenGLRenderer::SetShaderSource(
     m_SH = GraphicsFactory<GraphicsAPI::OpenGL>::CreateShaderBuffer(ssf);
 }
 
+void OpenGLRenderer::SetTexture(int width, int height, int bpp, unsigned char* imagedata, unsigned int slot)
+{
+  m_TX = GraphicsFactory<GraphicsAPI::OpenGL>::CreateTextureBuffer(width, height, bpp);
+
+  m_TX->CreateTexture(imagedata);
+  m_TX->Bind(slot);
+}
+
 void OpenGLRenderer::SetColour(float r, float g, float b, float a) {
     // basic.frag has a uniform declaration
     m_SH->Bind();
     m_SH->SetUniform4f("u_Color", r, g, b, a);
 }
 
-
 void OpenGLRenderer::ClearBuffers() 
 { 
     // clearing all buffer bindings
-    m_VA->Unbind();
-    m_SH->Unbind();
-    m_IB->UnBind();
-    m_VB->UnBind();
+    if(m_VA) m_VA->Unbind();
+    if(m_SH) m_SH->Unbind();
+    if(m_IB) m_IB->Unbind();
+    if(m_VB) m_VB->Unbind();
+    if(m_TX) m_TX->Unbind();
 }
 

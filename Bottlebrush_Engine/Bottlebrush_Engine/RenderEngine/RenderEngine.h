@@ -9,6 +9,7 @@
 #include "Shader.h"
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
+#include "Texture.h"
 
 /// @author Alan Brunet
 /// @brief Base class for rendering objects. It contains member pointers to a Vertex Array,
@@ -16,11 +17,7 @@
 class RenderEngine
 {
 protected:
-	std::unique_ptr<VertexArray> m_VA;
-	std::unique_ptr<VertexBuffer> m_VB;
-    std::unique_ptr<IndexBuffer> m_IB;
-    std::unique_ptr<VertexBufferLayout> m_VBL;
-	std::unique_ptr<Shader> m_SH;
+	
 public:
     RenderEngine(){};
 	virtual ~RenderEngine(){};
@@ -74,6 +71,19 @@ public:
 		std::string fragmentsource = "nullptr",
 		std::string computesource = "nullptr",
         std::string geometrysource = "nullptr") = 0;
+
+	/// @author Alan Brunet
+    /// @brief Creates a texture from a given image, and an assigned slot
+    /// which is defaulted to zero
+    /// @param width is image width
+    /// @param height is image height
+    /// @param bpp is bytes per pixel
+    /// @param imagedata is the raw data from an image
+    /// @param slot for overlapping image textures if not 0.
+    /// Defaulted to zero
+    virtual void SetTexture(int width, int height, int bpp,
+                            unsigned char* imagedata,
+                            unsigned int slot = 0) = 0;
 
 	/// @author Alan Brunet
     /// @brief Must be called last to unbind all data. So it does not flow data into the next buffers.
