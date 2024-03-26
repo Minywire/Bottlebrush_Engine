@@ -5,12 +5,6 @@
 #include "OpenGLShader.h"
 #include "OpenGLRenderer.h"
 
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
-
-
 OpenGLShader::OpenGLShader(ShaderSourceFiles ssf) 
     : m_SSF(ssf)
 {
