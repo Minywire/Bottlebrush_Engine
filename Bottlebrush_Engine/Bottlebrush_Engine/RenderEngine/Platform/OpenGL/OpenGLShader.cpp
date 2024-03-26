@@ -123,6 +123,8 @@ std::string OpenGLShader::LoadShaderType(const std::filesystem::path& filepath)
     auto shader_file_contents = std::string(std::istreambuf_iterator<char>(file_stream),
         std::istreambuf_iterator<char>());
 
+    std::cout << "Load:" << shader_file_contents << std::endl;
+
     return shader_file_contents;
 }
 
@@ -194,6 +196,9 @@ int OpenGLShader::GetUniformLocation(const std::string& name)
 std::filesystem::path OpenGLShader::GenFilePath(const std::string& filename)
 {
     std::string path;
+    std::filesystem::path p("Shaders");
+    //p.append("Vertex");
+
 
     // index where . is
     auto index = filename.rfind('.');
@@ -205,12 +210,16 @@ std::filesystem::path OpenGLShader::GenFilePath(const std::string& filename)
 
     // Get file extension
     auto ext = filename.substr(index + 1);
-    if      (ext == "vert") path = "Shaders/Vertex/";
-    else if (ext == "frag") path = "Shaders/Fragment/";
-    else if (ext == "geom") path = "Shaders/Geometry/";
-    else if (ext == "comp") path = "Shaders/Compute/";
-    
-    return (path + filename);
+    if      (ext == "vert") path = "Vertex";
+    else if (ext == "frag") path = "Fragment";
+    else if (ext == "geom") path = "Geometry";
+    else if (ext == "comp") path = "Compute";
+
+    p.append(path);
+    p.append(filename);
+    //std::cout << "GP: " << p << std::endl;
+
+    return (p);
 }
 
 bool OpenGLShader::CheckSSFValid(const std::string& filename)
