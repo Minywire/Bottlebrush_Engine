@@ -14,17 +14,17 @@ class OpenGLRenderer : public RenderEngine
 {
 private:
     /// Vertex Array pointer
-    std::unique_ptr<VertexArray> m_VA;
+    std::unique_ptr<VertexArray> m_VertexArray;
     /// Vertex Buffer pointer
-    std::unique_ptr<VertexBuffer> m_VB;
+    std::unique_ptr<VertexBuffer> m_VertexBuffer;
     /// Index Buffer pointer
-    std::unique_ptr<IndexBuffer> m_IB;
+    std::unique_ptr<IndexBuffer> m_IndexBuffer;
     /// Vertex Buffer Layout pointer
-    std::unique_ptr<VertexBufferLayout> m_VBL;
+    std::unique_ptr<VertexBufferLayout> m_VertexBufferLayout;
     /// Shader pointer
-    std::unique_ptr<Shader> m_SH;
+    std::unique_ptr<Shader> m_Shader;
     /// Texture Buffer pointer
-    std::unique_ptr<Texture> m_TX;
+    std::unique_ptr<Texture> m_Texture;
 
  public:
     OpenGLRenderer();
@@ -54,7 +54,7 @@ private:
     /// @param vertexcount is the count of how many vertex the object has
     /// @param vertDataSize is the total amount of elements for that vertex
     /// (e.g., vec3 position, vec2 texcoord = 5 in total)
-    void SetVertexBuffer(float vertData[], unsigned int vertexCount,unsigned int vertDataSize) override;
+    void SetVertexBuffer(const void* vertData, unsigned int vertexCount,unsigned int vertDataSize) override;
 
     /// @author Alan Brunet
     /// @brief Called second, Initialises a Vertex Buffer Layout, and inserts as

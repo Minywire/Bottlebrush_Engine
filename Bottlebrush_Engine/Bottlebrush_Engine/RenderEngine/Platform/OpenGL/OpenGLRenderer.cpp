@@ -32,9 +32,17 @@ void OpenGLRenderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Sh
 
 void OpenGLRenderer::Draw() const 
 {
-    m_SH->Bind();
-    m_VA->Bind();
-    glDrawElements(GL_TRIANGLES, m_IB->GetCount(), GL_UNSIGNED_INT, nullptr);
+    if (m_Shader) m_Shader->Bind();
+    if (m_VertexArray) 
+    {
+        m_VertexArray->Bind();
+        glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+    } 
+    else 
+    {
+        assert(false && "VertexArray is not bound on an object");
+    }
+        
 }
 
 void OpenGLRenderer::DisplayGPUInfo() const 
@@ -45,13 +53,10 @@ void OpenGLRenderer::DisplayGPUInfo() const
 }
 
 
-void OpenGLRenderer::SetVertexBuffer(float vertData[], unsigned int vertexCount, unsigned int vertDataSize) 
+void OpenGLRenderer::SetVertexBuffer(const void* vertData, unsigned int vertexCount, unsigned int vertDataSize) 
 {
-    // vertex array object
-    m_VA = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexArray();
-
     // 4 vertex and 2 points (2D)
-    m_VB = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexBuffer(vertData, vertexCount * vertDataSize * sizeof(float));
+    m_VertexBuffer = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexBuffer(vertData, vertexCount * vertDataSize * sizeof(float));
 }
 
 void OpenGLRenderer::PushLayout(unsigned int count, unsigned int sizes[]) 
@@ -59,22 +64,25 @@ void OpenGLRenderer::PushLayout(unsigned int count, unsigned int sizes[])
     // define the format of each vertex data
     // i.e., 2 = 2 points of positions for each vertex (can use different numbers
     // for different attributes)
-    m_VBL = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexBufferLayout();
+    m_VertexBufferLayout = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexBufferLayout();
+
+    // vertex array object
+    m_VertexArray = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexArray();
 
     for (unsigned int i = 0; i < count; i++) 
     {
         //@TODO DataType is hard coded currently.
-        m_VBL->Push(sizes[i], DataType::FLOAT);
+        m_VertexBufferLayout->Push(sizes[i], DataType::FLOAT);
     }
 
     // add current buffer with its layout specs to the vertex array
-    m_VA->AddBuffer(*m_VB, *m_VBL);
+    m_VertexArray->AddBuffer(*m_VertexBuffer, *m_VertexBufferLayout);
 }
 
 void OpenGLRenderer::SetIndexBuffer(unsigned int indices[], unsigned int count)
 {
     // 6 = the count of elements in indices
-    m_IB = GraphicsFactory<GraphicsAPI::OpenGL>::CreateIndexBuffer(indices, count);
+    m_IndexBuffer = GraphicsFactory<GraphicsAPI::OpenGL>::CreateIndexBuffer(indices, count);
 }
 
 void OpenGLRenderer::SetShaderSource(
@@ -91,30 +99,37 @@ void OpenGLRenderer::SetShaderSource(
     ssf.GeometrySource = geometrysource;
 
     // calling the constructor will read the files within ssf and apply them
-    m_SH = GraphicsFactory<GraphicsAPI::OpenGL>::CreateShaderBuffer(ssf);
+    m_Shader = GraphicsFactory<GraphicsAPI::OpenGL>::CreateShaderBuffer(ssf);
 }
 
 void OpenGLRenderer::SetTexture(int width, int height, int bpp, unsigned char* imagedata, unsigned int slot)
 {
-  m_TX = GraphicsFactory<GraphicsAPI::OpenGL>::CreateTextureBuffer(width, height, bpp);
+    m_Texture = GraphicsFactory<GraphicsAPI::OpenGL>::CreateTextureBuffer(width, height, bpp);
 
-  m_TX->CreateTexture(imagedata);
-  m_TX->Bind(slot);
+    m_Texture->CreateTexture(imagedata);
+    m_Texture->Bind(slot);
 }
 
 void OpenGLRenderer::SetColour(float r, float g, float b, float a) {
     // basic.frag has a uniform declaration
-    m_SH->Bind();
-    m_SH->SetUniform4f("u_Color", r, g, b, a);
+    if (m_Shader) 
+    {
+        m_Shader->Bind();
+        m_Shader->SetUniform4f("u_Color", r, g, b, a);
+    }
+    else
+    {
+        std::cout << "Warning: Shader is not bound" << std::endl;
+    }
 }
 
 void OpenGLRenderer::ClearBuffers() 
 { 
     // clearing all buffer bindings
-    if(m_VA) m_VA->Unbind();
-    if(m_SH) m_SH->Unbind();
-    if(m_IB) m_IB->Unbind();
-    if(m_VB) m_VB->Unbind();
-    if(m_TX) m_TX->Unbind();
+    if(m_VertexArray) m_VertexArray->Unbind();
+    if(m_Shader) m_Shader->Unbind();
+    if(m_IndexBuffer) m_IndexBuffer->Unbind();
+    if(m_VertexBuffer) m_VertexBuffer->Unbind();
+    if(m_Texture) m_Texture->Unbind();
 }
 

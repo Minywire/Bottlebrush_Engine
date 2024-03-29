@@ -45,8 +45,8 @@ unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& s
     glShaderSource(id, 1, &src, nullptr);
     glCompileShader(id);
 
-    //@DEBUG only
-    std::cout << "Shader Source:\n" << source << std::endl;
+    //@TODO delete after debugging
+    //std::cout << "Shader Source:\n" << source << std::endl;
 
     // error checking
     int result;
@@ -93,12 +93,12 @@ void OpenGLShader::LinkShader(unsigned int& program)
     glGetProgramiv(program, GL_LINK_STATUS, &m_Status);
     if (m_Status == false) {
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &m_Length);
-        // TODO: Do i need to do memory management stuff with this unique ptr?
+        // @TODO: Do i need to do memory management stuff with this unique ptr?
         std::unique_ptr<char[]> buffer(new char[m_Length]);
         glGetProgramInfoLog(program, m_Length, nullptr, buffer.get());
         fprintf(stderr, "Link unsuccessful: %s", buffer.get());
     }
-    // this m_Status gets set to a negative value, causing assert to be called
+    // @TODO this m_Status gets set to a negative value, causing assert to be called
     //assert(m_Status == true);
 }
 
@@ -115,7 +115,7 @@ void OpenGLShader::AttachShader(const std::string& shadersource, unsigned int& p
 
 std::string OpenGLShader::LoadShaderType(const std::filesystem::path& filepath)
 {
-    //@DEBUG only
+    //@TODO delete after debugging
     std::cout << "Path: " << filepath << std::endl;
 
     // Load GLSL shader source from file
@@ -123,7 +123,8 @@ std::string OpenGLShader::LoadShaderType(const std::filesystem::path& filepath)
     auto shader_file_contents = std::string(std::istreambuf_iterator<char>(file_stream),
         std::istreambuf_iterator<char>());
 
-    std::cout << "Load:" << shader_file_contents << std::endl;
+    //@TODO delete after debugging
+    std::cout << "Load: \n" << shader_file_contents << std::endl;
 
     return shader_file_contents;
 }
