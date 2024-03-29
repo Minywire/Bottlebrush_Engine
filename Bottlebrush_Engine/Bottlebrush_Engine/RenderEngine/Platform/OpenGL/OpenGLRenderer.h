@@ -14,17 +14,17 @@ class OpenGLRenderer : public RenderEngine
 {
 private:
     /// Vertex Array pointer
-    std::unique_ptr<VertexArray> m_VA;
+    std::unique_ptr<VertexArray> m_VertexArray;
     /// Vertex Buffer pointer
-    std::unique_ptr<VertexBuffer> m_VB;
+    std::unique_ptr<VertexBuffer> m_VertexBuffer;
     /// Index Buffer pointer
-    std::unique_ptr<IndexBuffer> m_IB;
+    std::unique_ptr<IndexBuffer> m_IndexBuffer;
     /// Vertex Buffer Layout pointer
-    std::unique_ptr<VertexBufferLayout> m_VBL;
+    std::unique_ptr<VertexBufferLayout> m_VertexBufferLayout;
     /// Shader pointer
-    std::unique_ptr<Shader> m_SH;
+    std::unique_ptr<Shader> m_Shader;
     /// Texture Buffer pointer
-    std::unique_ptr<Texture> m_TX;
+    std::unique_ptr<Texture> m_Texture;
 
  public:
     OpenGLRenderer();
