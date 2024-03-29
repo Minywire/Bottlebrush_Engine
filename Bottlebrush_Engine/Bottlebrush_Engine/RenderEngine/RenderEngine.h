@@ -45,7 +45,7 @@ public:
 	/// @param vertData is the stream of data for all vertex data (i.e., position, normal, texture coords
 	/// @param vertexcount is the count of how many vertex the object has
 	/// @param vertDataSize is the total amount of elements for that vertex (e.g., vec3 position, vec2 texcoord = 5 in total)
-	virtual void SetVertexBuffer(float vertData[], unsigned int vertexCount, unsigned int vertDataSize) = 0;
+	virtual void SetVertexBuffer(const void* vertData, unsigned int vertexCount, unsigned int vertDataSize) = 0;
 
 	/// @author Alan Brunet
 	/// @brief Called second, Initialises a Vertex Buffer Layout, and inserts as many as count is and adds this to the Vertex Buffer

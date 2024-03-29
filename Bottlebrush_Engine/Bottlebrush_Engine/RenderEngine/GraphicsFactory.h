@@ -24,8 +24,8 @@ template <GraphicsAPI>
 class GraphicsFactory {
 public:
     static std::unique_ptr<RenderEngine> CreateRenderer();
-	static std::unique_ptr<VertexBuffer> CreateVertexBuffer(float* vertices, unsigned int size);
-	static std::unique_ptr<VertexArray> CreateVertexArray();
+	static std::unique_ptr<VertexBuffer> CreateVertexBuffer(const void* vertices, unsigned int size);
+    static std::unique_ptr<VertexArray> CreateVertexArray();    
     static std::unique_ptr<VertexBufferLayout> CreateVertexBufferLayout();
     static std::unique_ptr<IndexBuffer> CreateIndexBuffer(const unsigned int* data, unsigned int count);
     static std::unique_ptr<Texture> CreateTextureBuffer(int width, int height, int bbp);
@@ -38,7 +38,7 @@ public:
     static std::unique_ptr<RenderEngine> CreateRenderer() {
         return std::make_unique<OpenGLRenderer>();
     }
-    static std::unique_ptr<VertexBuffer> CreateVertexBuffer(float* vertices, unsigned int size) {
+    static std::unique_ptr<VertexBuffer> CreateVertexBuffer(const void* vertices, unsigned int size) {
         return std::make_unique<OpenGLVertexBuffer>(vertices, size);
     }
     static std::unique_ptr<VertexArray> CreateVertexArray() {

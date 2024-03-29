@@ -54,7 +54,7 @@ private:
     /// @param vertexcount is the count of how many vertex the object has
     /// @param vertDataSize is the total amount of elements for that vertex
     /// (e.g., vec3 position, vec2 texcoord = 5 in total)
-    void SetVertexBuffer(float vertData[], unsigned int vertexCount,unsigned int vertDataSize) override;
+    void SetVertexBuffer(const void* vertData, unsigned int vertexCount,unsigned int vertDataSize) override;
 
     /// @author Alan Brunet
     /// @brief Called second, Initialises a Vertex Buffer Layout, and inserts as

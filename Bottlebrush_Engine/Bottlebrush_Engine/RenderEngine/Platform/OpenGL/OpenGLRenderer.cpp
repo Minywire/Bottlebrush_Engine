@@ -45,7 +45,7 @@ void OpenGLRenderer::DisplayGPUInfo() const
 }
 
 
-void OpenGLRenderer::SetVertexBuffer(float vertData[], unsigned int vertexCount, unsigned int vertDataSize) 
+void OpenGLRenderer::SetVertexBuffer(const void* vertData, unsigned int vertexCount, unsigned int vertDataSize) 
 {
     // vertex array object
     m_VA = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexArray();

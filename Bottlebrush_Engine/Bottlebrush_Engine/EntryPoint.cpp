@@ -68,8 +68,9 @@ int main()
     unsigned int indices[] = {0, 1, 2, 2, 3, 0};
 
     //@TODO Implement and test Texture.h
+    const GraphicsAPI s_API = GraphicsAPI::OpenGL;
 
-    std::unique_ptr<RenderEngine> r = GraphicsFactory<GraphicsAPI::OpenGL>::CreateRenderer();
+    std::unique_ptr<RenderEngine> r = GraphicsFactory<s_API>::CreateRenderer();
 
     r->SetVertexBuffer(positions, 4, 3);
     r->PushLayout(1, layoutsizes);
@@ -78,7 +79,7 @@ int main()
     r->SetColour(0.2f, 0.3f, 0.8f, 1.0f);
     r->ClearBuffers();
 
-    std::unique_ptr<RenderEngine> r2 = GraphicsFactory<GraphicsAPI::OpenGL>::CreateRenderer();
+    std::unique_ptr<RenderEngine> r2 = GraphicsFactory<s_API>::CreateRenderer();
 
     r2->SetVertexBuffer(positions2, 4, 3);
     r2->PushLayout(1, layoutsizes);
