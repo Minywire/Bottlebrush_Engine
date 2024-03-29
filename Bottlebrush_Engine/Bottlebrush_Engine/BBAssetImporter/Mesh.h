@@ -10,6 +10,8 @@
 
 #include <Vector3D.h>
 #include <Vector2D.h>
+#include <RenderEngine.h>
+#include <GraphicsFactory.h>
 
 #include "glad/glad.h"
 
@@ -28,11 +30,6 @@ struct Vertex {
   BBMaths::Vector2D TexCoords;
 };
 
-struct Texture {
-  unsigned int id;
-  std::string type;
-};
-
 class Mesh {
  public:
   Mesh();
@@ -47,15 +44,14 @@ class Mesh {
 
 
  private:
-
-  std::vector<std::unique_ptr<Mesh>> mSubMeshes;
+  //std::vector<std::unique_ptr<Mesh>> mSubMeshes;
   std::vector<unsigned int> mIndices;
   std::vector<Vertex> mVertices;
   std::vector<Texture> mTextures;
 
-  GLuint mVertexArray;
-  GLuint mVertexBuffer;
-  GLuint mElementBuffer;
+  std::unique_ptr<VertexArray> vertexArray;
+  std::unique_ptr<VertexBuffer> vertexBuffer;
+  std::unique_ptr<IndexBuffer> indexBuffer;
 };
 
 

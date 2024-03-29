@@ -76,3 +76,5 @@ add_subdirectory(BBMaths)
 add_subdirectory(RenderEngine)
 add_subdirectory(Tests/BBMaths)
 # TODO: Add tests and install targets if needed.
+
+add_definitions(-std=c++20)
