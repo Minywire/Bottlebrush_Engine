@@ -47,7 +47,8 @@ include_directories(
         Vendors/glad/include
         Vendors/imGUI
         Vendors/imGUI/backends
-        Vendors/Lua/sol2-3.3.0/include/sol
+        Vendors/Lua/sol2-3.3.0/include/
+        Vendors/Lua/lua-5.4.6/
         #yeah this is a bit messy since it's ALL under imGUI but it wouldn't work otherwise with our folder structure
 )
 

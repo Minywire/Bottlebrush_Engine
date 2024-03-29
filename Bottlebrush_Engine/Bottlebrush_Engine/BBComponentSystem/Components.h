@@ -5,6 +5,12 @@
 
 #include <string>
 #include "Maths.h"
+#include <sol/sol.hpp>
+
+struct ScriptComponent
+{
+    sol::function func;
+};
 
 /**
  * @brief Component that controls the position of an entity
