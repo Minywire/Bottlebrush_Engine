@@ -4,28 +4,18 @@
 #pragma once
 
 #include <vector>
-#include <glad/glad.h>
-#include "OpenGLRenderer.h"
 
 #include "VertexBufferLayout.h"
 
-// manually setting the byte count of GL types
-static unsigned int GetSizeOfType(unsigned int type)
-{
-	switch (type)
-	{
-	case GL_FLOAT:				return 4;
-	case GL_UNSIGNED_INT:		return 4;
-	case GL_UNSIGNED_BYTE:		return 1;
-	}
-	assert(false && "This is false.");
-	return 0;
-}
-
+/// @author Alan Brunet
+/// @brief This is used to contain a vector array of VertexBuffer Element
+/// details that is passed into API
+/// @see glVertexAttribPointer() https://docs.gl/gl4/glVertexAttribPointer
 class OpenGLVertexBufferLayout : public VertexBufferLayout
 {
 private:
-	///
+	/// vector of buffer elements
+	/// @see struct VertexBufferElement
 	std::vector<VertexBufferElement> m_Elements;
 
 	/// OpenGL stride (in glVertexAttribPointer())
@@ -34,13 +24,23 @@ private:
 	unsigned int m_Stride;
 
  public:
-	/// template for pushing the layout of vertex.
-	template<typename T>
-	void Push(unsigned int count);
+    OpenGLVertexBufferLayout();
+	/// Deconstructor
+    ~OpenGLVertexBufferLayout();
 
-	/// Returns member variable m_Elements
-	std::vector<VertexBufferElement> GetElements() const &;
+    /// @author Alan Brunet
+    /// @brief Setting the byte count of types
+	unsigned int GetSizeOfType(unsigned int type) override;
 
-	/// Returns member variable m_Stride
-	unsigned int GetStride() const;
+	/// @author Alan Brunet
+    /// @brief For pushing the layout of vertex onto the VertexBufferElement vector
+	void Push(unsigned int count, DataType dt) override;
+
+	/// @author Alan Brunet
+    /// @return member variable m_Elements
+	std::vector<VertexBufferElement> GetElements() const & override;
+
+	/// @author Alan Brunet
+    /// @return member variable m_Stride
+	unsigned int GetStride() const override;
 };

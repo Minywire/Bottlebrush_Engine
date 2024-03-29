@@ -2,7 +2,15 @@ cmake_minimum_required(VERSION 3.8)
 
 add_library(RenderEngine STATIC)
 
-file(GLOB SOURCES *.cpp *.h)
+file(GLOB SOURCES RenderEngine.cpp 
+	RenderEngine.h 
+	GraphicsFactory.h 
+	IndexBuffer.h 
+	Shader.h 
+	Texture.h 
+	VertexArray.h 
+	VertexBuffer.h 
+	VertexBufferLayout.h)
 
 add_subdirectory(Platform/OpenGL)
 

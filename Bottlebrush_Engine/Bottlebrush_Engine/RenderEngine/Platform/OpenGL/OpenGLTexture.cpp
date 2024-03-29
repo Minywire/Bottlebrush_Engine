@@ -1,7 +1,20 @@
 #include "OpenGLTexture.h"
 
-OpenGLTexture::OpenGLTexture(const std::string& path)
+#include "OpenGLRenderer.h"
+
+OpenGLTexture::OpenGLTexture(int width, int height, int bpp)
+    : m_Width(width), m_Height(height), m_BPP(bpp), m_LocalBuffer(nullptr)
 {
+    glGenTextures(1, &m_RendererID);
+}
+
+OpenGLTexture::~OpenGLTexture() 
+{ 
+    glDeleteTextures(1, &m_RendererID); 
+}
+
+void OpenGLTexture::CreateTexture(unsigned char* data) {
+
     /* 
     * @TODO find an alternative to stbi.h for loading files
     * 
@@ -10,11 +23,17 @@ OpenGLTexture::OpenGLTexture(const std::string& path)
     stbi_set_flip_vertically_on_load(1);
     // 4 = RGBA (desired channels)
     m_LocalBuffer = stbi_load(path.c_str(), &m_Width, &m_Height, &m_BPP, 4);
+
+    // will find an alternative to stbi.h for loading files
+    //if (m_LocalBuffer) stbi_image_free(m_LocalBuffer);
     */
 
-    glGenTextures(1, &m_RendererID);
+    m_LocalBuffer = data; 
+    
     glBindTexture(GL_TEXTURE_2D, m_RendererID);
 
+    // OpenGL expects image to start at bottom left, instead of top left
+    
     // how the texture will be resampled down if it needs to be rendered smaller
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     // how the texture will be resampled up if it needs to be rendered larger
@@ -25,19 +44,10 @@ OpenGLTexture::OpenGLTexture(const std::string& path)
 
     // RGBA8 how you want opengl to format the data
     // RGBA is the format we are supplying
-  
-    //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_LocalBuffer);
-  
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_LocalBuffer);
+
     // Unbind texture
     glBindTexture(GL_TEXTURE_2D, 0);
-
-    // will find an alternative to stbi.h for loading files
-    //if (m_LocalBuffer) stbi_image_free(m_LocalBuffer);
-}
-
-OpenGLTexture::~OpenGLTexture() 
-{ 
-    glDeleteTextures(1, &m_RendererID); 
 }
 
 void OpenGLTexture::Bind(unsigned int slot) const 
@@ -51,4 +61,14 @@ void OpenGLTexture::Bind(unsigned int slot) const
 void OpenGLTexture::Unbind() const 
 {
     glBindTexture(GL_TEXTURE_2D, 0); 
+}
+
+int OpenGLTexture::GetWidth() const 
+{ 
+    return m_Width; 
+}
+
+int OpenGLTexture::GetHeight() const 
+{ 
+    return m_Height; 
 }

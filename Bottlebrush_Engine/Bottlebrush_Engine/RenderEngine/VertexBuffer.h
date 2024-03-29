@@ -3,19 +3,23 @@
 //
 #pragma once
 
-/// Buffer for each vertex 
+/// @author Alan Brunet
+/// @brief Buffer data for each vertex. 
+/// It must have positions (2D or 3D), it can also have normals and texcoords / colour
 class VertexBuffer
 {
 protected:
 	
+
 public:
 	/// Deconstructor
-	virtual ~VertexBuffer() = default;
+	~VertexBuffer(){};
 
-	/// Binding buffer
+	/// @author Alan Brunet
+    /// @brief Binding buffer
 	virtual void Bind() const = 0;
-	/// Unbinding buffer
-	virtual void UnBind() const = 0;
 
-	static VertexBuffer* Create(float* vertices, unsigned int size);
+	/// @author Alan Brunet
+    /// @brief Unbinding buffer
+	virtual void Unbind() const = 0;
 };

@@ -4,7 +4,6 @@
 
 #include "OpenGLVertexArray.h"
 
-#include "OpenGLVertexBufferLayout.h"
 #include "OpenGLRenderer.h"
 
 OpenGLVertexArray::OpenGLVertexArray()
@@ -19,7 +18,7 @@ OpenGLVertexArray::~OpenGLVertexArray()
 	glDeleteVertexArrays(1, &m_RendererID);
 }
 
-void OpenGLVertexArray::AddBuffer(const OpenGLVertexBuffer & vb, OpenGLVertexBufferLayout & layout)
+void OpenGLVertexArray::AddBuffer(const VertexBuffer& vb, VertexBufferLayout& layout)
 {
 	// bind vertex array buffer first to add vertex buffers
 	Bind();
@@ -38,15 +37,17 @@ void OpenGLVertexArray::AddBuffer(const OpenGLVertexBuffer & vb, OpenGLVertexBuf
 		// enabling the vertex attribute array
 		glEnableVertexAttribArray(i);
 		// Specify the layout of this attribute
-		glVertexAttribPointer(i, 
-			element.count, 
-			element.type, 
-			element.normalised, 
-			layout.GetStride(), 
-			(const void*)offset);
+		glVertexAttribPointer(
+        i,
+        element.count,
+        element.type,
+        element.normalised,
+        layout.GetStride(),
+		(const void*)offset
+        );
 
 		// calc byte space taken up by this attribute
-		offset += element.count * GetSizeOfType(element.type);
+		offset += element.count * layout.GetSizeOfType(element.type);
 	}
 }
 
