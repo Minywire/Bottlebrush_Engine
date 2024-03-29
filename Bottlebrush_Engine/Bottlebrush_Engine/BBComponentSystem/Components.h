@@ -7,7 +7,11 @@
 #include "Maths.h"
 #include <sol/sol.hpp>
 
-struct ScriptComponent
+/**
+ * @brief Component that binds a lua function to an Entity
+ * @author Marco Garzon Lara
+ */
+struct ScriptFunctionComponent
 {
     sol::function func;
 };

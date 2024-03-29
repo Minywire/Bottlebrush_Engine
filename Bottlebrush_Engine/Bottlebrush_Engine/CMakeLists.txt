@@ -67,7 +67,7 @@ source_group("Vendors" FILES ${VENDORS_SOURCES})
 # Add source to this project's executable.
 add_executable(Bottlebrush_Engine "EntryPoint.cpp" ${VENDORS_SOURCES})
 
-target_link_libraries(Bottlebrush_Engine BBScene BBComponentSystem RenderEngine BBGUI BBMaths BBScript glfw ${GLFW_LIBRARIES} LUA)
+target_link_libraries(Bottlebrush_Engine BBScene BBComponentSystem RenderEngine BBGUI BBMaths BBScript glfw ${GLFW_LIBRARIES} sol2 LUA)
 
 
 if (CMAKE_VERSION VERSION_GREATER 3.13)
