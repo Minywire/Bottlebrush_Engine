@@ -14,5 +14,5 @@ target_include_directories(
 target_sources(
         BBMaths
         PRIVATE
-        Maths.cpp Point2D.cpp Point3D.cpp Vector2D.cpp Vector3D.cpp Vector4D.cpp
+        Maths.cpp
 )

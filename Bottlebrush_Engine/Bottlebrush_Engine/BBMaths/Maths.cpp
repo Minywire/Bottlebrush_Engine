@@ -2,14 +2,12 @@
 
 namespace BBMaths {
 
-float Cos(float x) { return std::cos(x); }
+float DegToRad(float degrees) {
+  return degrees * (float)std::numbers::pi / 180.0f;
+}
 
-float Sin(float x) { return std::sin(x); }
-
-float Tan(float x) { return std::tan(x); }
-
-float Sqrt(float x) { return std::sqrt(x); }
-
-float InverseSqrt(float x) { return 1.0f / std::sqrt(x); }
+float RadToDeg(float radians) {
+  return radians * 180.0f / (float)std::numbers::pi;
+}
 
 }  // namespace BBMaths

@@ -3,18 +3,34 @@
 //
 #pragma once
 
-/// Needed to hold an array of element buffers
+#include "VertexBuffer.h"
+#include "VertexBufferLayout.h"
+
+/// @author Alan Brunet
+/// @brief Object to hold Vertex and Index Buffers. 
+/// Adds Vertex Buffer. 
+/// But IndexObject must be called after Layout has been pushed
 class VertexArray
 {
 protected:
-	// ID for Vertex Array
-	unsigned int m_RendererID;
+	
 public:
-	// Deconstructor
-	virtual ~VertexArray() = default;
+	/// Deconstructor
+	~VertexArray()= default;
 
-	// Bind Vertex Array buffer to add / draw
+	/// @author Alan Brunet
+    /// @brief Adds the vertex Buffer and applies its layout
+    /// @param vb Vertex Buffer that contains all vertex data
+    /// @see class VertexBuffer
+	/// @param layout is how the Vertex Bufffer contains its data, its count, type, and if its normalised.
+	/// @see class VertexBufferLayout
+	virtual void AddBuffer(const VertexBuffer& vb, VertexBufferLayout& layout) = 0;
+
+	/// @author Alan Brunet
+    /// @brief Bind Vertex Array buffer to add / draw
 	virtual void Bind() const = 0;
-	// Unbind Vertex Array buffer
+
+	/// @author Alan Brunet
+    /// @brief Unbind Vertex Array buffer
 	virtual void Unbind() const = 0;
 };

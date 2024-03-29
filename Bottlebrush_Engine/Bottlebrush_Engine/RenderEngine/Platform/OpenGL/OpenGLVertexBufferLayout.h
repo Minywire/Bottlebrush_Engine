@@ -4,60 +4,43 @@
 #pragma once
 
 #include <vector>
-#include <glad/glad.h>
-#include "OpenGLRenderer.h"
-#include <stdexcept>
 
 #include "VertexBufferLayout.h"
 
-// manually setting the byte count of GL types
-static unsigned int GetSizeOfType(unsigned int type)
-{
-	switch (type)
-	{
-	case GL_FLOAT:				return 4;
-	case GL_UNSIGNED_INT:		return 4;
-	case GL_UNSIGNED_BYTE:		return 1;
-	}
-	assert(false && "This is false.");
-	return 0;
-}
-
-class OpenGLVertexBufferLayout : VertexBufferLayout
+/// @author Alan Brunet
+/// @brief This is used to contain a vector array of VertexBuffer Element
+/// details that is passed into API
+/// @see glVertexAttribPointer() https://docs.gl/gl4/glVertexAttribPointer
+class OpenGLVertexBufferLayout : public VertexBufferLayout
 {
 private:
+	/// vector of buffer elements
+	/// @see struct VertexBufferElement
+	std::vector<VertexBufferElement> m_Elements;
 
-public:
-	/// template for pushing the layout of vertex.
-	template<typename T>
-	void Push(unsigned int count);
+	/// OpenGL stride (in glVertexAttribPointer())
+	/// is the byte space needed for the attribute, i.e, position, texure coord,
+	/// colour
+	unsigned int m_Stride;
 
-	template<>
-	void Push<float>(unsigned int count)
-	{
-		// float is normalised
-		m_Elements.push_back({ count, GL_FLOAT, GL_FALSE });
-		m_Stride += count * GetSizeOfType(GL_FLOAT);
-	}
+ public:
+    OpenGLVertexBufferLayout();
+	/// Deconstructor
+    ~OpenGLVertexBufferLayout();
 
-	template<>
-	void Push<unsigned int>(unsigned int count)
-	{
-		// unsigned int is normalised
-		m_Elements.push_back({ count, GL_UNSIGNED_INT, GL_FALSE });
-		m_Stride += count * GetSizeOfType(GL_UNSIGNED_INT);
-	}
+    /// @author Alan Brunet
+    /// @brief Setting the byte count of types
+	unsigned int GetSizeOfType(unsigned int type) override;
 
-	template<>
-	void Push<unsigned char>(unsigned int count)
-	{
-		// chars are not normalised
-		m_Elements.push_back({ count, GL_UNSIGNED_BYTE, GL_TRUE });
-		m_Stride += count * GetSizeOfType(GL_BYTE);
-	}
+	/// @author Alan Brunet
+    /// @brief For pushing the layout of vertex onto the VertexBufferElement vector
+	void Push(unsigned int count, DataType dt) override;
 
-	/// Returns member variable m_Elements
-	inline const std::vector<VertexBufferElement> GetElements() const& { return m_Elements; }
-	/// Returns member variable m_Stride
-	inline unsigned int GetStride() const { return m_Stride; }
+	/// @author Alan Brunet
+    /// @return member variable m_Elements
+	std::vector<VertexBufferElement> GetElements() const & override;
+
+	/// @author Alan Brunet
+    /// @return member variable m_Stride
+	unsigned int GetStride() const override;
 };
