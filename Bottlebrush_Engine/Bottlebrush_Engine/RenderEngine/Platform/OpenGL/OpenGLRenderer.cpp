@@ -32,9 +32,17 @@ void OpenGLRenderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Sh
 
 void OpenGLRenderer::Draw() const 
 {
-    m_Shader->Bind();
-    m_VertexArray->Bind();
-    glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+    if (m_Shader) m_Shader->Bind();
+    if (m_VertexArray) 
+    {
+        m_VertexArray->Bind();
+        glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+    } 
+    else 
+    {
+        assert(false && "VertexArray is not bound on an object");
+    }
+        
 }
 
 void OpenGLRenderer::DisplayGPUInfo() const 
@@ -47,9 +55,6 @@ void OpenGLRenderer::DisplayGPUInfo() const
 
 void OpenGLRenderer::SetVertexBuffer(const void* vertData, unsigned int vertexCount, unsigned int vertDataSize) 
 {
-    // vertex array object
-    m_VertexArray = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexArray();
-
     // 4 vertex and 2 points (2D)
     m_VertexBuffer = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexBuffer(vertData, vertexCount * vertDataSize * sizeof(float));
 }
@@ -60,6 +65,9 @@ void OpenGLRenderer::PushLayout(unsigned int count, unsigned int sizes[])
     // i.e., 2 = 2 points of positions for each vertex (can use different numbers
     // for different attributes)
     m_VertexBufferLayout = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexBufferLayout();
+
+    // vertex array object
+    m_VertexArray = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexArray();
 
     for (unsigned int i = 0; i < count; i++) 
     {
@@ -96,16 +104,23 @@ void OpenGLRenderer::SetShaderSource(
 
 void OpenGLRenderer::SetTexture(int width, int height, int bpp, unsigned char* imagedata, unsigned int slot)
 {
-  m_Texture = GraphicsFactory<GraphicsAPI::OpenGL>::CreateTextureBuffer(width, height, bpp);
+    m_Texture = GraphicsFactory<GraphicsAPI::OpenGL>::CreateTextureBuffer(width, height, bpp);
 
-  m_Texture->CreateTexture(imagedata);
-  m_Texture->Bind(slot);
+    m_Texture->CreateTexture(imagedata);
+    m_Texture->Bind(slot);
 }
 
 void OpenGLRenderer::SetColour(float r, float g, float b, float a) {
     // basic.frag has a uniform declaration
-    m_Shader->Bind();
-    m_Shader->SetUniform4f("u_Color", r, g, b, a);
+    if (m_Shader) 
+    {
+        m_Shader->Bind();
+        m_Shader->SetUniform4f("u_Color", r, g, b, a);
+    }
+    else
+    {
+        std::cout << "Warning: Shader is not bound" << std::endl;
+    }
 }
 
 void OpenGLRenderer::ClearBuffers() 

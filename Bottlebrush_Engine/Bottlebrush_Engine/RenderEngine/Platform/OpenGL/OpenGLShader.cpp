@@ -46,7 +46,7 @@ unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& s
     glCompileShader(id);
 
     //@TODO delete after debugging
-    std::cout << "Shader Source:\n" << source << std::endl;
+    //std::cout << "Shader Source:\n" << source << std::endl;
 
     // error checking
     int result;

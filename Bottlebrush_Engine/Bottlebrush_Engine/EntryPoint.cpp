@@ -72,11 +72,11 @@ int main()
 
     std::unique_ptr<RenderEngine> r = GraphicsFactory<s_API>::CreateRenderer();
 
+    r->SetShaderSource("Basic.vert", "Basic.frag");
+    r->SetColour(0.2f, 0.3f, 0.8f, 1.0f);
     r->SetVertexBuffer(positions, 4, 3);
     r->PushLayout(1, layoutsizes);
     r->SetIndexBuffer(indices, 6);
-    r->SetShaderSource("Basic.vert", "Basic.frag");
-    r->SetColour(0.2f, 0.3f, 0.8f, 1.0f);
     r->ClearBuffers();
 
     std::unique_ptr<RenderEngine> r2 = GraphicsFactory<s_API>::CreateRenderer();
