@@ -62,7 +62,7 @@ include_directories(${reactphysics3d_SOURCE_DIR}/include ${reactphysics3d_SOURCE
 
 # Vendor include directories
 include_directories(
-        BBComponentSystem BBMaths BBScene BBScript RenderEngine
+        BBComponentSystem BBScene BBScript RenderEngine
         Vendors/Lua
         Vendors/EnTT
         Vendors/glfw/include
@@ -79,7 +79,7 @@ source_group("Vendors" FILES ${VENDORS_SOURCES})
 # Add source to this project's executable.
 add_executable(Bottlebrush_Engine "EntryPoint.cpp" ${VENDORS_SOURCES})
 
-target_link_libraries(Bottlebrush_Engine PRIVATE BBScene BBComponentSystem RenderEngine BBGUI BBMaths BBScript glfw ${GLFW_LIBRARIES} LUA)
+target_link_libraries(Bottlebrush_Engine PRIVATE BBScene BBComponentSystem RenderEngine BBGUI BBScript glfw ${GLFW_LIBRARIES} LUA)
 target_link_libraries(Bottlebrush_Engine PRIVATE glm)
 target_link_libraries(Bottlebrush_Engine PRIVATE reactphysics3d)
 
@@ -92,6 +92,4 @@ add_subdirectory(BBScript)
 add_subdirectory(BBScene)
 add_subdirectory(BBComponentSystem)
 add_subdirectory(BBGUI)
-add_subdirectory(BBMaths)
 add_subdirectory(RenderEngine)
-add_subdirectory(Tests/BBMaths)
