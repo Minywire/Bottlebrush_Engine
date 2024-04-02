@@ -8,6 +8,8 @@ include(FetchContent)
 
 set(CMAKE_CXX_STANDARD 20)
 
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_SOURCE_DIR}/Vendors)
+
 # GLFW options
 option(GLFW_BUILD_DOCS OFF)
 option(GLFW_BUILD_EXAMPLES OFF)
@@ -17,6 +19,7 @@ add_subdirectory(Vendors/EnTT)
 add_subdirectory(Vendors/glfw)
 add_subdirectory(Vendors/imGUI)
 add_subdirectory(Vendors/imGUI/backends)
+add_subdirectory(Vendors/reactphysics3d)
 
 #compiler flags
 if(MSVC)
@@ -48,6 +51,7 @@ FetchContent_MakeAvailable(glm)
 include_directories(${glm_SOURCE_DIR})
 
 # Vendor include directories
+include_directories(${CMAKE_PREFIX_PATH}/reactphysics3d/include)
 include_directories(
         BBComponentSystem BBMaths BBScene BBScript RenderEngine
         Vendors/Lua
@@ -57,6 +61,7 @@ include_directories(
         Vendors/imGUI
         Vendors/imGUI/backends
         Vendors/Lua/sol2-3.3.0/include/sol
+        Vendors/reactphysics3d/include
         #yeah this is a bit messy since it's ALL under imGUI but it wouldn't work otherwise with our folder structure
 )
 
@@ -66,7 +71,10 @@ source_group("Vendors" FILES ${VENDORS_SOURCES})
 # Add source to this project's executable.
 add_executable(Bottlebrush_Engine "EntryPoint.cpp" ${VENDORS_SOURCES})
 
-target_link_libraries(Bottlebrush_Engine BBScene BBComponentSystem RenderEngine BBGUI BBMaths BBScript glfw ${GLFW_LIBRARIES} LUA)
+target_include_directories(Bottlebrush_Engine PRIVATE ${CMAKE_PREFIX_PATH}/reactphysics3d)
+
+target_link_libraries(Bottlebrush_Engine PRIVATE BBScene BBComponentSystem RenderEngine BBGUI BBMaths BBScript glfw ${GLFW_LIBRARIES} LUA)
+target_link_libraries(Bottlebrush_Engine PRIVATE reactphysics3d)
 
 
 if (CMAKE_VERSION VERSION_GREATER 3.13)
