@@ -7,11 +7,17 @@
 
 #include "Model.h"
 
-class OpenGLModel : Model {
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
+class OpenGLModel : public Model {
 public:
-
+    OpenGLModel(const std::string &fileName);
+    bool LoadModel(const std::string& filePath) override;
 private:
-
+    std::vector<Mesh> mSubMeshes;
+    OpenGLVertexArray VAO;
 };
 
 

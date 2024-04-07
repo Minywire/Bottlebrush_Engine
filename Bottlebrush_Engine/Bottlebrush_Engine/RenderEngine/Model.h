@@ -10,7 +10,9 @@
 #include <string>
 
 class Model {
-virtual void LoadModel(std::string fileName) = 0;
+public:
+    Model() {};
+    virtual bool LoadModel(const std::string& filePath) = 0;
 };
 
 
