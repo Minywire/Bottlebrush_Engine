@@ -22,14 +22,16 @@ struct ScriptFunctionComponent
  */
 struct TransformComponent
 {
-    ///TODO: Add Vec3D points here
+    glm::vec3 position;
+    glm::vec3 rotation;
+    glm::vec3 scale = {1, 1, 1};
 };
 
 /**
  * @brief Component that contains model path information.
  * @author Marco Garzon Lara
  */
-struct MeshComponent
+struct ModelComponent
 {
     std::string model_path;
     std::string material_path;

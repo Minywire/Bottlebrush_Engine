@@ -12,6 +12,19 @@ class Entity;
 class ECS
 {
 public:
+
+    /**
+     *
+     * @return
+     */
+    const entt::registry & getReg() const;
+
+    /**
+     *
+     * @return
+     */
+    entt::registry& getReg();
+
     /**
      * @brief Creates an Entity on the current scene.
      * @return entity The entity created in the scene
@@ -20,19 +33,19 @@ public:
     Entity CreateEntity();
 
     /**
-     * @brief Deletes Entity from the scene and the game(with our Entity type)
-     * @param entity The entity to be deleted
-     * @author Marco Garzon Lara
-    */
-    void DeleteEntity(Entity entity);
-
-    /**
      * @brief Creates an entity with a tag.
      * @param tag The alias to be given to the entity
      * @return entity The entity created in the scene
      * @author Marco Garzon Lara
      */
     Entity CreateEntity(std::string tag);
+
+    /**
+     * @brief Deletes Entity from the scene and the game(with our Entity type)
+     * @param entity The entity to be deleted
+     * @author Marco Garzon Lara
+    */
+    void DeleteEntity(Entity entity);
 
     /**
      *@brief Gets all entities with the provided components.

@@ -4,10 +4,14 @@
 
 #include "ECS.h"
 
-void ECS::DeleteEntity(Entity entity)
+const entt::registry & ECS::getReg() const
 {
-    //todo see if theres a bool version of this to confirm deletion
-    entity.DeleteEntity(registry);
+    return registry;
+}
+
+entt::registry& ECS::getReg()
+{
+    return registry;
 }
 
 Entity ECS::CreateEntity()
@@ -19,6 +23,13 @@ Entity ECS::CreateEntity()
     entity.AddComponent<TagComponent>(registry);
     return entity;
 }
+
+void ECS::DeleteEntity(Entity entity)
+{
+    //todo see if theres a bool version of this to confirm deletion
+    entity.DeleteEntity(registry);
+}
+
 
 Entity ECS::CreateEntity(std::string tag)
 {
