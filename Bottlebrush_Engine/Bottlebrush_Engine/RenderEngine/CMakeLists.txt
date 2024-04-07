@@ -10,11 +10,11 @@ file(GLOB SOURCES RenderEngine.cpp
 	Texture.h 
 	VertexArray.h 
 	VertexBuffer.h 
-	VertexBufferLayout.h)
+	VertexBufferLayout.h
+    Model.h)
 
 add_subdirectory(Platform/OpenGL)
 
 include_directories(Platform/OpenGL)
-
 target_sources(RenderEngine PRIVATE ${SOURCES})
-target_link_libraries(RenderEngine GLPlatform)
+target_link_libraries(RenderEngine GLPlatform BBAssetImporter)

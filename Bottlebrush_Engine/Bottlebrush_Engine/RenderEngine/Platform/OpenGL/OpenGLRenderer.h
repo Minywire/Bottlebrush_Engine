@@ -13,6 +13,7 @@
 class OpenGLRenderer : public RenderEngine
 {
 private:
+    // TODO: Remove everything but the shader
     /// Vertex Array pointer
     std::unique_ptr<VertexArray> m_VertexArray;
     /// Vertex Buffer pointer
