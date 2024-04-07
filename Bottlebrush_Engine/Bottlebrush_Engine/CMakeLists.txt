@@ -12,12 +12,16 @@ set(CMAKE_CXX_STANDARD 20)
 option(GLFW_BUILD_DOCS OFF)
 option(GLFW_BUILD_EXAMPLES OFF)
 option(GLFW_BUILD_TESTS OFF)
+
+option(ASSIMP_WARNINGS_AS_ERRORS OFF)
+
 add_subdirectory(Vendors/assimp)
 add_subdirectory(Vendors/Lua)
 add_subdirectory(Vendors/EnTT)
 add_subdirectory(Vendors/glfw)
 add_subdirectory(Vendors/imGUI)
 add_subdirectory(Vendors/imGUI/backends)
+
 
 #compiler flags
 if(MSVC)
