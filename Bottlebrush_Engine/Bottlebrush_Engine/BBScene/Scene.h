@@ -3,7 +3,9 @@
 //
 #pragma once
 
-#include "ECS.h"
+#include <BBScript.h>
+#include <ECS.h>
+#include <EntityFactory.h>
 #include <string>
 #include <sol/sol.hpp>
 
@@ -15,15 +17,19 @@
 class Scene
 {
 public:
-    Scene(std::string & lua_master) : master_lua_file(lua_master) {};
+    Scene(std::string & lua_master) : masterLuaFile(lua_master) {};
 
     /**
      *@brief Default constructor.
      */
     Scene();
+
+    void init();
+
+    void update();
 private:
-    std::string master_lua_file;
-
-    ECS bb_ecs; ///The ECS object containing the enTT registry.
-
+    EntityFactory entityFactory;
+    std::string masterLuaFile; ///The master scene file script for Lua
+    BBScript lua; ///The BBScript object containing the lua state
+    ECS bbECS; ///The ECS object containing the enTT registry.
 };
