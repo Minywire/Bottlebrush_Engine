@@ -17,8 +17,6 @@ public:
     BBScript();
 
     sol::state& getLuaState();
-
-    void SolRegistry(); //This is where the sol state registers functions
 private:
     sol::state luaState; ///The lua state for the script system
 
