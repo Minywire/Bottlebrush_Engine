@@ -4,6 +4,7 @@
 #pragma once
 
 #include <entt/entt.hpp>
+#include <sol/sol.hpp>
 
 class Entity;
 /**
@@ -14,6 +15,8 @@ class Entity;
 class Scene
 {
 public:
+    Scene(std::string lua_master);
+
     /**
      * @brief Deletes Entity from the scene and the game(with our Entity type)
      * @param entity The entity to be deleted

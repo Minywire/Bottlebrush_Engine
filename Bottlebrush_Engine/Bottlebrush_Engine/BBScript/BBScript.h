@@ -6,4 +6,20 @@
 #include <lua-5.4.6/lua.hpp>
 #include <sol/sol.hpp>
 
-void SolRegistry(); //This is where the sol state registers functions
+/**
+ * @class BBScript
+ *
+ * @brief The Lua manager class
+ */
+class BBScript
+{
+public:
+    BBScript();
+
+    sol::state& getLuaState();
+
+    void SolRegistry(); //This is where the sol state registers functions
+private:
+    sol::state luaState; ///The lua state for the script system
+
+};
