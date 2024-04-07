@@ -7,9 +7,6 @@
 
 #pragma once
 
-
-#include <Vector3D.h>
-#include <Vector2D.h>
 #include <RenderEngine.h>
 #include <GraphicsFactory.h>
 
@@ -24,10 +21,13 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+#include <glm/vec3.hpp>
+#include <glm/vec2.hpp>
+
 struct Vertex {
-  BBMaths::Vector3D Position;
-  BBMaths::Vector3D Normal;
-  BBMaths::Vector2D TexCoords;
+  glm::vec3 Position;
+  glm::vec3 Normal;
+  glm::vec3 TexCoords;
 };
 
 class Mesh {
