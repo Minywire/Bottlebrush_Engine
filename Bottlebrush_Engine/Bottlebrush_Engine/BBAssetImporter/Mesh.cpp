@@ -3,3 +3,10 @@
 //
 
 #include "Mesh.h"
+
+#include <utility>
+
+Mesh::Mesh(std::vector<float> vertices, std::vector<unsigned int> indices) {
+    mVertices = std::move(vertices);
+    mIndices = std::move(indices);
+}
