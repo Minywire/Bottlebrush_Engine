@@ -11,6 +11,7 @@
 #include "Platform/OpenGL/OpenGLTexture.h"
 #include "Platform/OpenGL/OpenGLRenderer.h"
 #include "Platform/OpenGL/OpenGLModel.h"
+#include "Model.h"
 
 /// @author Alan Brunet
 /// @brief Enum class to define which Graphics API to be used

@@ -7,19 +7,7 @@
 
 #pragma once
 
-#include <RenderEngine.h>
-#include <GraphicsFactory.h>
-
-#include "glad/glad.h"
-
-#include <string>
 #include <vector>
-#include <utility>
-#include <cassert>
-
-#include <glm/vec3.hpp>
-#include <glm/vec2.hpp>
-
 
 class Mesh {
  public:

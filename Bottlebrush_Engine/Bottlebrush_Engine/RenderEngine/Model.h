@@ -11,8 +11,8 @@
 
 class Model {
 public:
-    Model() {};
     virtual bool LoadModel(const std::string& filePath) = 0;
+    virtual void Draw() = 0;
 };
 
 
