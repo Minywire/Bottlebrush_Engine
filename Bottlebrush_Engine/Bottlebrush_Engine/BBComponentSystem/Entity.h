@@ -3,9 +3,9 @@
 //
 #pragma once
 
-#include "Scene.h"
 #include <iostream>
 #include <entt/entt.hpp>
+
 /**
  * @class Entity
  * @brief A class which encapsulates an EnTT entity object. This class provides an interface for Entity objects to be used by scenes
