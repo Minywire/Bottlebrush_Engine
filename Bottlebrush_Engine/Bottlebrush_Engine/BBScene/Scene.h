@@ -20,7 +20,7 @@ public:
      *@brief Default constructor.
      */
     Scene();
-
 private:
+    ECS bb_ecs; ///The ECS object containing the enTT registry.
 
 };
