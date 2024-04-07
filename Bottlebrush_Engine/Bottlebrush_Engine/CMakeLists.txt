@@ -81,4 +81,5 @@ add_subdirectory(BBGUI)
 add_subdirectory(BBMaths)
 add_subdirectory(RenderEngine)
 add_subdirectory(Tests/BBMaths)
+add_subdirectory(Tests/EntityFactoryAndScriptTest)
 # TODO: Add tests and install targets if needed.
