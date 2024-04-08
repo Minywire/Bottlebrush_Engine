@@ -295,7 +295,7 @@ _deps
 [Bb]uild/
 [Oo]bj/
 !AssetLib/Obj
-!Bottlebrush_Engine/Resources/Models/*.obj
+!Bottlebrush_Engine/Bottlebrush_Engine/Resources/Models/*.obj
 [Dd]ebug*/
 [Rr]elease*/
 *.mode*
