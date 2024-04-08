@@ -1,39 +1,6 @@
 # Created by https://www.toptal.com/developers/gitignore/api/c++,clion,clion+all,clion+iml,visualstudio,visualstudiocode,openframeworks+visualstudio,cmake
 # Edit at https://www.toptal.com/developers/gitignore?templates=c++,clion,clion+all,clion+iml,visualstudio,visualstudiocode,openframeworks+visualstudio,cmake
-
-### C++ ###
-# Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+#
 
 ### CLion ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
@@ -294,6 +261,7 @@ _deps
 
 [Bb]uild/
 [Oo]bj/
+!AssetLib/Obj
 [Dd]ebug*/
 [Rr]elease*/
 *.mode*

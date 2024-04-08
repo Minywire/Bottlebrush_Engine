@@ -12,6 +12,18 @@ set(CMAKE_CXX_STANDARD 20)
 option(GLFW_BUILD_DOCS OFF)
 option(GLFW_BUILD_EXAMPLES OFF)
 option(GLFW_BUILD_TESTS OFF)
+
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(ASSIMP_NO_EXPORT ON CACHE BOOL "" FORCE)
+set(ASSIMP_INSTALL OFF CACHE BOOL "" FORCE)
+set(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT OFF CACHE BOOL "" FORCE)
+set(ASSIMP_BUILD_FBX_IMPORTER ON CACHE BOOL "" FORCE)
+set(ASSIMP_BUILD_OBJ_IMPORTER ON CACHE BOOL "" FORCE)
+set(ASSIMP_BUILD_GLTF_IMPORTER ON CACHE BOOL "" FORCE)
+set(ASSIMP_WARNINGS_AS_ERRORS OFF CACHE BOOL "" FORCE)
+set(ASSIMP_WARNINGS_AS_ERRORS OFF CACHE BOOL "" FORCE)
+
 option(RP3D_COMPILE_TESTBED OFF)
 option(RP3D_COMPILE_TEST OFF)
 option(RP3D_PROFILING_ENABLED OFF)
@@ -26,8 +38,10 @@ add_subdirectory(Vendors/imGUI/backends)
 #compiler flags
 if(MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+  add_definitions(-std=c++20)
+  FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Resources DESTINATION ${CMAKE_BINARY_DIR}/Bottlebrush_Engine)
 else()
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -std=c++11")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -std=c++20")
   if(NOT WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything")
     set(GLAD_LIBRARIES dl)
@@ -58,6 +72,12 @@ FetchContent_Declare(
         GIT_TAG v0.10.0
 )
 FetchContent_MakeAvailable(reactphysics3d)
+FetchContent_Declare(
+        assimp
+        GIT_REPOSITORY https://github.com/assimp/assimp
+        GIT_TAG v5.4.0)
+FetchContent_MakeAvailable(assimp)
+
 include_directories(${reactphysics3d_SOURCE_DIR}/include ${reactphysics3d_SOURCE_DIR})
 
 # Vendor include directories
@@ -79,10 +99,9 @@ source_group("Vendors" FILES ${VENDORS_SOURCES})
 # Add source to this project's executable.
 add_executable(Bottlebrush_Engine "EntryPoint.cpp" ${VENDORS_SOURCES})
 
-target_link_libraries(Bottlebrush_Engine PRIVATE BBScene BBComponentSystem RenderEngine BBGUI BBScript glfw ${GLFW_LIBRARIES} LUA)
+target_link_libraries(Bottlebrush_Engine PRIVATE BBScene BBComponentSystem RenderEngine BBGUI BBScript glfw LUA)
 target_link_libraries(Bottlebrush_Engine PRIVATE glm)
 target_link_libraries(Bottlebrush_Engine PRIVATE reactphysics3d)
-
 
 if (CMAKE_VERSION VERSION_GREATER 3.13)
   set_property(TARGET Bottlebrush_Engine PROPERTY CXX_STANDARD 20)
@@ -93,3 +112,6 @@ add_subdirectory(BBScene)
 add_subdirectory(BBComponentSystem)
 add_subdirectory(BBGUI)
 add_subdirectory(RenderEngine)
+
+FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Resources DESTINATION ${CMAKE_BINARY_DIR})
+# TODO: Add tests and install targets if needed.
