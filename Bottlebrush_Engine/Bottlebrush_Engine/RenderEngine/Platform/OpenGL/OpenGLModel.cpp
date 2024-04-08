@@ -15,9 +15,9 @@ bool OpenGLModel::LoadModel(const std::string& filePath) {
     std::ifstream file(filePath);
 
     if(file) {
-        std::cout << "file opened successfully" << std::endl;
+        std::cout << filePath << " opened successfully" << std::endl;
     } else {
-        throw std::invalid_argument("File could not open");
+        throw std::invalid_argument(filePath + " could not open");
     }
 
     file.close();
