@@ -4,7 +4,7 @@
 #pragma once
 
 #include <string>
-#include "Maths.h"
+#include <glm/glm.hpp>
 #include <sol/sol.hpp>
 
 /**

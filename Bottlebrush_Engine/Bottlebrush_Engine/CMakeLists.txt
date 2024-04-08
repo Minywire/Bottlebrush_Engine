@@ -100,7 +100,9 @@ source_group("Vendors" FILES ${VENDORS_SOURCES})
 # Add source to this project's executable.
 add_executable(Bottlebrush_Engine "EntryPoint.cpp" ${VENDORS_SOURCES})
 
-target_link_libraries(Bottlebrush_Engine BBScene BBMath BBComponentSystem RenderEngine BBGUI BBScript glfw ${GLFW_LIBRARIES} sol2 LUA glm reactphysics3d)
+target_link_libraries(Bottlebrush_Engine PRIVATE BBScene BBComponentSystem RenderEngine BBGUI BBScript glfw LUA)
+target_link_libraries(Bottlebrush_Engine PRIVATE glm)
+target_link_libraries(Bottlebrush_Engine PRIVATE reactphysics3d)
 
 if (CMAKE_VERSION VERSION_GREATER 3.13)
   set_property(TARGET Bottlebrush_Engine PROPERTY CXX_STANDARD 20)
@@ -111,7 +113,6 @@ add_subdirectory(BBScene)
 add_subdirectory(BBComponentSystem)
 add_subdirectory(BBGUI)
 add_subdirectory(RenderEngine)
-add_subdirectory(Tests/BBMaths)
 add_subdirectory(Tests/EntityFactoryAndScriptTest)
 
 FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Resources DESTINATION ${CMAKE_BINARY_DIR})
