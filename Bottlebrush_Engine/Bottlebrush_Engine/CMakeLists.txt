@@ -101,10 +101,12 @@ add_subdirectory(BBMaths)
 add_subdirectory(RenderEngine)
 add_subdirectory(Tests/BBMaths)
 
+FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Resources DESTINATION ${CMAKE_BINARY_DIR})
 
-FILE(COPY ${CMAKE_SOURCE_DIR}/Bottlebrush_Engine/Resources DESTINATION ${CMAKE_BINARY_DIR}/Bottlebrush_Engine)
-
-IF(UNIX)
-    FILE(COPY ${CMAKE_SOURCE_DIR}/Resources DESTINATION ${CMAKE_BINARY_DIR}) # For mac
-endif ()
+#add_custom_command(
+#        TARGET Bottlebrush_Engine PRE_BUILD
+#        COMMAND ${CMAKE_COMMAND} -E copy_directory
+#        ${CMAKE_CURRENT_SOURCE_DIR}/Resources
+#        ${CMAKE_BINARY_DIR}/Resources
+#)
 # TODO: Add tests and install targets if needed.
