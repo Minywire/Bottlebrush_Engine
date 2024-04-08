@@ -80,7 +80,6 @@ include_directories(
 file(GLOB VENDORS_SOURCES Vendors/glad/src/glad.c)
 source_group("Vendors" FILES ${VENDORS_SOURCES})
 
-#copy_directory(${CMAKE_SOURCE_DIR}/Resources ${CMAKE_BINARY_DIR})
 
 # Add source to this project's executable.
 add_executable(Bottlebrush_Engine "EntryPoint.cpp" ${VENDORS_SOURCES})
@@ -102,11 +101,4 @@ add_subdirectory(RenderEngine)
 add_subdirectory(Tests/BBMaths)
 
 FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Resources DESTINATION ${CMAKE_BINARY_DIR})
-
-#add_custom_command(
-#        TARGET Bottlebrush_Engine PRE_BUILD
-#        COMMAND ${CMAKE_COMMAND} -E copy_directory
-#        ${CMAKE_CURRENT_SOURCE_DIR}/Resources
-#        ${CMAKE_BINARY_DIR}/Resources
-#)
 # TODO: Add tests and install targets if needed.
