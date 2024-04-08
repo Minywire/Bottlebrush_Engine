@@ -762,4 +762,4 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/c++,clion,clion+all,clion+iml,visualstudio,visualstudiocode,openframeworks+visualstudio,cmake
-/Bottlebrush_Engine/Bottlebrush_Engine/Resources/
+!/Bottlebrush_Engine/Bottlebrush_Engine/Resources/
