@@ -102,5 +102,5 @@ add_subdirectory(RenderEngine)
 add_subdirectory(Tests/BBMaths)
 
 
-FILE(COPY ${CMAKE_SOURCE_DIR}/Bottlebrush_Engine/Resources/ DESTINATION ${CMAKE_BINARY_DIR})
+FILE(COPY ${CMAKE_SOURCE_DIR}/Bottlebrush_Engine/Resources DESTINATION ${CMAKE_BINARY_DIR}/Bottlebrush_Engine)
 # TODO: Add tests and install targets if needed.
