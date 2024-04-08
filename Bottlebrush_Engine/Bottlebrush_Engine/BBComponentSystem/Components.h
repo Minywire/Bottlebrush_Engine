@@ -4,7 +4,6 @@
 #pragma once
 
 #include <string>
-#include "Maths.h"
 
 /**
  * @brief Component that controls the position of an entity
