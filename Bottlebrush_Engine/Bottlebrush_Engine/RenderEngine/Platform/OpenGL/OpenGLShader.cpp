@@ -199,8 +199,6 @@ std::filesystem::path OpenGLShader::GenFilePath(const std::string& filename)
     std::string path;
     std::filesystem::path p("Resources");
     p.append("Shaders");
-    //p.append("Vertex");
-
 
     // index where . is
     auto index = filename.rfind('.');
