@@ -103,5 +103,8 @@ add_subdirectory(Tests/BBMaths)
 
 
 FILE(COPY ${CMAKE_SOURCE_DIR}/Bottlebrush_Engine/Resources DESTINATION ${CMAKE_BINARY_DIR}/Bottlebrush_Engine)
-FILE(COPY ${CMAKE_SOURCE_DIR}/Resources DESTINATION ${CMAKE_BINARY_DIR}) # For mac
+
+IF(UNIX)
+    FILE(COPY ${CMAKE_SOURCE_DIR}/Resources DESTINATION ${CMAKE_BINARY_DIR}) # For mac
+endif ()
 # TODO: Add tests and install targets if needed.
