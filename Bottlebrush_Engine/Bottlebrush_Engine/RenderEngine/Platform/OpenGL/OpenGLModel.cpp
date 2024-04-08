@@ -7,6 +7,7 @@
 #include <iostream>
 #include <cassert>
 #include <fstream>
+#include <stdexcept>
 
 bool OpenGLModel::LoadModel(const std::string& filePath) {
     Assimp::Importer import;
@@ -16,7 +17,7 @@ bool OpenGLModel::LoadModel(const std::string& filePath) {
     if(file) {
         std::cout << "file opened successfully" << std::endl;
     } else {
-        std::cout << "the file didnt do shit" << std::endl;
+        throw std::invalid_argument("File could not open");
     }
 
     file.close();
