@@ -295,6 +295,7 @@ _deps
 [Bb]uild/
 [Oo]bj/
 !AssetLib/Obj
+!Resources/Models/*.obj
 [Dd]ebug*/
 [Rr]elease*/
 *.mode*
