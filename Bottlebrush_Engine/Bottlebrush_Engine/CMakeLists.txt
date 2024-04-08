@@ -35,8 +35,9 @@ add_subdirectory(Vendors/imGUI/backends)
 #compiler flags
 if(MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+  add_definitions(-std=c++20)
 else()
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -std=c++11")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -std=c++20")
   if(NOT WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything")
     set(GLAD_LIBRARIES dl)
@@ -79,6 +80,8 @@ include_directories(
 file(GLOB VENDORS_SOURCES Vendors/glad/src/glad.c)
 source_group("Vendors" FILES ${VENDORS_SOURCES})
 
+#copy_directory(${CMAKE_SOURCE_DIR}/Resources ${CMAKE_BINARY_DIR})
+
 # Add source to this project's executable.
 add_executable(Bottlebrush_Engine "EntryPoint.cpp" ${VENDORS_SOURCES})
 
@@ -97,6 +100,7 @@ add_subdirectory(BBGUI)
 add_subdirectory(BBMaths)
 add_subdirectory(RenderEngine)
 add_subdirectory(Tests/BBMaths)
-# TODO: Add tests and install targets if needed.
 
-add_definitions(-std=c++20)
+
+FILE(COPY ${CMAKE_SOURCE_DIR}/Resources DESTINATION ${CMAKE_BINARY_DIR})
+# TODO: Add tests and install targets if needed.

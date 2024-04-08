@@ -72,7 +72,7 @@ int main()
 //
 //    std::unique_ptr<RenderEngine> r = GraphicsFactory<s_API>::CreateRenderer();
 //
-    std::unique_ptr<Model> testCube = GraphicsFactory<s_API>::CreateModel("cube.obj");
+    std::unique_ptr<Model> testCube = GraphicsFactory<s_API>::CreateModel("Resources/Models/cube.obj");
 //
 //    r->SetShaderSource("Basic.vert", "Basic.frag");
 //    r->SetColour(0.2f, 0.3f, 0.8f, 1.0f);
