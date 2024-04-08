@@ -89,7 +89,8 @@ include_directories(
         Vendors/glad/include
         Vendors/imGUI
         Vendors/imGUI/backends
-        Vendors/Lua/sol2-3.3.0/include/sol
+        Vendors/Lua/sol2-3.3.0/include/
+        Vendors/Lua/lua-5.4.6/
         #yeah this is a bit messy since it's ALL under imGUI but it wouldn't work otherwise with our folder structure
 )
 
@@ -112,6 +113,7 @@ add_subdirectory(BBScene)
 add_subdirectory(BBComponentSystem)
 add_subdirectory(BBGUI)
 add_subdirectory(RenderEngine)
+add_subdirectory(Tests/EntityFactoryAndScriptTest)
 
 FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Resources DESTINATION ${CMAKE_BINARY_DIR})
 # TODO: Add tests and install targets if needed.

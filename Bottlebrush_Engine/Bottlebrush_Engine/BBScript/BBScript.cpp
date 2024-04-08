@@ -3,3 +3,10 @@
 //
 
 #include "BBScript.h"
+
+BBScript::BBScript() { luaState.open_libraries(sol::lib::base); }
+
+sol::state & BBScript::getLuaState()
+{
+    return luaState;
+}

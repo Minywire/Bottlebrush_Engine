@@ -3,9 +3,9 @@
 //
 #pragma once
 
-#include "Scene.h"
 #include <iostream>
 #include <entt/entt.hpp>
+
 /**
  * @class Entity
  * @brief A class which encapsulates an EnTT entity object. This class provides an interface for Entity objects to be used by scenes
@@ -42,7 +42,10 @@ public:
      * @author Marco Garzon Lara
      */
     template<typename T>
-    bool HasComponent(const entt::registry& reg);
+    bool HasComponent(const entt::registry& reg)
+    {
+        return reg.any_of<T>(entity_handle);
+    }
 
     /**
      * @brief Adds a component to specified entities in specified registry
@@ -54,7 +57,14 @@ public:
      * @author Marco Garzon Lara
      */
     template<typename T, typename... Args>
-    T& AddComponent(entt::registry& reg, Args&&... args);
+    T& AddComponent(entt::registry& reg, Args&&... args)
+    {
+        if (HasComponent<T>(reg))
+        {
+            std::cout << "Entity already has component." << std::endl;
+        }
+        return reg.emplace<T>(entity_handle, std::forward<Args>(args)...);
+    }
 
     /**
      * @brief grabs a component from an entity in a registry
@@ -64,7 +74,30 @@ public:
      * @author Marco Garzon Lara
      */
     template<typename T>
-    const T& GetComponent(const entt::registry& reg) const;
+    const T& GetComponent(const entt::registry& reg) const
+    {
+        if (!HasComponent<T>(reg))
+        {
+            std::cout << "No components found in entity" << std::endl;
+        }
+        return reg.get<T>(entity_handle);
+    }
+
+    /**
+     *
+     * @tparam T
+     * @param reg
+     * @return
+     */
+    template<typename T>
+    T& GetComponent(entt::registry& reg)
+    {
+        if (!HasComponent<T>(reg))
+        {
+            std::cout << "No components found in entity" << std::endl;
+        }
+        return reg.get<T>(entity_handle);
+    }
 
     /**
      * @brief removes a component for an entity in a specified registry
@@ -73,7 +106,14 @@ public:
      * @author Marco Garzon Lara
      */
     template<typename T>
-    void RemoveComponent(entt::registry& reg);
+    void RemoveComponent(entt::registry& reg)
+    {
+        if (!HasComponent<T>(reg)) {
+            std::cout << "Entity has no components; Nothing to delete." << std::endl;
+            return;
+        }
+        return reg.remove<T>(entity_handle);
+    }
 
     /**
      * @brief Deletes an entity in the specified registry
@@ -86,5 +126,6 @@ private:
     entt::entity entity_handle; //!> The entity wrapped by Bottlebrush's Entity interface
 
 };
+
 
 
