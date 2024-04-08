@@ -197,7 +197,8 @@ int OpenGLShader::GetUniformLocation(const std::string& name)
 std::filesystem::path OpenGLShader::GenFilePath(const std::string& filename)
 {
     std::string path;
-    std::filesystem::path p("Resources/Shaders");
+    std::filesystem::path p("Resources");
+    p.append("Shaders");
     //p.append("Vertex");
 
 
@@ -232,6 +233,3 @@ bool OpenGLShader::CheckSSFValid(const std::string& filename)
 
     return true;
 }
-
-
-
