@@ -7,16 +7,9 @@
 
 #include "Model.h"
 #include "OpenGLRenderer.h"
-#include "../BBAssetImporter/Mesh.h"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-
-enum BUFFER_TYPE {
-    INDEX_BUFFER = 0,
-    POS_VB = 1,
-    NUM_BUFFERS = 2
-};
 
 class OpenGLModel : public Model {
 public:

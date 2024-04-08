@@ -82,7 +82,6 @@ include_directories(${reactphysics3d_SOURCE_DIR}/include ${reactphysics3d_SOURCE
 # Vendor include directories
 include_directories(
         BBComponentSystem BBScene BBScript RenderEngine
-        include
         Vendors/Lua
         Vendors/EnTT
         Vendors/glfw/include
@@ -102,8 +101,6 @@ add_executable(Bottlebrush_Engine "EntryPoint.cpp" ${VENDORS_SOURCES})
 target_link_libraries(Bottlebrush_Engine PRIVATE BBScene BBComponentSystem RenderEngine BBGUI BBScript BBAssetImporter glfw LUA)
 target_link_libraries(Bottlebrush_Engine PRIVATE glm)
 target_link_libraries(Bottlebrush_Engine PRIVATE reactphysics3d)
-
-
 
 if (CMAKE_VERSION VERSION_GREATER 3.13)
   set_property(TARGET Bottlebrush_Engine PROPERTY CXX_STANDARD 20)

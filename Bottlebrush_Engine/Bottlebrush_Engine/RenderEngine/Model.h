@@ -5,8 +5,6 @@
 #ifndef BOTTLEBRUSH_ENGINE_MODEL_H
 #define BOTTLEBRUSH_ENGINE_MODEL_H
 
-#include "../BBAssetImporter/Mesh.h"
-
 #include <string>
 
 class Model {
