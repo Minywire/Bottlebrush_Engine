@@ -116,7 +116,7 @@ void OpenGLShader::AttachShader(const std::string& shadersource, unsigned int& p
 std::string OpenGLShader::LoadShaderType(const std::filesystem::path& filepath)
 {
     //@TODO delete after debugging
-    std::cout << "Path: " << std::filesystem::absolute(filepath) << std::endl;
+    std::cout << "Path: " << filepath << std::endl;
 
     // Load GLSL shader source from file
     std::ifstream file_stream(filepath);
