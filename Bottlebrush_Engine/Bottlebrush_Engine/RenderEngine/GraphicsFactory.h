@@ -10,6 +10,8 @@
 #include "Platform/OpenGL/OpenGLVertexBufferLayout.h"
 #include "Platform/OpenGL/OpenGLTexture.h"
 #include "Platform/OpenGL/OpenGLRenderer.h"
+#include "Platform/OpenGL/OpenGLModel.h"
+#include "Model.h"
 
 /// @author Alan Brunet
 /// @brief Enum class to define which Graphics API to be used
@@ -17,7 +19,7 @@ enum class GraphicsAPI {
 	OpenGL, Vulkan
 };
 
-/// @author Alan Brunet
+/// @author Alan Brunet, Niamh Wilson
 /// @brief Factory class to determine which Rendering API to be point to. 
 /// Each Create function will return a unique pointer to the specified Graphics API component
 template <GraphicsAPI>
@@ -30,6 +32,7 @@ public:
     static std::unique_ptr<IndexBuffer> CreateIndexBuffer(const unsigned int* data, unsigned int count);
     static std::unique_ptr<Texture> CreateTextureBuffer(int width, int height, int bbp);
     static std::unique_ptr<Shader> CreateShaderBuffer(const ShaderSourceFiles& ssf);
+    static std::unique_ptr<Model> CreateModel(const std::string& filePath);
 };
 
 template<>
@@ -56,5 +59,7 @@ public:
     static std::unique_ptr<Shader> CreateShaderBuffer(const ShaderSourceFiles& ssf) {
         return std::make_unique<OpenGLShader>(ssf);
     }
+    static std::unique_ptr<Model> CreateModel(const std::string& filePath) {
+        return std::make_unique<OpenGLModel>(filePath);
+    }
 };
-
