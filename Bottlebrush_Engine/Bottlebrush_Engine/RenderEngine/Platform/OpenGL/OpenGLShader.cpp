@@ -81,7 +81,6 @@ unsigned int OpenGLShader::DetermineShaderType(const std::string& filename)
     else if (ext == "frag") return GL_FRAGMENT_SHADER;
     else if (ext == "geom") return GL_GEOMETRY_SHADER;
     else if (ext == "vert") return GL_VERTEX_SHADER;
-//    else                    assert(false);
     return false;
 }
 
