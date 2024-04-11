@@ -106,6 +106,12 @@ source_group("Vendors" FILES ${VENDORS_SOURCES})
 # Add source to this project's executable.
 add_executable(Bottlebrush_Engine "EntryPoint.cpp" ${VENDORS_SOURCES})
 
+add_custom_command(
+        TARGET Bottlebrush_Engine POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/Resources $<TARGET_FILE_DIR:Bottlebrush_Engine>/Resources
+)
+
 target_link_libraries(Bottlebrush_Engine PRIVATE BBScene BBComponentSystem RenderEngine BBGUI BBScript glfw LUA)
 target_link_libraries(Bottlebrush_Engine PRIVATE BBGraphics)
 target_link_libraries(Bottlebrush_Engine PRIVATE glm)
@@ -122,5 +128,3 @@ add_subdirectory(BBComponentSystem)
 add_subdirectory(BBGUI)
 add_subdirectory(RenderEngine)
 add_subdirectory(Tests/EntityFactoryAndScriptTest)
-
-FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Resources DESTINATION ${CMAKE_BINARY_DIR}/Bottlebrush_Engine)
