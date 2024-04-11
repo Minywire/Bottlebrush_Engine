@@ -74,7 +74,7 @@ std::unique_ptr<OpenGLRenderer> OpenGLModel::InitMesh(const aiMesh *paiMesh) {
 
     r->SetShaderSource("Basic.vert", "Basic.frag");
     r->SetColour(0.2f, 0.3f, 0.8f, 1.0f);
-    r->SetVertexBuffer(meshVerts.data(), meshVerts.size(), 3);
+    r->SetVertexBuffer(meshVerts.data(), meshVerts.size());
     r->PushLayout(1, layoutsizes);
     r->SetIndexBuffer(meshInts.data(), meshInts.size());
 
