@@ -1,0 +1,9 @@
+cmake_minimum_required(VERSION 3.8)
+
+add_library(BBGraphics STATIC)
+target_include_directories(BBGraphics
+        PRIVATE Camera.h
+)
+target_sources(BBGraphics
+        PRIVATE Camera.cpp
+)
