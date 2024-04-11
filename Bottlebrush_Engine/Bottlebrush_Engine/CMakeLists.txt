@@ -72,17 +72,23 @@ FetchContent_Declare(
         GIT_TAG v0.10.0
 )
 FetchContent_MakeAvailable(reactphysics3d)
+include_directories(${reactphysics3d_SOURCE_DIR}/include ${reactphysics3d_SOURCE_DIR})
+
 FetchContent_Declare(
         assimp
         GIT_REPOSITORY https://github.com/assimp/assimp
         GIT_TAG v5.4.0)
 FetchContent_MakeAvailable(assimp)
+include_directories(${assimp_SOURCE_DIR}/include ${assimp_SOURCE_DIR})
 
-include_directories(${reactphysics3d_SOURCE_DIR}/include ${reactphysics3d_SOURCE_DIR})
-
+include_directories(BBComponentSystem)
+include_directories(BBGraphics)
+include_directories(BBGUI)
+include_directories(BBScene)
+include_directories(BBScript)
+include_directories(RenderEngine)
 # Vendor include directories
 include_directories(
-        BBComponentSystem BBScene BBScript RenderEngine
         Vendors/Lua
         Vendors/EnTT
         Vendors/glfw/include
@@ -101,6 +107,7 @@ source_group("Vendors" FILES ${VENDORS_SOURCES})
 add_executable(Bottlebrush_Engine "EntryPoint.cpp" ${VENDORS_SOURCES})
 
 target_link_libraries(Bottlebrush_Engine PRIVATE BBScene BBComponentSystem RenderEngine BBGUI BBScript glfw LUA)
+target_link_libraries(Bottlebrush_Engine PRIVATE BBGraphics)
 target_link_libraries(Bottlebrush_Engine PRIVATE glm)
 target_link_libraries(Bottlebrush_Engine PRIVATE reactphysics3d)
 
@@ -108,6 +115,7 @@ if (CMAKE_VERSION VERSION_GREATER 3.13)
   set_property(TARGET Bottlebrush_Engine PROPERTY CXX_STANDARD 20)
 endif()
 
+add_subdirectory(BBGraphics)
 add_subdirectory(BBScript)
 add_subdirectory(BBScene)
 add_subdirectory(BBComponentSystem)
@@ -115,5 +123,4 @@ add_subdirectory(BBGUI)
 add_subdirectory(RenderEngine)
 add_subdirectory(Tests/EntityFactoryAndScriptTest)
 
-FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Resources DESTINATION ${CMAKE_BINARY_DIR})
-# TODO: Add tests and install targets if needed.
+FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Resources DESTINATION ${CMAKE_BINARY_DIR}/Bottlebrush_Engine)
