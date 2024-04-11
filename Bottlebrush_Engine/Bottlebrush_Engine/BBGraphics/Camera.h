@@ -38,7 +38,7 @@ class Camera {
   [[nodiscard]] glm::mat4 GetViewMatrix() const;
   void ProcessKeyboard(CameraMovement direction, float delta);
   void ProcessMouseMovement(float x_offset, float y_offset,
-                            GLboolean constrain_pitch = true);
+                            bool constrain_pitch = true);
   void ProcessMouseScroll(float y_offset);
 
  protected:
