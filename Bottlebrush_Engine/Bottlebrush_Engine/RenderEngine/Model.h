@@ -6,10 +6,10 @@
 #define BOTTLEBRUSH_ENGINE_MODEL_H
 
 #include <string>
-
+#include <filesystem>
 class Model {
 public:
-    virtual bool LoadModel(const std::string& filePath) = 0;
+    virtual bool LoadModel(const std::filesystem::path& filePath) = 0;
     virtual void Draw() = 0;
 };
 
