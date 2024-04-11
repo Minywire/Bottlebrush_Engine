@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Shader.h"
+#include "glm/glm.hpp"
 
 /// @author Alan Brunet
 /// @brief Creates a program for the GPU from shader program source files.
@@ -48,8 +49,10 @@ public:
     /// E.g., "u_Color"
 	void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3) override;
 
-    
-private:
+        void SetUniformMatrix4fv(const std::string& name,
+                                 const glm::mat4& mat) override;
+
+       private:
 	/// Struct for carrying file locations
 	ShaderSourceFiles m_SSF;
 

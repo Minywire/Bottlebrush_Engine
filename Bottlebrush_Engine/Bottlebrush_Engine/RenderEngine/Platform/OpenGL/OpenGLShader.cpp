@@ -81,7 +81,7 @@ unsigned int OpenGLShader::DetermineShaderType(const std::string& filename)
     else if (ext == "frag") return GL_FRAGMENT_SHADER;
     else if (ext == "geom") return GL_GEOMETRY_SHADER;
     else if (ext == "vert") return GL_VERTEX_SHADER;
-    else                    assert(false);   
+//    else                    assert(false);
     return false;
 }
 
@@ -176,6 +176,10 @@ void OpenGLShader::SetUniform4f(const std::string& name, float v0, float v1, flo
     glUniform4f(GetUniformLocation(name), v0, v1, v2, v3);
 }
 
+void OpenGLShader::SetUniformMatrix4fv(const std::string& name,
+                                       const glm::mat4& mat) {
+  glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &mat[0][0]);
+}
 
 int OpenGLShader::GetUniformLocation(const std::string& name)
 {
