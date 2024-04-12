@@ -14,8 +14,11 @@
 
 class OpenGLModel : public Model {
 public:
-    OpenGLModel(const std::string &fileName);
-    bool LoadModel(const std::string& filePath) override;
+    OpenGLModel(const std::filesystem::path &fileName);
+    bool LoadModel(const std::filesystem::path& filePath) override;
+    void Draw() override;
+private:
+    std::unique_ptr<OpenGLRenderer> InitMesh(const aiMesh* paiMesh);
 
     inline std::vector<std::unique_ptr<Mesh>>& GetSubMeshes() override { return mSubMeshes; }
 

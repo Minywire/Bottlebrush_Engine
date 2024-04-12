@@ -7,14 +7,17 @@
 
 #include <string>
 #include <memory>
+#include <filesystem>
 
 #include "Mesh.h"
 
 class Model {
 public:
-    virtual bool LoadModel(const std::string& filePath) = 0;
+    virtual bool LoadModel(const std::filesystem::path& filePath) = 0;
 
     virtual inline std::vector<std::unique_ptr<Mesh>>& GetSubMeshes() = 0;
+
+    virtual void Draw() = 0;
 };
 
 
