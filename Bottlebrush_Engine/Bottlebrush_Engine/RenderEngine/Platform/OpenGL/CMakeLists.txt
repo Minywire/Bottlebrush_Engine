@@ -15,3 +15,4 @@ file(GLOB SOURCES
 
 target_sources(GLPlatform PRIVATE ${SOURCES})
 target_link_libraries(GLPlatform PRIVATE assimp)
+target_link_libraries(GLPlatform PRIVATE glm)
