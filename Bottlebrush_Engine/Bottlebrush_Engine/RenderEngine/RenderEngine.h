@@ -96,4 +96,6 @@ public:
     /// @param b Blue channel
     /// @param a Alpha channel / transparency
     virtual void SetColour(float r, float g, float b, float a) = 0;
+
+    virtual inline std::unique_ptr<Shader>& GetShader() = 0;
 };

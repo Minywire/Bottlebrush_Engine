@@ -103,8 +103,6 @@ int main() {
 
   // TODO: Implement and test Texture.h
   const GraphicsAPI s_API = GraphicsAPI::OpenGL;
-  std::unique_ptr<Shader> shader = GraphicsFactory<s_API>::CreateShaderBuffer(
-      {"Basic.vert", "Basic.frag", "", ""});
   std::unique_ptr<Model> testCube =
       GraphicsFactory<s_API>::CreateModel("Resources/Models/cube.obj");
   std::unique_ptr<RenderEngine> renderEngine = GraphicsFactory<s_API>::CreateRenderer();
@@ -130,9 +128,6 @@ int main() {
       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     else
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-    // Bind the shaders
-    //shader->Bind();
     
     // Draw the test cube
     for (unsigned int i = 0; i < testCube->GetSubMeshes().size(); i++) {
@@ -145,16 +140,16 @@ int main() {
     glm::mat4 projection = glm::perspective(
         glm::radians(camera.zoom_), (float)screen_width / (float)screen_height,
         0.1f, 100.0f);
-    shader->SetUniformMatrix4fv("projection", projection);
+    renderEngine->GetShader()->SetUniformMatrix4fv("projection", projection);
     // Evaluate camera view matrix i.e. the camera LookAt matrix
     glm::mat4 view = camera.GetViewMatrix();
-    shader->SetUniformMatrix4fv("view", view);
+    renderEngine->GetShader()->SetUniformMatrix4fv("view", view);
     // Evaluate the camera model matrix that 'positions' the models being drawn
     // in the scene
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
     model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.3f, 0.5f));
-    shader->SetUniformMatrix4fv("model", model);
+    renderEngine->GetShader()->SetUniformMatrix4fv("model", model);
 
     // Swap out buffers and poll for input events
     glfwSwapBuffers(window);

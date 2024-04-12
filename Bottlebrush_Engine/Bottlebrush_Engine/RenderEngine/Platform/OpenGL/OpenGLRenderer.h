@@ -121,4 +121,6 @@ private:
     /// @param b Blue channel
     /// @param a Alpha channel / transparency
     void SetColour(float r, float g, float b, float a) override;
+
+    inline std::unique_ptr<Shader>& GetShader() { return m_Shader; }
 };
