@@ -9,7 +9,7 @@ private:
 	unsigned int m_RendererID;
 	unsigned char* m_LocalBuffer;
 	// BPP = bytes per pixel
-	int m_Width, m_Height, m_BPP;
+	int m_Width = 0, m_Height = 0, m_BPP = 0;
 
  public:
 	/// @author Alan Brunet
