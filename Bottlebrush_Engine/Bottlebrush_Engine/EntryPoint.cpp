@@ -107,7 +107,7 @@ int main() {
       GraphicsFactory<s_API>::CreateModel("Resources/Models/cube.obj");
   std::unique_ptr<RenderEngine> renderEngine = GraphicsFactory<s_API>::CreateRenderer();
 
-  renderEngine->SetShaderSource("Basic.vert", "Basic.frag");
+  renderEngine->SetShaderSource("Resources/Shaders/Vertex/Basic.vert", "Resources/Shaders/Fragment/Basic.frag");
   renderEngine->SetColour(0.2f, 0.3f, 0.8f, 1.0f);
 
   // RENDER LOOP

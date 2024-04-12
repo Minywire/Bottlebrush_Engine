@@ -6,6 +6,7 @@
 #include "RenderEngine.h"
 
 #include <glad/glad.h>
+#include <filesystem>
 
 /// @author Alan Brunet
 /// @brief Base class for rendering objects. It contains member pointers to a
@@ -49,10 +50,11 @@ private:
     /// path is not required
     /// @param geometrysource filename for a Geometry Shader Program. The file
     /// path is not required
-    void SetShaderSource(std::string vertexsource = "nullptr",
-                         std::string fragmentsource = "nullptr",
-                         std::string computesource = "nullptr",
-                         std::string geometrysource = "nullptr") override;
+    void SetShaderSource(
+        std::filesystem::path vertexsource = std::filesystem::path(),
+        std::filesystem::path fragmentsource = std::filesystem::path(),
+        std::filesystem::path computesource = std::filesystem::path(),
+        std::filesystem::path geometrysource = std::filesystem::path()) override;
 
     
     /// @author Alan Brunet

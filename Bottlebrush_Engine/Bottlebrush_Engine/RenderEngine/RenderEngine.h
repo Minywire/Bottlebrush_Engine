@@ -39,10 +39,11 @@ public:
     /// @param computesource filename for a Compute Shader Program. The file path is not required
     /// @param geometrysource filename for a Geometry Shader Program. The file path is not required
     virtual void SetShaderSource(
-		std::string vertexsource = "nullptr",
-		std::string fragmentsource = "nullptr",
-		std::string computesource = "nullptr",
-                std::string geometrysource = "nullptr") = 0;
+        std::filesystem::path vertexsource = std::filesystem::path(),
+        std::filesystem::path fragmentsource = std::filesystem::path(),
+        std::filesystem::path computesource = std::filesystem::path(),
+        std::filesystem::path geometrysource =
+            std::filesystem::path()) = 0;
 
     /// @author Alan Brunet
     /// @brief Must be called last to unbind all data. So it does not flow data into the next buffers.

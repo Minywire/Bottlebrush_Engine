@@ -38,10 +38,10 @@ void OpenGLRenderer::DisplayGPUInfo() const
 }
 
 void OpenGLRenderer::SetShaderSource(
-    std::string vertexsource,
-    std::string fragmentsource,
-    std::string computesource,
-    std::string geometrysource)
+    std::filesystem::path vertexsource,
+    std::filesystem::path fragmentsource,
+    std::filesystem::path computesource,
+    std::filesystem::path geometrysource)
 {
     // setup source shader files locations
     ShaderSourceFiles ssf;
