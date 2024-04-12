@@ -79,33 +79,6 @@ int main() {
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-   /*
-    std::unique_ptr<Model> testCube = GraphicsFactory<s_API>::CreateModel("Resources/Models/cube.obj");
-    std::unique_ptr<RenderEngine> r = GraphicsFactory<s_API>::CreateRenderer();
-
-    r->SetShaderSource("Basic.vert", "Basic.frag");
-    r->SetColour(0.2f, 0.3f, 0.8f, 1.0f);
-  */
-    // render loop
-    // -----------
-    /*
-    while (!glfwWindowShouldClose(window))
-    {
-        // input
-        // -----
-        processInput(window);
-
-        // render
-        // ------
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        for (unsigned int i = 0; i < testCube->GetSubMeshes().size(); i++)
-        {
-          r->Draw(*testCube->GetSubMeshes()[i]->GetVertexArray(), testCube->GetSubMeshes()[i]->GetIndexCount());
-        }
-        */
-        
   GLFWwindow *window = glfwCreateWindow(screen_width, screen_height,
                                         "Bottlebrush Engine", nullptr, nullptr);
   if (window == nullptr) {
@@ -134,6 +107,10 @@ int main() {
       {"Basic.vert", "Basic.frag", "", ""});
   std::unique_ptr<Model> testCube =
       GraphicsFactory<s_API>::CreateModel("Resources/Models/cube.obj");
+  std::unique_ptr<RenderEngine> renderEngine = GraphicsFactory<s_API>::CreateRenderer();
+
+  renderEngine->SetShaderSource("Basic.vert", "Basic.frag");
+  renderEngine->SetColour(0.2f, 0.3f, 0.8f, 1.0f);
 
   // RENDER LOOP
   while (!glfwWindowShouldClose(window)) {
@@ -155,9 +132,13 @@ int main() {
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     // Bind the shaders
-    shader->Bind();
+    //shader->Bind();
+    
     // Draw the test cube
-    testCube->Draw();
+    for (unsigned int i = 0; i < testCube->GetSubMeshes().size(); i++) {
+      renderEngine->Draw(*testCube->GetSubMeshes()[i]->GetVertexArray(),
+              testCube->GetSubMeshes()[i]->GetIndexCount());
+    }
 
     // Calculate camera projection matrix relative to current camera zoom and
     // screen dimensions

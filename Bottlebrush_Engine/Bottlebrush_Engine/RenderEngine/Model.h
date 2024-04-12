@@ -13,11 +13,10 @@
 
 class Model {
 public:
-    virtual bool LoadModel(const std::filesystem::path& filePath) = 0;
+	virtual ~Model() = default;
+	virtual bool LoadModel(const std::filesystem::path& filePath) = 0;
 
-    virtual inline std::vector<std::unique_ptr<Mesh>>& GetSubMeshes() = 0;
-
-    virtual void Draw() = 0;
+	virtual inline std::vector<std::unique_ptr<Mesh>>& GetSubMeshes() = 0;
 };
 
 
