@@ -19,6 +19,8 @@ public:
 
     inline std::vector<std::unique_ptr<Mesh>>& GetSubMeshes() override { return mSubMeshes; }
 
+    void UnbindModel() override;
+
 private:
     std::unique_ptr<Mesh> InitMesh(const aiMesh* paiMesh);
 

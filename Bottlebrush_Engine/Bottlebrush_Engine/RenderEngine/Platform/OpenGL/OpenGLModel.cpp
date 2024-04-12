@@ -1,3 +1,4 @@
+#include "OpenGLModel.h"
 //
 // Created by niamh on 7/04/2024.
 //
@@ -45,7 +46,13 @@ OpenGLModel::OpenGLModel(const std::filesystem::path &fileName) {
     LoadModel(fileName);
 }
 
-std::unique_ptr<Mesh> OpenGLModel::InitMesh(const aiMesh *paiMesh) {
+void OpenGLModel::UnbindModel() {
+  for (unsigned int i = 0; i < mSubMeshes.size(); i++) {
+    mSubMeshes[i]->UnbindMesh();
+  }
+}
+
+std::unique_ptr<Mesh> OpenGLModel::InitMesh(const aiMesh* paiMesh) {
     std::vector<float> meshVerts;
     std::vector<unsigned int> meshInts;
 
