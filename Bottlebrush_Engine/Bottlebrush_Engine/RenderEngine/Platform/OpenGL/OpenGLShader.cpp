@@ -55,8 +55,8 @@ unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& s
     {
         int length;
         glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
-        char* message = (char*) malloc(length * sizeof(char)); //MARCO: Changed this to malloc since it's just a message string that can be cleared in this scope
-        glGetShaderInfoLog(id, length, &length, message);
+        std::string message;
+        glGetShaderInfoLog(id, length, &length, message.data());
 
         std::cout << "failed to compile: " <<
             ShaderTypeToString(type)
@@ -64,8 +64,6 @@ unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& s
         std::cout << message << std::endl;
 
         glDeleteShader(id);
-
-        free(message); //clear the string
         return 0;
     }
 
