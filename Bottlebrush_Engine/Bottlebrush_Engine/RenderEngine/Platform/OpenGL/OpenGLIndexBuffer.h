@@ -21,7 +21,7 @@ public:
 	/// Constructor
 	OpenGLIndexBuffer(const unsigned int* data, unsigned int count);
 	/// Deconstructor
-	~OpenGLIndexBuffer();
+	~OpenGLIndexBuffer() override;
 
 	/// @author Alan Brunet
 	/// @brief Binding buffer to draw / add

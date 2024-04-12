@@ -21,7 +21,7 @@ public:
     /// @brief Constructor that generates a Vertex array on the Graphics API
 	OpenGLVertexArray();
 	// Deconstructor
-	~OpenGLVertexArray();
+	~OpenGLVertexArray() override;
 
 	/// @author Alan Brunet
     /// @brief Adds the vertex Buffer and applies its layout

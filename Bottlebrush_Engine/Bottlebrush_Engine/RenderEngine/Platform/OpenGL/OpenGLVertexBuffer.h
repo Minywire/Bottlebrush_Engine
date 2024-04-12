@@ -24,7 +24,7 @@ public:
 
 	/// @author Alan Brunet
     /// @brief Deconstructor
-	~OpenGLVertexBuffer();
+	~OpenGLVertexBuffer() override;
 
 	/// @author Alan Brunet
     /// @brief Binding buffer

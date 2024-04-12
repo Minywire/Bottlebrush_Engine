@@ -52,7 +52,6 @@ int main()
     const GraphicsAPI s_API = GraphicsAPI::OpenGL;
 
     std::unique_ptr<Model> testCube = GraphicsFactory<s_API>::CreateModel("Resources/Models/cube.obj");
-    std::vector<std::unique_ptr<Mesh>> meshes;
     std::unique_ptr<RenderEngine> r = GraphicsFactory<s_API>::CreateRenderer();
 
     r->SetShaderSource("Basic.vert", "Basic.frag");

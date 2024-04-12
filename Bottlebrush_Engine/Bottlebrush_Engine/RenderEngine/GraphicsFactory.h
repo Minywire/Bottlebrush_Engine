@@ -26,7 +26,7 @@ template <GraphicsAPI>
 class GraphicsFactory {
 public:
     static std::unique_ptr<RenderEngine> CreateRenderer();
-	static std::unique_ptr<VertexBuffer> CreateVertexBuffer(const void* vertices, unsigned int size);
+    static std::unique_ptr<VertexBuffer> CreateVertexBuffer(const void* vertices, unsigned int size);
     static std::unique_ptr<VertexArray> CreateVertexArray();    
     static std::unique_ptr<VertexBufferLayout> CreateVertexBufferLayout();
     static std::unique_ptr<IndexBuffer> CreateIndexBuffer(const unsigned int* data, unsigned int count);

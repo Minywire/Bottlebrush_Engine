@@ -29,7 +29,7 @@ private:
 
  public:
     OpenGLRenderer();
-    ~OpenGLRenderer();
+    ~OpenGLRenderer() override;
 
     /// @author Alan Brunet
     /// @brief glClearColor()

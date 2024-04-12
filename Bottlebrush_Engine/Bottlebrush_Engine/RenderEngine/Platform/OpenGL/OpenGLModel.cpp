@@ -52,7 +52,7 @@ std::unique_ptr<Mesh> OpenGLModel::InitMesh(const aiMesh *paiMesh) {
     const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
 
     // Populate vertex positions
-    for(int i = 0; i < paiMesh->mNumVertices; i++) {
+    for(unsigned int i = 0; i < paiMesh->mNumVertices; i++) {
         const aiVector3D& pPos = paiMesh->mVertices[i];
 
         meshVerts.push_back(pPos.x);
@@ -61,7 +61,7 @@ std::unique_ptr<Mesh> OpenGLModel::InitMesh(const aiMesh *paiMesh) {
     }
 
     // Populate index buffer
-    for(int i = 0; i < paiMesh->mNumFaces; i++) {
+    for(unsigned int i = 0; i < paiMesh->mNumFaces; i++) {
         const aiFace& Face = paiMesh->mFaces[i];
         assert(Face.mNumIndices == 3);
         meshInts.push_back(Face.mIndices[0]);
@@ -76,33 +76,4 @@ std::unique_ptr<Mesh> OpenGLModel::InitMesh(const aiMesh *paiMesh) {
     mesh->CreateMesh(meshVerts, 3, meshInts, layout);
 
     return mesh;
-
-    /*
-    std::unique_ptr<OpenGLRenderer> r = std::make_unique<OpenGLRenderer>();
-    unsigned int layoutsizes[] = {3};
-
-    r->SetShaderSource("Basic.vert", "Basic.frag");
-    r->SetColour(0.2f, 0.3f, 0.8f, 1.0f);
-    r->SetVertexBuffer(meshVerts.data(), meshVerts.size(), 3);
-    r->PushLayout(1, layoutsizes);
-    r->SetIndexBuffer(meshInts.data(), meshInts.size());
-
-    return r;
-     */
 }
-
-// function
-/*
- * set the vertex buffer
- * set the index buffer
- */
-
-
-/*
-void OpenGLModel::Draw() {
-
-    for(int i = 0; i < mSubMeshes.size(); i++) {
-        mSubMeshes[i]->Draw();
-    }
-}
-*/

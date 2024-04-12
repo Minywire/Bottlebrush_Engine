@@ -15,22 +15,22 @@ class VertexArray
 protected:
 	
 public:
-	/// Deconstructor
-	~VertexArray()= default;
+    /// Deconstructor
+    virtual ~VertexArray()= default;
 
-	/// @author Alan Brunet
+    /// @author Alan Brunet
     /// @brief Adds the vertex Buffer and applies its layout
     /// @param vb Vertex Buffer that contains all vertex data
     /// @see class VertexBuffer
-	/// @param layout is how the Vertex Bufffer contains its data, its count, type, and if its normalised.
-	/// @see class VertexBufferLayout
-	virtual void AddBuffer(const VertexBuffer& vb, VertexBufferLayout& layout) = 0;
+    /// @param layout is how the Vertex Bufffer contains its data, its count, type, and if its normalised.
+    /// @see class VertexBufferLayout
+    virtual void AddBuffer(const VertexBuffer& vb, VertexBufferLayout& layout) = 0;
 
-	/// @author Alan Brunet
+    /// @author Alan Brunet
     /// @brief Bind Vertex Array buffer to add / draw
-	virtual void Bind() const = 0;
+    virtual void Bind() const = 0;
 
-	/// @author Alan Brunet
+    /// @author Alan Brunet
     /// @brief Unbind Vertex Array buffer
-	virtual void Unbind() const = 0;
+    virtual void Unbind() const = 0;
 };

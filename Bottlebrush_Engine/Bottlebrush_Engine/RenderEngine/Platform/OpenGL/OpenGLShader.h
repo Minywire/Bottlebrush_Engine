@@ -15,7 +15,7 @@ public:
 	/// Constructor that gets full path name and registers it to member variable m_SSF
 	OpenGLShader(ShaderSourceFiles ssf);
 	/// Deconstructor
-	~OpenGLShader();
+	~OpenGLShader() override;
 
 	/// @author Alan Brunet
     /// @brief Binds the Shader to use / add

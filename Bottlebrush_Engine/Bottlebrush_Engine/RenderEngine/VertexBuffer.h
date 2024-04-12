@@ -12,14 +12,14 @@ protected:
 	
 
 public:
-	/// Deconstructor
-	~VertexBuffer(){};
+    /// Deconstructor
+    virtual ~VertexBuffer() = default;
 
-	/// @author Alan Brunet
+    /// @author Alan Brunet
     /// @brief Binding buffer
-	virtual void Bind() const = 0;
+    virtual void Bind() const = 0;
 
-	/// @author Alan Brunet
+    /// @author Alan Brunet
     /// @brief Unbinding buffer
-	virtual void Unbind() const = 0;
+    virtual void Unbind() const = 0;
 };
