@@ -53,10 +53,10 @@ void OpenGLRenderer::DisplayGPUInfo() const
 }
 
 
-void OpenGLRenderer::SetVertexBuffer(const void* vertData, unsigned int vertexCount, unsigned int vertDataSize) 
+void OpenGLRenderer::SetVertexBuffer(const void* vertData, unsigned int vertexCount)
 {
     // 4 vertex and 2 points (2D)
-    m_VertexBuffer = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexBuffer(vertData, vertexCount * vertDataSize * sizeof(float));
+    m_VertexBuffer = GraphicsFactory<GraphicsAPI::OpenGL>::CreateVertexBuffer(vertData, vertexCount *  sizeof(float));
 }
 
 void OpenGLRenderer::PushLayout(unsigned int count, unsigned int sizes[]) 
@@ -132,4 +132,3 @@ void OpenGLRenderer::ClearBuffers()
     if(m_VertexBuffer) m_VertexBuffer->Unbind();
     if(m_Texture) m_Texture->Unbind();
 }
-

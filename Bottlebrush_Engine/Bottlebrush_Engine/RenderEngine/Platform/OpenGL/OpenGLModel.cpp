@@ -9,7 +9,7 @@
 #include <fstream>
 #include <stdexcept>
 
-bool OpenGLModel::LoadModel(const std::string& filePath) {
+bool OpenGLModel::LoadModel(const std::filesystem::path& filePath) {
     Assimp::Importer import;
 
     std::ifstream file(filePath);
@@ -17,12 +17,12 @@ bool OpenGLModel::LoadModel(const std::string& filePath) {
     if(file) {
         std::cout << filePath << " opened successfully" << std::endl;
     } else {
-        throw std::invalid_argument(filePath + " could not open");
+        throw std::invalid_argument(filePath.string() + " could not open");
     }
 
     file.close();
 
-    const aiScene* scene = import.ReadFile(filePath, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
+    const aiScene* scene = import.ReadFile(filePath.string(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
 
     if(!scene) {
         return false;
@@ -41,7 +41,7 @@ bool OpenGLModel::LoadModel(const std::string& filePath) {
     return true;
 }
 
-OpenGLModel::OpenGLModel(const std::string &fileName) {
+OpenGLModel::OpenGLModel(const std::filesystem::path &fileName) {
     LoadModel(fileName);
 }
 
@@ -74,7 +74,7 @@ std::unique_ptr<OpenGLRenderer> OpenGLModel::InitMesh(const aiMesh *paiMesh) {
 
     r->SetShaderSource("Basic.vert", "Basic.frag");
     r->SetColour(0.2f, 0.3f, 0.8f, 1.0f);
-    r->SetVertexBuffer(meshVerts.data(), meshVerts.size(), 3);
+    r->SetVertexBuffer(meshVerts.data(), meshVerts.size());
     r->PushLayout(1, layoutsizes);
     r->SetIndexBuffer(meshInts.data(), meshInts.size());
 

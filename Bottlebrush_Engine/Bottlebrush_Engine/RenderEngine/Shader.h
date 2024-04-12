@@ -14,6 +14,8 @@
 #include <unordered_map>
 #include <filesystem>
 
+#include "glm/glm.hpp"
+
 /// @author Alan Brunet
 /// @brief Contains the filenames of each shader type.
 /// These only need to specify the filename and not the full directory path.
@@ -65,6 +67,9 @@ public:
     /// @param name is the uniform name within the Shader Program source file.
     /// E.g., "u_Color"
     virtual void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3) = 0;
+
+    virtual void SetUniformMatrix4fv(const std::string& name,
+                                     const glm::mat4& mat) = 0;
 
     // Disable Copying and Assignment
     Shader(Shader const &) = delete;
