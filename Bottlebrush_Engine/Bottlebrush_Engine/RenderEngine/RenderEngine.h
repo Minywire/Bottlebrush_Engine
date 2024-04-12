@@ -7,6 +7,8 @@
 #include "VertexArray.h"
 #include "Shader.h"
 
+enum class ShaderType { Default, Pixelated, Water, Shadowmap };
+
 /// @author Alan Brunet
 /// @brief Base class for rendering objects. It contains member pointers to a Vertex Array,
 /// Vertex Buffer, Index Buffer, and a Shader
@@ -25,7 +27,7 @@ public:
     /// @author Alan Brunet
     /// @brief This needs to be called within the draw loop. Uses member pointers to bind a Vertex Array (which has a Vertex Buffer, its layout and Index Buffer bound)
     /// and index count of how many indices there is
-    virtual void Draw(const VertexArray& va, const unsigned int indexCount) const = 0;
+    virtual void Draw(ShaderType shaderType, const VertexArray& va, const unsigned int indexCount) = 0;
 
     /// @author Alan Brunet
     /// @brief This just display current graphics API - version, vendor, and
@@ -39,15 +41,15 @@ public:
     /// @param computesource filename for a Compute Shader Program. The file path is not required
     /// @param geometrysource filename for a Geometry Shader Program. The file path is not required
     virtual void SetShaderSource(
+        ShaderType shaderType,
         std::filesystem::path vertexsource = std::filesystem::path(),
         std::filesystem::path fragmentsource = std::filesystem::path(),
         std::filesystem::path computesource = std::filesystem::path(),
-        std::filesystem::path geometrysource =
-            std::filesystem::path()) = 0;
+        std::filesystem::path geometrysource = std::filesystem::path()) = 0;
 
     /// @author Alan Brunet
     /// @brief Must be called last to unbind all data. So it does not flow data into the next buffers.
-    virtual void UnbindBuffers() = 0;
+    virtual void UnbindShader(ShaderType shaderType) = 0;
 
     /// @author Alan Brunet
     /// @brief Manually set the colour of an object with "u_Color" variable within a basic.frag file.
@@ -56,7 +58,7 @@ public:
     /// @param g Green channel
     /// @param b Blue channel
     /// @param a Alpha channel / transparency
-    virtual void SetColour(float r, float g, float b, float a) = 0;
+    virtual void SetColour(ShaderType shaderType, float r, float g, float b, float a) = 0;
 
-    virtual inline std::unique_ptr<Shader>& GetShader() = 0;
+    virtual inline std::unique_ptr<Shader>& GetShader(ShaderType shaderType) = 0;
 };

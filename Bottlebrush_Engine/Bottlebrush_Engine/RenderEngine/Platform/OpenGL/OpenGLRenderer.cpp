@@ -23,9 +23,9 @@ void OpenGLRenderer::Clear() const
 }
 
 
-void OpenGLRenderer::Draw(const VertexArray& va, const unsigned int indexCount) const
+void OpenGLRenderer::Draw(ShaderType shaderType, const VertexArray& va, const unsigned int indexCount)
 {
-    if (m_Shader) m_Shader->Bind();
+    m_ShaderManager[shaderType]->Bind();
     va.Bind();
     glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
 }
@@ -38,6 +38,7 @@ void OpenGLRenderer::DisplayGPUInfo() const
 }
 
 void OpenGLRenderer::SetShaderSource(
+    ShaderType shaderType,
     std::filesystem::path vertexsource,
     std::filesystem::path fragmentsource,
     std::filesystem::path computesource,
@@ -51,23 +52,16 @@ void OpenGLRenderer::SetShaderSource(
     ssf.GeometrySource = geometrysource;
 
     // calling the constructor will read the files within ssf and apply them
-    m_Shader = GraphicsFactory<GraphicsAPI::OpenGL>::CreateShaderBuffer(ssf);
+    m_ShaderManager[shaderType] =
+        GraphicsFactory<GraphicsAPI::OpenGL>::CreateShaderBuffer(ssf);
 }
 
-void OpenGLRenderer::SetColour(float r, float g, float b, float a) {
-    // basic.frag has a uniform declaration
-    if (m_Shader) 
-    {
-        m_Shader->Bind();
-        m_Shader->SetUniform4f("u_Color", r, g, b, a);
-    }
-    else
-    {
-        std::cout << "Warning: Shader is not bound" << std::endl;
-    }
+void OpenGLRenderer::SetColour(ShaderType shaderType, float r, float g, float b, float a) {
+    m_ShaderManager[shaderType]->Bind();
+    m_ShaderManager[shaderType]->SetUniform4f("u_Color", r, g, b, a);
 }
 
-void OpenGLRenderer::UnbindBuffers() { 
+void OpenGLRenderer::UnbindShader(ShaderType shaderType) { 
     // clearing all buffer bindings
-    if(m_Shader) m_Shader->Unbind();
+    m_ShaderManager[shaderType]->Unbind();
 }
