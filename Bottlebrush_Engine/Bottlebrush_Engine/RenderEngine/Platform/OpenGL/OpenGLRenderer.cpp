@@ -18,16 +18,21 @@ OpenGLRenderer::~OpenGLRenderer()
 
 void OpenGLRenderer::Clear() const 
 {
-  glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 
 void OpenGLRenderer::Draw(ShaderType shaderType, const VertexArray& va, const unsigned int indexCount)
 {
-    m_ShaderManager[shaderType]->Bind();
-    va.Bind();
-    glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
+    if (m_ShaderManager.find(shaderType) != m_ShaderManager.end()) {
+        m_ShaderManager[shaderType]->Bind();
+        va.Bind();
+        glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
+    } 
+    else {
+      std::cout << "Warning: ShaderType not set yet" << std::endl;
+    }
 }
 
 void OpenGLRenderer::DisplayGPUInfo() const 
@@ -57,11 +62,19 @@ void OpenGLRenderer::SetShaderSource(
 }
 
 void OpenGLRenderer::SetColour(ShaderType shaderType, float r, float g, float b, float a) {
-    m_ShaderManager[shaderType]->Bind();
-    m_ShaderManager[shaderType]->SetUniform4f("u_Color", r, g, b, a);
+    if (m_ShaderManager.find(shaderType) != m_ShaderManager.end()) {
+        m_ShaderManager[shaderType]->Bind();
+        m_ShaderManager[shaderType]->SetUniform4f("u_Color", r, g, b, a);
+    } 
+    else {
+        std::cout << "Warning: ShaderType not set yet" << std::endl;
+    }
+    
 }
 
 void OpenGLRenderer::UnbindShader(ShaderType shaderType) { 
     // clearing all buffer bindings
-    m_ShaderManager[shaderType]->Unbind();
+    if (m_ShaderManager.find(shaderType) != m_ShaderManager.end()) {
+        m_ShaderManager[shaderType]->Unbind();
+    }
 }

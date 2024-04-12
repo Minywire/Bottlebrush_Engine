@@ -49,6 +49,8 @@ private:
     void SetTexture(int width, int height, int bpp, unsigned char* imagedata,
                     unsigned int slot = 0) override;
 
+    /// @author Alan Brunet
+    /// @brief unbinds all buffers to this mesh
     void UnbindMesh() override;
 
     inline std::unique_ptr<VertexArray>& GetVertexArray() override {return m_VertexArray;}
