@@ -30,6 +30,10 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     {
         loadTransform(ecs, entity, table["Transform"]);
     }
+    if(table["Model"].valid())
+    {
+        loadModel(ecs, entity, table["Model"]);
+    }
 }
 
 void EntityFactory::loadTransform(ECS& ecs, Entity& entity, const sol::table & transform)
@@ -46,9 +50,22 @@ void EntityFactory::loadTransform(ECS& ecs, Entity& entity, const sol::table & t
                       transform["Scale"]["y"],
                       transform["Scale"]["z"] };
 
-    TransformComponent& transformComponent = entity.GetComponent<TransformComponent>(ecs.getReg());
+    TransformComponent& transformComponent = entity.GetComponent<TransformComponent>(ecs.getReg()); //Transform components exist by default so we get here.
 
     transformComponent.position = pos;
     transformComponent.rotation = rot;
     transformComponent.scale = scale;
+}
+
+void EntityFactory::loadModel(ECS &ecs, Entity &entity, const sol::table &model)
+{
+    std::string model_location = model["ModelPath"];
+    std::string model_mat = model["MaterialPath"];
+
+    std::cout << model_location << " " << model_mat << "\n";
+
+    ModelComponent& modelComponent = entity.AddComponent<ModelComponent>(ecs.getReg()); //add model component to entity.
+
+    modelComponent.model_path = model_location;
+    modelComponent.material_path = model_mat;
 }
