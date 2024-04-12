@@ -52,8 +52,11 @@ int main()
     const GraphicsAPI s_API = GraphicsAPI::OpenGL;
 
     std::unique_ptr<Model> testCube = GraphicsFactory<s_API>::CreateModel("Resources/Models/cube.obj");
+    std::vector<std::unique_ptr<Mesh>> meshes;
+    std::unique_ptr<RenderEngine> r = GraphicsFactory<s_API>::CreateRenderer();
 
-
+    r->SetShaderSource("Basic.vert", "Basic.frag");
+    r->SetColour(0.2f, 0.3f, 0.8f, 1.0f);
 
     // render loop
     // -----------
@@ -68,8 +71,11 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        for (unsigned int i = 0; i < testCube->GetSubMeshes().size(); i++)
+        {
+          r->Draw(*testCube->GetSubMeshes()[i]->GetVertexArray(), testCube->GetSubMeshes()[i]->GetIndexCount());
+        }
 
-        testCube->Draw();
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwPollEvents();

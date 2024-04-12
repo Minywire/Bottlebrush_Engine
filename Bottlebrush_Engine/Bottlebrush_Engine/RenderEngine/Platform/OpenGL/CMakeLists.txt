@@ -10,7 +10,8 @@ file(GLOB SOURCES
 	OpenGLVertexArray.h OpenGLVertexArray.cpp
 	OpenGLVertexBuffer.h OpenGLVertexBuffer.cpp
 	OpenGLVertexBufferLayout.h OpenGLVertexBufferLayout.cpp
-		OpenGLModel.cpp OpenGLModel.h
+	OpenGLModel.cpp OpenGLModel.h
+	OpenGLMesh.cpp OpenGLMesh.h
 	)
 
 target_sources(GLPlatform PRIVATE ${SOURCES})

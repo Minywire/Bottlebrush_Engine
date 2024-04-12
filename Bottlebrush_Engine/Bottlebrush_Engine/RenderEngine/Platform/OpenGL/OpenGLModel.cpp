@@ -28,7 +28,7 @@ bool OpenGLModel::LoadModel(const std::string& filePath) {
         return false;
     }
 
-    for(int i = 0; i < scene->mNumMeshes; i++) {
+    for(unsigned int i = 0; i < scene->mNumMeshes; i++) {
         mSubMeshes.push_back(InitMesh(scene->mMeshes[i]));
     }
 
@@ -45,7 +45,7 @@ OpenGLModel::OpenGLModel(const std::string &fileName) {
     LoadModel(fileName);
 }
 
-std::unique_ptr<OpenGLRenderer> OpenGLModel::InitMesh(const aiMesh *paiMesh) {
+std::unique_ptr<Mesh> OpenGLModel::InitMesh(const aiMesh *paiMesh) {
     std::vector<float> meshVerts;
     std::vector<unsigned int> meshInts;
 
@@ -69,6 +69,15 @@ std::unique_ptr<OpenGLRenderer> OpenGLModel::InitMesh(const aiMesh *paiMesh) {
         meshInts.push_back(Face.mIndices[2]);
     }
 
+    std::vector<unsigned int> layout;
+    layout.push_back(3);
+
+    std::unique_ptr<Mesh> mesh = std::make_unique<OpenGLMesh>();
+    mesh->CreateMesh(meshVerts, 3, meshInts, layout);
+
+    return mesh;
+
+    /*
     std::unique_ptr<OpenGLRenderer> r = std::make_unique<OpenGLRenderer>();
     unsigned int layoutsizes[] = {3};
 
@@ -79,6 +88,7 @@ std::unique_ptr<OpenGLRenderer> OpenGLModel::InitMesh(const aiMesh *paiMesh) {
     r->SetIndexBuffer(meshInts.data(), meshInts.size());
 
     return r;
+     */
 }
 
 // function
@@ -88,9 +98,11 @@ std::unique_ptr<OpenGLRenderer> OpenGLModel::InitMesh(const aiMesh *paiMesh) {
  */
 
 
+/*
 void OpenGLModel::Draw() {
 
     for(int i = 0; i < mSubMeshes.size(); i++) {
         mSubMeshes[i]->Draw();
     }
 }
+*/

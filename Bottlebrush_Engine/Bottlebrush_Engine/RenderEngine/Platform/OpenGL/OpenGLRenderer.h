@@ -41,6 +41,8 @@ private:
     /// and Index Buffer bound) and Shader and then uses the GraphicAPI to draw
     /// from the data bound to them.
     void Draw() const override;
+
+    void Draw(const VertexArray& va, const unsigned int indexCount) const override;
     
     /// @author Alan Brunet
     /// @brief This just display current graphics API - version, vendor, and

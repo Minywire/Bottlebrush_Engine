@@ -6,7 +6,9 @@
 #define BOTTLEBRUSH_ENGINE_OPENGLMODEL_H
 
 #include "Model.h"
-#include "OpenGLRenderer.h"
+//#include "OpenGLRenderer.h"
+#include "OpenGLMesh.h"
+
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -15,11 +17,17 @@ class OpenGLModel : public Model {
 public:
     OpenGLModel(const std::string &fileName);
     bool LoadModel(const std::string& filePath) override;
-    void Draw() override;
-private:
-    std::unique_ptr<OpenGLRenderer> InitMesh(const aiMesh* paiMesh);
+    //void Draw() override;
 
-    std::vector<std::unique_ptr<OpenGLRenderer>> mSubMeshes;
+    inline std::vector<std::unique_ptr<Mesh>>& GetSubMeshes() override
+    {
+      return mSubMeshes;
+    }
+
+private:
+    std::unique_ptr<Mesh> InitMesh(const aiMesh* paiMesh);
+
+    std::vector<std::unique_ptr<Mesh>> mSubMeshes;
 };
 
 

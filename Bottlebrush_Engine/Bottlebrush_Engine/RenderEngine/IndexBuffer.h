@@ -16,7 +16,7 @@ protected:
 	/// Default Constructor
 	IndexBuffer(){};
 	/// Constructor
-    IndexBuffer(const unsigned int* data, unsigned int count) {};
+    //IndexBuffer(const unsigned int* data, unsigned int count) {};
 	/// Deconstructor
 	~IndexBuffer(){};
 

@@ -21,14 +21,13 @@ void OpenGLRenderer::Clear() const
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-/*
-void OpenGLRenderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
+
+void OpenGLRenderer::Draw(const VertexArray& va, const unsigned int indexCount) const
 {
-    shader.Bind();
+    m_Shader->Bind();
     va.Bind();
-    glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
 }
-*/
 
 void OpenGLRenderer::Draw() const 
 {

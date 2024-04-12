@@ -33,7 +33,7 @@ public:
 	/// @brief This needs to be called within the draw loop. Uses member pointers to bind a Vertex Array (which has a Vertex Buffer, its layout and Index Buffer bound)
 	/// and Shader and then uses the GraphicAPI to draw from the data bound to them.
     virtual void Draw() const = 0;
-	//virtual void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const = 0;
+	virtual void Draw(const VertexArray& va, const unsigned int indexCount) const = 0;
 
 	/// @author Alan Brunet
     /// @brief This just display current graphics API - version, vendor, and
