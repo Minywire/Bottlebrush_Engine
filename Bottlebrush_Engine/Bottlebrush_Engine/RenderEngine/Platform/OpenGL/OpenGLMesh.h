@@ -28,7 +28,28 @@ private:
     OpenGLMesh();
     ~OpenGLMesh() override;
 
-    void CreateMesh(std::vector<float> vertices, unsigned int vertDataSize, std::vector<unsigned int> indices, std::vector<unsigned int> layout) override;
+    /// @author Alan Brunet
+    /// @brief Creates the mesh using OpenGL's Vertex Buffer,
+    /// Vertex buffer layout and Index buffer. It then binds it to an array
+    /// @param vertices vertex data, i.e., positions, texcoords, normals
+    /// @param indices index buffer data. Indexing the drawing of vertexes
+    /// @param layout vertex buffer layout. Defines the size of each element in
+    /// the vertex buffer
+    void CreateMesh(std::vector<float> vertices, std::vector<unsigned int> indices, std::vector<unsigned int> layout) override;
+
+    /// @author Alan Brunet
+    /// @brief Creates a texture from a given image, and an assigned slot
+    /// which is defaulted to zero
+    /// @param width is image width
+    /// @param height is image height
+    /// @param bpp is bytes per pixel
+    /// @param imagedata is the raw data from an image
+    /// @param slot for overlapping image textures if not 0.
+    /// Defaulted to zero
+    void SetTexture(int width, int height, int bpp, unsigned char* imagedata,
+                    unsigned int slot = 0) override;
+
+    void UnbindMesh() override;
 
     inline std::unique_ptr<VertexArray>& GetVertexArray() override {return m_VertexArray;}
     inline unsigned int GetIndexCount() override {return m_IndexBuffer->GetCount();}

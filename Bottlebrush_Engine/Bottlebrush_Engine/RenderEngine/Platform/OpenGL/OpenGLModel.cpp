@@ -70,10 +70,10 @@ std::unique_ptr<Mesh> OpenGLModel::InitMesh(const aiMesh *paiMesh) {
     }
 
     std::vector<unsigned int> layout;
-    layout.push_back(3);
+    layout.push_back(3); // 3 elements for position
 
     std::unique_ptr<Mesh> mesh = std::make_unique<OpenGLMesh>();
-    mesh->CreateMesh(meshVerts, 3, meshInts, layout);
+    mesh->CreateMesh(meshVerts, meshInts, layout);
 
     return mesh;
 }
