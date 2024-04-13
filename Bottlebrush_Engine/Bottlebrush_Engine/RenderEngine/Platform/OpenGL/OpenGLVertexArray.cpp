@@ -43,7 +43,7 @@ void OpenGLVertexArray::AddBuffer(const VertexBuffer& vb, VertexBufferLayout& la
         element.type,
         element.normalised,
         layout.GetStride(),
-		(const void*)offset
+		reinterpret_cast<void*>(offset)
         );
 
 		// calc byte space taken up by this attribute
