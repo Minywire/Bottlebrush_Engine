@@ -15,10 +15,8 @@ protected:
  public:
 	/// Default Constructor
 	IndexBuffer(){};
-	/// Constructor
-    IndexBuffer(const unsigned int* data, unsigned int count) {};
 	/// Deconstructor
-	~IndexBuffer(){};
+	virtual ~IndexBuffer() = default;
 
 	/// @author Alan Brunet
 	/// @brief Binding buffer to draw / add

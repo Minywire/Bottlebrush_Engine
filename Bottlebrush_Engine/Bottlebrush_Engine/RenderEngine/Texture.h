@@ -7,28 +7,28 @@ class Texture
 protected:
 
 public:
-	Texture(){};
-	~Texture(){};
+    Texture(){};
+    virtual ~Texture() = default;
 
-	/// @author Alan Brunet
+    /// @author Alan Brunet
     /// @brief Creates a texture from a given texture image data.
     /// OpenGL expects image to start at bottom left, instead of top left. 
     /// May need to flip image data before passing.
     /// @param data is the image data
-	virtual void CreateTexture(unsigned char* data) = 0;
+    virtual void CreateTexture(unsigned char* data) = 0;
 
-	/// @author Alan Brunet
+    /// @author Alan Brunet
     /// @brief Binds the Texture to use / add
     /// @param slot can be different texture slots, maximum of 32 slots. defaulted to 1 (0)
-	virtual void Bind(unsigned int slot = 0) const = 0;
+    virtual void Bind(unsigned int slot = 0) const = 0;
 
-	/// @author Alan Brunet
+    /// @author Alan Brunet
     /// @brief unbinds texture
-	virtual void Unbind() const = 0;
+    virtual void Unbind() const = 0;
 
-	/// @author Alan Brunet
+    /// @author Alan Brunet
     /// @return member width
-	virtual int GetWidth() const = 0;
+    virtual int GetWidth() const = 0;
 
 	/// @author Alan Brunet
     /// @return member height

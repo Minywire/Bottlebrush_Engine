@@ -26,7 +26,7 @@ private:
  public:
     OpenGLVertexBufferLayout();
 	/// Deconstructor
-    ~OpenGLVertexBufferLayout();
+    ~OpenGLVertexBufferLayout() override;
 
     /// @author Alan Brunet
     /// @brief Setting the byte count of types

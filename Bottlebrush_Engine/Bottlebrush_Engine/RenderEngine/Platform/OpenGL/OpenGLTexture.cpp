@@ -3,7 +3,7 @@
 #include "OpenGLRenderer.h"
 
 OpenGLTexture::OpenGLTexture(int width, int height, int bpp)
-    : m_Width(width), m_Height(height), m_BPP(bpp), m_LocalBuffer(nullptr)
+    : m_LocalBuffer(nullptr), m_Width(width), m_Height(height), m_BPP(bpp)
 {
     glGenTextures(1, &m_RendererID);
 }

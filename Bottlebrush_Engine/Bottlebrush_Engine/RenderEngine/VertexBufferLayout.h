@@ -45,25 +45,25 @@ class VertexBufferLayout
 {
 
 public:
-	/// Constructor
-	VertexBufferLayout(){};
+    /// Constructor
+    VertexBufferLayout(){};
 
-	/// Deconstructor
-    ~VertexBufferLayout(){};
+    /// Deconstructor
+    virtual ~VertexBufferLayout() = default;
 
-	/// @author Alan Brunet
+    /// @author Alan Brunet
     /// @brief Setting the byte count of types
-	virtual unsigned int GetSizeOfType(unsigned int type) = 0;
+    virtual unsigned int GetSizeOfType(unsigned int type) = 0;
 
-	/// @author Alan Brunet
+    /// @author Alan Brunet
     /// @brief For pushing the layout of vertex onto the VertexBufferElement vector
     virtual void Push(unsigned int count, DataType dt) = 0;
 
-	/// @author Alan Brunet
+    /// @author Alan Brunet
     /// @return member variable m_Elements
     virtual std::vector<VertexBufferElement> GetElements() const& = 0;
 
-	/// @author Alan Brunet
+    /// @author Alan Brunet
     /// @return member variable m_Stride
     virtual unsigned int GetStride() const = 0;
 	

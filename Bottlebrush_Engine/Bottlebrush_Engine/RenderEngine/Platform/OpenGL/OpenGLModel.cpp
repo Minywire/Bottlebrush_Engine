@@ -1,3 +1,4 @@
+#include "OpenGLModel.h"
 //
 // Created by niamh on 7/04/2024.
 //
@@ -28,7 +29,7 @@ bool OpenGLModel::LoadModel(const std::filesystem::path& filePath) {
         return false;
     }
 
-    for(int i = 0; i < scene->mNumMeshes; i++) {
+    for(unsigned int i = 0; i < scene->mNumMeshes; i++) {
         mSubMeshes.push_back(InitMesh(scene->mMeshes[i]));
     }
 
@@ -45,14 +46,20 @@ OpenGLModel::OpenGLModel(const std::filesystem::path &fileName) {
     LoadModel(fileName);
 }
 
-std::unique_ptr<OpenGLRenderer> OpenGLModel::InitMesh(const aiMesh *paiMesh) {
+void OpenGLModel::UnbindModel() {
+  for (unsigned int i = 0; i < mSubMeshes.size(); i++) {
+    mSubMeshes[i]->UnbindMesh();
+  }
+}
+
+std::unique_ptr<Mesh> OpenGLModel::InitMesh(const aiMesh* paiMesh) {
     std::vector<float> meshVerts;
     std::vector<unsigned int> meshInts;
 
     const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
 
     // Populate vertex positions
-    for(int i = 0; i < paiMesh->mNumVertices; i++) {
+    for(unsigned int i = 0; i < paiMesh->mNumVertices; i++) {
         const aiVector3D& pPos = paiMesh->mVertices[i];
 
         meshVerts.push_back(pPos.x);
@@ -61,7 +68,7 @@ std::unique_ptr<OpenGLRenderer> OpenGLModel::InitMesh(const aiMesh *paiMesh) {
     }
 
     // Populate index buffer
-    for(int i = 0; i < paiMesh->mNumFaces; i++) {
+    for(unsigned int i = 0; i < paiMesh->mNumFaces; i++) {
         const aiFace& Face = paiMesh->mFaces[i];
         assert(Face.mNumIndices == 3);
         meshInts.push_back(Face.mIndices[0]);
@@ -69,28 +76,11 @@ std::unique_ptr<OpenGLRenderer> OpenGLModel::InitMesh(const aiMesh *paiMesh) {
         meshInts.push_back(Face.mIndices[2]);
     }
 
-    std::unique_ptr<OpenGLRenderer> r = std::make_unique<OpenGLRenderer>();
-    unsigned int layoutsizes[] = {3};
+    std::vector<unsigned int> layout;
+    layout.push_back(3); // 3 elements for position
 
-    r->SetShaderSource("Basic.vert", "Basic.frag");
-    r->SetColour(0.2f, 0.3f, 0.8f, 1.0f);
-    r->SetVertexBuffer(meshVerts.data(), meshVerts.size());
-    r->PushLayout(1, layoutsizes);
-    r->SetIndexBuffer(meshInts.data(), meshInts.size());
+    std::unique_ptr<Mesh> mesh = std::make_unique<OpenGLMesh>();
+    mesh->CreateMesh(meshVerts, meshInts, layout);
 
-    return r;
-}
-
-// function
-/*
- * set the vertex buffer
- * set the index buffer
- */
-
-
-void OpenGLModel::Draw() {
-
-    for(int i = 0; i < mSubMeshes.size(); i++) {
-        mSubMeshes[i]->Draw();
-    }
+    return mesh;
 }

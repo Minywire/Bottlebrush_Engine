@@ -55,32 +55,29 @@ unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& s
     {
         int length;
         glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
-        char* message = (char*) malloc(length * sizeof(char)); //MARCO: Changed this to malloc since it's just a message string that can be cleared in this scope
-        glGetShaderInfoLog(id, length, &length, message);
+        std::string message;
+        glGetShaderInfoLog(id, length, &length, message.data());
 
-        std::cout << "failed to compile" <<
+        std::cout << "failed to compile: " <<
             ShaderTypeToString(type)
             << " shader" << std::endl;
         std::cout << message << std::endl;
 
         glDeleteShader(id);
-
-        free(message); //clear the string
         return 0;
     }
 
     return id;
 }
 
-unsigned int OpenGLShader::DetermineShaderType(const std::string& filename)
+unsigned int OpenGLShader::DetermineShaderType(const std::filesystem::path& filename)
 {
-    auto index = filename.rfind('.');
-    auto ext = filename.substr(index + 1);
+    std::filesystem::path ext = filename.extension();
 
-    if      (ext == "comp") return GL_COMPUTE_SHADER;
-    else if (ext == "frag") return GL_FRAGMENT_SHADER;
-    else if (ext == "geom") return GL_GEOMETRY_SHADER;
-    else if (ext == "vert") return GL_VERTEX_SHADER;
+    if      (ext == ".comp") return GL_COMPUTE_SHADER;
+    else if (ext == ".frag") return GL_FRAGMENT_SHADER;
+    else if (ext == ".geom") return GL_GEOMETRY_SHADER;
+    else if (ext == ".vert") return GL_VERTEX_SHADER;
     return false;
 }
 
@@ -101,9 +98,9 @@ void OpenGLShader::LinkShader(unsigned int& program)
     //assert(m_Status == true);
 }
 
-void OpenGLShader::AttachShader(const std::string& shadersource, unsigned int& program)
+void OpenGLShader::AttachShader(const std::filesystem::path& shadersource, unsigned int& program)
 {
-    unsigned int shader = CompileShader(DetermineShaderType(shadersource), LoadShaderType(GenFilePath(shadersource)));
+    unsigned int shader = CompileShader(DetermineShaderType(shadersource), LoadShaderType(shadersource));
 
     glAttachShader(program, shader);
     LinkShader(program);
@@ -134,19 +131,19 @@ unsigned int OpenGLShader::CreateShader()
     unsigned int program = glCreateProgram();
 
     // check if source is valid, then attach the shader
-    if (CheckSSFValid(m_SSF.VertexSource)) 
+    if (!m_SSF.VertexSource.empty()) 
     { 
       AttachShader(m_SSF.VertexSource, program); 
     }
-    if (CheckSSFValid(m_SSF.FragmentSource)) 
+    if (!m_SSF.FragmentSource.empty()) 
     {
       AttachShader(m_SSF.FragmentSource, program); 
     }
-    if (CheckSSFValid(m_SSF.ComputeSource)) 
+    if (!m_SSF.ComputeSource.empty()) 
     { 
       AttachShader(m_SSF.ComputeSource, program); 
     }
-    if (CheckSSFValid(m_SSF.GeometrySource)) 
+    if (!m_SSF.GeometrySource.empty()) 
     { 
       AttachShader(m_SSF.GeometrySource, program); 
     }
@@ -195,42 +192,4 @@ int OpenGLShader::GetUniformLocation(const std::string& name)
     m_UniformLocationCache[name] = location;
          
     return location;
-}
-
-std::filesystem::path OpenGLShader::GenFilePath(const std::string& filename)
-{
-    std::string path;
-    std::filesystem::path p("Resources");
-    p.append("Shaders");
-
-    // index where . is
-    auto index = filename.rfind('.');
-    // simple solution for file not valid? used with CheckSSFValid()
-    if (index == std::string::npos)
-    {
-        return "nullptr";
-    }
-
-    // Get file extension
-    auto ext = filename.substr(index + 1);
-    if      (ext == "vert") path = "Vertex";
-    else if (ext == "frag") path = "Fragment";
-    else if (ext == "geom") path = "Geometry";
-    else if (ext == "comp") path = "Compute";
-
-    p.append(path);
-    p.append(filename);
-    //std::cout << "GP: " << p << std::endl;
-
-    return (p);
-}
-
-bool OpenGLShader::CheckSSFValid(const std::string& filename)
-{
-    if (filename == "nullptr")
-    {
-        return false;
-    }
-
-    return true;
 }

@@ -6,11 +6,19 @@
 #define BOTTLEBRUSH_ENGINE_MODEL_H
 
 #include <string>
+#include <memory>
 #include <filesystem>
+
+#include "Mesh.h"
+
 class Model {
 public:
-    virtual bool LoadModel(const std::filesystem::path& filePath) = 0;
-    virtual void Draw() = 0;
+	virtual ~Model() = default;
+	virtual bool LoadModel(const std::filesystem::path& filePath) = 0;
+
+	virtual void UnbindModel() = 0;
+
+	virtual inline std::vector<std::unique_ptr<Mesh>>& GetSubMeshes() = 0;
 };
 
 
