@@ -41,9 +41,3 @@ Entity ECS::CreateEntity(std::string tag)
 
     return entity;
 }
-
-template<typename... Components>
-auto ECS::GetAllEntitiesWith() const
-{
-    return registry.view<Components...>();
-}
