@@ -26,6 +26,8 @@ public:
 
     void init();
 
+    void createEntity(const std::filesystem::path & lua_file);
+
     void update();
 private:
     EntityFactory entityFactory;
