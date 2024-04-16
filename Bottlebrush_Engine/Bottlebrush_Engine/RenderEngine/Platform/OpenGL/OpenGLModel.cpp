@@ -55,6 +55,7 @@ void OpenGLModel::UnbindModel() {
 std::unique_ptr<Mesh> OpenGLModel::InitMesh(const aiMesh* paiMesh) {
     std::vector<float> meshVerts;
     std::vector<unsigned int> meshInts;
+    std::vector<Texture> meshTextures;
 
     const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
 
@@ -65,6 +66,17 @@ std::unique_ptr<Mesh> OpenGLModel::InitMesh(const aiMesh* paiMesh) {
         meshVerts.push_back(pPos.x);
         meshVerts.push_back(pPos.y);
         meshVerts.push_back(pPos.z);
+
+        // Process TexCoords
+        if(paiMesh->mTextureCoords[0]) {
+            glm::vec2 vec;
+            vec.x = paiMesh->mTextureCoords[0][i].x;
+            vec.y = paiMesh->mTextureCoords[0][i].y;
+
+            meshVerts.push_back(vec.x);
+            meshVerts.push_back(vec.y);
+            std::cout << "hey, i've got a texture!" << std::endl;
+        }
     }
 
     // Populate index buffer
@@ -76,8 +88,10 @@ std::unique_ptr<Mesh> OpenGLModel::InitMesh(const aiMesh* paiMesh) {
         meshInts.push_back(Face.mIndices[2]);
     }
 
+
+
     std::vector<unsigned int> layout;
-    layout.push_back(3); // 3 elements for position
+    layout.push_back(5); // 3 elements for position, 2 elements for texture
 
     std::unique_ptr<Mesh> mesh = std::make_unique<OpenGLMesh>();
     mesh->CreateMesh(meshVerts, meshInts, layout);
