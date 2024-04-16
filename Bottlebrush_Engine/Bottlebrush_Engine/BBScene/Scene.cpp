@@ -10,7 +10,10 @@ Scene::Scene()
 }
 
 void Scene::init()
-{ }
+{
+    lua.getLuaState().script(masterLuaFile); //load the master lua scene script
+
+}
 
 void Scene::createEntity(const std::filesystem::path & lua_file) //provides a user-friendly function that you only need to specify the script entity to.
 {
