@@ -72,3 +72,11 @@ int OpenGLTexture::GetHeight() const
 { 
     return m_Height; 
 }
+
+std::filesystem::path OpenGLTexture::GetFilePath() {
+    return textureFilePath;
+}
+
+void OpenGLTexture::SetFilePath(std::filesystem::path texturePath) {
+    textureFilePath = texturePath;
+}
