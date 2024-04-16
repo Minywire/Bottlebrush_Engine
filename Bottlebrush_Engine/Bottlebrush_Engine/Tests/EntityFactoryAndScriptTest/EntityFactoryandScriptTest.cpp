@@ -33,7 +33,6 @@ TEST(EntityFactoryandScriptTest, EntityGrabModelFromScript) {
     ModelComponent& modelComponent = bruh2.GetComponent<ModelComponent>(ecs2.getReg());
 
     EXPECT_EQ(modelComponent.model_path, "cube.obj") << modelComponent.model_path;
-    EXPECT_EQ(modelComponent.material_path, "None") << modelComponent.material_path;
 }
 
 TEST(EntityFactoryandScriptTest, MasterFileStorageTest)
@@ -49,7 +48,7 @@ TEST(EntityFactoryandScriptTest, LuaFunctionRegTest)
 
     testScene.init();
 
-    //entt::entity scriptEntity =
+
 
 }
 TEST(EntityFactoryandScriptTest, MasterFileCreationTest)

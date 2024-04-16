@@ -21,7 +21,7 @@ public:
 
     void init();
 
-    void createEntity(const std::filesystem::path & lua_file);
+    void createEntity(const std::string & lua_file);
 
     const std::string &getMasterFile() const;
 
