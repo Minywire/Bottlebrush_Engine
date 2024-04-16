@@ -1,11 +1,11 @@
 #include "Skybox.h"
 
-Skybox::Skybox() {
-  m_Model = GraphicsFactory<GraphicsAPI::OpenGL>::CreateModel(
-	  "Resources/Models/cube.obj");
-  InitMesh();
+Skybox::Skybox(std::filesystem::path model) {
+  InitMesh(model);
 }
 
-void Skybox::InitMesh() {
-  
+void Skybox::InitMesh(std::filesystem::path model) {
+  m_Model = GraphicsFactory<GraphicsAPI::OpenGL>::CreateModel(
+      model.string());
+  // @TODO set textures as cubemap
 }
