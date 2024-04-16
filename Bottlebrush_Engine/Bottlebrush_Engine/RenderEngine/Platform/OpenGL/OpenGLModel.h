@@ -26,6 +26,8 @@ private:
     std::unique_ptr<Mesh> InitMesh(const aiMesh* paiMesh);
 
     std::vector<std::unique_ptr<Mesh>> mSubMeshes;
+
+    std::vector<std::unique_ptr<Texture>> loadMaterialTextures(aiMaterial* material, aiTextureType textureType, std::string typeName);
 };
 
 
