@@ -4,8 +4,14 @@
 
 #include "Scene.h"
 
-Scene::Scene()
+const std::string & Scene::getMasterFile() const
 {
+    return masterLuaFile;
+}
+
+Scene::Scene(const std::string & lua_master)
+{
+    masterLuaFile = lua_master;
     lua.getLuaState().set("create_entity", &Scene::createEntity); //register create entity function into lua state
 }
 

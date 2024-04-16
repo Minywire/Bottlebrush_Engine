@@ -7,8 +7,9 @@
 #include <EntityFactory.h>
 #include <BBScript.h>
 #include <ECS.h>
+#include <Scene.h>
 
-TEST(EntityFactoryTest, EntityGrabTransformFromScript) {
+TEST(EntityFactoryandScriptTest, EntityGrabTransformFromScript) {
     ECS ecs;
     EntityFactory entityFactorio;
     BBScript luaStateWrapper;
@@ -22,7 +23,7 @@ TEST(EntityFactoryTest, EntityGrabTransformFromScript) {
     EXPECT_EQ(transformComponent.scale, glm::vec3(1000,0,23.1)) << transformComponent.scale.x << " " << transformComponent.scale.y << " " << transformComponent.scale.z;
 }
 
-TEST(EntityFactoryTest, EntityGrabModelFromScript) {
+TEST(EntityFactoryandScriptTest, EntityGrabModelFromScript) {
     ECS ecs2;
     EntityFactory entityFactorio2;
     BBScript luaStateWrapper2;
@@ -34,3 +35,25 @@ TEST(EntityFactoryTest, EntityGrabModelFromScript) {
     EXPECT_EQ(modelComponent.model_path, "cube.obj") << modelComponent.model_path;
     EXPECT_EQ(modelComponent.material_path, "None") << modelComponent.material_path;
 }
+
+TEST(EntityFactoryandScriptTest, MasterFileStorageTest)
+{
+    Scene testScene("MasterFileTest.lua");
+
+    EXPECT_EQ(testScene.getMasterFile(), "MasterFileTest.lua") << "Lua File: " << testScene.getMasterFile();
+}
+
+TEST(EntityFactoryandScriptTest, LuaFunctionRegTest)
+{
+    Scene testScene("MasterFileTest.lua");
+
+    testScene.init();
+
+    //entt::entity scriptEntity =
+
+}
+TEST(EntityFactoryandScriptTest, MasterFileCreationTest)
+{
+
+}
+

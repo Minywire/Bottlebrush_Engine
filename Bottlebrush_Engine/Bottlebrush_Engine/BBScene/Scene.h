@@ -17,16 +17,13 @@
 class Scene
 {
 public:
-    Scene(std::string & lua_master) : masterLuaFile(lua_master) {};
-
-    /**
-     *@brief Default constructor.
-     */
-    Scene();
+    Scene(const std::string & lua_master);
 
     void init();
 
     void createEntity(const std::filesystem::path & lua_file);
+
+    const std::string &getMasterFile() const;
 
     void update();
 private:
