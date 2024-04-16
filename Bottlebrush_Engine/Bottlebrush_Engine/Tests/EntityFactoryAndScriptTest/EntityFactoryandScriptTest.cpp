@@ -42,7 +42,7 @@ TEST(EntityFactoryandScriptTest, MasterFileStorageTest)
     EXPECT_EQ(testScene.getMasterFile(), "MasterFileTest.lua") << "Lua File: " << testScene.getMasterFile(); //lets me know if the actual file stored in the master file script is good.
 }
 
-TEST(EntityFactoryandScriptTest, LuaFunctionRegTest)
+TEST(EntityFactoryandScriptTest, LuaMasterFileLoadTest)
 {
     Scene testScene("MasterFileTest.lua");
 
