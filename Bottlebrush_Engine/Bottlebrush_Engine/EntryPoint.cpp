@@ -111,6 +111,7 @@ int main() {
   ShaderType SkyboxShaderType = ShaderType::Skybox;
 
   renderEngine->SetShaderSource(defaultShaderType,"Resources/Shaders/Vertex/Basic.vert", "Resources/Shaders/Fragment/Basic.frag");
+  renderEngine->SetShaderSource(SkyboxShaderType, "Resources/Shaders/Vertex/Skybox.vert", "Resources/Shaders/Fragment/Skybox.frag");
   renderEngine->SetColour(defaultShaderType, 0.2f, 0.3f, 0.8f, 1.0f);
 
   // RENDER LOOP
