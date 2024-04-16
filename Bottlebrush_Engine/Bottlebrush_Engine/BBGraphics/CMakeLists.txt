@@ -6,6 +6,7 @@ target_include_directories(BBGraphics
 )
 target_sources(BBGraphics
         PRIVATE Camera.cpp
+        Skybox.cpp
 )
 target_link_libraries(BBGraphics
         PRIVATE glm

@@ -108,6 +108,7 @@ int main() {
   std::unique_ptr<RenderEngine> renderEngine = GraphicsFactory<s_API>::CreateRenderer();
 
   ShaderType defaultShaderType = ShaderType::Default;
+  ShaderType SkyboxShaderType = ShaderType::Skybox;
 
   renderEngine->SetShaderSource(defaultShaderType,"Resources/Shaders/Vertex/Basic.vert", "Resources/Shaders/Fragment/Basic.frag");
   renderEngine->SetColour(defaultShaderType, 0.2f, 0.3f, 0.8f, 1.0f);
