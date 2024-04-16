@@ -4,6 +4,7 @@
 
 #include "Camera.h"
 #include "GraphicsFactory.h"
+#include "Terrain.h"
 #include "glad/glad.h"
 #include "glfw/glfw3.h"
 #include "glm/glm.hpp"
@@ -14,7 +15,7 @@ const unsigned int screen_width = 800, screen_height = 600;
 bool wireframe = false, grayscale = false;
 
 // Camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera camera(glm::vec3(0.0f, 20.0f, 0.0f));
 float last_x = screen_width / 2.0f, last_y = screen_height / 2.0f;
 bool first_mouse_click = true;
 
@@ -105,12 +106,40 @@ int main() {
   const GraphicsAPI s_API = GraphicsAPI::OpenGL;
   std::unique_ptr<Model> testCube =
       GraphicsFactory<s_API>::CreateModel("Resources/Models/cube.obj");
-  std::unique_ptr<RenderEngine> renderEngine = GraphicsFactory<s_API>::CreateRenderer();
+  std::unique_ptr<RenderEngine> renderEngine =
+      GraphicsFactory<s_API>::CreateRenderer();
+
+  Terrain heightmap(
+      std::filesystem::path("Resources/Heightmaps/iceland_heightmap.png")
+          .string(),
+      64.0f / 256.0f, 16.0f);
+  camera.movement_speed_ *= 10.0f;
 
   ShaderType defaultShaderType = ShaderType::Default;
 
-  renderEngine->SetShaderSource(defaultShaderType,"Resources/Shaders/Vertex/Basic.vert", "Resources/Shaders/Fragment/Basic.frag");
+  renderEngine->SetShaderSource(defaultShaderType,
+                                "Resources/Shaders/Vertex/Heightmap.vert",
+                                "Resources/Shaders/Fragment/Heightmap.frag");
   renderEngine->SetColour(defaultShaderType, 0.2f, 0.3f, 0.8f, 1.0f);
+
+  unsigned int vertex_buffer, vertex_array, element_buffer;
+  glGenVertexArrays(1, &vertex_array);
+  glBindVertexArray(vertex_array);
+
+  glGenBuffers(1, &vertex_buffer);
+  glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
+  glBufferData(GL_ARRAY_BUFFER, heightmap.vertex_buffer_.size() * sizeof(float),
+               &heightmap.vertex_buffer_[0], GL_STATIC_DRAW);
+
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
+                        (void *)nullptr);
+  glEnableVertexAttribArray(0);
+
+  glGenBuffers(1, &element_buffer);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+               heightmap.index_buffer_.size() * sizeof(unsigned),
+               &heightmap.index_buffer_[0], GL_STATIC_DRAW);
 
   // RENDER LOOP
   while (!glfwWindowShouldClose(window)) {
@@ -129,29 +158,40 @@ int main() {
       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     else
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    
+
     // Draw the test cube
     for (unsigned int i = 0; i < testCube->GetSubMeshes().size(); i++) {
-      renderEngine->Draw(defaultShaderType, 
-        *testCube->GetSubMeshes()[i]->GetVertexArray(),
-        testCube->GetSubMeshes()[i]->GetIndexCount());
+      renderEngine->Draw(defaultShaderType,
+                         *testCube->GetSubMeshes()[i]->GetVertexArray(),
+                         testCube->GetSubMeshes()[i]->GetIndexCount());
     }
 
     // Calculate camera projection matrix relative to current camera zoom and
     // screen dimensions
     glm::mat4 projection = glm::perspective(
         glm::radians(camera.zoom_), (float)screen_width / (float)screen_height,
-        0.1f, 100.0f);
-    renderEngine->GetShader(defaultShaderType)->SetUniformMatrix4fv("projection", projection);
+        0.1f, 100000.0f);
+    renderEngine->GetShader(defaultShaderType)
+        ->SetUniformMatrix4fv("projection", projection);
     // Evaluate camera view matrix i.e. the camera LookAt matrix
     glm::mat4 view = camera.GetViewMatrix();
-    renderEngine->GetShader(defaultShaderType)->SetUniformMatrix4fv("view", view);
+    renderEngine->GetShader(defaultShaderType)
+        ->SetUniformMatrix4fv("view", view);
     // Evaluate the camera model matrix that 'positions' the models being drawn
     // in the scene
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
     model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.3f, 0.5f));
-    renderEngine->GetShader(defaultShaderType)->SetUniformMatrix4fv("model", model);
+    renderEngine->GetShader(defaultShaderType)
+        ->SetUniformMatrix4fv("model", model);
+
+    glBindVertexArray(vertex_array);
+    for (unsigned int strip = 0; strip < heightmap.num_strips_; strip++) {
+      glDrawElements(GL_TRIANGLE_STRIP, heightmap.num_verts_per_strips_ + 2,
+                     GL_UNSIGNED_INT,
+                     (void *)(sizeof(unsigned) *
+                              (heightmap.num_verts_per_strips_ + 2) * strip));
+    }
 
     // Swap out buffers and poll for input events
     glfwSwapBuffers(window);
