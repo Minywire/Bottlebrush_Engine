@@ -23,6 +23,8 @@ public:
 
     void createEntity(const std::string & lua_file);
 
+    const ECS & getECS() const;
+
     const std::string &getMasterFile() const;
 
     void update();

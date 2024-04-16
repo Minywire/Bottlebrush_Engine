@@ -9,6 +9,11 @@ const std::string & Scene::getMasterFile() const
     return masterLuaFile;
 }
 
+const ECS & Scene::getECS() const
+{
+    return bbECS;
+}
+
 Scene::Scene(const std::string & lua_master)
 {
     masterLuaFile = lua_master;
