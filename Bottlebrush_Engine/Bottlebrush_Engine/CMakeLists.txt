@@ -32,6 +32,7 @@ add_subdirectory(Vendors/glfw)
 add_subdirectory(Vendors/imGUI)
 add_subdirectory(Vendors/imGUI/backends)
 add_subdirectory(Vendors/STB)
+add_subdirectory(Vendors/glad)
 
 #compiler flags
 if (MSVC)
@@ -80,12 +81,13 @@ include_directories(
         Vendors/Lua
         Vendors/EnTT
         Vendors/glfw/include
-        Vendors/glad/include
         Vendors/imGUI
         Vendors/imGUI/backends
         Vendors/Lua/sol2-3.3.0/include/
         Vendors/Lua/lua-5.4.6/
         Vendors/STB/include
+        Vendors/glad
+        Vendors/glad/include
         #yeah this is a bit messy since it's ALL under imGUI but it wouldn't work otherwise with our folder structure
 )
 
@@ -95,9 +97,6 @@ include_directories(BBGUI)
 include_directories(BBScene)
 include_directories(BBScript)
 include_directories(RenderEngine)
-
-file(GLOB VENDORS_SOURCES Vendors/glad/src/glad.c)
-source_group("Vendors" FILES ${VENDORS_SOURCES})
 
 # Add source to this project's executable.
 add_executable(${CMAKE_TARGET_NAME} "EntryPoint.cpp" ${VENDORS_SOURCES})
@@ -115,6 +114,7 @@ add_custom_command(
         ${CMAKE_CURRENT_SOURCE_DIR}/Resources $<TARGET_FILE_DIR:${CMAKE_TARGET_NAME}>/Resources
 )
 
+target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE GLAD)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE assimp)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE glfw)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE glm)
