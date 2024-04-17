@@ -31,15 +31,4 @@ private:
 	/// @author Alan Brunet
     /// @brief unbinds texture
 	void Unbind() const override;
-
-	/// @author Alan Brunet
-    /// @return member width
-	int GetWidth() const override;
-
-	/// @author Alan Brunet
-    /// @return member height
-    int GetHeight() const override;
-
-    std::filesystem::path GetFilePath();
-    void SetFilePath(const std::filesystem::path& texturePath) override;
 };
