@@ -118,7 +118,7 @@ int main() {
       std::filesystem::path("resources/textures/skybox/front.jpg"),
       std::filesystem::path("resources/textures/skybox/back.jpg"),
   };
-  Skybox skybox("Resources/Models/cube.obj", skyboxTextures);
+  Skybox skybox("Resources/Models/skybox.obj", skyboxTextures);
 
   const ShaderType defaultShaderType = ShaderType::Default;
   const ShaderType skyboxShaderType = ShaderType::Skybox;
