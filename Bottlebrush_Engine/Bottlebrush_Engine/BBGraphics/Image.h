@@ -11,9 +11,11 @@
 
 class Image {
 public:
-    Image(std::filesystem::path imagePath);
+    Image(const std::filesystem::path& imagePath);
     ~Image();
 
+    int getImageHeight();
+    int getImageWidth();
     unsigned char* getImageData();
 private:
     int m_width;
