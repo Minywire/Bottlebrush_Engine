@@ -120,6 +120,7 @@ target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE glfw)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE glm)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE reactphysics3d)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE LUA)
+target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE stb)
 
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBComponentSystem)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBGraphics)
@@ -127,6 +128,7 @@ target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBGUI)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBScene)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBScript)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE RenderEngine)
+
 
 if (CMAKE_VERSION VERSION_GREATER 3.13)
     set_property(TARGET ${CMAKE_TARGET_NAME} PROPERTY CXX_STANDARD 20)
