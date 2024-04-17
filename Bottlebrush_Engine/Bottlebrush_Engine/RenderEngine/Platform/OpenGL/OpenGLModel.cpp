@@ -30,7 +30,7 @@ bool OpenGLModel::LoadModel(const std::filesystem::path& modelPath, const std::f
     }
 
     for(unsigned int i = 0; i < scene->mNumMeshes; i++) {
-        mSubMeshes.push_back(InitMesh(scene->mMeshes[i], texturePath));
+        mSubMeshes.push_back(InitMesh(scene->mMeshes[i], texturePath, 1));
     }
 
     // NOTE This might be able to be made static when all is said and done.
@@ -50,10 +50,9 @@ void OpenGLModel::UnbindModel() {
     mSubMeshes[i]->UnbindMesh();
   }
 }
-std::unique_ptr<OpenGLMesh> OpenGLModel::InitMesh(const aiMesh* paiMesh, const std::filesystem::path &texturePath) {
+std::unique_ptr<OpenGLMesh> OpenGLModel::InitMesh(const aiMesh* paiMesh, const std::filesystem::path &texturePath, int textureSlot) {
     std::vector<float> meshVerts;
     std::vector<unsigned int> meshInts;
-    std::vector<float> meshTextures;
 
     const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
 
@@ -89,7 +88,7 @@ std::unique_ptr<OpenGLMesh> OpenGLModel::InitMesh(const aiMesh* paiMesh, const s
     layout.push_back(5); // 3 elements for position, 2 elements for texture
 
     std::unique_ptr<OpenGLMesh> mesh = std::make_unique<OpenGLMesh>();
-    mesh->CreateMesh(meshVerts, meshInts, texturePath, layout);
+    mesh->CreateMesh(meshVerts, meshInts, texturePath, textureSlot, layout);
 
     return mesh;
 }

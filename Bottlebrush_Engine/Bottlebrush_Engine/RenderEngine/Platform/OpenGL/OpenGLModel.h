@@ -23,7 +23,7 @@ public:
     void UnbindModel() override;
 
 private:
-    std::unique_ptr<OpenGLMesh> InitMesh(const aiMesh* paiMesh, const std::filesystem::path &texturePath);
+    std::unique_ptr<OpenGLMesh> InitMesh(const aiMesh* paiMesh, const std::filesystem::path &texturePath, int textureSlot);
 
     std::vector<std::unique_ptr<Mesh>> mSubMeshes;
 
