@@ -11,6 +11,7 @@
 #include "OpenGLIndexBuffer.h"
 #include "OpenGLVertexBufferLayout.h"
 #include "OpenGLTexture.h"
+#include <filesystem>
 
 class OpenGLMesh : public Mesh {
 private:

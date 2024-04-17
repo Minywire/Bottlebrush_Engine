@@ -1,10 +1,8 @@
-#include "OpenGLMesh.h"
 //
 //  Created by Alan Brunet 11/04/2024
 //
 
 #include "OpenGLMesh.h"
-
 OpenGLMesh::OpenGLMesh() {
 
 }
