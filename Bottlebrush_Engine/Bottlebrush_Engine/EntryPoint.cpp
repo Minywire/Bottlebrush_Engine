@@ -110,7 +110,7 @@ int main() {
   ShaderType defaultShaderType = ShaderType::Default;
 
   renderEngine->SetShaderSource(defaultShaderType,"Resources/Shaders/Vertex/Basic.vert", "Resources/Shaders/Fragment/BasicTex.frag");
-  renderEngine->SetColour(defaultShaderType, 0.2f, 0.3f, 0.8f, 1.0f);
+//  renderEngine->SetColour(defaultShaderType, 0.2f, 0.3f, 0.8f, 1.0f);
 
   // RENDER LOOP
   while (!glfwWindowShouldClose(window)) {
