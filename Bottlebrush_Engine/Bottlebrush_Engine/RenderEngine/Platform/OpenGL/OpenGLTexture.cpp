@@ -44,8 +44,9 @@ void OpenGLTexture::InitCubeMap() {
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 }
 
-void OpenGLTexture::CreateCubemap(unsigned char* data, unsigned int index) {
-    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + index, 0, GL_RGB, m_Width, m_Height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+void OpenGLTexture::CreateCubemap(const std::filesystem::path& imageFilePath, unsigned int index) {
+    Image cubemapImage(imageFilePath);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + index, 0, GL_RGB, cubemapImage.getImageWidth(), cubemapImage.getImageHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, cubemapImage.getImageData());
 }
 
 void OpenGLTexture::BindCubeMap(unsigned int slot) const {

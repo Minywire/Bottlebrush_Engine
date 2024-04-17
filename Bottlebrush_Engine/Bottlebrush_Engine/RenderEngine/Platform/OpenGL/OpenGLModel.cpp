@@ -29,9 +29,9 @@ bool OpenGLModel::LoadModel(const std::filesystem::path& modelPath, const std::f
         return false;
     }
 
-//    for(unsigned int i = 0; i < scene->mNumMeshes; i++) {
-//        mSubMeshes.push_back(InitMesh(scene->mMeshes[i]));
-//    }
+    for(unsigned int i = 0; i < scene->mNumMeshes; i++) {
+        mSubMeshes.push_back(InitMesh(scene->mMeshes[i], texturePath));
+    }
 
     // NOTE This might be able to be made static when all is said and done.
     // If the scene exists, then return true, otherwise return false
@@ -89,7 +89,7 @@ std::unique_ptr<OpenGLMesh> OpenGLModel::InitMesh(const aiMesh* paiMesh, const s
     layout.push_back(5); // 3 elements for position, 2 elements for texture
 
     std::unique_ptr<OpenGLMesh> mesh = std::make_unique<OpenGLMesh>();
-    mesh->CreateMesh(meshVerts, meshInts, meshTextures, texturePath, layout);
+    mesh->CreateMesh(meshVerts, meshInts, texturePath, layout);
 
     return mesh;
 }

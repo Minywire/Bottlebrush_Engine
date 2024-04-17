@@ -18,7 +18,7 @@ public:
     /// OpenGL expects image to start at bottom left, instead of top left. 
     /// May need to flip image data before passing.
     /// @param data is the image data
-    virtual void CreateTexture(unsigned char* data) = 0;
+    virtual void CreateTexture(const std::filesystem::path& imageFilePath) = 0;
 
     /// @author Alan Brunet
     /// @brief Sets up the tex parameters for a cubemap.
@@ -28,7 +28,7 @@ public:
     /// @brief Creates a tex 2D image for a cubemap
     /// @param data is the stream of data from the image
     /// @param index is which face the texture will be put against
-    virtual void CreateCubemap(unsigned char* data, unsigned int index) = 0;
+    virtual void CreateCubemap(const std::filesystem::path& imageFilePath, unsigned int index) = 0;
 
     /// @author Alan Brunet
     /// @brief Binds the CubeMap Texture to use / add
