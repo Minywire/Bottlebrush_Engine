@@ -110,14 +110,6 @@ int main() {
   std::unique_ptr<RenderEngine> renderEngine = GraphicsFactory<s_API>::CreateRenderer();
 
   // loads a cubemap texture from 6 individual texture faces
-  // order:
-  // +X (right)
-  // -X (left)
-  // +Y (top)
-  // -Y (bottom)
-  // +Z (front)
-  // -Z (back)
-  // -------------------------------------------------------
   std::vector<std::filesystem::path> skyboxTextures{
       std::filesystem::path("resources/textures/skybox/right.jpg"),
       std::filesystem::path("resources/textures/skybox/left.jpg"),
@@ -171,7 +163,6 @@ int main() {
     model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
     model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.3f, 0.5f));
 
-    renderEngine->GetShader(defaultShaderType)->Bind();
     renderEngine->GetShader(defaultShaderType)
         ->SetUniformMatrix4fv("projection", projection);
     renderEngine->GetShader(defaultShaderType)
@@ -190,8 +181,6 @@ int main() {
     // values are equal to depth buffer's content
     glDepthFunc(GL_LEQUAL);  
     // draw skybox as last
-    
-    renderEngine->GetShader(skyboxShaderType)->Bind();
     view = glm::mat4(glm::mat3(
         camera.GetViewMatrix()));  // remove translation from the view matrix
     renderEngine->GetShader(skyboxShaderType)
