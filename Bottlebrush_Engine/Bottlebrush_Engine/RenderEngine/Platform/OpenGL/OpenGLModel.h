@@ -15,19 +15,19 @@
 
 class OpenGLModel : public Model {
 public:
-    OpenGLModel(const std::filesystem::path &fileName);
-    bool LoadModel(const std::filesystem::path& filePath) override;
+    OpenGLModel(const std::filesystem::path &modelPath, const std::filesystem::path& texturePath);
+    bool LoadModel(const std::filesystem::path& modelPath, const std::filesystem::path &texturePath) override;
 
     inline std::vector<std::unique_ptr<Mesh>>& GetSubMeshes() override { return mSubMeshes; }
 
     void UnbindModel() override;
 
 private:
-    std::unique_ptr<Mesh> InitMesh(const aiMesh* paiMesh);
+    std::unique_ptr<OpenGLMesh> InitMesh(const aiMesh* paiMesh, const std::filesystem::path &texturePath);
 
     std::vector<std::unique_ptr<Mesh>> mSubMeshes;
 
-    OpenGLTexture loadMaterialTextures(aiMaterial* material, aiTextureType textureType, std::string typeName);
+//    OpenGLTexture loadMaterialTextures(aiMaterial* material, aiTextureType textureType, std::string typeName);
 };
 
 
