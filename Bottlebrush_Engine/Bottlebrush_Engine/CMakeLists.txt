@@ -93,6 +93,7 @@ include_directories(BBGUI)
 include_directories(BBScene)
 include_directories(BBScript)
 include_directories(RenderEngine)
+include_directories(BBResourceManager)
 
 file(GLOB VENDORS_SOURCES Vendors/glad/src/glad.c)
 source_group("Vendors" FILES ${VENDORS_SOURCES})
@@ -106,6 +107,7 @@ add_subdirectory(BBGUI)
 add_subdirectory(BBScene)
 add_subdirectory(BBScript)
 add_subdirectory(RenderEngine)
+add_subdirectory(BBResourceManager)
 
 add_custom_command(
         TARGET ${CMAKE_TARGET_NAME} POST_BUILD
@@ -125,6 +127,7 @@ target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBGUI)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBScene)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBScript)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE RenderEngine)
+target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBResourceManager)
 
 if (CMAKE_VERSION VERSION_GREATER 3.13)
     set_property(TARGET ${CMAKE_TARGET_NAME} PROPERTY CXX_STANDARD 20)
