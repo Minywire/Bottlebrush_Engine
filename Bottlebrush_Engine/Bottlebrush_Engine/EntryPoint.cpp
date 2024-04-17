@@ -108,7 +108,25 @@ int main() {
   std::unique_ptr<Model> testCube =
       GraphicsFactory<s_API>::CreateModel("Resources/Models/cube.obj");
   std::unique_ptr<RenderEngine> renderEngine = GraphicsFactory<s_API>::CreateRenderer();
-  Skybox skybox("Resources/Models/cube.obj");
+
+  // loads a cubemap texture from 6 individual texture faces
+  // order:
+  // +X (right)
+  // -X (left)
+  // +Y (top)
+  // -Y (bottom)
+  // +Z (front)
+  // -Z (back)
+  // -------------------------------------------------------
+  std::vector<std::filesystem::path> skyboxTextures{
+      std::filesystem::path("resources/textures/skybox/right.jpg"),
+      std::filesystem::path("resources/textures/skybox/left.jpg"),
+      std::filesystem::path("resources/textures/skybox/top.jpg"),
+      std::filesystem::path("resources/textures/skybox/bottom.jpg"),
+      std::filesystem::path("resources/textures/skybox/front.jpg"),
+      std::filesystem::path("resources/textures/skybox/back.jpg"),
+  };
+  Skybox skybox("Resources/Models/cube.obj", skyboxTextures);
 
   const ShaderType defaultShaderType = ShaderType::Default;
   const ShaderType skyboxShaderType = ShaderType::Skybox;

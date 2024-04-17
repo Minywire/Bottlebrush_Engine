@@ -12,3 +12,7 @@ target_sources(BBGraphics
 target_link_libraries(BBGraphics
         PRIVATE glm
 )
+
+target_link_libraries(BBGraphics
+        PRIVATE stb
+)

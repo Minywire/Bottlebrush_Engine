@@ -27,6 +27,8 @@ private:
 	void InitCubeMap() override;
 	void CreateCubemap(unsigned char* data, unsigned int index) override;
 
+	void BindCubeMap(unsigned int slot = 0) const override;
+
 	/// @author Alan Brunet
     /// @brief Binds the Texture to use / add
     /// @param slot can be different texture slots, maximum of 32 slots

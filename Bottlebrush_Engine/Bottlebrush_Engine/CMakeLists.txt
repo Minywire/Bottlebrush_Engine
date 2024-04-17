@@ -31,6 +31,7 @@ add_subdirectory(Vendors/EnTT)
 add_subdirectory(Vendors/glfw)
 add_subdirectory(Vendors/imGUI)
 add_subdirectory(Vendors/imGUI/backends)
+add_subdirectory(Vendors/STB)
 
 #compiler flags
 if (MSVC)
@@ -84,6 +85,7 @@ include_directories(
         Vendors/imGUI/backends
         Vendors/Lua/sol2-3.3.0/include/
         Vendors/Lua/lua-5.4.6/
+        Vendors/STB/include
         #yeah this is a bit messy since it's ALL under imGUI but it wouldn't work otherwise with our folder structure
 )
 

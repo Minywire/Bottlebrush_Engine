@@ -23,11 +23,13 @@ public:
     virtual void InitCubeMap() = 0;
     virtual void CreateCubemap(unsigned char* data, unsigned int index) = 0;
 
+    virtual void BindCubeMap(unsigned int slot = 0) const = 0;
+
     /// @author Alan Brunet
     /// @brief Binds the Texture to use / add
     /// @param slot can be different texture slots, maximum of 32 slots. defaulted to 1 (0)
     virtual void Bind(unsigned int slot = 0) const = 0;
-
+    
     /// @author Alan Brunet
     /// @brief unbinds texture
     virtual void Unbind() const = 0;
