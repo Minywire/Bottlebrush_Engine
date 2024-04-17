@@ -19,11 +19,4 @@ public:
     /// @brief unbinds texture
     virtual void Unbind() const = 0;
 
-    /// @author Alan Brunet
-    /// @return member width
-    virtual int GetWidth() const = 0;
-
-	/// @author Alan Brunet
-    /// @return member height
-    virtual int GetHeight() const = 0;
 };
