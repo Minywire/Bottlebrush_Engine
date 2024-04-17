@@ -10,9 +10,10 @@
 class Terrain {
  public:
   Terrain() = default;
-  Terrain(const std::string &heightmap, float y_scale = 1.0f,
-          float y_shift = 0.0f);
+  Terrain(const std::string &heightmap, glm::vec3 scale = {1.0f, 1.0f, 1.0f},
+          glm::vec3 shift = {0.0f, 0.0f, 0.0f});
 
+  [[nodiscard]] glm::vec3 GetCentre() const;
   [[nodiscard]] std::vector<unsigned> GetElements() const;
   [[nodiscard]] float GetHeight(float x, float z) const;
   [[nodiscard]] int GetLength() const;
@@ -24,9 +25,10 @@ class Terrain {
 
  private:
   [[nodiscard]] bool InBounds(float x, float z) const;
-  void PopulateElemBuffer();
-  void PopulateVertBuffer();
+  void PopulateElements();
+  void PopulateVertices();
 
+  glm::vec3 centre_;
   int channels_;
   unsigned char *data_;
   std::vector<unsigned> elements_;
@@ -34,11 +36,11 @@ class Terrain {
   int num_strips_;
   int num_triangles;
   std::string path_;
+  glm::vec3 scale_;
+  glm::vec3 shift_;
   int size_;
   std::vector<float> vertices_;
   int width_;
-  float y_scale_;
-  float y_shift_;
 };
 
 #endif  // BOTTLEBRUSH_ENGINE_TERRAIN_H

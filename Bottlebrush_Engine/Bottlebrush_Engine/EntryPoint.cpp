@@ -112,7 +112,7 @@ int main() {
   Terrain heightmap(
       std::filesystem::path("Resources/Heightmaps/iceland_heightmap.png")
           .string(),
-      64.0f / 256.0f, 16.0f);
+      {1.0f, 64.0f / 256.0f, 1.0f}, {0.0f, 16.0f, 0.0f});
   camera.movement_speed_ *= 100.0f;
 
   ShaderType defaultShaderType = ShaderType::Default;

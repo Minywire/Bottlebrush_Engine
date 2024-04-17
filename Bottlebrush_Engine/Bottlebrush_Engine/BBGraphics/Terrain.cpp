@@ -4,19 +4,27 @@
 
 #include "Terrain.h"
 
-Terrain::Terrain(const std::string &heightmap, float y_scale, float y_shift) {
+Terrain::Terrain(const std::string &heightmap, glm::vec3 scale,
+                 glm::vec3 shift) {
   data_ = stbi_load(heightmap.c_str(), &width_, &length_, &channels_, 0);
+
+  auto w = static_cast<float>(width_), l = static_cast<float>(length_);
+  centre_ = {-w / 2.0f * scale_.x, 0.0f, -l / 2.0f * scale_.z};
   num_strips_ = length_;
   num_triangles = width_ * 2;
   path_ = heightmap;
+  scale_ = scale;
+  shift_ = shift;
   size_ = width_ * length_;
-  y_scale_ = y_scale;
-  y_shift_ = y_shift;
 
-  PopulateVertBuffer();
-  PopulateElemBuffer();
+  PopulateVertices();
+  PopulateElements();
+}
 
-  stbi_image_free(data_);
+glm::vec3 Terrain::GetCentre() const {
+  auto w = static_cast<float>(width_), l = static_cast<float>(length_);
+
+  return centre_;
 }
 
 std::vector<unsigned> Terrain::GetElements() const { return elements_; }
@@ -24,9 +32,11 @@ std::vector<unsigned> Terrain::GetElements() const { return elements_; }
 float Terrain::GetHeight(float x, float z) const {
   int a = static_cast<int>(x), b = static_cast<int>(z);
 
+  if (a < 0) a = -a;
+  if (b < 0) b = -b;
   if (!InBounds(x, z)) return 0.0f;
 
-  return vertices_.at(a + width_ * b);
+  return static_cast<float>(data_[a + width_ * b]) * scale_.y;
 }
 
 int Terrain::GetLength() const { return length_; }
@@ -42,16 +52,13 @@ std::vector<float> Terrain::GetVertices() const { return vertices_; }
 int Terrain::GetWidth() const { return width_; }
 
 bool Terrain::InBounds(float x, float z) const {
-  int a = static_cast<int>(x), b = static_cast<int>(z);
-
-  if (a > width_ - 1 || b > length_ - 1) return false;
-  if (a < 0 || b < 0) return false;
-
-  return true;
+  auto a = static_cast<int>(x), b = static_cast<int>(z),
+       w = static_cast<int>(width_ / 2), l = static_cast<int>(length_ / 2);
+  return (a > -w && a < w) && (b > -l && b < l);
 }
 
-void Terrain::PopulateElemBuffer() {
-  for (int i = 0; i < length_; i++) {
+void Terrain::PopulateElements() {
+  for (int i = 0; i < length_ - 1; i++) {
     for (int j = 0; j < width_; j++) {
       for (int k = 0; k < 2; k++) {
         elements_.push_back(j + width_ * (i + k * 1));
@@ -60,7 +67,7 @@ void Terrain::PopulateElemBuffer() {
   }
 }
 
-void Terrain::PopulateVertBuffer() {
+void Terrain::PopulateVertices() {
   auto w = static_cast<float>(width_), l = static_cast<float>(length_);
 
   for (int i = 0; i < length_; i++) {
@@ -68,9 +75,9 @@ void Terrain::PopulateVertBuffer() {
       unsigned char *texel = data_ + (j + width_ * i) * channels_,
                     height = texel[0];
 
-      float x = -w / 2.0f + w * static_cast<float>(j) / w,
-            y = static_cast<float>(height) * y_scale_ - y_shift_,
-            z = -l / 2.0f + l * static_cast<float>(i) / l;
+      float x = -w / 2.0f + w * static_cast<float>(j) / w * scale_.x - shift_.x,
+            y = static_cast<float>(height) * scale_.y - shift_.y,
+            z = -l / 2.0f + l * static_cast<float>(i) / l * scale_.z - shift_.z;
 
       vertices_.push_back(x);
       vertices_.push_back(y);
