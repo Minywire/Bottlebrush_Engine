@@ -77,6 +77,6 @@ std::filesystem::path OpenGLTexture::GetFilePath() {
     return textureFilePath;
 }
 
-void OpenGLTexture::SetFilePath(std::filesystem::path texturePath) {
+void OpenGLTexture::SetFilePath(const std::filesystem::path& texturePath) {
     textureFilePath = texturePath;
 }

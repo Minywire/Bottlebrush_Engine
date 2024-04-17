@@ -27,7 +27,7 @@ private:
 
     std::vector<std::unique_ptr<Mesh>> mSubMeshes;
 
-    std::vector<std::unique_ptr<Texture>> loadMaterialTextures(aiMaterial* material, aiTextureType textureType, std::string typeName);
+    OpenGLTexture loadMaterialTextures(aiMaterial* material, aiTextureType textureType, std::string typeName);
 };
 
 

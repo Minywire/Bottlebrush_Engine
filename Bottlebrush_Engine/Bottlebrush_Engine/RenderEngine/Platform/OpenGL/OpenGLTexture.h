@@ -11,7 +11,6 @@ private:
 	unsigned char* m_LocalBuffer;
 	// BPP = bytes per pixel
 	int m_Width = 0, m_Height = 0, m_BPP = 0;
-    std::filesystem::path textureFilePath;
 
  public:
 	/// @author Alan Brunet
@@ -44,5 +43,5 @@ private:
     int GetHeight() const override;
 
     std::filesystem::path GetFilePath();
-    void SetFilePath(std::filesystem::path texturePath);
+    void SetFilePath(const std::filesystem::path& texturePath) override;
 };

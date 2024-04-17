@@ -23,7 +23,7 @@ private:
     /// Vertex Buffer Layout pointer
     std::unique_ptr<VertexBufferLayout> m_VertexBufferLayout;
     /// Texture Buffer pointer
-    std::vector<std::unique_ptr<Texture>> m_Texture;
+    OpenGLTexture m_Texture;
  public:
     OpenGLMesh();
     ~OpenGLMesh() override;
