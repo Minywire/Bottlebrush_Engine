@@ -85,7 +85,8 @@ include_directories(
         Vendors/imGUI/backends
         Vendors/Lua/sol2-3.3.0/include/
         Vendors/Lua/lua-5.4.6/
-        Vendors/STB/include/
+        Vendors/STB/include
+        #yeah this is a bit messy since it's ALL under imGUI but it wouldn't work otherwise with our folder structure
 )
 
 include_directories(BBComponentSystem)
