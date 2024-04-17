@@ -14,8 +14,8 @@ public:
     Image(const std::filesystem::path& imagePath);
     ~Image();
 
-    int getImageHeight();
-    int getImageWidth();
+    int getImageHeight() const;
+    int getImageWidth() const;
     unsigned char* getImageData();
 private:
     int m_width;

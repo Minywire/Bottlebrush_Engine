@@ -24,10 +24,10 @@ unsigned char *Image::getImageData() {
     return m_imageData;
 }
 
-int Image::getImageWidth() {
+int Image::getImageWidth() const {
     return m_width;
 }
 
-int Image::getImageHeight() {
+int Image::getImageHeight() const {
     return m_height;
 }
