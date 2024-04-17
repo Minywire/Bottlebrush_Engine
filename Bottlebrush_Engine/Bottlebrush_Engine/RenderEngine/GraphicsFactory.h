@@ -32,7 +32,7 @@ public:
     static std::unique_ptr<IndexBuffer> CreateIndexBuffer(const unsigned int* data, unsigned int count);
     static std::unique_ptr<Texture> CreateTextureBuffer(const std::filesystem::path& textureFilePath);
     static std::unique_ptr<Shader> CreateShaderBuffer(const ShaderSourceFiles& ssf);
-    static std::unique_ptr<Model> CreateModel(const std::string& filePath);
+    static std::unique_ptr<Model> CreateModel(const std::string& modelPath, const std::filesystem::path &texturePath);
     static std::unique_ptr<Mesh> CreateMesh();
 };
 
@@ -60,8 +60,8 @@ public:
     static std::unique_ptr<Shader> CreateShaderBuffer(const ShaderSourceFiles& ssf) {
         return std::make_unique<OpenGLShader>(ssf);
     }
-    static std::unique_ptr<Model> CreateModel(const std::string& filePath) {
-        return std::make_unique<OpenGLModel>(filePath);
+    static std::unique_ptr<Model> CreateModel(const std::string& modelPath, const std::filesystem::path &texturePath) {
+        return std::make_unique<OpenGLModel>(modelPath, texturePath);
     }
     static std::unique_ptr<Mesh> CreateMesh(){
         return std::make_unique<OpenGLMesh>();
