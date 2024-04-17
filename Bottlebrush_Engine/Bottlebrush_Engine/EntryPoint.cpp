@@ -131,13 +131,14 @@ int main() {
   const ShaderType defaultShaderType = ShaderType::Default;
   const ShaderType skyboxShaderType = ShaderType::Skybox;
 
-  renderEngine->SetShaderSource(defaultShaderType,"Resources/Shaders/Vertex/Basic.vert", "Resources/Shaders/Fragment/Basic.frag");
+  renderEngine->SetShaderSource(defaultShaderType,
+      "Resources/Shaders/Vertex/Basic.vert", 
+      "Resources/Shaders/Fragment/Basic.frag");
   renderEngine->SetColour(defaultShaderType, 0.2f, 0.3f, 0.8f, 1.0f);
 
   renderEngine->SetShaderSource(skyboxShaderType,
-                                "Resources/Shaders/Vertex/Skybox.vert",
-                                "Resources/Shaders/Fragment/Skybox.frag");
-  
+      "Resources/Shaders/Vertex/Skybox.vert",
+      "Resources/Shaders/Fragment/Skybox.frag");
 
   // RENDER LOOP
   while (!glfwWindowShouldClose(window)) {

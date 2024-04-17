@@ -40,9 +40,9 @@ private:
 
 	/// @author Alan Brunet
     /// @return member width
-	int GetWidth() const override;
+    inline int& GetWidth() override { return m_Width; }
 
 	/// @author Alan Brunet
     /// @return member height
-    int GetHeight() const override;
+    inline int& GetHeight() override { return m_Height; }
 };

@@ -22,10 +22,11 @@ void Skybox::InitMesh(std::filesystem::path model,
 
 	m_Texture->InitCubeMap();
 
-	int width, height, nrComponents;
+	int nrComponents;
     for (unsigned int i = 0; i < texPaths.size(); i++) {
-        unsigned char* data = stbi_load(texPaths[i].string().c_str(), &width,
-                                    &height, &nrComponents, 0);
+        unsigned char* data = stbi_load(
+            texPaths[i].string().c_str(), &m_Texture->GetWidth(),
+            &m_Texture->GetHeight(), &nrComponents, 0);
 
         if (data) {
             m_Texture->CreateCubemap(data, i);
@@ -37,8 +38,6 @@ void Skybox::InitMesh(std::filesystem::path model,
             stbi_image_free(data);
         }
     }
-	
-	
 }
 
 void Skybox::ActiveTexture() { 

@@ -36,9 +36,9 @@ public:
 
     /// @author Alan Brunet
     /// @return member width
-    virtual int GetWidth() const = 0;
+    virtual inline int& GetWidth() = 0;
 
 	/// @author Alan Brunet
     /// @return member height
-    virtual int GetHeight() const = 0;
+    virtual inline int& GetHeight() = 0;
 };
