@@ -35,9 +35,7 @@ public:
     /// @param imagedata is the raw data from an image
     /// @param slot for overlapping image textures if not 0.
     /// Defaulted to zero
-//    virtual void SetTexture(int width, int height, int bpp,
-//                            unsigned char* imagedata,
-//                            unsigned int slot = 0) = 0;
+    virtual void SetTexture(unsigned int slot = 0) = 0;
 
     virtual void UnbindMesh() = 0;
 

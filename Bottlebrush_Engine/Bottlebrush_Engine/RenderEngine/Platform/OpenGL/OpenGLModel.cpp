@@ -85,8 +85,8 @@ std::unique_ptr<OpenGLMesh> OpenGLModel::InitMesh(const aiMesh* paiMesh, const s
     }
 
     std::vector<unsigned int> layout;
-    layout.push_back(5); // 3 elements for position, 2 elements for texture
-
+    layout.push_back(3); // 3 elements for position
+    layout.push_back(2); // 2 elements for the texture
     std::unique_ptr<OpenGLMesh> mesh = std::make_unique<OpenGLMesh>();
     mesh->CreateMesh(meshVerts, meshInts, texturePath, textureSlot, layout);
 

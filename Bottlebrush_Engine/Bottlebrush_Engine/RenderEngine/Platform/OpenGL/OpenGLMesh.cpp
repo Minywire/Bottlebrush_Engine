@@ -34,16 +34,12 @@ void OpenGLMesh::CreateMesh(std::vector<float> vertices, std::vector<unsigned in
     m_IndexBuffer = std::make_unique<OpenGLIndexBuffer>(indices.data(), indices.size());
 
     m_Texture = std::make_unique<OpenGLTexture>(textureFilePath);
-    m_Texture->Bind(textureSlot);
+    SetTexture();
 }
 
-//void OpenGLMesh::SetTexture(int width, int height, int bpp,
-//                                unsigned char* imagedata, unsigned int slot) {
-//  m_Texture = std::make_unique<OpenGLTexture>(width, height, bpp);
-//
-//  m_Texture->CreateTexture(imagedata);
-//  m_Texture->Bind(slot);
-//}
+void OpenGLMesh::SetTexture( unsigned int slot) {
+  m_Texture->Bind(slot);
+}
 
 void OpenGLMesh::UnbindMesh() {
   // clearing all buffer bindings

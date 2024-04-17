@@ -47,8 +47,7 @@ private:
     /// @param imagedata is the raw data from an image
     /// @param slot for overlapping image textures if not 0.
     /// Defaulted to zero
-//    void SetTexture(int width, int height, int bpp, unsigned char* imagedata,
-//                    unsigned int slot = 0) override;
+    void SetTexture(unsigned int slot = 0) override;
 
 
     /// @author Alan Brunet
