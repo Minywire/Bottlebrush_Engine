@@ -8,5 +8,5 @@ target_sources(BBGraphics
         PRIVATE Camera.cpp Image.cpp
 )
 target_link_libraries(BBGraphics
-        PRIVATE glm
+        PRIVATE glm stb
 )
