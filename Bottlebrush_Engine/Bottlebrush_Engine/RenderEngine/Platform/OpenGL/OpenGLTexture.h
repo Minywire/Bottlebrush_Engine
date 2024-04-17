@@ -3,27 +3,25 @@
 #include "Texture.h"
 #include <string>
 #include <filesystem>
+#include "Image.h"
 
 class OpenGLTexture : public Texture
 {
 private:
 	unsigned int m_RendererID;
-	unsigned char* m_LocalBuffer;
-	// BPP = bytes per pixel
-	int m_Width = 0, m_Height = 0, m_BPP = 0;
 
  public:
 	/// @author Alan Brunet
     /// @brief Constructor that generates a texture buffer
-	OpenGLTexture(int width, int height, int bpp);
+	OpenGLTexture(const std::filesystem::path& imageFilePath);
 	~OpenGLTexture() override;
 
-	/// @author Alan Brunet
+	/// @author Alan Brunet, Niamh Wilson
     /// @brief Creates a texture from a given texture image data.
     /// OpenGL expects image to start at bottom left, instead of top left. 
     /// May need to flip image data before passing.
     /// @param data is the image data
-	void CreateTexture(unsigned char* data) override;
+	void CreateTexture(const std::filesystem::path& imageFilePath);
 
 	/// @author Alan Brunet
     /// @brief Binds the Texture to use / add

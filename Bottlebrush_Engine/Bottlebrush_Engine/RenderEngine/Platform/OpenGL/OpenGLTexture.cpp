@@ -2,10 +2,10 @@
 
 #include "OpenGLRenderer.h"
 
-OpenGLTexture::OpenGLTexture(int width, int height, int bpp)
-    : m_LocalBuffer(nullptr), m_Width(width), m_Height(height), m_BPP(bpp)
-{
+OpenGLTexture::OpenGLTexture(const std::filesystem::path& imageFilePath) {
+
     glGenTextures(1, &m_RendererID);
+    CreateTexture(imageFilePath);
 }
 
 OpenGLTexture::~OpenGLTexture() 
@@ -13,23 +13,8 @@ OpenGLTexture::~OpenGLTexture()
     glDeleteTextures(1, &m_RendererID); 
 }
 
-void OpenGLTexture::CreateTexture(unsigned char* data) {
-
-    /* 
-    * @TODO find an alternative to stbi.h for loading files
-    * 
-    // will Assimp load texture files aswell? instead of using stb_image?
-    // OpenGL expects image to start at bottom left, instead of top left
-    stbi_set_flip_vertically_on_load(1);
-    // 4 = RGBA (desired channels)
-    m_LocalBuffer = stbi_load(path.c_str(), &m_Width, &m_Height, &m_BPP, 4);
-
-    // will find an alternative to stbi.h for loading files
-    //if (m_LocalBuffer) stbi_image_free(m_LocalBuffer);
-    */
-
-    m_LocalBuffer = data; 
-    
+void OpenGLTexture::CreateTexture(const std::filesystem::path& imageFilePath) {
+    Image textureImage(imageFilePath);
     glBindTexture(GL_TEXTURE_2D, m_RendererID);
 
     // OpenGL expects image to start at bottom left, instead of top left
@@ -44,7 +29,7 @@ void OpenGLTexture::CreateTexture(unsigned char* data) {
 
     // RGBA8 how you want opengl to format the data
     // RGBA is the format we are supplying
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_LocalBuffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, textureImage.getImageWidth(), textureImage.getImageHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, textureImage.getImageData());
 
     // Unbind texture
     glBindTexture(GL_TEXTURE_2D, 0);
