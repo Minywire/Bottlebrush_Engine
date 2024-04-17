@@ -5,7 +5,7 @@ target_include_directories(BBGraphics
         PRIVATE Camera.h
 )
 target_sources(BBGraphics
-        PRIVATE Camera.cpp
+        PRIVATE Camera.cpp Image.cpp
 )
 target_link_libraries(BBGraphics
         PRIVATE glm
