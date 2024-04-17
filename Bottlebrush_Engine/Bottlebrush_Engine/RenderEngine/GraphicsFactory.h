@@ -30,7 +30,7 @@ public:
     static std::unique_ptr<VertexArray> CreateVertexArray();    
     static std::unique_ptr<VertexBufferLayout> CreateVertexBufferLayout();
     static std::unique_ptr<IndexBuffer> CreateIndexBuffer(const unsigned int* data, unsigned int count);
-    static std::unique_ptr<Texture> CreateTextureBuffer(int width, int height, int bbp);
+    static std::unique_ptr<Texture> CreateTextureBuffer(const std::filesystem::path& textureFilePath);
     static std::unique_ptr<Shader> CreateShaderBuffer(const ShaderSourceFiles& ssf);
     static std::unique_ptr<Model> CreateModel(const std::string& filePath);
     static std::unique_ptr<Mesh> CreateMesh();
@@ -54,8 +54,8 @@ public:
     static std::unique_ptr<IndexBuffer> CreateIndexBuffer(const unsigned int* data, unsigned int count) {
         return std::make_unique<OpenGLIndexBuffer>(data, count);
     }
-    static std::unique_ptr<Texture> CreateTextureBuffer(int width, int height, int bpp) {
-        return std::make_unique<OpenGLTexture>(width, height, bpp);
+    static std::unique_ptr<Texture> CreateTextureBuffer(const std::filesystem::path& textureFilePath) {
+        return std::make_unique<OpenGLTexture>(textureFilePath);
     }
     static std::unique_ptr<Shader> CreateShaderBuffer(const ShaderSourceFiles& ssf) {
         return std::make_unique<OpenGLShader>(ssf);
