@@ -34,4 +34,12 @@ private:
      * @param transform
      */
     void loadTransform(ECS& ecs, Entity &entity, const sol::table &transform);
+
+    /**
+     *
+     * @param ecs
+     * @param entity
+     * @param model
+     */
+    void loadModel(ECS& ecs, Entity &entity, const sol::table &model);
 };
