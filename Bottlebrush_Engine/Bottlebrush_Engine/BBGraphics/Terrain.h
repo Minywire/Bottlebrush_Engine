@@ -12,15 +12,17 @@ class Terrain {
   Terrain() = default;
   Terrain(const std::string &heightmap, float y_scale, float y_shift);
 
-  int channels_;
-  unsigned char *data_;
-  int length_;
   unsigned int id_;
   std::vector<unsigned int> index_buffer_;
   unsigned int num_strips_;
   unsigned int num_verts_per_strips_;
-  std::string path_;
   std::vector<float> vertex_buffer_;
+
+ private:
+  int channels_;
+  unsigned char *data_;
+  int length_;
+  std::string path_;
   int width_;
 };
 
