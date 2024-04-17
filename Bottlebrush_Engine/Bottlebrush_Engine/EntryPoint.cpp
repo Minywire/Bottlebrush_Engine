@@ -128,8 +128,8 @@ int main() {
 
   glGenBuffers(1, &vertex_buffer);
   glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-  glBufferData(GL_ARRAY_BUFFER, heightmap.vertex_buffer_.size() * sizeof(float),
-               &heightmap.vertex_buffer_[0], GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, heightmap.GetVertices().size() * sizeof(float),
+               &heightmap.GetVertices().at(0), GL_STATIC_DRAW);
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
                         (void *)nullptr);
@@ -138,8 +138,8 @@ int main() {
   glGenBuffers(1, &element_buffer);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-               heightmap.index_buffer_.size() * sizeof(unsigned),
-               &heightmap.index_buffer_[0], GL_STATIC_DRAW);
+               heightmap.GetElements().size() * sizeof(unsigned),
+               &heightmap.GetElements().at(0), GL_STATIC_DRAW);
 
   // RENDER LOOP
   while (!glfwWindowShouldClose(window)) {
@@ -186,10 +186,10 @@ int main() {
         ->SetUniformMatrix4fv("model", model);
 
     glBindVertexArray(vertex_array);
-    for (unsigned int strip = 0; strip < heightmap.num_strips_; strip++) {
+    for (unsigned int strip = 0; strip < heightmap.GetNumStrips(); strip++) {
       glDrawElements(
-          GL_TRIANGLE_STRIP, heightmap.num_verts_per_strips_, GL_UNSIGNED_INT,
-          (void *)(sizeof(unsigned) * heightmap.num_verts_per_strips_ * strip));
+          GL_TRIANGLE_STRIP, heightmap.GetNumTriangles(), GL_UNSIGNED_INT,
+          (void *)(sizeof(unsigned) * heightmap.GetNumTriangles() * strip));
     }
 
     // Swap out buffers and poll for input events
