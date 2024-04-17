@@ -21,6 +21,11 @@ Terrain::Terrain(const std::string &heightmap, glm::vec3 scale,
   PopulateElements();
 }
 
+Terrain::~Terrain() {
+  stbi_image_free(data_);
+  data_ = nullptr;
+}
+
 glm::vec3 Terrain::GetCentre() const {
   auto w = static_cast<float>(width_), l = static_cast<float>(length_);
 

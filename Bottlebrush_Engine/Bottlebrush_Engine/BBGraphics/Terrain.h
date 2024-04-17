@@ -13,6 +13,8 @@ class Terrain {
   Terrain(const std::string &heightmap, glm::vec3 scale = {1.0f, 1.0f, 1.0f},
           glm::vec3 shift = {0.0f, 0.0f, 0.0f});
 
+  ~Terrain();
+
   [[nodiscard]] glm::vec3 GetCentre() const;
   [[nodiscard]] std::vector<unsigned> GetElements() const;
   [[nodiscard]] float GetHeight(float x, float z) const;
