@@ -10,18 +10,20 @@ Entity EntityFactory::create_from_file(ECS & ecs, sol::state & lua_state, const 
 
     if(lua_file.extension() != ".lua") { throw std::runtime_error("Lua file is no lua file"); }
 
-
     lua_state.script_file(lua_file.string());
+
+    Entity namedEntity;
 
     auto entityTable = lua_state["Entity"];
 
     if(entityTable.valid())
     {
-        Entity namedEntity = ecs.CreateEntity();
+        namedEntity = ecs.CreateEntity();
         load_components(ecs, namedEntity, entityTable);
 
         return namedEntity;
     }
+    return namedEntity;
 }
 
 void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& table)
