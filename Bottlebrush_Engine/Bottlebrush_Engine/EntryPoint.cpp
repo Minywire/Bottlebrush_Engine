@@ -113,7 +113,7 @@ int main() {
       std::filesystem::path("Resources/Heightmaps/iceland_heightmap.png")
           .string(),
       64.0f / 256.0f, 16.0f);
-  camera.movement_speed_ *= 10.0f;
+  camera.movement_speed_ *= 100.0f;
 
   ShaderType defaultShaderType = ShaderType::Default;
 
@@ -187,10 +187,9 @@ int main() {
 
     glBindVertexArray(vertex_array);
     for (unsigned int strip = 0; strip < heightmap.num_strips_; strip++) {
-      glDrawElements(GL_TRIANGLE_STRIP, heightmap.num_verts_per_strips_ + 2,
-                     GL_UNSIGNED_INT,
-                     (void *)(sizeof(unsigned) *
-                              (heightmap.num_verts_per_strips_ + 2) * strip));
+      glDrawElements(
+          GL_TRIANGLE_STRIP, heightmap.num_verts_per_strips_, GL_UNSIGNED_INT,
+          (void *)(sizeof(unsigned) * heightmap.num_verts_per_strips_ * strip));
     }
 
     // Swap out buffers and poll for input events
