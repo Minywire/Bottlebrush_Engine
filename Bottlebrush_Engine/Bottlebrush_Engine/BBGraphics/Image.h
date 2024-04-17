@@ -7,6 +7,7 @@
 
 #include <stb/stb_image.h>
 #include <filesystem>
+#include <iostream>
 
 class Image {
 public:

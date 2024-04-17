@@ -6,6 +6,12 @@
 
 Image::Image(std::filesystem::path imagePath) {
     m_imageData = stbi_load(imagePath.string().c_str(), &m_width, &m_height, &m_imgChannels, 0);
+
+    if(m_imageData) {
+        std::cout << "Image loaded successfully" << std::endl;
+    } else {
+        std::cout << "Failed to load image" << std::endl;
+    }
 }
 
 Image::~Image() {
