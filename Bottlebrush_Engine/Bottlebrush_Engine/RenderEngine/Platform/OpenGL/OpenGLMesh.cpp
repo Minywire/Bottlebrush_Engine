@@ -11,7 +11,7 @@ OpenGLMesh::~OpenGLMesh() {
 
 }
 
-void OpenGLMesh::CreateMesh(std::vector<float> vertices, std::vector<unsigned int> indices, std::vector<float> textureCoords, const std::filesystem::path& textureFilePath, std::vector<unsigned int> layout) {
+void OpenGLMesh::CreateMesh(std::vector<float> vertices, std::vector<unsigned int> indices, const std::filesystem::path& textureFilePath, std::vector<unsigned int> layout) {
     // create a vertex buffer, vector data, vertices
     m_VertexBuffer = std::make_unique<OpenGLVertexBuffer>(vertices.data(), vertices.size() * sizeof(float)) ;
 
@@ -34,6 +34,7 @@ void OpenGLMesh::CreateMesh(std::vector<float> vertices, std::vector<unsigned in
     m_IndexBuffer = std::make_unique<OpenGLIndexBuffer>(indices.data(), indices.size());
 
     m_Texture = std::make_unique<OpenGLTexture>(textureFilePath);
+    m_Texture->Bind(1);
 }
 
 //void OpenGLMesh::SetTexture(int width, int height, int bpp,

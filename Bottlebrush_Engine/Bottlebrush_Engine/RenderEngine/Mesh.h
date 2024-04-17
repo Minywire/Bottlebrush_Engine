@@ -24,7 +24,7 @@ public:
     /// @param indices index buffer data. Indexing the drawing of vertexes
     /// @param layout vertex buffer layout. Defines the size of each element in
     /// the vertex buffer
-    virtual void CreateMesh(std::vector<float> vertices, std::vector<unsigned int> indices, std::vector<float> textureCoords, const std::filesystem::path& textureFilePath, std::vector<unsigned int> layout) = 0;
+    virtual void CreateMesh(std::vector<float> vertices, std::vector<unsigned int> indices, const std::filesystem::path& textureFilePath, std::vector<unsigned int> layout) = 0;
 
     /// @author Alan Brunet
     /// @brief Creates a texture from a given image, and an assigned slot
