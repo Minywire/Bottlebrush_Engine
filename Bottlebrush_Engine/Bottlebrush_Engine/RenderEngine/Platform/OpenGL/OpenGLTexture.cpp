@@ -50,6 +50,20 @@ void OpenGLTexture::CreateTexture(unsigned char* data) {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+void OpenGLTexture::InitCubeMap() {
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+}
+
+void OpenGLTexture::CreateCubemap(unsigned char* data, unsigned int index) {
+    glGenTextures(1, &m_RendererID);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, m_RendererID);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + index, 0, GL_RGB, m_Width, m_Height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+}
+
 void OpenGLTexture::Bind(unsigned int slot) const 
 {
     // can bind to a different texture slot

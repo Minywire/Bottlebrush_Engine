@@ -24,6 +24,9 @@ private:
     /// @param data is the image data
 	void CreateTexture(unsigned char* data) override;
 
+	void InitCubeMap() override;
+	void CreateCubemap(unsigned char* data, unsigned int index) override;
+
 	/// @author Alan Brunet
     /// @brief Binds the Texture to use / add
     /// @param slot can be different texture slots, maximum of 32 slots

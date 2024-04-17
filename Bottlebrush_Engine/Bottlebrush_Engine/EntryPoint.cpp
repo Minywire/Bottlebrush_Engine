@@ -110,14 +110,16 @@ int main() {
   std::unique_ptr<RenderEngine> renderEngine = GraphicsFactory<s_API>::CreateRenderer();
   Skybox skybox("Resources/Models/cube.obj");
 
-  ShaderType defaultShaderType = ShaderType::Default;
-  ShaderType skyboxShaderType = ShaderType::Skybox;
+  const ShaderType defaultShaderType = ShaderType::Default;
+  const ShaderType skyboxShaderType = ShaderType::Skybox;
 
   renderEngine->SetShaderSource(defaultShaderType,"Resources/Shaders/Vertex/Basic.vert", "Resources/Shaders/Fragment/Basic.frag");
+  renderEngine->SetColour(defaultShaderType, 0.2f, 0.3f, 0.8f, 1.0f);
+
   renderEngine->SetShaderSource(skyboxShaderType,
                                 "Resources/Shaders/Vertex/Skybox.vert",
                                 "Resources/Shaders/Fragment/Skybox.frag");
-  renderEngine->SetColour(defaultShaderType, 0.2f, 0.3f, 0.8f, 1.0f);
+  
 
   // RENDER LOOP
   while (!glfwWindowShouldClose(window)) {
@@ -136,6 +138,27 @@ int main() {
       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     else
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+    // Calculate camera projection matrix relative to current camera zoom and
+    // screen dimensions
+    glm::mat4 projection = glm::perspective(
+        glm::radians(camera.zoom_), (float)screen_width / (float)screen_height,
+        0.1f, 100.0f);
+    // Evaluate camera view matrix i.e. the camera LookAt matrix
+    glm::mat4 view = camera.GetViewMatrix();
+    // Evaluate the camera model matrix that 'positions' the models being drawn
+    // in the scene
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.3f, 0.5f));
+
+    renderEngine->GetShader(defaultShaderType)->Bind();
+    renderEngine->GetShader(defaultShaderType)
+        ->SetUniformMatrix4fv("projection", projection);
+    renderEngine->GetShader(defaultShaderType)
+        ->SetUniformMatrix4fv("view", view);
+    renderEngine->GetShader(defaultShaderType)
+        ->SetUniformMatrix4fv("model", model);
     
     // Draw the test cube
     for (unsigned int i = 0; i < testCube->GetSubMeshes().size(); i++) {
@@ -143,41 +166,33 @@ int main() {
         *testCube->GetSubMeshes()[i]->GetVertexArray(),
         testCube->GetSubMeshes()[i]->GetIndexCount());
     }
-
-    // Calculate camera projection matrix relative to current camera zoom and
-    // screen dimensions
-    glm::mat4 projection = glm::perspective(
-        glm::radians(camera.zoom_), (float)screen_width / (float)screen_height,
-        0.1f, 100.0f);
-    renderEngine->GetShader(defaultShaderType)->SetUniformMatrix4fv("projection", projection);
-    // Evaluate camera view matrix i.e. the camera LookAt matrix
-    glm::mat4 view = camera.GetViewMatrix();
-    renderEngine->GetShader(defaultShaderType)->SetUniformMatrix4fv("view", view);
-    // Evaluate the camera model matrix that 'positions' the models being drawn
-    // in the scene
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-    model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.3f, 0.5f));
-    renderEngine->GetShader(defaultShaderType)->SetUniformMatrix4fv("model", model);
-
+    
     // change depth function so depth test passes when
     // values are equal to depth buffer's content
     glDepthFunc(GL_LEQUAL);  
     // draw skybox as last
-    view = glm::mat4(glm::mat3(camera.GetViewMatrix()));  // remove translation from the view matrix
-    renderEngine->GetShader(skyboxShaderType)->SetUniformMatrix4fv("view", view);
-    renderEngine->GetShader(skyboxShaderType)->SetUniformMatrix4fv("projection", projection);
-
-    // @TODO Activate Texture on skybox
     
+    renderEngine->GetShader(skyboxShaderType)->Bind();
+    view = glm::mat4(glm::mat3(
+        camera.GetViewMatrix()));  // remove translation from the view matrix
+    renderEngine->GetShader(skyboxShaderType)
+        ->SetUniformMatrix4fv("view", view);
+    renderEngine->GetShader(skyboxShaderType)
+        ->SetUniformMatrix4fv("projection", projection);
+    renderEngine->GetShader(skyboxShaderType)->SetUniform1i("skybox", 0);
+    
+    // @TODO Activate Texture on skybox
     // Draw the Skybox
-    for (unsigned int i = 0; i < skybox.getModel()->GetSubMeshes().size();
-         i++) {
-      renderEngine->Draw(skyboxShaderType,
+    skybox.ActiveTexture();
+    for (unsigned int i = 0; i < skybox.getModel()->GetSubMeshes().size(); i++) {
+      renderEngine->Draw(
+          skyboxShaderType,
           *skybox.getModel()->GetSubMeshes()[i]->GetVertexArray(),
           skybox.getModel()->GetSubMeshes()[i]->GetIndexCount());
     }
-
+    
+    glDepthFunc(GL_LESS); // set depth function back to default
+    
     // Swap out buffers and poll for input events
     glfwSwapBuffers(window);
     glfwPollEvents();

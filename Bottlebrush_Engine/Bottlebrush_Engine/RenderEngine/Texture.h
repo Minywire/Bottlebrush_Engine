@@ -1,5 +1,8 @@
 #pragma once
 
+
+#include <filesystem> //@TODO maybe delete?
+
 /// @author Alan Brunet
 /// @brief Class to create and store textures, this can hold up to 32 different texture slots
 class Texture
@@ -16,6 +19,9 @@ public:
     /// May need to flip image data before passing.
     /// @param data is the image data
     virtual void CreateTexture(unsigned char* data) = 0;
+
+    virtual void InitCubeMap() = 0;
+    virtual void CreateCubemap(unsigned char* data, unsigned int index) = 0;
 
     /// @author Alan Brunet
     /// @brief Binds the Texture to use / add
