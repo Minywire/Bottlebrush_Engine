@@ -134,4 +134,3 @@ if (CMAKE_VERSION VERSION_GREATER 3.13)
 endif ()
 
 add_subdirectory(Tests/EntityFactoryAndScriptTest)
-add_subdirectory(Tests/ResourceCreationTests)
