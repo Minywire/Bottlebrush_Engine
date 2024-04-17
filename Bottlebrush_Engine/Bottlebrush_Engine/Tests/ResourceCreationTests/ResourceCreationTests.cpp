@@ -9,5 +9,9 @@
 
 TEST(ResourceCreationTests, GenerateFromComponentTest)
 {
+    BBResourceManager resourceMan;
+    const ModelComponent testComponent = { "cube.obj" };
+
+    resourceMan.generateModelFromComponent(testComponent);
 
 }
