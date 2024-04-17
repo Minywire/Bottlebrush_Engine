@@ -104,13 +104,13 @@ int main() {
   // TODO: Implement and test Texture.h
   const GraphicsAPI s_API = GraphicsAPI::OpenGL;
   std::unique_ptr<Model> testCube =
-      GraphicsFactory<s_API>::CreateModel("Resources/Models/cube.obj");
+      GraphicsFactory<s_API>::CreateModel("Resources/Models/Cube_With_Pizazz.obj", "Resources/Models/Disabled_Pokemon_Go_-_Eevee___Zubat_0-3_screenshot.png");
   std::unique_ptr<RenderEngine> renderEngine = GraphicsFactory<s_API>::CreateRenderer();
 
   ShaderType defaultShaderType = ShaderType::Default;
 
-  renderEngine->SetShaderSource(defaultShaderType,"Resources/Shaders/Vertex/Basic.vert", "Resources/Shaders/Fragment/Basic.frag");
-  renderEngine->SetColour(defaultShaderType, 0.2f, 0.3f, 0.8f, 1.0f);
+  renderEngine->SetShaderSource(defaultShaderType,"Resources/Shaders/Vertex/Basic.vert", "Resources/Shaders/Fragment/BasicTex.frag");
+//  renderEngine->SetColour(defaultShaderType, 0.2f, 0.3f, 0.8f, 1.0f);
 
   // RENDER LOOP
   while (!glfwWindowShouldClose(window)) {
