@@ -4,6 +4,7 @@
 
 #include "Camera.h"
 #include "GraphicsFactory.h"
+#include "Skybox.h"
 #include "Terrain.h"
 #include "glad/glad.h"
 #include "glfw/glfw3.h"
@@ -118,12 +119,28 @@ int main() {
       heightmap.GetHeight(camera.position_.x, camera.position_.z);
   camera.movement_speed_ *= 10.0f;
 
-  ShaderType defaultShaderType = ShaderType::Default;
+  // loads a cubemap texture from 6 individual texture faces
+  std::vector<std::filesystem::path> skyboxTextures{
+      std::filesystem::path("resources/textures/skybox/right.jpg"),
+      std::filesystem::path("resources/textures/skybox/left.jpg"),
+      std::filesystem::path("resources/textures/skybox/top.jpg"),
+      std::filesystem::path("resources/textures/skybox/bottom.jpg"),
+      std::filesystem::path("resources/textures/skybox/front.jpg"),
+      std::filesystem::path("resources/textures/skybox/back.jpg"),
+  };
+  Skybox skybox("Resources/Models/skybox.obj", skyboxTextures);
+
+  const ShaderType defaultShaderType = ShaderType::Default;
+  const ShaderType skyboxShaderType = ShaderType::Skybox;
 
   renderEngine->SetShaderSource(defaultShaderType,
                                 "Resources/Shaders/Vertex/Heightmap.vert",
                                 "Resources/Shaders/Fragment/Heightmap.frag");
   renderEngine->SetColour(defaultShaderType, 0.2f, 0.3f, 0.8f, 1.0f);
+
+  renderEngine->SetShaderSource(skyboxShaderType,
+                                "Resources/Shaders/Vertex/Skybox.vert",
+                                "Resources/Shaders/Fragment/Skybox.frag");
 
   unsigned int vertex_buffer, vertex_array, element_buffer;
   glGenVertexArrays(1, &vertex_array);
@@ -162,13 +179,6 @@ int main() {
     else
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    // Draw the test cube
-    for (unsigned int i = 0; i < testCube->GetSubMeshes().size(); i++) {
-      renderEngine->Draw(defaultShaderType,
-                         *testCube->GetSubMeshes()[i]->GetVertexArray(),
-                         testCube->GetSubMeshes()[i]->GetIndexCount());
-    }
-
     // Calculate camera projection matrix relative to current camera zoom and
     // screen dimensions
     glm::mat4 projection = glm::perspective(
@@ -185,11 +195,9 @@ int main() {
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
     model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.3f, 0.5f));
-    renderEngine->GetShader(defaultShaderType)
-        ->SetUniformMatrix4fv("model", model);
 
     glBindVertexArray(vertex_array);
-    for (unsigned int strip = 0; strip < heightmap.GetNumStrips(); strip++) {
+    for (int strip = 0; strip < heightmap.GetNumStrips(); strip++) {
       glDrawElements(
           GL_TRIANGLE_STRIP, heightmap.GetNumTriangles(), GL_UNSIGNED_INT,
           (void *)(sizeof(unsigned) * heightmap.GetNumTriangles() * strip));
@@ -205,6 +213,45 @@ int main() {
     if (terrain_height > terrain_height_init)
       terrain_height += terrain_height_diff * delta;
     camera.position_.y = terrain_height;
+
+    renderEngine->GetShader(defaultShaderType)
+        ->SetUniformMatrix4fv("projection", projection);
+    renderEngine->GetShader(defaultShaderType)
+        ->SetUniformMatrix4fv("view", view);
+    renderEngine->GetShader(defaultShaderType)
+        ->SetUniformMatrix4fv("model", model);
+
+    // Draw the test cube
+    for (unsigned int i = 0; i < testCube->GetSubMeshes().size(); i++) {
+      renderEngine->Draw(defaultShaderType,
+                         *testCube->GetSubMeshes()[i]->GetVertexArray(),
+                         testCube->GetSubMeshes()[i]->GetIndexCount());
+    }
+
+    // change depth function so depth test passes when
+    // values are equal to depth buffer's content
+    glDepthFunc(GL_LEQUAL);
+    // draw skybox as last
+    view = glm::mat4(glm::mat3(
+        camera.GetViewMatrix()));  // remove translation from the view matrix
+    renderEngine->GetShader(skyboxShaderType)
+        ->SetUniformMatrix4fv("view", view);
+    renderEngine->GetShader(skyboxShaderType)
+        ->SetUniformMatrix4fv("projection", projection);
+    renderEngine->GetShader(skyboxShaderType)->SetUniform1i("skybox", 0);
+
+    // @TODO Activate Texture on skybox
+    // Draw the Skybox
+    skybox.ActiveTexture();
+    for (unsigned int i = 0; i < skybox.getModel()->GetSubMeshes().size();
+         i++) {
+      renderEngine->Draw(
+          skyboxShaderType,
+          *skybox.getModel()->GetSubMeshes()[i]->GetVertexArray(),
+          skybox.getModel()->GetSubMeshes()[i]->GetIndexCount());
+    }
+
+    glDepthFunc(GL_LESS);  // set depth function back to default
 
     // Swap out buffers and poll for input events
     glfwSwapBuffers(window);

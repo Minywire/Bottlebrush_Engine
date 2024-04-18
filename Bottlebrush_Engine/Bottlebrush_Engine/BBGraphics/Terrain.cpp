@@ -1,7 +1,3 @@
-#ifndef STB_IMAGE_IMPLEMENTATION
-#define STB_IMAGE_IMPLEMENTATION
-#endif
-
 #include "Terrain.h"
 
 Terrain::Terrain(const std::string &heightmap, glm::vec3 scale,

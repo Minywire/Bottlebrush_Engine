@@ -34,8 +34,6 @@ struct TransformComponent
 struct ModelComponent
 {
     std::string model_path;
-    std::string material_path;
-    //Depending on ASSIMP implementation, more info will probably be added here
 };
 
 /**
