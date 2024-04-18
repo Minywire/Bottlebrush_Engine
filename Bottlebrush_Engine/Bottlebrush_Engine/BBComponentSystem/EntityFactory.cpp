@@ -10,18 +10,20 @@ Entity EntityFactory::create_from_file(ECS & ecs, sol::state & lua_state, const 
 
     if(lua_file.extension() != ".lua") { throw std::runtime_error("Lua file is no lua file"); }
 
-
     lua_state.script_file(lua_file.string());
+
+    Entity namedEntity;
 
     auto entityTable = lua_state["Entity"];
 
     if(entityTable.valid())
     {
-        Entity namedEntity = ecs.CreateEntity();
+        namedEntity = ecs.CreateEntity();
         load_components(ecs, namedEntity, entityTable);
 
         return namedEntity;
     }
+    return namedEntity;
 }
 
 void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& table)
@@ -29,6 +31,10 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     if(table["Transform"].valid())
     {
         loadTransform(ecs, entity, table["Transform"]);
+    }
+    if(table["Model"].valid())
+    {
+        loadModel(ecs, entity, table["Model"]);
     }
 }
 
@@ -46,9 +52,20 @@ void EntityFactory::loadTransform(ECS& ecs, Entity& entity, const sol::table & t
                       transform["Scale"]["y"],
                       transform["Scale"]["z"] };
 
-    TransformComponent& transformComponent = entity.GetComponent<TransformComponent>(ecs.getReg());
+    TransformComponent& transformComponent = entity.GetComponent<TransformComponent>(ecs.getReg()); //Transform components exist by default so we get here.
 
     transformComponent.position = pos;
     transformComponent.rotation = rot;
     transformComponent.scale = scale;
+}
+
+void EntityFactory::loadModel(ECS &ecs, Entity &entity, const sol::table &model)
+{
+    std::string model_location = model["ModelPath"];
+
+    std::cout << model_location << "\n";
+
+    ModelComponent& modelComponent = entity.AddComponent<ModelComponent>(ecs.getReg()); //add model component to entity.
+
+    modelComponent.model_path = model_location;
 }

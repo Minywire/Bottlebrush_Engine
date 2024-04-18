@@ -24,12 +24,16 @@ class Terrain {
   [[nodiscard]] int GetLength() const;
   [[nodiscard]] int GetNumStrips() const;
   [[nodiscard]] int GetNumTriangles() const;
+  [[nodiscard]] glm::vec3 GetScale() const;
+  [[nodiscard]] glm::vec3 GetShift() const;
   [[nodiscard]] int GetSize() const;
   [[nodiscard]] std::vector<float> GetVertices() const;
   [[nodiscard]] int GetWidth() const;
   [[nodiscard]] std::unique_ptr<Mesh> &GetMesh();
 
  private:
+  [[nodiscard]] glm::vec3 Barycentric(glm::vec3 a, glm::vec3 b, glm::vec3 c,
+                                      glm::vec3 p) const;
   [[nodiscard]] bool InBounds(int a, int b) const;
   void PopulateElements();
   void PopulateVertices();
@@ -39,6 +43,7 @@ class Terrain {
   int channels_;
   unsigned char *data_;
   std::vector<unsigned> elements_;
+  std::vector<float> heights_;
   int length_;
   int num_strips_;
   int num_triangles;
