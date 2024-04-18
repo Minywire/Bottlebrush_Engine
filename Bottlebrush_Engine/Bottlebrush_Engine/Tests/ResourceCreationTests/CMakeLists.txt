@@ -11,5 +11,6 @@ target_link_libraries(
         BBResourceManager
         BBComponentSystem
         EnTT
+        glfw
         gtest gtest_main
 )
