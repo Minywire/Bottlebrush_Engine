@@ -31,7 +31,6 @@ add_subdirectory(Vendors/EnTT)
 add_subdirectory(Vendors/glfw)
 add_subdirectory(Vendors/imGUI)
 add_subdirectory(Vendors/imGUI/backends)
-add_subdirectory(Vendors/STB)
 
 #compiler flags
 if (MSVC)
@@ -85,7 +84,6 @@ include_directories(
         Vendors/imGUI/backends
         Vendors/Lua/sol2-3.3.0/include/
         Vendors/Lua/lua-5.4.6/
-        Vendors/STB/include
         #yeah this is a bit messy since it's ALL under imGUI but it wouldn't work otherwise with our folder structure
 )
 
@@ -122,7 +120,6 @@ target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE glfw)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE glm)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE reactphysics3d)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE LUA)
-target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE stb)
 
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBComponentSystem)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBGraphics)
@@ -131,7 +128,6 @@ target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBScene)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBScript)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE RenderEngine)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBResourceManager)
-
 
 if (CMAKE_VERSION VERSION_GREATER 3.13)
     set_property(TARGET ${CMAKE_TARGET_NAME} PROPERTY CXX_STANDARD 20)

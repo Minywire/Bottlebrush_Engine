@@ -15,9 +15,5 @@ Entity = {
             y = 0,
             z = 23.1
         }
-    },
-    Model = {
-        ModelPath = "cube.obj",
-        MaterialPath = "None"
     }
 }

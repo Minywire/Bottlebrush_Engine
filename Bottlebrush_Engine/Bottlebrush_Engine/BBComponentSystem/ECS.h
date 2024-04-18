@@ -54,10 +54,7 @@ public:
      * @author Marco Garzon Lara
      */
     template<typename... Components>
-    auto GetAllEntitiesWith() const
-    {
-        return registry.view<Components...>();
-    }
+    auto GetAllEntitiesWith() const;
 
 private:
     entt::registry registry; ///The registry for ECS management (basically a big array under the hood)

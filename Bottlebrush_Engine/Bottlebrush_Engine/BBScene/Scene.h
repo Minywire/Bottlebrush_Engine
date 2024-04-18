@@ -18,15 +18,14 @@
 class Scene
 {
 public:
-    Scene(const std::string & lua_master);
+    Scene(std::string & lua_master) : masterLuaFile(lua_master) {};
+
+    /**
+     *@brief Default constructor.
+     */
+    Scene();
 
     void init();
-
-    void createEntity(const std::string & lua_file);
-
-    const ECS & getECS() const;
-
-    const std::string &getMasterFile() const;
 
     void update();
 private:
