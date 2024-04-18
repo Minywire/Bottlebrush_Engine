@@ -31,6 +31,8 @@ add_subdirectory(Vendors/EnTT)
 add_subdirectory(Vendors/glfw)
 add_subdirectory(Vendors/imGUI)
 add_subdirectory(Vendors/imGUI/backends)
+add_subdirectory(Vendors/STB)
+add_subdirectory(Vendors/glad)
 
 #compiler flags
 if (MSVC)
@@ -79,11 +81,12 @@ include_directories(
         Vendors/Lua
         Vendors/EnTT
         Vendors/glfw/include
-        Vendors/glad/include
         Vendors/imGUI
         Vendors/imGUI/backends
         Vendors/Lua/sol2-3.3.0/include/
         Vendors/Lua/lua-5.4.6/
+        Vendors/STB/include
+        Vendors/glad/include
         #yeah this is a bit messy since it's ALL under imGUI but it wouldn't work otherwise with our folder structure
 )
 
@@ -94,9 +97,6 @@ include_directories(BBScene)
 include_directories(BBScript)
 include_directories(RenderEngine)
 include_directories(BBResourceManager)
-
-file(GLOB VENDORS_SOURCES Vendors/glad/src/glad.c)
-source_group("Vendors" FILES ${VENDORS_SOURCES})
 
 # Add source to this project's executable.
 add_executable(${CMAKE_TARGET_NAME} "EntryPoint.cpp" ${VENDORS_SOURCES})
@@ -115,11 +115,13 @@ add_custom_command(
         ${CMAKE_CURRENT_SOURCE_DIR}/Resources $<TARGET_FILE_DIR:${CMAKE_TARGET_NAME}>/Resources
 )
 
+target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE glad)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE assimp)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE glfw)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE glm)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE reactphysics3d)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE LUA)
+target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE stb)
 
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBComponentSystem)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBGraphics)
@@ -128,6 +130,7 @@ target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBScene)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBScript)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE RenderEngine)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBResourceManager)
+
 
 if (CMAKE_VERSION VERSION_GREATER 3.13)
     set_property(TARGET ${CMAKE_TARGET_NAME} PROPERTY CXX_STANDARD 20)
