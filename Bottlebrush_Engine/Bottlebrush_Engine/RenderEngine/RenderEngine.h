@@ -7,7 +7,7 @@
 #include "VertexArray.h"
 #include "Shader.h"
 
-enum class ShaderType { Default, Pixelated, Water, Shadowmap };
+enum class ShaderType { Default, Pixelated, Water, Shadowmap, Skybox };
 
 /// @author Alan Brunet
 /// @brief Base class for rendering objects. It contains member pointers to a Vertex Array,
