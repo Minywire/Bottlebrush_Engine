@@ -26,7 +26,12 @@ private:
     /// Texture Buffer pointer
     std::unique_ptr<OpenGLTexture> m_Texture;
  public:
-    OpenGLMesh();
+    OpenGLMesh(
+        std::vector<float> vertices, 
+        std::vector<unsigned int> indices,
+        const std::filesystem::path& textureFilePath, 
+        int textureSlot,
+        std::vector<unsigned int> layout);
     ~OpenGLMesh() override;
 
     /// @author Alan Brunet
@@ -36,7 +41,12 @@ private:
     /// @param indices index buffer data. Indexing the drawing of vertexes
     /// @param layout vertex buffer layout. Defines the size of each element in
     /// the vertex buffer
-    void CreateMesh(std::vector<float> vertices, std::vector<unsigned int> indices, const std::filesystem::path& textureFilePath, int textureSlot, std::vector<unsigned int> layout) override;
+    void CreateMesh(
+        std::vector<float> vertices, 
+        std::vector<unsigned int> indices, 
+        const std::filesystem::path& textureFilePath, 
+        int textureSlot, 
+        std::vector<unsigned int> layout) override;
 
     /// @author Alan Brunet
     /// @brief Creates a texture from a given image, and an assigned slot

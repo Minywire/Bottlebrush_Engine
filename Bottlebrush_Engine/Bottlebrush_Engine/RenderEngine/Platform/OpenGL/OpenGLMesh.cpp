@@ -3,15 +3,27 @@
 //
 
 #include "OpenGLMesh.h"
-OpenGLMesh::OpenGLMesh() {
-
+OpenGLMesh::OpenGLMesh(
+    std::vector<float> vertices,
+    std::vector<unsigned int> indices,
+    const std::filesystem::path& textureFilePath,
+    int textureSlot, 
+    std::vector<unsigned int> layout) 
+{
+    CreateMesh(vertices, indices, textureFilePath, textureSlot, layout);
 }
 
 OpenGLMesh::~OpenGLMesh() {
 
 }
 
-void OpenGLMesh::CreateMesh(std::vector<float> vertices, std::vector<unsigned int> indices, const std::filesystem::path& textureFilePath, int textureSlot, std::vector<unsigned int> layout) {
+void OpenGLMesh::CreateMesh(
+    std::vector<float> vertices, 
+    std::vector<unsigned int> indices, 
+    const std::filesystem::path& textureFilePath, 
+    int textureSlot, 
+    std::vector<unsigned int> layout) 
+{
     // create a vertex buffer, vector data, vertices
     m_VertexBuffer = std::make_unique<OpenGLVertexBuffer>(vertices.data(), vertices.size() * sizeof(float)) ;
 
@@ -33,12 +45,14 @@ void OpenGLMesh::CreateMesh(std::vector<float> vertices, std::vector<unsigned in
     // create an index buffer and bind it, must be done after layout binding
     m_IndexBuffer = std::make_unique<OpenGLIndexBuffer>(indices.data(), indices.size());
 
-    m_Texture = std::make_unique<OpenGLTexture>(textureFilePath);
+    m_Texture = std::make_unique<OpenGLTexture>();
+    m_Texture->CreateTexture(textureFilePath);
+
     SetTexture();
 }
 
-void OpenGLMesh::SetTexture( unsigned int slot) {
-  m_Texture->Bind(slot);
+void OpenGLMesh::SetTexture(unsigned int slot) {
+    m_Texture->Bind(slot);
 }
 
 void OpenGLMesh::UnbindMesh() {
