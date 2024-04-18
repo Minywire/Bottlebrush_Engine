@@ -19,6 +19,7 @@ Terrain::Terrain(const std::string &heightmap, glm::vec3 scale,
 
   PopulateVertices();
   PopulateElements();
+  InitMesh();
 }
 
 Terrain::~Terrain() {
@@ -85,3 +86,12 @@ void Terrain::PopulateVertices() {
     }
   }
 }
+
+void Terrain::InitMesh() { 
+    std::vector<unsigned int> layout;
+  layout.push_back(3); // 3 elements for position
+  mesh_ = GraphicsFactory<GraphicsAPI::OpenGL>::CreateMesh();
+  mesh_->CreateMesh(vertices_, elements_, layout);
+}
+
+std::unique_ptr<Mesh> &Terrain::GetMesh() { return mesh_; }

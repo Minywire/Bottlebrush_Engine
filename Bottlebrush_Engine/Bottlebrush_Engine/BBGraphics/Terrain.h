@@ -3,9 +3,12 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "glm/glm.hpp"
 #include "stb/stb_image.h"
+
+#include "GraphicsFactory.h"
 
 class Terrain {
  public:
@@ -24,11 +27,13 @@ class Terrain {
   [[nodiscard]] int GetSize() const;
   [[nodiscard]] std::vector<float> GetVertices() const;
   [[nodiscard]] int GetWidth() const;
+  [[nodiscard]] std::unique_ptr<Mesh> &GetMesh();
 
  private:
   [[nodiscard]] bool InBounds(int a, int b) const;
   void PopulateElements();
   void PopulateVertices();
+  void InitMesh();
 
   glm::vec3 centre_;
   int channels_;
@@ -43,6 +48,7 @@ class Terrain {
   int size_;
   std::vector<float> vertices_;
   int width_;
+  std::unique_ptr<Mesh> mesh_;
 };
 
 #endif  // BOTTLEBRUSH_ENGINE_TERRAIN_H

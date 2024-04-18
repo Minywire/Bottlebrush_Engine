@@ -115,31 +115,18 @@ int main() {
       {1.0f, 64.0f / 256.0f, 1.0f}, {0.0f, 16.0f, 0.0f});
   camera.movement_speed_ *= 100.0f;
 
+  ShaderType terrainShaderType = ShaderType::Terrain;
+
+  renderEngine->SetShaderSource(terrainShaderType, 
+    "Resources/Shaders/Vertex/Heightmap.vert",
+    "Resources/Shaders/Fragment/Heightmap.frag");
+
   ShaderType defaultShaderType = ShaderType::Default;
 
   renderEngine->SetShaderSource(defaultShaderType,
-                                "Resources/Shaders/Vertex/Heightmap.vert",
-                                "Resources/Shaders/Fragment/Heightmap.frag");
+                                "Resources/Shaders/Vertex/basic.vert",
+                                "Resources/Shaders/Fragment/basic.frag");
   renderEngine->SetColour(defaultShaderType, 0.2f, 0.3f, 0.8f, 1.0f);
-
-  unsigned int vertex_buffer, vertex_array, element_buffer;
-  glGenVertexArrays(1, &vertex_array);
-  glBindVertexArray(vertex_array);
-
-  glGenBuffers(1, &vertex_buffer);
-  glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-  glBufferData(GL_ARRAY_BUFFER, heightmap.GetVertices().size() * sizeof(float),
-               &heightmap.GetVertices().at(0), GL_STATIC_DRAW);
-
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
-                        (void *)nullptr);
-  glEnableVertexAttribArray(0);
-
-  glGenBuffers(1, &element_buffer);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-               heightmap.GetElements().size() * sizeof(unsigned),
-               &heightmap.GetElements().at(0), GL_STATIC_DRAW);
 
   // RENDER LOOP
   while (!glfwWindowShouldClose(window)) {
@@ -159,13 +146,9 @@ int main() {
     else
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    // Draw the test cube
-    for (unsigned int i = 0; i < testCube->GetSubMeshes().size(); i++) {
-      renderEngine->Draw(defaultShaderType,
-                         *testCube->GetSubMeshes()[i]->GetVertexArray(),
-                         testCube->GetSubMeshes()[i]->GetIndexCount());
-    }
+    
 
+    renderEngine->GetShader(defaultShaderType)->Bind();
     // Calculate camera projection matrix relative to current camera zoom and
     // screen dimensions
     glm::mat4 projection = glm::perspective(
@@ -185,12 +168,25 @@ int main() {
     renderEngine->GetShader(defaultShaderType)
         ->SetUniformMatrix4fv("model", model);
 
-    glBindVertexArray(vertex_array);
-    for (unsigned int strip = 0; strip < heightmap.GetNumStrips(); strip++) {
-      glDrawElements(
-          GL_TRIANGLE_STRIP, heightmap.GetNumTriangles(), GL_UNSIGNED_INT,
-          (void *)(sizeof(unsigned) * heightmap.GetNumTriangles() * strip));
+    // Draw the test cube
+    for (unsigned int i = 0; i < testCube->GetSubMeshes().size(); i++) {
+        renderEngine->Draw(defaultShaderType,
+            *testCube->GetSubMeshes()[i]->GetVertexArray(),
+            testCube->GetSubMeshes()[i]->GetIndexCount());
     }
+
+    renderEngine->GetShader(terrainShaderType)->Bind();
+    renderEngine->GetShader(terrainShaderType)
+        ->SetUniformMatrix4fv("projection", projection);
+    renderEngine->GetShader(terrainShaderType)
+        ->SetUniformMatrix4fv("view", view);
+    renderEngine->GetShader(terrainShaderType)
+        ->SetUniformMatrix4fv("model", model);
+
+    renderEngine->DrawTriangleStrips(
+        terrainShaderType, *heightmap.GetMesh()->GetVertexArray(),
+        heightmap.GetNumStrips(), heightmap.GetNumTriangles());
+
 
     // Swap out buffers and poll for input events
     glfwSwapBuffers(window);

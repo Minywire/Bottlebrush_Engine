@@ -7,7 +7,7 @@
 #include "VertexArray.h"
 #include "Shader.h"
 
-enum class ShaderType { Default, Pixelated, Water, Shadowmap };
+enum class ShaderType { Default, Pixelated, Water, Shadowmap, Terrain };
 
 /// @author Alan Brunet
 /// @brief Base class for rendering objects. It contains member pointers to a Vertex Array,
@@ -28,6 +28,12 @@ public:
     /// @brief This needs to be called within the draw loop. Uses member pointers to bind a Vertex Array (which has a Vertex Buffer, its layout and Index Buffer bound)
     /// and index count of how many indices there is
     virtual void Draw(ShaderType shaderType, const VertexArray& va, const unsigned int indexCount) = 0;
+
+    virtual void DrawTriangleStrips(
+        ShaderType shaderType,
+        const VertexArray& va,
+        const int numStrips,
+        const int numTriangles) = 0;
 
     /// @author Alan Brunet
     /// @brief This just display current graphics API - version, vendor, and

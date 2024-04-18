@@ -14,3 +14,6 @@ target_link_libraries(BBGraphics
 target_link_libraries(BBGraphics
         PRIVATE stb
 )
+target_link_libraries(BBGraphics
+        PRIVATE RenderEngine
+)
