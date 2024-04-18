@@ -113,7 +113,10 @@ int main() {
       std::filesystem::path("Resources/Heightmaps/iceland_heightmap.png")
           .string(),
       {1.0f, 64.0f / 256.0f, 1.0f}, {0.0f, 16.0f, 0.0f});
-  camera.movement_speed_ *= 100.0f;
+
+  float terrain_height_init =
+      heightmap.GetHeight(camera.position_.x, camera.position_.z);
+  camera.movement_speed_ *= 10.0f;
 
   ShaderType defaultShaderType = ShaderType::Default;
 
@@ -191,6 +194,17 @@ int main() {
           GL_TRIANGLE_STRIP, heightmap.GetNumTriangles(), GL_UNSIGNED_INT,
           (void *)(sizeof(unsigned) * heightmap.GetNumTriangles() * strip));
     }
+
+    glm::vec3 local_position =
+        glm::inverse(model) * glm::vec4(camera.position_, 1);
+    float terrain_height =
+        heightmap.GetHeight(local_position.x, local_position.z);
+    float terrain_height_diff = std::abs(terrain_height_init - terrain_height);
+    if (terrain_height < terrain_height_init)
+      terrain_height -= terrain_height_diff * delta;
+    if (terrain_height > terrain_height_init)
+      terrain_height += terrain_height_diff * delta;
+    camera.position_.y = terrain_height;
 
     // Swap out buffers and poll for input events
     glfwSwapBuffers(window);
