@@ -2,10 +2,10 @@
 
 #include "OpenGLRenderer.h"
 
-OpenGLTexture::OpenGLTexture(const std::filesystem::path& imageFilePath) {
+OpenGLTexture::OpenGLTexture() {
 
     glGenTextures(1, &m_RendererID);
-    CreateTexture(imageFilePath);
+    //CreateTexture(imageFilePath);
 }
 
 OpenGLTexture::~OpenGLTexture() 

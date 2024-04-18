@@ -13,7 +13,7 @@ private:
  public:
 	/// @author Alan Brunet
     /// @brief Constructor that generates a texture buffer
-	OpenGLTexture(const std::filesystem::path& imageFilePath);
+	OpenGLTexture();
 	~OpenGLTexture() override;
 
 	/// @author Alan Brunet, Niamh Wilson
