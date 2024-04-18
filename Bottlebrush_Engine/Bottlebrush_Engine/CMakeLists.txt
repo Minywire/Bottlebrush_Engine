@@ -86,7 +86,6 @@ include_directories(
         Vendors/Lua/sol2-3.3.0/include/
         Vendors/Lua/lua-5.4.6/
         Vendors/STB/include
-        Vendors/glad
         Vendors/glad/include
         #yeah this is a bit messy since it's ALL under imGUI but it wouldn't work otherwise with our folder structure
 )
@@ -114,7 +113,7 @@ add_custom_command(
         ${CMAKE_CURRENT_SOURCE_DIR}/Resources $<TARGET_FILE_DIR:${CMAKE_TARGET_NAME}>/Resources
 )
 
-target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE GLAD)
+target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE glad)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE assimp)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE glfw)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE glm)
