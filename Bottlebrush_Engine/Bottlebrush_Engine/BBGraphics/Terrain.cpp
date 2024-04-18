@@ -26,11 +26,7 @@ Terrain::~Terrain() {
   data_ = nullptr;
 }
 
-glm::vec3 Terrain::GetCentre() const {
-  auto w = static_cast<float>(width_), l = static_cast<float>(length_);
-
-  return centre_;
-}
+glm::vec3 Terrain::GetCentre() const { return centre_; }
 
 std::vector<unsigned> Terrain::GetElements() const { return elements_; }
 
@@ -39,9 +35,9 @@ float Terrain::GetHeight(float x, float z) const {
 
   if (a < 0) a = -a;
   if (b < 0) b = -b;
-  if (!InBounds(x, z)) return 0.0f;
+  if (!InBounds(a, b)) return 0.0f;
 
-  return static_cast<float>(data_[a + width_ * b]) * scale_.y;
+  return vertices_.at(a + width_ * b) * scale_.y;
 }
 
 int Terrain::GetLength() const { return length_; }
@@ -56,9 +52,8 @@ std::vector<float> Terrain::GetVertices() const { return vertices_; }
 
 int Terrain::GetWidth() const { return width_; }
 
-bool Terrain::InBounds(float x, float z) const {
-  auto a = static_cast<int>(x), b = static_cast<int>(z),
-       w = static_cast<int>(width_ / 2), l = static_cast<int>(length_ / 2);
+bool Terrain::InBounds(int a, int b) const {
+  auto w = static_cast<int>(width_ / 2), l = static_cast<int>(length_ / 2);
   return (a > -w && a < w) && (b > -l && b < l);
 }
 

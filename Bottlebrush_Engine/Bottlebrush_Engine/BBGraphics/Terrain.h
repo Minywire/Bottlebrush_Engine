@@ -26,7 +26,7 @@ class Terrain {
   [[nodiscard]] int GetWidth() const;
 
  private:
-  [[nodiscard]] bool InBounds(float x, float z) const;
+  [[nodiscard]] bool InBounds(int a, int b) const;
   void PopulateElements();
   void PopulateVertices();
 
