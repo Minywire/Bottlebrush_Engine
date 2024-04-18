@@ -5,7 +5,6 @@
 #include "Image.h"
 
 Image::Image(const std::filesystem::path& imagePath) {
-    stbi_set_flip_vertically_on_load(true);
 
     m_imageData = stbi_load(imagePath.string().c_str(), &m_width, &m_height, &m_imgChannels, 0);
 
