@@ -182,13 +182,6 @@ int main() {
     model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
     model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.3f, 0.5f));
 
-    // Draw the test cube
-    for (unsigned int i = 0; i < testCube->GetSubMeshes().size(); i++) {
-        renderEngine->Draw(defaultShaderType,
-            *testCube->GetSubMeshes()[i]->GetVertexArray(),
-            testCube->GetSubMeshes()[i]->GetIndexCount());
-    }
-
     glm::vec3 local_position =
         glm::inverse(model) * glm::vec4(camera.position_, 1);
     float terrain_height =
@@ -199,6 +192,17 @@ int main() {
     if (terrain_height > terrain_height_init)
       terrain_height += terrain_height_diff * delta;
     camera.position_.y = terrain_height;
+
+    renderEngine->GetShader(terrainShaderType)
+        ->SetUniformMatrix4fv("projection", projection);
+    renderEngine->GetShader(terrainShaderType)
+        ->SetUniformMatrix4fv("view", view);
+    renderEngine->GetShader(terrainShaderType)
+        ->SetUniformMatrix4fv("model", model);
+
+    renderEngine->DrawTriangleStrips(
+        terrainShaderType, *heightmap.GetMesh()->GetVertexArray(),
+        heightmap.GetNumStrips(), heightmap.GetNumTriangles());
 
     renderEngine->GetShader(defaultShaderType)
         ->SetUniformMatrix4fv("projection", projection);
@@ -238,18 +242,6 @@ int main() {
     }
 
     glDepthFunc(GL_LESS);  // set depth function back to default
-
-    renderEngine->GetShader(terrainShaderType)->Bind();
-    renderEngine->GetShader(terrainShaderType)
-        ->SetUniformMatrix4fv("projection", projection);
-    renderEngine->GetShader(terrainShaderType)
-        ->SetUniformMatrix4fv("view", view);
-    renderEngine->GetShader(terrainShaderType)
-        ->SetUniformMatrix4fv("model", model);
-
-    renderEngine->DrawTriangleStrips(
-        terrainShaderType, *heightmap.GetMesh()->GetVertexArray(),
-        heightmap.GetNumStrips(), heightmap.GetNumTriangles());
 
 
     // Swap out buffers and poll for input events
