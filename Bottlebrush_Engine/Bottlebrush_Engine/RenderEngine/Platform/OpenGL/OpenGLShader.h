@@ -8,8 +8,8 @@
 
 /// @author Alan
 /// @brief Creates a program for the GPU from shader program source files.
-/// Needs Shader source files to construct as it loads files within Shader/
-/// directory.
+/// Needs Shader source files to construct as it loads files within
+/// Resources/Shader/ directory.
 class OpenGLShader : public Shader
 {
 public:
@@ -49,10 +49,14 @@ public:
 	/// E.g., "u_Color"
 	void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3) override;
 
-		void SetUniformMatrix4fv(const std::string& name,
-								 const glm::mat4& mat) override;
+	/// @author Jaiden
+	/// @brief Sets uniforms found in shader files to values passed in
+	/// @param name is the uniform name within the Shader Program source file.
+	/// E.g., "model", "view", "projection"
+	void SetUniformMatrix4fv(const std::string& name,
+								const glm::mat4& mat) override;
 
-	   private:
+private:
 	/// Struct for carrying file locations
 	ShaderSourceFiles m_SSF;
 
@@ -116,7 +120,8 @@ public:
 	unsigned int CreateShader()override;
 
 	/// @author Alan
-	/// @brief Finds the declared Uniform name within the shader files. E.g., "u_Color"
+	/// @brief Finds the declared Uniform name within the shader files. 
+	/// E.g., "model", "view", "projection", "skybox"
 	/// @return the position of the uniform
 	int GetUniformLocation(const std::string& name)override;
 };

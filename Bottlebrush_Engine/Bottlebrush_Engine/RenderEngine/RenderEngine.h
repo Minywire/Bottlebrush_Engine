@@ -7,11 +7,13 @@
 #include "VertexArray.h"
 #include "Shader.h"
 
+/// @author Alan
+/// @brief enum to specify which shader is being used
 enum class ShaderType { Default, Pixelated, Water, Shadowmap, Skybox, Terrain };
 
 /// @author Alan
-/// @brief Base class for rendering objects. It contains member pointers to a Vertex Array,
-/// Vertex Buffer, Index Buffer, and a Shader
+/// @brief Base class for rendering objects.
+/// It contains member pointers to a Shader.
 class RenderEngine
 {
 protected:
@@ -25,10 +27,20 @@ public:
     virtual void Clear() const = 0;
 
     /// @author Alan
-    /// @brief This needs to be called within the draw loop. Uses member pointers to bind a Vertex Array (which has a Vertex Buffer, its layout and Index Buffer bound)
-    /// and index count of how many indices there is
+    /// @brief Draws a model with triangle polygons
+    /// This needs to be called within the draw loop. 
+    /// @param shaderType is the shader program to be used
+    /// @param va is the Vertex Array to bind and use
+    /// @param indexCount is the total count of indices in that Vertex array
     virtual void Draw(ShaderType shaderType, const VertexArray& va, const unsigned int indexCount) = 0;
 
+    /// @author Alan
+    /// @brief Draws using TriangleStrips.
+    /// e.g, for Terrain
+    /// @param shaderType the shader program to be used
+    /// @param va is the Vertex Array to bind and use
+    /// @param numStrips is the number of strips that needs to be drawn
+    /// @param numTriangles is the number of triangles that will be drawn
     virtual void DrawTriangleStrips(
         ShaderType shaderType,
         const VertexArray& va,
@@ -36,12 +48,15 @@ public:
         const int numTriangles) = 0;
 
     /// @author Alan
-    /// @brief This just display current graphics API - version, vendor, and
-    /// renderer
+    /// @brief This just display current graphics API 
+    /// - version, vendor, and renderer
     virtual void DisplayGPUInfo() const = 0;
 
     /// @author Alan
-    /// @brief Called fourth, Initialise the Shader and creates a shader program from each shader source. Each param does not need an entry if we are not using them.
+    /// @brief Initialise the Shader and creates a shader program from each shader source. 
+    /// Each param besides shaderType does not need an entry if we are not using them.
+    /// @param shaderType is the unordered map to manage the amount of different Shaders
+    /// Each param does not need an entry if we are not using them.
     /// @param vertexsource filename for a Vertex Shader Program. The file path is not required
     /// @param fragmentsource filename for a Fragment Shader Program. The file path is not required
     /// @param computesource filename for a Compute Shader Program. The file path is not required

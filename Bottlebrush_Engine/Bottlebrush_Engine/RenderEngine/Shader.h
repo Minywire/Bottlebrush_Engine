@@ -17,8 +17,8 @@
 #include "glm/glm.hpp"
 
 /// @author Alan
-/// @brief Contains the filenames of each shader type.
-/// These only need to specify the filename and not the full directory path.
+/// @brief Contains the filepaths of each shader type.
+/// Requires relative directory to .exe
 /// They also do not need to be all initialised
 struct ShaderSourceFiles
 {
@@ -61,7 +61,9 @@ public:
 	/// @param name is the uniform name within the Shader Program source file.
 	virtual void SetUniform3f(const std::string& name, float v0, float v1, float v2) = 0;
 
-	
+	/// @author Alan
+	/// @brief Sets uniforms found in shader files to values passed in
+	/// @param name is the uniform name within the Shader Program source file.
 	virtual void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3) = 0;
 
 	/// @author Jaiden

@@ -25,16 +25,24 @@ private:
     ~OpenGLRenderer() override;
 
     /// @author Alan
-    /// @brief glClearColor()
+    /// @brief called at the start of the render loop to clear colour and depth buffers
     void Clear() const override;
 
     /// @author Alan
-    /// @brief This needs to be called within the draw loop. Uses member
-    /// pointers to bind a Vertex Array (which has a Vertex Buffer, its layout
-    /// and Index Buffer bound) and Shader and then uses the GraphicAPI to draw
-    /// from the data bound to them.
+    /// @brief Draws a model with triangle polygons
+    /// This needs to be called within the draw loop.
+    /// @param shaderType is the shader program to be used
+    /// @param va is the Vertex Array to bind and use
+    /// @param indexCount is the total count of indices in that Vertex array
     void Draw(ShaderType shaderType, const VertexArray& va, const unsigned int indexCount) override;
 
+    /// @author Alan
+    /// @brief Draws using TriangleStrips.
+    /// e.g, for Terrain
+    /// @param shaderType the shader program to be used
+    /// @param va is the Vertex Array to bind and use
+    /// @param numStrips is the number of strips that needs to be drawn
+    /// @param numTriangles is the number of triangles that will be drawn
     void DrawTriangleStrips(
         ShaderType shaderType,
         const VertexArray& va,
@@ -47,18 +55,14 @@ private:
     void DisplayGPUInfo() const override;
 
     /// @author Alan
-    /// @brief Initialise the Shader and creates a shader program
-    /// from each shader source. Each param besides shaderType does not need an entry if we are not
-    /// using them.
+    /// @brief Initialise the Shader and creates a shader program from each shader source. 
+    /// Each param besides shaderType does not need an entry if we are not using them.
     /// @param shaderType is the unordered map to manage the amount of different Shaders
-    /// @param vertexsource filename for a Vertex Shader Program. The file path
-    /// is not required
-    /// @param fragmentsource filename for a Fragment Shader Program. The file
-    /// path is not required
-    /// @param computesource filename for a Compute Shader Program. The file
-    /// path is not required
-    /// @param geometrysource filename for a Geometry Shader Program. The file
-    /// path is not required
+    /// Each param does not need an entry if we are not using them.
+    /// @param vertexsource filename for a Vertex Shader Program. The file path is not required
+    /// @param fragmentsource filename for a Fragment Shader Program. The file path is not required
+    /// @param computesource filename for a Compute Shader Program. The file path is not required
+    /// @param geometrysource filename for a Geometry Shader Program. The file path is not required
     void SetShaderSource(
         ShaderType shaderType,
         std::filesystem::path vertexsource = std::filesystem::path(),
