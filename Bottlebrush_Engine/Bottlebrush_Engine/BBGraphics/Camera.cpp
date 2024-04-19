@@ -4,7 +4,7 @@ Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
     : front_(glm::vec3(0.0f, 0.0f, -1.0f)),
       movement_speed_(kSpeed),
       mouse_sensitivity_(kSensitivity),
-      zoom_(kZoom) {
+      zoom_(kMaxZoom) {
   position_ = position;
   world_up_ = up;
   yaw_ = yaw;
@@ -18,7 +18,7 @@ Camera::Camera(float pos_x, float pos_y, float pos_z, float up_x, float up_y,
     : front_(glm::vec3(0.0f, 0.0f, -1.0f)),
       movement_speed_(kSpeed),
       mouse_sensitivity_(kSensitivity),
-      zoom_(kZoom) {
+      zoom_(kMaxZoom) {
   position_ = glm::vec3(pos_x, pos_y, pos_z);
   world_up_ = glm::vec3(up_x, up_y, up_z);
   yaw_ = yaw;
@@ -52,8 +52,8 @@ void Camera::ProcessMouseMovement(float x_offset, float y_offset,
   pitch_ += y_offset;
 
   if (constrain_pitch) {
-    if (pitch_ > 89.0f) pitch_ = 89.0f;
-    if (pitch_ < -89.0f) pitch_ = -89.0f;
+    if (pitch_ > kMaxPitch) pitch_ = kMaxPitch;
+    if (pitch_ < kMinPitch) pitch_ = kMinPitch;
   }
 
   Update();
@@ -62,8 +62,8 @@ void Camera::ProcessMouseMovement(float x_offset, float y_offset,
 void Camera::ProcessMouseScroll(float y_offset) {
   zoom_ -= y_offset;
 
-  if (zoom_ < 1.0f) zoom_ = 1.0f;
-  if (zoom_ > 45.0f) zoom_ = 45.0f;
+  if (zoom_ < kMinZoom) zoom_ = kMinZoom;
+  if (zoom_ > kMaxZoom) zoom_ = kMaxZoom;
 }
 
 void Camera::Update() {
