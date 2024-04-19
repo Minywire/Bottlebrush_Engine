@@ -62,10 +62,12 @@ void EntityFactory::loadTransform(ECS& ecs, Entity& entity, const sol::table & t
 void EntityFactory::loadModel(ECS &ecs, Entity &entity, const sol::table &model)
 {
     std::string model_location = model["ModelPath"];
+    std::string material_location = model["MaterialPath"];
 
     std::cout << model_location << "\n";
 
     ModelComponent& modelComponent = entity.AddComponent<ModelComponent>(ecs.getReg()); //add model component to entity.
 
     modelComponent.model_path = model_location;
+    modelComponent.material_path = material_location;
 }

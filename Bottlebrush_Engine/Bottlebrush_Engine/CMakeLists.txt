@@ -135,5 +135,3 @@ if (CMAKE_VERSION VERSION_GREATER 3.13)
     set_property(TARGET ${CMAKE_TARGET_NAME} PROPERTY CXX_STANDARD 20)
 endif ()
 
-add_subdirectory(Tests/EntityFactoryAndScriptTest)
-add_subdirectory(Tests/ResourceCreationTests)

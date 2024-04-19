@@ -4,7 +4,12 @@
 
 #include "Systems.h"
 
-void Systems::createModelComponents(ECS &ecs, std::vector<OpenGLModel> & sceneModels)
+void Systems::generateModelFromComponent(const ModelComponent & modelComp, std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels)
+{
+    sceneModels.emplace(std::pair<std::string, std::unique_ptr<Model>>(modelComp.model_path, GraphicsFactory<GraphicsAPI::OpenGL>::CreateModel(modelComp.model_path, modelComp.material_path)));
+}
+
+void Systems::createModelComponents(ECS &ecs, std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels)
 {
     auto group = ecs.GetAllEntitiesWith<ModelComponent>(); //the container with all the matching entities
 
@@ -12,10 +17,7 @@ void Systems::createModelComponents(ECS &ecs, std::vector<OpenGLModel> & sceneMo
     {
         auto& currentModelComponent = group.get<ModelComponent>(entity);
 
-        OpenGLModel modelBuffer(currentModelComponent.model_path);
-
-        //sceneModels.push_back(modelBuffer); //Template specification problems here with OpenGLMesh constructor, needs to be sorted out by renderengine experts :O.
-        //do model creation stuff here for the current group entity.
+        generateModelFromComponent(currentModelComponent, sceneModels);
     }
 }
 

@@ -5,6 +5,7 @@
 
 #include <BBScript.h>
 #include <ECS.h>
+#include <Systems.h>
 #include <EntityFactory.h>
 #include <string>
 #include <sol/sol.hpp>
@@ -34,5 +35,6 @@ private:
     std::string masterLuaFile; ///The master scene file script for Lua
     BBScript lua; ///The BBScript object containing the lua state
     ECS bbECS; ///The ECS object containing the enTT registry.
+    Systems bbSystems;
     BBResourceManager resources;
 };

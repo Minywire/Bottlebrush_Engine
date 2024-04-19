@@ -11,7 +11,9 @@
 
 class Systems {
 public:
-    void createModelComponents(ECS &ecs, std::vector<OpenGLModel> & sceneModels);
+    void generateModelFromComponent(const ModelComponent & modelComp, std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels);
+
+    void createModelComponents(ECS &ecs, std::unordered_map<std::string, std::unique_ptr<Model>>& sceneModels);
 
     void updateTransformComponent(ECS &ecs, const std::string& tag, glm::vec3 trans, glm::vec3 rot);
 };

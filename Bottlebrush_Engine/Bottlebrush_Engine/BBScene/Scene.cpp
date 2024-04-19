@@ -14,6 +14,11 @@ const ECS & Scene::getECS() const
     return bbECS;
 }
 
+void Scene::createEntity(const std::string & lua_file) //provides a user-friendly function that you only need to specify the script entity to.
+{
+    entityFactory.create_from_file(bbECS, lua.getLuaState(), lua_file);
+}
+
 Scene::Scene(const std::string & lua_master)
 {
     masterLuaFile = lua_master;
@@ -22,13 +27,10 @@ Scene::Scene(const std::string & lua_master)
 
 void Scene::init()
 {
-    lua.getLuaState().do_file(masterLuaFile); //load the master lua scene script
+    lua.getLuaState().do_file(masterLuaFile); //load the master lua scene script containing all entities
 
-}
+    bbSystems.createModelComponents(bbECS, resources.getSceneModels());
 
-void Scene::createEntity(const std::string & lua_file) //provides a user-friendly function that you only need to specify the script entity to.
-{
-    entityFactory.create_from_file(bbECS, lua.getLuaState(), lua_file);
 }
 
 void Scene::update()
