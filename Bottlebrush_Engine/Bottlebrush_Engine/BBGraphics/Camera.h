@@ -12,7 +12,10 @@ const float kYaw = -90.0f;
 const float kPitch = 0.0f;
 const float kSpeed = 2.5f;
 const float kSensitivity = 0.1f;
-const float kZoom = 45.0f;
+const float kMaxZoom = 45.0f;
+const float kMinZoom = 1.0f;
+const float kMaxPitch = 89.0f;
+const float kMinPitch = -kMaxPitch;
 
 class Camera {
  public:

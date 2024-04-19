@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "GraphicsFactory.h"
 #include "Skybox.h"
+#include "Terrain.h"
 #include "glad/glad.h"
 #include "glfw/glfw3.h"
 #include "glm/glm.hpp"
@@ -13,9 +14,11 @@
 // Settings
 const unsigned int screen_width = 800, screen_height = 600;
 bool wireframe = false, grayscale = false;
+glm::vec3 terrain_scale = {5.0f, 0.25f, 5.0f},
+          terrain_shift = {0.0f, 16.0f, 0.0f};
 
 // Camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera camera(glm::vec3(0.0f, 0.0f, 0.0f));
 float last_x = screen_width / 2.0f, last_y = screen_height / 2.0f;
 bool first_mouse_click = true;
 
@@ -104,12 +107,23 @@ int main() {
 
   // TODO: Implement and test Texture.h
   const GraphicsAPI s_API = GraphicsAPI::OpenGL;
+  std::unique_ptr<RenderEngine> renderEngine =
+      GraphicsFactory<s_API>::CreateRenderer();
 
-  std::unique_ptr<Model> testCube =
-      GraphicsFactory<s_API>::CreateModel("Resources/Models/Cube_With_Pizazz.obj", "Resources/Models/Disabled_Pokemon_Go_-_Eevee___Zubat_0-3_screenshot.png");
+  Terrain heightmap(
+      std::filesystem::path("resources/heightmaps/iceland_heightmap.png")
+          .string(),
+      terrain_scale, terrain_shift);
+  float terrain_height_init =
+      heightmap.GetHeight(camera.position_.x, camera.position_.z);
+  camera.position_ = heightmap.GetCentre();
+  camera.movement_speed_ *= 100.0f;
 
-  std::unique_ptr<RenderEngine> renderEngine = GraphicsFactory<s_API>::CreateRenderer();
-  
+  std::unique_ptr<Model> testCube = GraphicsFactory<s_API>::CreateModel(
+      "Resources/Models/Cube_With_Pizazz.obj",
+      "Resources/Models/"
+      "Disabled_Pokemon_Go_-_Eevee___Zubat_0-3_screenshot.png");
+
   // loads a cubemap texture from 6 individual texture faces
   std::vector<std::filesystem::path> skyboxTextures{
       std::filesystem::path("Resources/Textures/Skybox/right.jpg"),
@@ -121,15 +135,21 @@ int main() {
   };
   Skybox skybox("Resources/Models/Skybox.obj", skyboxTextures);
 
-  ShaderType defaultShaderType = ShaderType::Default;
+  const ShaderType defaultShaderType = ShaderType::Default;
+  const ShaderType skyboxShaderType = ShaderType::Skybox;
+  const ShaderType terrainShaderType = ShaderType::Terrain;
 
-  renderEngine->SetShaderSource(defaultShaderType, "Resources/Shaders/Vertex/BasicTex.vert", "Resources/Shaders/Fragment/BasicTex.frag");
-
-  ShaderType skyboxShaderType = ShaderType::Skybox;
+  renderEngine->SetShaderSource(terrainShaderType,
+                                "Resources/Shaders/Vertex/Heightmap.vert",
+                                "Resources/Shaders/Fragment/Heightmap.frag");
 
   renderEngine->SetShaderSource(skyboxShaderType,
-      "Resources/Shaders/Vertex/Skybox.vert", 
-      "Resources/Shaders/Fragment/Skybox.frag");
+                                "Resources/Shaders/Vertex/Skybox.vert",
+                                "Resources/Shaders/Fragment/Skybox.frag");
+
+  renderEngine->SetShaderSource(defaultShaderType,
+                                "Resources/Shaders/Vertex/Basic.vert",
+                                "Resources/Shaders/Fragment/Basic.frag");
 
   // RENDER LOOP
   while (!glfwWindowShouldClose(window)) {
@@ -153,7 +173,7 @@ int main() {
     // screen dimensions
     glm::mat4 projection = glm::perspective(
         glm::radians(camera.zoom_), (float)screen_width / (float)screen_height,
-        0.1f, 100.0f);
+        0.1f, 100000.0f);
     // Evaluate camera view matrix i.e. the camera LookAt matrix
     glm::mat4 view = camera.GetViewMatrix();
     // Evaluate the camera model matrix that 'positions' the models being drawn
@@ -162,9 +182,37 @@ int main() {
     model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
     model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.3f, 0.5f));
 
-    renderEngine->GetShader(defaultShaderType)->SetUniformMatrix4fv("projection", projection);
-    renderEngine->GetShader(defaultShaderType)->SetUniformMatrix4fv("view", view);
-    renderEngine->GetShader(defaultShaderType)->SetUniformMatrix4fv("model", model);
+    glm::vec3 local_position =
+        glm::inverse(model) * glm::vec4(camera.position_, 1);
+    float terrain_height =
+        heightmap.GetHeight(local_position.x, local_position.z);
+    float terrain_height_diff = std::abs(terrain_height_init - terrain_height);
+    if (terrain_height < terrain_height_init)
+      terrain_height -= terrain_height_diff * delta;
+    if (terrain_height > terrain_height_init)
+      terrain_height += terrain_height_diff * delta;
+    if (terrain_height < 0)
+      camera.position_.y = -terrain_shift.y * terrain_scale.y;
+    else
+      camera.position_.y = terrain_height * terrain_scale.y;
+
+    renderEngine->GetShader(defaultShaderType)
+        ->SetUniformMatrix4fv("projection", projection);
+    renderEngine->GetShader(defaultShaderType)
+        ->SetUniformMatrix4fv("view", view);
+    renderEngine->GetShader(defaultShaderType)
+        ->SetUniformMatrix4fv("model", model);
+
+    renderEngine->GetShader(terrainShaderType)
+        ->SetUniformMatrix4fv("projection", projection);
+    renderEngine->GetShader(terrainShaderType)
+        ->SetUniformMatrix4fv("view", view);
+    renderEngine->GetShader(terrainShaderType)
+        ->SetUniformMatrix4fv("model", model);
+
+    renderEngine->DrawTriangleStrips(
+        terrainShaderType, *heightmap.GetMesh()->GetVertexArray(),
+        heightmap.GetNumStrips(), heightmap.GetNumTriangles());
 
     // Draw the test cube
     for (unsigned int i = 0; i < testCube->GetSubMeshes().size(); i++) {
@@ -173,11 +221,11 @@ int main() {
                          *testCube->GetSubMeshes()[i]->GetVertexArray(),
                          testCube->GetSubMeshes()[i]->GetIndexCount());
     }
-    
-    // draw skybox as last
+
     // change depth function so depth test passes when
     // values are equal to depth buffer's content
     glDepthFunc(GL_LEQUAL);
+    // draw skybox as last
     view = glm::mat4(glm::mat3(
         camera.GetViewMatrix()));  // remove translation from the view matrix
     renderEngine->GetShader(skyboxShaderType)
@@ -186,14 +234,17 @@ int main() {
         ->SetUniformMatrix4fv("projection", projection);
     renderEngine->GetShader(skyboxShaderType)->SetUniform1i("skybox", 0);
 
+    // @TODO Activate Texture on skybox
     // Draw the Skybox
     skybox.ActiveTexture();
-    for (unsigned int i = 0; i < skybox.getModel()->GetSubMeshes().size(); i++) {
-        renderEngine->Draw(
-            skyboxShaderType,
-            *skybox.getModel()->GetSubMeshes()[i]->GetVertexArray(),
-            skybox.getModel()->GetSubMeshes()[i]->GetIndexCount());
+    for (unsigned int i = 0; i < skybox.getModel()->GetSubMeshes().size();
+         i++) {
+      renderEngine->Draw(
+          skyboxShaderType,
+          *skybox.getModel()->GetSubMeshes()[i]->GetVertexArray(),
+          skybox.getModel()->GetSubMeshes()[i]->GetIndexCount());
     }
+
     glDepthFunc(GL_LESS);  // set depth function back to default
 
     // Swap out buffers and poll for input events

@@ -35,6 +35,27 @@ void OpenGLRenderer::Draw(ShaderType shaderType, const VertexArray& va, const un
     }
 }
 
+void OpenGLRenderer::DrawTriangleStrips(
+    ShaderType shaderType,
+    const VertexArray& va,
+    const int numStrips,
+    const int numTriangles) 
+{
+    if (m_ShaderManager.find(shaderType) != m_ShaderManager.end()) {
+        m_ShaderManager[shaderType]->Bind();
+        va.Bind();
+        for (unsigned int strip = 0; strip < numStrips; strip++) {
+        glDrawElements(
+            GL_TRIANGLE_STRIP, numTriangles, GL_UNSIGNED_INT,
+            (void*)(sizeof(unsigned) * numTriangles * strip));
+        }
+    } 
+    else {
+        std::cout << "Warning: ShaderType not set yet" << std::endl;
+    }
+  
+}
+
 void OpenGLRenderer::DisplayGPUInfo() const 
 {
     std::cout << "GL Version - " << glGetString(GL_VERSION) << std::endl;
