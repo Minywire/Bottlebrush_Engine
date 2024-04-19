@@ -146,6 +146,7 @@ int main() {
   const ShaderType terrainShaderType = ShaderType::Terrain;
 
   gameScene.setRendererShaderSource(defaultShaderType, "Resources/Shaders/Vertex/Basic.vert", "Resources/Shaders/Fragment/Basic.frag"); //scene currently only needs one type of shader.
+  gameScene.setRendererShaderSource(defaultShaderType, "Resources/Shaders/Vertex/BasicTex.vert", "Resources/Shaders/Fragment/BasicTex.frag"); //scene currently only needs one type of shader.
 
   renderEngine->SetShaderSource(terrainShaderType,
                                 "Resources/Shaders/Vertex/Heightmap.vert",
@@ -241,6 +242,7 @@ int main() {
 
     gameScene.update(); //currently this is just drawing all the models in the sceneModels map
 
+    //SKYBOX
     // change depth function so depth test passes when
     // values are equal to depth buffer's content
     glDepthFunc(GL_LEQUAL);
