@@ -40,7 +40,7 @@ TEST(ResourceCreationTests, GenerateFromComponentTest)
 
     //TESTING MODEL GENERATION HERE
     BBResourceManager resourceMan;
-    const ModelComponent testComponent = { "cube.obj" };
+    const ModelComponent testComponent = { "cube.obj", "Disabled_Pokemon_Go_-_Eevee___Zubat_0-3_screenshot.png" };
 
     resourceMan.generateModelFromComponent(testComponent);
 

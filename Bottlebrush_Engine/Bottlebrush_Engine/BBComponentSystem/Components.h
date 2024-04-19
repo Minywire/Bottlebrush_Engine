@@ -34,6 +34,7 @@ struct TransformComponent
 struct ModelComponent
 {
     std::string model_path;
+    std::string material_path;
 };
 
 /**
