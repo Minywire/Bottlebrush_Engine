@@ -18,6 +18,6 @@ Entity = {
     },
     Model = {
         ModelPath = "Resources/Models/Rock_THE.obj",
-        MaterialPath = "Resources/heightmaps/.png"
+        MaterialPath = "Resources/heightmaps/Grass.png"
     }
 }
