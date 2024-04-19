@@ -1,5 +1,5 @@
 //
-//  Created by Alan Brunet 12/03/2024
+//  Created by Alan 12/03/2024
 //
 #pragma once
 
@@ -7,7 +7,7 @@
 
 #include "VertexBufferLayout.h"
 
-/// @author Alan Brunet
+/// @author Alan
 /// @brief This is used to contain a vector array of VertexBuffer Element
 /// details that is passed into API
 /// @see glVertexAttribPointer() https://docs.gl/gl4/glVertexAttribPointer
@@ -28,11 +28,11 @@ private:
 	/// Deconstructor
     ~OpenGLVertexBufferLayout() override;
 
-    /// @author Alan Brunet
+    /// @author Alan
     /// @brief Setting the byte count of types
 	unsigned int GetSizeOfType(unsigned int type) override;
 
-	/// @author Alan Brunet
+	/// @author Alan
     /// @brief For pushing the layout of vertex onto the VertexBufferElement vector.
     /// You must use this for every different element into a vertex.
     /// The order in which you push must match the element data.
@@ -43,11 +43,11 @@ private:
     /// call a third time Push(2, DataType::Float) for vec2 Texture coords
 	void Push(unsigned int count, DataType dt) override;
 
-	/// @author Alan Brunet
+	/// @author Alan
     /// @return member variable m_Elements
 	std::vector<VertexBufferElement> GetElements() const & override;
 
-	/// @author Alan Brunet
+	/// @author Alan
     /// @return member variable m_Stride
 	unsigned int GetStride() const override;
 };

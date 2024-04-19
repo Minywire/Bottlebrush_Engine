@@ -1,5 +1,5 @@
 //
-//  Created by Alan Brunet 11/04/2024
+//  Created by Alan 11/04/2024
 //
 
 #pragma once
@@ -34,7 +34,7 @@ private:
         std::vector<unsigned int> layout);
     ~OpenGLMesh() override;
 
-    /// @author Alan Brunet
+    /// @author Alan
     /// @brief Creates the mesh using OpenGL's Vertex Buffer,
     /// Vertex buffer layout and Index buffer. It then binds it to an array
     /// @param vertices vertex data, i.e., positions, texcoords, normals
@@ -48,7 +48,7 @@ private:
         int textureSlot, 
         std::vector<unsigned int> layout) override;
 
-    /// @author Alan Brunet
+    /// @author Alan
     /// @brief Creates a texture from a given image, and an assigned slot
     /// which is defaulted to zero
     /// @param width is image width
@@ -60,7 +60,7 @@ private:
     void SetTexture(unsigned int slot = 0) override;
 
 
-    /// @author Alan Brunet
+    /// @author Alan
     /// @brief unbinds all buffers to this mesh
     void UnbindMesh() override;
 

@@ -105,7 +105,6 @@ int main() {
 
   glEnable(GL_DEPTH_TEST);
 
-  // TODO: Implement and test Texture.h
   const GraphicsAPI s_API = GraphicsAPI::OpenGL;
   std::unique_ptr<RenderEngine> renderEngine =
       GraphicsFactory<s_API>::CreateRenderer();

@@ -1,5 +1,5 @@
 //
-//  Created by Alan Brunet 11/04/2024
+//  Created by Alan 11/04/2024
 //
 
 #include "OpenGLMesh.h"

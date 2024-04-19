@@ -1,5 +1,5 @@
 //
-//  Created by Alan Brunet 12/03/2024
+//  Created by Alan 12/03/2024
 //
 #pragma once
 
@@ -10,7 +10,7 @@
 #include <unordered_map>
 #include <memory>
 
-/// @author Alan Brunet
+/// @author Alan
 /// @brief Base class for rendering objects. It contains member pointers to a
 /// Vertex Array, Vertex Buffer, Index Buffer, and a Shader
 class OpenGLRenderer : public RenderEngine
@@ -24,11 +24,11 @@ private:
     OpenGLRenderer();
     ~OpenGLRenderer() override;
 
-    /// @author Alan Brunet
+    /// @author Alan
     /// @brief glClearColor()
     void Clear() const override;
 
-    /// @author Alan Brunet
+    /// @author Alan
     /// @brief This needs to be called within the draw loop. Uses member
     /// pointers to bind a Vertex Array (which has a Vertex Buffer, its layout
     /// and Index Buffer bound) and Shader and then uses the GraphicAPI to draw
@@ -41,12 +41,12 @@ private:
         const int numStrips,
         const int numTriangles) override;
     
-    /// @author Alan Brunet
+    /// @author Alan
     /// @brief This just display current graphics API - version, vendor, and
     /// renderer
     void DisplayGPUInfo() const override;
 
-    /// @author Alan Brunet
+    /// @author Alan
     /// @brief Initialise the Shader and creates a shader program
     /// from each shader source. Each param besides shaderType does not need an entry if we are not
     /// using them.
@@ -67,12 +67,12 @@ private:
         std::filesystem::path geometrysource = std::filesystem::path()) override;
 
     
-    /// @author Alan Brunet
+    /// @author Alan
     /// @brief Must be called last to unbind all data. So it does not flow data
     /// into the next buffers.
     void UnbindShader(ShaderType shaderType) override;
 
-    /// @author Alan Brunet
+    /// @author Alan
     /// @brief Manually set the colour of an object with "u_Color" variable
     /// within a basic.frag file.
     ///	all elements must be normalised. i.e., between 0.0f and 1.0f

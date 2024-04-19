@@ -1,5 +1,5 @@
 //
-//  Created by Alan Brunet 11/04/2024
+//  Created by Alan 11/04/2024
 //
 
 #pragma once
@@ -15,7 +15,7 @@ public:
     Mesh(){};
     virtual ~Mesh() = default;
 
-    /// @author Alan Brunet
+    /// @author Alan
     /// @brief Creates the mesh using OpenGL's Vertex Buffer, 
     /// Vertex buffer layout and Index buffer. It then binds it to an array
     /// @param vertices vertex data, i.e., positions, texcoords, normals
@@ -26,7 +26,7 @@ public:
     /// the vertex buffer
     virtual void CreateMesh(std::vector<float> vertices, std::vector<unsigned int> indices, const std::filesystem::path& textureFilePath, int textureSlot, std::vector<unsigned int> layout) = 0;
 
-    /// @author Alan Brunet
+    /// @author Alan
     /// @brief Creates a texture from a given image, and an assigned slot
     /// which is defaulted to zero
     /// @param width is image width

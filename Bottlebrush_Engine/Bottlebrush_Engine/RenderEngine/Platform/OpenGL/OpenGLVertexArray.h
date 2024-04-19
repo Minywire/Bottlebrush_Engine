@@ -1,12 +1,12 @@
 //
-//  Created by Alan Brunet 12/03/2024
+//  Created by Alan 12/03/2024
 //
 #pragma once
 
 #include "VertexArray.h"
 #include "OpenGLVertexBuffer.h"
 
-/// @author Alan Brunet
+/// @author Alan
 /// @brief Object to hold Vertex and Index Buffers.
 /// Adds Vertex Buffer.
 /// But IndexObject must be called after Layout has been pushed
@@ -17,13 +17,13 @@ private:
 	unsigned int m_RendererID;
 
 public:
-	/// @author Alan Brunet
+	/// @author Alan
     /// @brief Constructor that generates a Vertex array on the Graphics API
 	OpenGLVertexArray();
 	// Deconstructor
 	~OpenGLVertexArray() override;
 
-	/// @author Alan Brunet
+	/// @author Alan
     /// @brief Adds the vertex Buffer and applies its layout
     /// @param vb Vertex Buffer that contains all vertex data
     /// @see class VertexBuffer
@@ -31,11 +31,11 @@ public:
 	/// @see class VertexBufferLayout
     void AddBuffer(const VertexBuffer& vb, VertexBufferLayout& layout) override;
 
-	/// @author Alan Brunet
+	/// @author Alan
     /// @brief Bind Vertex Array buffer to add / draw
 	void Bind() const override;
 
-	/// @author Alan Brunet
+	/// @author Alan
     /// @brief Unbind Vertex Array buffer
 	void Unbind() const override;
 };
