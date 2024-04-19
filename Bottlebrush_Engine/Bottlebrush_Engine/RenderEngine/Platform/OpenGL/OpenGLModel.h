@@ -11,23 +11,20 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include <glm/glm.hpp>
 
 class OpenGLModel : public Model {
 public:
-    OpenGLModel(const std::filesystem::path &modelPath, const std::filesystem::path& texturePath);
-    bool LoadModel(const std::filesystem::path& modelPath, const std::filesystem::path &texturePath) override;
+    OpenGLModel(const std::filesystem::path &fileName);
+    bool LoadModel(const std::filesystem::path& filePath) override;
 
     inline std::vector<std::unique_ptr<Mesh>>& GetSubMeshes() override { return mSubMeshes; }
 
     void UnbindModel() override;
 
 private:
-    std::unique_ptr<OpenGLMesh> InitMesh(const aiMesh* paiMesh, const std::filesystem::path &texturePath, int textureSlot);
+    std::unique_ptr<Mesh> InitMesh(const aiMesh* paiMesh);
 
     std::vector<std::unique_ptr<Mesh>> mSubMeshes;
-
-//    OpenGLTexture loadMaterialTextures(aiMaterial* material, aiTextureType textureType, std::string typeName);
 };
 
 

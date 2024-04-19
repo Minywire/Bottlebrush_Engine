@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "GraphicsFactory.h"
 #include "Skybox.h"
+
 #include "glad/glad.h"
 #include "glfw/glfw3.h"
 #include "glm/glm.hpp"
@@ -104,22 +105,9 @@ int main() {
 
   // TODO: Implement and test Texture.h
   const GraphicsAPI s_API = GraphicsAPI::OpenGL;
-
   std::unique_ptr<Model> testCube =
-      GraphicsFactory<s_API>::CreateModel("Resources/Models/Cube_With_Pizazz.obj", "Resources/Models/Disabled_Pokemon_Go_-_Eevee___Zubat_0-3_screenshot.png");
-
+      GraphicsFactory<s_API>::CreateModel("Resources/Models/cube.obj");
   std::unique_ptr<RenderEngine> renderEngine = GraphicsFactory<s_API>::CreateRenderer();
-  
-  // loads a cubemap texture from 6 individual texture faces
-  std::vector<std::filesystem::path> skyboxTextures{
-      std::filesystem::path("Resources/Textures/Skybox/right.jpg"),
-      std::filesystem::path("Resources/Textures/Skybox/left.jpg"),
-      std::filesystem::path("Resources/Textures/Skybox/top.jpg"),
-      std::filesystem::path("Resources/Textures/Skybox/bottom.jpg"),
-      std::filesystem::path("Resources/Textures/Skybox/front.jpg"),
-      std::filesystem::path("Resources/Textures/Skybox/back.jpg"),
-  };
-  Skybox skybox("Resources/Models/Skybox.obj", skyboxTextures);
 
   // loads a cubemap texture from 6 individual texture faces
   std::vector<std::filesystem::path> skyboxTextures{
@@ -132,12 +120,16 @@ int main() {
   };
   Skybox skybox("Resources/Models/skybox.obj", skyboxTextures);
 
-  renderEngine->SetShaderSource(defaultShaderType, "Resources/Shaders/Vertex/BasicTex.vert", "Resources/Shaders/Fragment/BasicTex.frag");
+  const ShaderType defaultShaderType = ShaderType::Default;
+  const ShaderType skyboxShaderType = ShaderType::Skybox;
 
-  ShaderType skyboxShaderType = ShaderType::Skybox;
+  renderEngine->SetShaderSource(defaultShaderType,
+      "Resources/Shaders/Vertex/Basic.vert", 
+      "Resources/Shaders/Fragment/Basic.frag");
+  renderEngine->SetColour(defaultShaderType, 0.2f, 0.3f, 0.8f, 1.0f);
 
   renderEngine->SetShaderSource(skyboxShaderType,
-      "Resources/Shaders/Vertex/Skybox.vert", 
+      "Resources/Shaders/Vertex/Skybox.vert",
       "Resources/Shaders/Fragment/Skybox.frag");
 
   // RENDER LOOP
@@ -187,21 +179,8 @@ int main() {
     
     // change depth function so depth test passes when
     // values are equal to depth buffer's content
-    glDepthFunc(GL_LEQUAL);
-
-    // Draw the test cube
-    for (unsigned int i = 0; i < testCube->GetSubMeshes().size(); i++) {
-      testCube->GetSubMeshes()[i]->SetTexture();
-      renderEngine->Draw(defaultShaderType,
-                         *testCube->GetSubMeshes()[i]->GetVertexArray(),
-                         testCube->GetSubMeshes()[i]->GetIndexCount());
-    }
-    
+    glDepthFunc(GL_LEQUAL);  
     // draw skybox as last
-    // change depth function so depth test passes when
-    // values are equal to depth buffer's content
-    glDepthFunc(GL_LEQUAL);
-
     view = glm::mat4(glm::mat3(
         camera.GetViewMatrix()));  // remove translation from the view matrix
     renderEngine->GetShader(skyboxShaderType)
@@ -209,17 +188,19 @@ int main() {
     renderEngine->GetShader(skyboxShaderType)
         ->SetUniformMatrix4fv("projection", projection);
     renderEngine->GetShader(skyboxShaderType)->SetUniform1i("skybox", 0);
-
+    
+    // @TODO Activate Texture on skybox
     // Draw the Skybox
     skybox.ActiveTexture();
     for (unsigned int i = 0; i < skybox.getModel()->GetSubMeshes().size(); i++) {
-        renderEngine->Draw(
-            skyboxShaderType,
-            *skybox.getModel()->GetSubMeshes()[i]->GetVertexArray(),
-            skybox.getModel()->GetSubMeshes()[i]->GetIndexCount());
+      renderEngine->Draw(
+          skyboxShaderType,
+          *skybox.getModel()->GetSubMeshes()[i]->GetVertexArray(),
+          skybox.getModel()->GetSubMeshes()[i]->GetIndexCount());
     }
-    glDepthFunc(GL_LESS);  // set depth function back to default
-
+    
+    glDepthFunc(GL_LESS); // set depth function back to default
+    
     // Swap out buffers and poll for input events
     glfwSwapBuffers(window);
     glfwPollEvents();

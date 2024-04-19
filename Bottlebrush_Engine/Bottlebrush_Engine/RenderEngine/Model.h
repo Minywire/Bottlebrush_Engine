@@ -14,7 +14,7 @@
 class Model {
 public:
 	virtual ~Model() = default;
-	virtual bool LoadModel(const std::filesystem::path& filePath, const std::filesystem::path &texturePath) = 0;
+	virtual bool LoadModel(const std::filesystem::path& filePath) = 0;
 
 	virtual void UnbindModel() = 0;
 

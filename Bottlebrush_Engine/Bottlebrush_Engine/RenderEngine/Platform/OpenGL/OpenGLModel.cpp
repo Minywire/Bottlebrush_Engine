@@ -10,29 +10,30 @@
 #include <fstream>
 #include <stdexcept>
 
-bool OpenGLModel::LoadModel(const std::filesystem::path& modelPath, const std::filesystem::path &texturePath) {
+bool OpenGLModel::LoadModel(const std::filesystem::path& filePath) {
     Assimp::Importer import;
 
-    std::ifstream file(modelPath);
+    std::ifstream file(filePath);
 
     if(file) {
-        std::cout << modelPath << " opened successfully" << std::endl;
+        std::cout << filePath << " opened successfully" << std::endl;
     } else {
-        throw std::invalid_argument(modelPath.string() + " could not open");
+        throw std::invalid_argument(filePath.string() + " could not open");
     }
 
     file.close();
 
-    const aiScene* scene = import.ReadFile(modelPath.string(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
+    const aiScene* scene = import.ReadFile(filePath.string(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
 
     if(!scene) {
         return false;
     }
 
     for(unsigned int i = 0; i < scene->mNumMeshes; i++) {
-        mSubMeshes.push_back(InitMesh(scene->mMeshes[i], texturePath, 0));
+        mSubMeshes.push_back(InitMesh(scene->mMeshes[i]));
     }
 
+    std::cout << "The model has " << mSubMeshes.size() << " submeshes" << std::endl;
     // NOTE This might be able to be made static when all is said and done.
     // If the scene exists, then return true, otherwise return false
 
@@ -41,8 +42,8 @@ bool OpenGLModel::LoadModel(const std::filesystem::path& modelPath, const std::f
     return true;
 }
 
-OpenGLModel::OpenGLModel(const std::filesystem::path &modelPath, const std::filesystem::path &texturePath) {
-    LoadModel(modelPath, texturePath);
+OpenGLModel::OpenGLModel(const std::filesystem::path &fileName) {
+    LoadModel(fileName);
 }
 
 void OpenGLModel::UnbindModel() {
@@ -50,7 +51,8 @@ void OpenGLModel::UnbindModel() {
     mSubMeshes[i]->UnbindMesh();
   }
 }
-std::unique_ptr<OpenGLMesh> OpenGLModel::InitMesh(const aiMesh* paiMesh, const std::filesystem::path &texturePath, int textureSlot) {
+
+std::unique_ptr<Mesh> OpenGLModel::InitMesh(const aiMesh* paiMesh) {
     std::vector<float> meshVerts;
     std::vector<unsigned int> meshInts;
 
@@ -63,16 +65,6 @@ std::unique_ptr<OpenGLMesh> OpenGLModel::InitMesh(const aiMesh* paiMesh, const s
         meshVerts.push_back(pPos.x);
         meshVerts.push_back(pPos.y);
         meshVerts.push_back(pPos.z);
-
-        // Process TexCoords
-        if(paiMesh->mTextureCoords[0]) {
-            glm::vec2 vec;
-            vec.x = paiMesh->mTextureCoords[0][i].x;
-            vec.y = paiMesh->mTextureCoords[0][i].y;
-
-            meshVerts.push_back(vec.x);
-            meshVerts.push_back(vec.y);
-        }
     }
 
     // Populate index buffer
@@ -86,9 +78,9 @@ std::unique_ptr<OpenGLMesh> OpenGLModel::InitMesh(const aiMesh* paiMesh, const s
 
     std::vector<unsigned int> layout;
     layout.push_back(3); // 3 elements for position
-    layout.push_back(2); // 2 elements for the texture
-    std::unique_ptr<OpenGLMesh> mesh = std::make_unique<OpenGLMesh>(
-        meshVerts, meshInts, texturePath, textureSlot, layout);
+
+    std::unique_ptr<Mesh> mesh = std::make_unique<OpenGLMesh>();
+    mesh->CreateMesh(meshVerts, meshInts, layout);
 
     return mesh;
 }

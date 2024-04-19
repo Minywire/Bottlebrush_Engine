@@ -5,7 +5,7 @@
 #pragma once
 
 #include <memory>
-#include <filesystem>
+
 #include "VertexArray.h"
 
 class Mesh {
@@ -24,7 +24,7 @@ public:
     /// @param indices index buffer data. Indexing the drawing of vertexes
     /// @param layout vertex buffer layout. Defines the size of each element in
     /// the vertex buffer
-    virtual void CreateMesh(std::vector<float> vertices, std::vector<unsigned int> indices, const std::filesystem::path& textureFilePath, int textureSlot, std::vector<unsigned int> layout) = 0;
+    virtual void CreateMesh(std::vector<float> vertices, std::vector<unsigned int> indices, std::vector<unsigned int> layout) = 0;
 
     /// @author Alan Brunet
     /// @brief Creates a texture from a given image, and an assigned slot
@@ -35,7 +35,9 @@ public:
     /// @param imagedata is the raw data from an image
     /// @param slot for overlapping image textures if not 0.
     /// Defaulted to zero
-    virtual void SetTexture(unsigned int slot = 0) = 0;
+    virtual void SetTexture(int width, int height, int bpp,
+                            unsigned char* imagedata,
+                            unsigned int slot = 0) = 0;
 
     virtual void UnbindMesh() = 0;
 

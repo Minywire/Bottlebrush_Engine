@@ -119,8 +119,8 @@ std::string OpenGLShader::LoadShaderType(const std::filesystem::path& filepath)
     auto shader_file_contents = std::string(std::istreambuf_iterator<char>(file_stream),
         std::istreambuf_iterator<char>());
 
-//    //@TODO delete after debugging
-//    std::cout << "Load: \n" << shader_file_contents << std::endl;
+    //@TODO delete after debugging
+    std::cout << "Load: \n" << shader_file_contents << std::endl;
 
     return shader_file_contents;
 }

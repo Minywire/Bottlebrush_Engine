@@ -30,17 +30,10 @@ public:
     static std::unique_ptr<VertexArray> CreateVertexArray();    
     static std::unique_ptr<VertexBufferLayout> CreateVertexBufferLayout();
     static std::unique_ptr<IndexBuffer> CreateIndexBuffer(const unsigned int* data, unsigned int count);
-    static std::unique_ptr<Texture> CreateTextureBuffer();
+    static std::unique_ptr<Texture> CreateTextureBuffer(int width, int height, int bbp);
     static std::unique_ptr<Shader> CreateShaderBuffer(const ShaderSourceFiles& ssf);
-    static std::unique_ptr<Model> CreateModel(
-        const std::filesystem::path& modelPath,
-        const std::filesystem::path& texturePath);
-    static std::unique_ptr<Mesh> CreateMesh(
-        std::vector<float> vertices, 
-        std::vector<unsigned int> indices,
-        const std::filesystem::path& textureFilePath, 
-        int textureSlot,
-        std::vector<unsigned int> layout);
+    static std::unique_ptr<Model> CreateModel(const std::string& filePath);
+    static std::unique_ptr<Mesh> CreateMesh();
 };
 
 template<>
@@ -61,24 +54,16 @@ public:
     static std::unique_ptr<IndexBuffer> CreateIndexBuffer(const unsigned int* data, unsigned int count) {
         return std::make_unique<OpenGLIndexBuffer>(data, count);
     }
-    static std::unique_ptr<Texture> CreateTextureBuffer() {
-        return std::make_unique<OpenGLTexture>();
+    static std::unique_ptr<Texture> CreateTextureBuffer(int width, int height, int bpp) {
+        return std::make_unique<OpenGLTexture>(width, height, bpp);
     }
     static std::unique_ptr<Shader> CreateShaderBuffer(const ShaderSourceFiles& ssf) {
         return std::make_unique<OpenGLShader>(ssf);
     }
-    static std::unique_ptr<Model> CreateModel(
-        const std::filesystem::path& modelPath,
-        const std::filesystem::path& texturePath) {
-        return std::make_unique<OpenGLModel>(modelPath, texturePath);
+    static std::unique_ptr<Model> CreateModel(const std::string& filePath) {
+        return std::make_unique<OpenGLModel>(filePath);
     }
-    static std::unique_ptr<Mesh> CreateMesh(
-        std::vector<float> vertices, 
-        std::vector<unsigned int> indices,
-        const std::filesystem::path& textureFilePath, 
-        int textureSlot,
-        std::vector<unsigned int> layout) 
-    {
-        return std::make_unique<OpenGLMesh>(vertices, indices, textureFilePath, textureSlot, layout);
+    static std::unique_ptr<Mesh> CreateMesh(){
+        return std::make_unique<OpenGLMesh>();
     };
 };
