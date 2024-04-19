@@ -10,6 +10,7 @@ include_directories(Platform/OpenGL)
 target_sources(RenderEngine PRIVATE ${SOURCES})
 
 target_link_libraries(RenderEngine PUBLIC GLPlatform)
-target_link_libraries(RenderEngine PRIVATE assimp)
+target_link_libraries(RenderEngine PUBLIC assimp)
 target_link_libraries(RenderEngine PRIVATE glm)
+target_link_libraries(RenderEngine PRIVATE BBGraphics)
 target_link_libraries(RenderEngine PRIVATE glad)
