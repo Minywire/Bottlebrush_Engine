@@ -21,7 +21,7 @@ void Systems::createModelComponents(ECS &ecs, std::unordered_map<std::string, st
     }
 }
 
-void Systems::drawModels(ECS &ecs, const std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels)
+void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, std::unique_ptr<RenderEngine> renderEngine, const std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels)
 {
     auto group = ecs.GetAllEntitiesWith<ModelComponent>(); //the container with all the matching entities
 
@@ -31,7 +31,13 @@ void Systems::drawModels(ECS &ecs, const std::unordered_map<std::string, std::un
 
         if(sceneModels.count(currentModelComponent.model_path) != 0)
         {
-            sceneModels.at(currentModelComponent.model_path);
+            //draw model
+            for (unsigned int i = 0; i < sceneModels.at(currentModelComponent.model_path)->GetSubMeshes().size(); i++) {
+                sceneModels.at(currentModelComponent.model_path)->GetSubMeshes()[i]->SetTexture();
+                renderEngine->Draw(shaderType,
+                                   *sceneModels.at(currentModelComponent.model_path)->GetSubMeshes()[i]->GetVertexArray(),
+                                   sceneModels.at(currentModelComponent.model_path)->GetSubMeshes()[i]->GetIndexCount());
+            }
         }
     }
 }

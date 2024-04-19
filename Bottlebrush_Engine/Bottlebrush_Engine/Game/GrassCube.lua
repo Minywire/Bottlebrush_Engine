@@ -2,7 +2,7 @@ Entity = {
     Transform = {
         Position = {
             x = 1,
-            y = 2,
+            y = 10,
             z = 3
         },
         Rotation = {
@@ -11,13 +11,13 @@ Entity = {
             z = 3
         },
         Scale = {
-            x = 1000,
+            x = 1,
             y = 0,
             z = 23.1
         }
     },
     Model = {
-        ModelPath = "cube.obj",
-        MaterialPath = "None"
+        ModelPath = "../Resources/Models/Cube_With_Pizazz.obj",
+        MaterialPath = "../Resources/Models/Disabled_Pokemon_Go_-_Eevee___Zubat_0-3_screenshot.png"
     }
 }

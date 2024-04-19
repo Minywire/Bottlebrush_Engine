@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include <Scene.h>
 #include "Camera.h"
 #include "GraphicsFactory.h"
 #include "Skybox.h"
@@ -74,6 +75,9 @@ void ScrollCallback(GLFWwindow *window, double x_offset, double y_offset) {
 }
 
 int main() {
+  Scene gameScene("Game/master_file.lua");
+  gameScene.init();
+
   glfwInit();
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -139,6 +143,8 @@ int main() {
   const ShaderType skyboxShaderType = ShaderType::Skybox;
   const ShaderType terrainShaderType = ShaderType::Terrain;
 
+  gameScene.setRendererShaderSource(defaultShaderType, "Resources/Shaders/Vertex/Basic.vert", "Resources/Shaders/Fragment/Basic.frag"); //scene currently only needs one type of shader.
+
   renderEngine->SetShaderSource(terrainShaderType,
                                 "Resources/Shaders/Vertex/Heightmap.vert",
                                 "Resources/Shaders/Fragment/Heightmap.frag");
@@ -162,6 +168,7 @@ int main() {
 
     // Clear colours and buffers
     renderEngine->Clear();
+    gameScene.clearRenderEngine();
 
     // Toggle wireframe (via key callback)
     if (wireframe)
@@ -221,6 +228,8 @@ int main() {
                          *testCube->GetSubMeshes()[i]->GetVertexArray(),
                          testCube->GetSubMeshes()[i]->GetIndexCount());
     }
+
+    gameScene.update(); //currently this is just drawing all the models in the sceneModels map
 
     // change depth function so depth test passes when
     // values are equal to depth buffer's content

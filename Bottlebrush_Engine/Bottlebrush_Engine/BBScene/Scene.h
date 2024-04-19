@@ -27,15 +27,19 @@ public:
 
     const ECS & getECS() const;
 
+    void setRendererShaderSource(ShaderType shaderType, const std::string & vertexSource, const std::string & fragSource);
+
+    void clearRenderEngine();
+
     const std::string &getMasterFile() const;
 
     void update();
 private:
-    std::unique_ptr<RenderEngine> renderEngine;
-    EntityFactory entityFactory;
+    std::unique_ptr<RenderEngine> renderEngine = GraphicsFactory<GraphicsAPI::OpenGL>::CreateRenderer(); ///The render engine
+    EntityFactory entityFactory; ///The interface in charge of creating entities from Scripts
     std::string masterLuaFile; ///The master scene file script for Lua
     BBScript lua; ///The BBScript object containing the lua state
     ECS bbECS; ///The ECS object containing the enTT registry.
-    Systems bbSystems;
-    BBResourceManager resources;
+    Systems bbSystems; ///The Systems of the ECS operating on entity data
+    BBResourceManager resources; ///The resources stored in the scene (only model data for now)
 };

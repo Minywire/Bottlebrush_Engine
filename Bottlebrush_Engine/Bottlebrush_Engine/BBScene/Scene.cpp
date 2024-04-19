@@ -21,20 +21,31 @@ void Scene::createEntity(const std::string & lua_file) //provides a user-friendl
 
 Scene::Scene(const std::string & lua_master)
 {
-    renderEngine = GraphicsFactory<GraphicsAPI::OpenGL>::CreateRenderer();
-    
     masterLuaFile = lua_master;
     lua.getLuaState().set_function("create_entity", &Scene::createEntity, this); //register create entity function into lua state of this instance
 }
 
 void Scene::init()
 {
-    lua.getLuaState().do_file(masterLuaFile); //load the master lua scene script containing all entities
+    if(!lua.getLuaState().do_file(masterLuaFile).valid())
+    {
+        std::cout << "Could not load master game script file\n";
+    }//load the master lua scene script containing all entities
 
     bbSystems.createModelComponents(bbECS, resources.getSceneModels());
 }
 
 void Scene::update()
 {
-    bbSystems.drawModels(bbECS, resources.getSceneModels());
+    bbSystems.drawModels(bbECS, ShaderType::Default, std::move(renderEngine), resources.getSceneModels());
+}
+
+void Scene::setRendererShaderSource(ShaderType shaderType, const std::string & vertexSource, const std::string & fragSource)
+{
+    renderEngine->SetShaderSource(shaderType, vertexSource, fragSource);
+}
+
+void Scene::clearRenderEngine()
+{
+    renderEngine->Clear();
 }
