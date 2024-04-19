@@ -18,7 +18,7 @@ class Skybox {
   void InitMesh(std::filesystem::path model, std::vector<std::filesystem::path> texPaths);
 
   /// @author Alan Brunet
-  /// @brief Binds the texture before drawing
+  /// @brief Binds the Cubemap texture before drawing
   void ActiveTexture();
 
   inline std::unique_ptr<Model>& getModel() { return m_Model; }

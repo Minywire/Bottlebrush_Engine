@@ -234,7 +234,6 @@ int main() {
         ->SetUniformMatrix4fv("projection", projection);
     renderEngine->GetShader(skyboxShaderType)->SetUniform1i("skybox", 0);
 
-    // @TODO Activate Texture on skybox
     // Draw the Skybox
     skybox.ActiveTexture();
     for (unsigned int i = 0; i < skybox.getModel()->GetSubMeshes().size();

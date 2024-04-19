@@ -56,7 +56,14 @@ public:
     virtual unsigned int GetSizeOfType(unsigned int type) = 0;
 
     /// @author Alan Brunet
-    /// @brief For pushing the layout of vertex onto the VertexBufferElement vector
+    /// @brief For pushing the layout of vertex onto the VertexBufferElement vector.
+    /// You must use this for every different element into a vertex.
+    /// The order in which you push must match the element data.
+    /// If the criteria is not met, don't expect openGL to draw it correctly, or even at all.
+    /// e.g., 
+    /// call once Push(3, DataType::Float) for vec3 positions
+    /// call a second time Push(3, DataType::Float) for vec3 normals
+    /// call a third time Push(2, DataType::Float) for vec2 Texture coords
     virtual void Push(unsigned int count, DataType dt) = 0;
 
     /// @author Alan Brunet
