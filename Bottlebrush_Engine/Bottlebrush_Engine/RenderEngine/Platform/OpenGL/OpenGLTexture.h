@@ -2,37 +2,36 @@
 
 #include "Texture.h"
 #include <string>
+#include <filesystem>
+#include "Image.h"
 
 class OpenGLTexture : public Texture
 {
 private:
 	unsigned int m_RendererID;
-	unsigned char* m_LocalBuffer;
-	// BPP = bytes per pixel
-	int m_Width = 0, m_Height = 0, m_BPP = 0;
 
  public:
 	/// @author Alan Brunet
     /// @brief Constructor that generates a texture buffer
-	OpenGLTexture(int width, int height, int bpp);
+	OpenGLTexture();
 	~OpenGLTexture() override;
 
-	/// @author Alan Brunet
+	/// @author Alan Brunet, Niamh Wilson
     /// @brief Creates a texture from a given texture image data.
     /// OpenGL expects image to start at bottom left, instead of top left. 
     /// May need to flip image data before passing.
     /// @param data is the image data
-	void CreateTexture(unsigned char* data) override;
+	void CreateTexture(const std::filesystem::path& imageFilePath);
 
 	/// @author Alan Brunet
-    /// @brief Sets up the tex parameters for a cubemap. 
+    /// @brief Sets up the tex parameters for a cubemap.
 	void InitCubeMap() override;
 
 	/// @author Alan Brunet
     /// @brief Creates a tex 2D image for a cubemap
     /// @param data is the stream of data from the image
-	/// @param index is which face the texture will be put against 
-	void CreateCubemap(unsigned char* data, unsigned int index) override;
+	/// @param index is which face the texture will be put against
+	void CreateCubemap(const std::filesystem::path& imageFilePath, unsigned int index) override;
 
 	/// @author Alan Brunet
     /// @brief Binds the CubeMap Texture to use / add
@@ -47,16 +46,4 @@ private:
 	/// @author Alan Brunet
     /// @brief unbinds texture
 	void Unbind() const override;
-
-	/// @author Alan Brunet
-    /// @return member width
-    inline int& GetWidth() override { return m_Width; }
-
-	/// @author Alan Brunet
-    /// @return member height
-    inline int& GetHeight() override { return m_Height; }
-
-	/// @author Alan Brunet
-    /// @return member BPP
-	inline int& GetBPP() override { return m_BPP; }
 };

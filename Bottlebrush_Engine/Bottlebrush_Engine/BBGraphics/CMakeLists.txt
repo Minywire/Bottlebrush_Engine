@@ -5,9 +5,10 @@ target_include_directories(BBGraphics
         PRIVATE BBGraphics
 )
 target_sources(BBGraphics
-        PRIVATE Camera.cpp
-        PRIVATE Terrain.cpp
-        PRIVATE Skybox.cpp
+        PRIVATE Camera.cpp Image.cpp Skybox.cpp Terrain.cpp
+)
+target_link_libraries(BBGraphics
+        PRIVATE assimp
 )
 target_link_libraries(BBGraphics
         PRIVATE glm

@@ -18,7 +18,7 @@ glm::vec3 terrain_scale = {5.0f, 0.25f, 5.0f},
           terrain_shift = {0.0f, 16.0f, 0.0f};
 
 // Camera
-Camera camera(glm::vec3(0.0f, 20.0f, 0.0f));
+Camera camera(glm::vec3(0.0f, 0.0f, 0.0f));
 float last_x = screen_width / 2.0f, last_y = screen_height / 2.0f;
 bool first_mouse_click = true;
 
@@ -107,8 +107,6 @@ int main() {
 
   // TODO: Implement and test Texture.h
   const GraphicsAPI s_API = GraphicsAPI::OpenGL;
-  std::unique_ptr<Model> testCube =
-      GraphicsFactory<s_API>::CreateModel("Resources/Models/cube.obj");
   std::unique_ptr<RenderEngine> renderEngine =
       GraphicsFactory<s_API>::CreateRenderer();
 
@@ -116,27 +114,30 @@ int main() {
       std::filesystem::path("resources/heightmaps/iceland_heightmap.png")
           .string(),
       terrain_scale, terrain_shift);
-
   float terrain_height_init =
       heightmap.GetHeight(camera.position_.x, camera.position_.z);
-
   camera.position_ = heightmap.GetCentre();
   camera.movement_speed_ *= 100.0f;
 
+  std::unique_ptr<Model> testCube = GraphicsFactory<s_API>::CreateModel(
+      "Resources/Models/Cube_With_Pizazz.obj",
+      "Resources/Models/"
+      "Disabled_Pokemon_Go_-_Eevee___Zubat_0-3_screenshot.png");
+
   // loads a cubemap texture from 6 individual texture faces
   std::vector<std::filesystem::path> skyboxTextures{
-      std::filesystem::path("resources/textures/skybox/right.jpg"),
-      std::filesystem::path("resources/textures/skybox/left.jpg"),
-      std::filesystem::path("resources/textures/skybox/top.jpg"),
-      std::filesystem::path("resources/textures/skybox/bottom.jpg"),
-      std::filesystem::path("resources/textures/skybox/front.jpg"),
-      std::filesystem::path("resources/textures/skybox/back.jpg"),
+      std::filesystem::path("Resources/Textures/Skybox/right.jpg"),
+      std::filesystem::path("Resources/Textures/Skybox/left.jpg"),
+      std::filesystem::path("Resources/Textures/Skybox/top.jpg"),
+      std::filesystem::path("Resources/Textures/Skybox/bottom.jpg"),
+      std::filesystem::path("Resources/Textures/Skybox/front.jpg"),
+      std::filesystem::path("Resources/Textures/Skybox/back.jpg"),
   };
-  Skybox skybox("Resources/Models/skybox.obj", skyboxTextures);
+  Skybox skybox("Resources/Models/Skybox.obj", skyboxTextures);
 
   const ShaderType defaultShaderType = ShaderType::Default;
   const ShaderType skyboxShaderType = ShaderType::Skybox;
-  ShaderType terrainShaderType = ShaderType::Terrain;
+  const ShaderType terrainShaderType = ShaderType::Terrain;
 
   renderEngine->SetShaderSource(terrainShaderType,
                                 "Resources/Shaders/Vertex/Heightmap.vert",
@@ -147,9 +148,8 @@ int main() {
                                 "Resources/Shaders/Fragment/Skybox.frag");
 
   renderEngine->SetShaderSource(defaultShaderType,
-                                "Resources/Shaders/Vertex/basic.vert",
-                                "Resources/Shaders/Fragment/basic.frag");
-  renderEngine->SetColour(defaultShaderType, 0.2f, 0.3f, 0.8f, 1.0f);
+                                "Resources/Shaders/Vertex/Basic.vert",
+                                "Resources/Shaders/Fragment/Basic.frag");
 
   // RENDER LOOP
   while (!glfwWindowShouldClose(window)) {
@@ -174,12 +174,8 @@ int main() {
     glm::mat4 projection = glm::perspective(
         glm::radians(camera.zoom_), (float)screen_width / (float)screen_height,
         0.1f, 100000.0f);
-    renderEngine->GetShader(defaultShaderType)
-        ->SetUniformMatrix4fv("projection", projection);
     // Evaluate camera view matrix i.e. the camera LookAt matrix
     glm::mat4 view = camera.GetViewMatrix();
-    renderEngine->GetShader(defaultShaderType)
-        ->SetUniformMatrix4fv("view", view);
     // Evaluate the camera model matrix that 'positions' the models being drawn
     // in the scene
     glm::mat4 model = glm::mat4(1.0f);
@@ -200,6 +196,13 @@ int main() {
     else
       camera.position_.y = terrain_height * terrain_scale.y;
 
+    renderEngine->GetShader(defaultShaderType)
+        ->SetUniformMatrix4fv("projection", projection);
+    renderEngine->GetShader(defaultShaderType)
+        ->SetUniformMatrix4fv("view", view);
+    renderEngine->GetShader(defaultShaderType)
+        ->SetUniformMatrix4fv("model", model);
+
     renderEngine->GetShader(terrainShaderType)
         ->SetUniformMatrix4fv("projection", projection);
     renderEngine->GetShader(terrainShaderType)
@@ -211,15 +214,9 @@ int main() {
         terrainShaderType, *heightmap.GetMesh()->GetVertexArray(),
         heightmap.GetNumStrips(), heightmap.GetNumTriangles());
 
-    renderEngine->GetShader(defaultShaderType)
-        ->SetUniformMatrix4fv("projection", projection);
-    renderEngine->GetShader(defaultShaderType)
-        ->SetUniformMatrix4fv("view", view);
-    renderEngine->GetShader(defaultShaderType)
-        ->SetUniformMatrix4fv("model", model);
-
     // Draw the test cube
     for (unsigned int i = 0; i < testCube->GetSubMeshes().size(); i++) {
+      testCube->GetSubMeshes()[i]->SetTexture();
       renderEngine->Draw(defaultShaderType,
                          *testCube->GetSubMeshes()[i]->GetVertexArray(),
                          testCube->GetSubMeshes()[i]->GetIndexCount());

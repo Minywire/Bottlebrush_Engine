@@ -11,6 +11,7 @@
 #include "OpenGLIndexBuffer.h"
 #include "OpenGLVertexBufferLayout.h"
 #include "OpenGLTexture.h"
+#include <filesystem>
 
 class OpenGLMesh : public Mesh {
 private:
@@ -23,9 +24,14 @@ private:
     /// Vertex Buffer Layout pointer
     std::unique_ptr<VertexBufferLayout> m_VertexBufferLayout;
     /// Texture Buffer pointer
-    std::unique_ptr<Texture> m_Texture;
+    std::unique_ptr<OpenGLTexture> m_Texture;
  public:
-    OpenGLMesh();
+    OpenGLMesh(
+        std::vector<float> vertices, 
+        std::vector<unsigned int> indices,
+        const std::filesystem::path& textureFilePath, 
+        int textureSlot,
+        std::vector<unsigned int> layout);
     ~OpenGLMesh() override;
 
     /// @author Alan Brunet
@@ -35,7 +41,12 @@ private:
     /// @param indices index buffer data. Indexing the drawing of vertexes
     /// @param layout vertex buffer layout. Defines the size of each element in
     /// the vertex buffer
-    void CreateMesh(std::vector<float> vertices, std::vector<unsigned int> indices, std::vector<unsigned int> layout) override;
+    void CreateMesh(
+        std::vector<float> vertices, 
+        std::vector<unsigned int> indices, 
+        const std::filesystem::path& textureFilePath, 
+        int textureSlot, 
+        std::vector<unsigned int> layout) override;
 
     /// @author Alan Brunet
     /// @brief Creates a texture from a given image, and an assigned slot
@@ -46,8 +57,8 @@ private:
     /// @param imagedata is the raw data from an image
     /// @param slot for overlapping image textures if not 0.
     /// Defaulted to zero
-    void SetTexture(int width, int height, int bpp, unsigned char* imagedata,
-                    unsigned int slot = 0) override;
+    void SetTexture(unsigned int slot = 0) override;
+
 
     /// @author Alan Brunet
     /// @brief unbinds all buffers to this mesh
