@@ -6,11 +6,10 @@ target_include_directories(BBGraphics
         PRIVATE Camera.h
 )
 target_sources(BBGraphics
-        PRIVATE Camera.cpp
-        Skybox.cpp
+        PRIVATE Camera.cpp Image.cpp Skybox.cpp
 )
 target_link_libraries(BBGraphics
-        PRIVATE glm
+        PRIVATE glm stb assimp
 )
 
 target_link_libraries(BBGraphics

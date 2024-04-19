@@ -132,6 +132,7 @@ target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE RenderEngine)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBResourceManager)
 
 
+
 if (CMAKE_VERSION VERSION_GREATER 3.13)
     set_property(TARGET ${CMAKE_TARGET_NAME} PROPERTY CXX_STANDARD 20)
 endif ()
