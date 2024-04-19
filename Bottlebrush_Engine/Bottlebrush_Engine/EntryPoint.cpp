@@ -246,6 +246,7 @@ int main() {
           *skybox.getModel()->GetSubMeshes()[i]->GetVertexArray(),
           skybox.getModel()->GetSubMeshes()[i]->GetIndexCount());
     }
+
     glDepthFunc(GL_LESS);  // set depth function back to default
 
     // Swap out buffers and poll for input events

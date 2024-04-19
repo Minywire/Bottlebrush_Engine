@@ -7,7 +7,6 @@
 #include "VertexArray.h"
 #include "Shader.h"
 
-
 enum class ShaderType { Default, Pixelated, Water, Shadowmap, Skybox, Terrain };
 
 /// @author Alan Brunet
