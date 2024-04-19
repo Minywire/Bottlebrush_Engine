@@ -1,3 +1,6 @@
+#ifndef BOTTLEBRUSH_ENGINE_SKYBOX_H
+#define BOTTLEBRUSH_ENGINE_SKYBOX_H
+
 #include "GraphicsFactory.h"
 
 #include <filesystem>
@@ -23,3 +26,5 @@ class Skybox {
   std::unique_ptr<Model> m_Model;
   std::unique_ptr<Texture> m_Texture;
 };
+
+#endif  // BOTTLEBRUSH_ENGINE_SKYBOX_H

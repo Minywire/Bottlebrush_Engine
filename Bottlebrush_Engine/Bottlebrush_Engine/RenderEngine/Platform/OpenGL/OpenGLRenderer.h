@@ -34,6 +34,12 @@ private:
     /// and Index Buffer bound) and Shader and then uses the GraphicAPI to draw
     /// from the data bound to them.
     void Draw(ShaderType shaderType, const VertexArray& va, const unsigned int indexCount) override;
+
+    void DrawTriangleStrips(
+        ShaderType shaderType,
+        const VertexArray& va,
+        const int numStrips,
+        const int numTriangles) override;
     
     /// @author Alan Brunet
     /// @brief This just display current graphics API - version, vendor, and

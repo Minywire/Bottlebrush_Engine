@@ -1,5 +1,5 @@
-//
-// Created by niamh on 17/04/2024.
-//
+#ifndef STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION
+#endif
+
 #include "stb/stb_image.h"
