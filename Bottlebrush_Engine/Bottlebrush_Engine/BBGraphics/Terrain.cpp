@@ -126,7 +126,6 @@ void Terrain::InitMesh() {
   layout.push_back(3);  // 3 elements for position
   mesh_ = GraphicsFactory<GraphicsAPI::OpenGL>::CreateMesh(vertices_, elements_,
                                                            path_, 0, layout);
-  mesh_->CreateMesh(vertices_, elements_, path_, 0, layout);
 }
 
 std::unique_ptr<Mesh> &Terrain::GetMesh() { return mesh_; }
