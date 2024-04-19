@@ -8,6 +8,7 @@
 #include <EntityFactory.h>
 #include <string>
 #include <sol/sol.hpp>
+#include <BBResourceManager.hpp>
 
 /**
  * @class Scene
@@ -33,4 +34,5 @@ private:
     std::string masterLuaFile; ///The master scene file script for Lua
     BBScript lua; ///The BBScript object containing the lua state
     ECS bbECS; ///The ECS object containing the enTT registry.
+    BBResourceManager resources;
 };
