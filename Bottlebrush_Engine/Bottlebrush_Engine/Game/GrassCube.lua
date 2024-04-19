@@ -1,23 +1,23 @@
 Entity = {
     Transform = {
         Position = {
-            x = 1,
-            y = 10,
-            z = 3
+            x = 0,
+            y = 2000,
+            z = 0
         },
         Rotation = {
             x = 5,
-            y = 4,
+            y = 1,
             z = 3
         },
         Scale = {
-            x = 1,
-            y = 0,
-            z = 23.1
+            x = 1000,
+            y = 1000,
+            z = 1000
         }
     },
     Model = {
-        ModelPath = "../Resources/Models/Cube_With_Pizazz.obj",
-        MaterialPath = "../Resources/Models/Disabled_Pokemon_Go_-_Eevee___Zubat_0-3_screenshot.png"
+        ModelPath = "Resources/Models/Rock_THE.obj",
+        MaterialPath = "Resources/heightmaps/.png"
     }
 }

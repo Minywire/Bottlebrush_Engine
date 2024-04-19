@@ -10,6 +10,7 @@
 #include <string>
 #include <sol/sol.hpp>
 #include <BBResourceManager.hpp>
+#include <Camera.h>
 
 /**
  * @class Scene
@@ -20,6 +21,10 @@ class Scene
 {
 public:
     Scene(const std::string & lua_master);
+
+    void setProjectionMatrix(glm::mat4 projMatrix);
+
+    void setViewMatrix(glm::mat4 viewMatrix);
 
     void init();
 
@@ -35,10 +40,16 @@ public:
 
     void update();
 private:
-    std::unique_ptr<RenderEngine> renderEngine = GraphicsFactory<GraphicsAPI::OpenGL>::CreateRenderer(); ///The render engine
+    glm::mat4 projectionMatrix;
+    glm::mat4 viewMatrix;
+
+    //Camera sceneCamera;
+    std::unique_ptr<RenderEngine> renderEngine; ///The render engine
+
     EntityFactory entityFactory; ///The interface in charge of creating entities from Scripts
     std::string masterLuaFile; ///The master scene file script for Lua
     BBScript lua; ///The BBScript object containing the lua state
+
     ECS bbECS; ///The ECS object containing the enTT registry.
     Systems bbSystems; ///The Systems of the ECS operating on entity data
     BBResourceManager resources; ///The resources stored in the scene (only model data for now)

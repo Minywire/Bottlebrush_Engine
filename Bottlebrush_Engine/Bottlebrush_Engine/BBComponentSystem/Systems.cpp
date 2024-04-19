@@ -21,20 +21,32 @@ void Systems::createModelComponents(ECS &ecs, std::unordered_map<std::string, st
     }
 }
 
-void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, std::unique_ptr<RenderEngine> renderEngine, const std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels)
+void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEngine & renderEngine, const std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels, glm::mat4 projection, glm::mat4 view)
 {
-    auto group = ecs.GetAllEntitiesWith<ModelComponent>(); //the container with all the matching entities
+    auto group = ecs.GetAllEntitiesWith<ModelComponent, TransformComponent>(); //the container with all the matching entities
 
     for(auto entity : group)
     {
         auto& currentModelComponent = group.get<ModelComponent>(entity);
+        auto& currentTransformComponent = group.get<TransformComponent>(entity);
+
+        glm::mat4 transform = {1};
+        transform = glm::translate(transform, currentTransformComponent.position);
+        transform = glm::rotate(transform, currentTransformComponent.rotation.x, glm::vec3(1,0,0));
+        transform = glm::rotate(transform, currentTransformComponent.rotation.y, glm::vec3(0,1,0));
+        transform = glm::rotate(transform, currentTransformComponent.rotation.z, glm::vec3(0,0,1));
+        transform = glm::scale(transform, currentTransformComponent.scale);
 
         if(sceneModels.count(currentModelComponent.model_path) != 0)
         {
+            renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("projection", projection);
+            renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("view", view);
+            renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("model", transform);
+
             //draw model
             for (unsigned int i = 0; i < sceneModels.at(currentModelComponent.model_path)->GetSubMeshes().size(); i++) {
                 sceneModels.at(currentModelComponent.model_path)->GetSubMeshes()[i]->SetTexture();
-                renderEngine->Draw(shaderType,
+                renderEngine.Draw(shaderType,
                                    *sceneModels.at(currentModelComponent.model_path)->GetSubMeshes()[i]->GetVertexArray(),
                                    sceneModels.at(currentModelComponent.model_path)->GetSubMeshes()[i]->GetIndexCount());
             }

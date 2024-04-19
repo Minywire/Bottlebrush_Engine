@@ -21,8 +21,19 @@ void Scene::createEntity(const std::string & lua_file) //provides a user-friendl
 
 Scene::Scene(const std::string & lua_master)
 {
+    renderEngine = GraphicsFactory<GraphicsAPI::OpenGL>::CreateRenderer();
     masterLuaFile = lua_master;
     lua.getLuaState().set_function("create_entity", &Scene::createEntity, this); //register create entity function into lua state of this instance
+}
+
+void Scene::setProjectionMatrix(glm::mat4 projMatrix)
+{
+    projectionMatrix = projMatrix;
+}
+
+void Scene::setViewMatrix(glm::mat4 vMatrix)
+{
+    viewMatrix = vMatrix;
 }
 
 void Scene::init()
@@ -37,7 +48,7 @@ void Scene::init()
 
 void Scene::update()
 {
-    bbSystems.drawModels(bbECS, ShaderType::Default, std::move(renderEngine), resources.getSceneModels());
+    Systems::drawModels(bbECS, ShaderType::Default, *renderEngine, resources.getSceneModels(), projectionMatrix, viewMatrix);
 }
 
 void Scene::setRendererShaderSource(ShaderType shaderType, const std::string & vertexSource, const std::string & fragSource)
