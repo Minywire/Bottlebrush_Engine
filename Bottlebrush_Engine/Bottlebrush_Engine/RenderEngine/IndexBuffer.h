@@ -6,7 +6,8 @@
 /// @author Alan
 /// @brief indexing which positions in the VertexBuffer are being drawn.
 /// Saving memory space of referencing positions more than once.
-/// IB must be called after Vertex Array Object (VAO) has been set up with VB and VBL
+/// IndexBuffer must be called after Vertex Array Object (VAO) has
+/// added the vertex buffer and its vertex buffer layout
 class IndexBuffer
 {
 protected:

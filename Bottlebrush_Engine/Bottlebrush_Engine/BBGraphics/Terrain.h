@@ -35,6 +35,9 @@ class Terrain {
   [[nodiscard]] bool InBounds(int a, int b) const;
   void PopulateElements();
   void PopulateVertices();
+
+  /// @author Alan
+  /// @brief Creates the mesh on the Graphics API format
   void InitMesh();
 
   glm::vec3 centre_;
