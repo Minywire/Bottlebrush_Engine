@@ -14,6 +14,8 @@
 // Settings
 const unsigned int screen_width = 800, screen_height = 600;
 bool wireframe = false, grayscale = false;
+glm::vec3 terrain_scale = {5.0f, 0.25f, 5.0f},
+          terrain_shift = {0.0f, 16.0f, 0.0f};
 
 // Camera
 Camera camera(glm::vec3(0.0f, 20.0f, 0.0f));
@@ -111,13 +113,15 @@ int main() {
       GraphicsFactory<s_API>::CreateRenderer();
 
   Terrain heightmap(
-      std::filesystem::path("Resources/Heightmaps/iceland_heightmap.png")
+      std::filesystem::path("resources/heightmaps/iceland_heightmap.png")
           .string(),
-      {1.0f, 64.0f / 256.0f, 1.0f}, {0.0f, 16.0f, 0.0f});
+      terrain_scale, terrain_shift);
 
   float terrain_height_init =
       heightmap.GetHeight(camera.position_.x, camera.position_.z);
-  camera.movement_speed_ *= 10.0f;
+
+  camera.position_ = heightmap.GetCentre();
+  camera.movement_speed_ *= 100.0f;
 
   // loads a cubemap texture from 6 individual texture faces
   std::vector<std::filesystem::path> skyboxTextures{
@@ -134,9 +138,9 @@ int main() {
   const ShaderType skyboxShaderType = ShaderType::Skybox;
   ShaderType terrainShaderType = ShaderType::Terrain;
 
-  renderEngine->SetShaderSource(terrainShaderType, 
-    "Resources/Shaders/Vertex/Heightmap.vert",
-    "Resources/Shaders/Fragment/Heightmap.frag");
+  renderEngine->SetShaderSource(terrainShaderType,
+                                "Resources/Shaders/Vertex/Heightmap.vert",
+                                "Resources/Shaders/Fragment/Heightmap.frag");
 
   renderEngine->SetShaderSource(skyboxShaderType,
                                 "Resources/Shaders/Vertex/Skybox.vert",
@@ -191,7 +195,10 @@ int main() {
       terrain_height -= terrain_height_diff * delta;
     if (terrain_height > terrain_height_init)
       terrain_height += terrain_height_diff * delta;
-    camera.position_.y = terrain_height;
+    if (terrain_height < 0)
+      camera.position_.y = -terrain_shift.y * terrain_scale.y;
+    else
+      camera.position_.y = terrain_height * terrain_scale.y;
 
     renderEngine->GetShader(terrainShaderType)
         ->SetUniformMatrix4fv("projection", projection);
@@ -242,7 +249,6 @@ int main() {
     }
 
     glDepthFunc(GL_LESS);  // set depth function back to default
-
 
     // Swap out buffers and poll for input events
     glfwSwapBuffers(window);
