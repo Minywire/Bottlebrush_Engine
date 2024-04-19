@@ -108,9 +108,9 @@ void Terrain::PopulateVertices() {
       unsigned char *texel = data_ + (j + width_ * i) * channels_,
                     height = texel[0];
 
-      float x = static_cast<float>(j) * scale_.x - shift_.x,
-            y = static_cast<float>(height) * scale_.y - shift_.y,
-            z = static_cast<float>(i) * scale_.z - shift_.z;
+      float x = (static_cast<float>(j) * scale_.x) - shift_.x,
+            y = (static_cast<float>(height) * scale_.y) - shift_.y,
+            z = (static_cast<float>(i) * scale_.z) - shift_.z;
 
       vertices_.push_back(x);
       vertices_.push_back(y);
