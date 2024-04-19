@@ -21,6 +21,8 @@ void Scene::createEntity(const std::string & lua_file) //provides a user-friendl
 
 Scene::Scene(const std::string & lua_master)
 {
+    renderEngine = GraphicsFactory<GraphicsAPI::OpenGL>::CreateRenderer();
+    
     masterLuaFile = lua_master;
     lua.getLuaState().set_function("create_entity", &Scene::createEntity, this); //register create entity function into lua state of this instance
 }
@@ -30,8 +32,9 @@ void Scene::init()
     lua.getLuaState().do_file(masterLuaFile); //load the master lua scene script containing all entities
 
     bbSystems.createModelComponents(bbECS, resources.getSceneModels());
-
 }
 
 void Scene::update()
-{ }
+{
+    bbSystems.drawModels(bbECS, resources.getSceneModels());
+}

@@ -31,6 +31,7 @@ public:
 
     void update();
 private:
+    std::unique_ptr<RenderEngine> renderEngine;
     EntityFactory entityFactory;
     std::string masterLuaFile; ///The master scene file script for Lua
     BBScript lua; ///The BBScript object containing the lua state

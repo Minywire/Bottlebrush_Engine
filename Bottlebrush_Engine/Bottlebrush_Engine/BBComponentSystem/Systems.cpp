@@ -21,6 +21,21 @@ void Systems::createModelComponents(ECS &ecs, std::unordered_map<std::string, st
     }
 }
 
+void Systems::drawModels(ECS &ecs, const std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels)
+{
+    auto group = ecs.GetAllEntitiesWith<ModelComponent>(); //the container with all the matching entities
+
+    for(auto entity : group)
+    {
+        auto& currentModelComponent = group.get<ModelComponent>(entity);
+
+        if(sceneModels.count(currentModelComponent.model_path) != 0)
+        {
+            sceneModels.at(currentModelComponent.model_path);
+        }
+    }
+}
+
 void Systems::updateTransformComponent(ECS &ecs, const std::string& tag, glm::vec3 trans, glm::vec3 rot)
 {
     auto group = ecs.GetAllEntitiesWith<TransformComponent, TagComponent>();
