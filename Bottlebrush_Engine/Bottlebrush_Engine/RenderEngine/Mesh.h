@@ -37,6 +37,8 @@ public:
     /// Defaulted to zero
     virtual void SetTexture(unsigned int slot = 0) = 0;
 
+    /// @author Alan
+    /// @brief unbinds mesh buffers
     virtual void UnbindMesh() = 0;
 
     virtual inline std::unique_ptr<VertexArray>& GetVertexArray() = 0;

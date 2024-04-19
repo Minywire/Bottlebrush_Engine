@@ -24,16 +24,16 @@ void OpenGLMesh::CreateMesh(
     int textureSlot, 
     std::vector<unsigned int> layout) 
 {
-    // create a vertex buffer, vector data, vertices
+    // create a vertex buffer with vertices data
     m_VertexBuffer = std::make_unique<OpenGLVertexBuffer>(vertices.data(), vertices.size() * sizeof(float)) ;
 
-    // define the format of each vertex data
-    // i.e., 2 = 2 points of positions for each vertex (can use different
-    // numbers for different attributes)
+    // create a vertex buffer layout, this defines the format of each vertex data
     m_VertexBufferLayout = std::make_unique<OpenGLVertexBufferLayout>();
-
+    
+    // create a vertex array, container for Vertex, Index Buffer, and its layout
     m_VertexArray = std::make_unique<OpenGLVertexArray>();
 
+    // define the format of each vertex
     for (unsigned int i = 0; i < layout.size(); i++) {
       //@TODO DataType is hard coded currently.
       m_VertexBufferLayout->Push(layout[i], DataType::FLOAT);
@@ -42,13 +42,16 @@ void OpenGLMesh::CreateMesh(
     // add current buffer with its layout specs to the vertex array
     m_VertexArray->AddBuffer(*m_VertexBuffer, *m_VertexBufferLayout);
 
-    // create an index buffer and bind it, must be done after layout binding
+    // create an index buffer and bind it, must be done after adding a buffer to the vertex array
     m_IndexBuffer = std::make_unique<OpenGLIndexBuffer>(indices.data(), indices.size());
 
+    // create a texture buffer
     m_Texture = std::make_unique<OpenGLTexture>();
+    // loads texture and creates in openGL format
     m_Texture->CreateTexture(textureFilePath);
 
-    SetTexture();
+    // bind the texture
+    SetTexture(); // @TODO probably not needed? as it needs to bind before draw call
 }
 
 void OpenGLMesh::SetTexture(unsigned int slot) {

@@ -61,7 +61,7 @@ private:
 
 
     /// @author Alan
-    /// @brief unbinds all buffers to this mesh
+    /// @brief unbinds mesh buffers
     void UnbindMesh() override;
 
     inline std::unique_ptr<VertexArray>& GetVertexArray() override {return m_VertexArray;}
