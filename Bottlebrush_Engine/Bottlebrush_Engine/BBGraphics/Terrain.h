@@ -1,18 +1,16 @@
 #ifndef BOTTLEBRUSH_ENGINE_TERRAIN_H
 #define BOTTLEBRUSH_ENGINE_TERRAIN_H
 
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 
+#include "GraphicsFactory.h"
 #include "glm/glm.hpp"
 #include "stb/stb_image.h"
 
-#include "GraphicsFactory.h"
-
 class Terrain {
  public:
-  Terrain() = default;
   Terrain(const std::string &heightmap, glm::vec3 scale = {1.0f, 1.0f, 1.0f},
           glm::vec3 shift = {0.0f, 0.0f, 0.0f});
 
