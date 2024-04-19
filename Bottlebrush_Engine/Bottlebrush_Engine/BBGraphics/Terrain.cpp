@@ -5,13 +5,13 @@ Terrain::Terrain(const std::string &heightmap, glm::vec3 scale,
   data_ = stbi_load(heightmap.c_str(), &width_, &length_, &channels_, 0);
 
   auto w = static_cast<float>(width_), l = static_cast<float>(length_);
-  centre_ = {-w / 2.0f * scale_.x, 0.0f, -l / 2.0f * scale_.z};
   num_strips_ = length_;
   num_triangles = width_ * 2;
   path_ = heightmap;
   scale_ = scale;
   shift_ = shift;
   size_ = width_ * length_;
+  centre_ = {w / 2.0f * scale_.x, 0.0f, l / 2.0f * scale_.z};
 
   PopulateVertices();
   PopulateElements();
@@ -28,38 +28,38 @@ glm::vec3 Terrain::GetCentre() const { return centre_; }
 std::vector<unsigned> Terrain::GetElements() const { return elements_; }
 
 float Terrain::GetHeight(float x, float z) const {
-  auto w = static_cast<float>(width_), l = static_cast<float>(length_);
+  auto terr_size = static_cast<float>(size_),
+       grid_size = static_cast<float>(heights_.size());
 
-  float terrain_x = x;
-  float terrain_z = z;
+  float terrain_x = (x / scale_.x) + shift_.x;
+  float terrain_z = (z / scale_.z) + shift_.z;
 
-  float grid_size = w / l - 1.0f;
-  int grid_x = std::floor(terrain_x / grid_size);
-  int grid_z = std::floor(terrain_z / grid_size);
+  float grid_square_size = terr_size / (grid_size - 1);
+  int grid_x = std::floor(terrain_x / grid_square_size);
+  int grid_z = std::floor(terrain_z / grid_square_size);
 
-  if (grid_x < 0) grid_x = -grid_x;
-  if (grid_z < 0) grid_z = -grid_z;
   if (!InBounds(grid_x, grid_z)) return 0.0f;
 
-  float coord_x = std::fmod(terrain_x, grid_size) / grid_size;
-  float coord_z = std::fmod(terrain_z, grid_size) / grid_size;
-  glm::vec3 barycentre = {0.0f, 0.0f, 0.0f};
+  float coord_x = std::fmod(terrain_z, grid_square_size) / grid_square_size;
+  float coord_z = std::fmod(terrain_x, grid_square_size) / grid_square_size;
+  float height = 0.0f;
 
   if (coord_x <= 1 - coord_z) {
     glm::vec3 a = {0.0f, heights_.at(grid_x + width_ * grid_z), 0.0f},
               b = {1.0f, heights_.at((grid_x + 1) + width_ * grid_z), 0.0f},
-              c = {0.0f, heights_.at(grid_x + width_ * (grid_z + 1)), 1.0f},
-              p = {coord_x, 0.0f, coord_z};
-    barycentre = Barycentric(a, b, c, p);
+              c = {0.0f, heights_.at(grid_x + width_ * (grid_z + 1)), 1.0f};
+    glm::vec2 p = {coord_x, coord_z};
+    height = Barycentric(a, b, c, p);
   } else {
-    glm::vec3 a = {1.0f, heights_.at(grid_x + width_ * grid_z), 0.0f},
-              b = {1.0f, heights_.at((grid_x + 1) + width_ * grid_z), 1.0f},
-              c = {0.0f, heights_.at(grid_x + width_ * (grid_z + 1)), 1.0f},
-              p = {coord_x, 0.0f, coord_z};
-    barycentre = Barycentric(a, b, c, p);
+    glm::vec3 a = {1.0f, heights_.at((grid_x + 1) + width_ * grid_z), 0.0f},
+              b = {1.0f, heights_.at((grid_x + 1) + width_ * (grid_z + 1)),
+                   1.0f},
+              c = {0.0f, heights_.at(grid_x + width_ * (grid_z + 1)), 1.0f};
+    glm::vec2 p = {coord_x, coord_z};
+    height = Barycentric(a, b, c, p);
   }
 
-  return barycentre.y / scale_.y + shift_.y;
+  return (height / scale_.y) + shift_.y;
 }
 
 int Terrain::GetLength() const { return length_; }
@@ -78,20 +78,14 @@ std::vector<float> Terrain::GetVertices() const { return vertices_; }
 
 int Terrain::GetWidth() const { return width_; }
 
-glm::vec3 Terrain::Barycentric(glm::vec3 a, glm::vec3 b, glm::vec3 c,
-                               glm::vec3 p) const {
-  glm::vec3 u = b - a, v = c - a, w = p - a;
-  float d_00 = glm::dot(u, u);
-  float d_01 = glm::dot(u, v);
-  float d_11 = glm::dot(v, v);
-  float d_20 = glm::dot(w, u);
-  float d_21 = glm::dot(w, v);
-  float denominator = d_00 * d_11 - d_01 * d_01;
-  float x = (d_11 * d_20 - d_01 * d_21) / denominator;
-  float y = (d_00 * d_21 - d_01 * d_20) / denominator;
-  float z = 1.0f - x - y;
+float Terrain::Barycentric(glm::vec3 a, glm::vec3 b, glm::vec3 c,
+                           glm::vec2 p) const {
+  float det = (b.z - c.z) * (a.x - c.x) + (c.x - b.x) * (a.z - c.z);
+  float u = ((b.z - c.z) * (p.x - c.x) + (c.x - b.x) * (p.y - c.z)) / det;
+  float v = ((c.z - a.z) * (p.x - c.x) + (a.x - c.x) * (p.y - c.z)) / det;
+  float w = 1.0f - u - v;
 
-  return {x, y, z};
+  return u * a.y + v * b.y + w * c.y;
 }
 
 bool Terrain::InBounds(int a, int b) const {
@@ -109,16 +103,14 @@ void Terrain::PopulateElements() {
 }
 
 void Terrain::PopulateVertices() {
-  auto w = static_cast<float>(width_), l = static_cast<float>(length_);
-
   for (int i = 0; i < length_; i++) {
     for (int j = 0; j < width_; j++) {
       unsigned char *texel = data_ + (j + width_ * i) * channels_,
                     height = texel[0];
 
-      float x = -w / 2.0f + w * static_cast<float>(j) / w * scale_.x - shift_.x,
+      float x = static_cast<float>(j) * scale_.x - shift_.x,
             y = static_cast<float>(height) * scale_.y - shift_.y,
-            z = -l / 2.0f + l * static_cast<float>(i) / l * scale_.z - shift_.z;
+            z = static_cast<float>(i) * scale_.z - shift_.z;
 
       vertices_.push_back(x);
       vertices_.push_back(y);
@@ -129,9 +121,9 @@ void Terrain::PopulateVertices() {
   }
 }
 
-void Terrain::InitMesh() { 
-    std::vector<unsigned int> layout;
-  layout.push_back(3); // 3 elements for position
+void Terrain::InitMesh() {
+  std::vector<unsigned int> layout;
+  layout.push_back(3);  // 3 elements for position
   mesh_ = GraphicsFactory<GraphicsAPI::OpenGL>::CreateMesh();
   mesh_->CreateMesh(vertices_, elements_, layout);
 }

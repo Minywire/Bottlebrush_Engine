@@ -32,8 +32,8 @@ class Terrain {
   [[nodiscard]] std::unique_ptr<Mesh> &GetMesh();
 
  private:
-  [[nodiscard]] glm::vec3 Barycentric(glm::vec3 a, glm::vec3 b, glm::vec3 c,
-                                      glm::vec3 p) const;
+  [[nodiscard]] float Barycentric(glm::vec3 a, glm::vec3 b, glm::vec3 c,
+                                  glm::vec2 p) const;
   [[nodiscard]] bool InBounds(int a, int b) const;
   void PopulateElements();
   void PopulateVertices();
