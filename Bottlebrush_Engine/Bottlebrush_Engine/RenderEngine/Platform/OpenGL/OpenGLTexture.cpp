@@ -27,9 +27,20 @@ void OpenGLTexture::CreateTexture(const std::filesystem::path& imageFilePath) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
+    int channels = textureImage.getChannels();
+    GLenum format = GL_RGBA;
+    if (channels == 1)
+      format = GL_RED;
+    else if (channels == 2)
+      format = GL_RG;
+    else if (channels == 3)
+      format = GL_RGB;
+    else if (channels == 4)
+      format = GL_RGBA;
+
     // RGBA8 how you want opengl to format the data
     // RGBA is the format we are supplying
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, textureImage.getImageWidth(), textureImage.getImageHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, textureImage.getImageData());
+    glTexImage2D(GL_TEXTURE_2D, 0, format, textureImage.getImageWidth(), textureImage.getImageHeight(), 0, format, GL_UNSIGNED_BYTE, textureImage.getImageData());
 
     // Unbind texture
     glBindTexture(GL_TEXTURE_2D, 0);
