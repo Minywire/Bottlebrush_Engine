@@ -30,3 +30,7 @@ int Image::getImageWidth() const {
 int Image::getImageHeight() const {
     return m_height;
 }
+
+int Image::getChannels() const {
+    return m_imgChannels;
+}

@@ -16,6 +16,7 @@ public:
 
     int getImageHeight() const;
     int getImageWidth() const;
+    int getChannels() const;
     unsigned char* getImageData();
 private:
     int m_width;
