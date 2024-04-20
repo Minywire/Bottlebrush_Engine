@@ -1,4 +1,3 @@
-#include "OpenGLModel.h"
 //
 // Created by niamh on 7/04/2024.
 //
@@ -35,8 +34,6 @@ bool OpenGLModel::LoadModel(const std::filesystem::path& modelPath, const std::f
 
     // NOTE This might be able to be made static when all is said and done.
     // If the scene exists, then return true, otherwise return false
-
-    // Set buffers
 
     return true;
 }

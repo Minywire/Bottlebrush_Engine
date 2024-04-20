@@ -19,7 +19,7 @@ public:
     /// @brief Constructor that generates the buffer and sets the data.
     /// Called from GraphicsFractory when creating
     /// @param data is the stream on data of vertex
-	/// @param size is the Vertex Count * the Vertex data size * sizeof(float).
+	/// @param size is the Vertex Count * sizeof(float).
 	OpenGLVertexBuffer(const void* data, unsigned int size);
 
 	/// @author Alan
