@@ -14,12 +14,6 @@ class BBResourceManager {
 public:
     /**
      *
-     * @param modelComp The Model component queried from an entity
-     */
-    void generateModelFromComponent(const ModelComponent & modelComp);
-
-    /**
-     *
      * @return A reference map structure contain all the model data stored for the scene (read usage)
      */
     const std::unordered_map<std::string, std::unique_ptr<Model>> & getSceneModels() const;

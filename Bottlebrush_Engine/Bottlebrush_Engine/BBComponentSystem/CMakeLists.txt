@@ -5,7 +5,7 @@ add_library(BBComponentSystem STATIC)
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(SOURCES Entity.cpp Entity.h Components.h ECS.cpp ECS.h EntityFactory.cpp EntityFactory.h)
+set(SOURCES Entity.cpp Entity.h Components.h ECS.cpp ECS.h EntityFactory.cpp EntityFactory.h Systems.h Systems.cpp)
 
 target_sources(BBComponentSystem PRIVATE ${SOURCES})
 

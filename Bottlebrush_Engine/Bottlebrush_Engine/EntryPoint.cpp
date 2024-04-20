@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include <Scene.h>
 #include "Camera.h"
 #include "GraphicsFactory.h"
 #include "Skybox.h"
@@ -74,7 +75,9 @@ void ScrollCallback(GLFWwindow *window, double x_offset, double y_offset) {
 }
 
 int main() {
+
   glfwInit();
+
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -105,6 +108,10 @@ int main() {
 
   glEnable(GL_DEPTH_TEST);
 
+  Scene gameScene("Game/master_file.lua");
+  gameScene.init();
+
+  // TODO: Implement and test Texture.h
   const GraphicsAPI s_API = GraphicsAPI::OpenGL;
   std::unique_ptr<RenderEngine> renderEngine =
       GraphicsFactory<s_API>::CreateRenderer();
@@ -138,6 +145,9 @@ int main() {
   const ShaderType skyboxShaderType = ShaderType::Skybox;
   const ShaderType terrainShaderType = ShaderType::Terrain;
 
+  gameScene.setRendererShaderSource(defaultShaderType, "Resources/Shaders/Vertex/Basic.vert", "Resources/Shaders/Fragment/Basic.frag"); //scene currently only needs one type of shader.
+  gameScene.setRendererShaderSource(defaultShaderType, "Resources/Shaders/Vertex/BasicTex.vert", "Resources/Shaders/Fragment/BasicTex.frag"); //scene currently only needs one type of shader.
+
   renderEngine->SetShaderSource(terrainShaderType,
                                 "Resources/Shaders/Vertex/Heightmap.vert",
                                 "Resources/Shaders/Fragment/Heightmap.frag");
@@ -161,6 +171,7 @@ int main() {
 
     // Clear colours and buffers
     renderEngine->Clear();
+    gameScene.clearRenderEngine();
 
     // Toggle wireframe (via key callback)
     if (wireframe)
@@ -177,6 +188,9 @@ int main() {
     glm::mat4 view = camera.GetViewMatrix();
     // Evaluate the camera model matrix that 'positions' the models being drawn
     // in the scene
+//     Evaluate the camera model matrix that 'positions' the models being drawn
+//     in the scene
+    //TERRAIN
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
     model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.3f, 0.5f));
@@ -195,6 +209,11 @@ int main() {
     else
       camera.position_.y = terrain_height * terrain_scale.y;
 
+     //MY SCENE
+    gameScene.setProjectionMatrix(projection);
+    gameScene.setViewMatrix(view);
+
+    //TERRAIN
     renderEngine->GetShader(defaultShaderType)
         ->SetUniformMatrix4fv("projection", projection);
     renderEngine->GetShader(defaultShaderType)
@@ -221,10 +240,14 @@ int main() {
                          testCube->GetSubMeshes()[i]->GetIndexCount());
     }
 
+    gameScene.update(); //currently this is just drawing all the models in the sceneModels map
+
+    //SKYBOX
     // change depth function so depth test passes when
     // values are equal to depth buffer's content
     glDepthFunc(GL_LEQUAL);
     // draw skybox as last
+     //draw skybox as last
     view = glm::mat4(glm::mat3(
         camera.GetViewMatrix()));  // remove translation from the view matrix
     renderEngine->GetShader(skyboxShaderType)

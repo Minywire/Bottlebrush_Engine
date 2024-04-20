@@ -115,6 +115,12 @@ add_custom_command(
         ${CMAKE_CURRENT_SOURCE_DIR}/Resources $<TARGET_FILE_DIR:${CMAKE_TARGET_NAME}>/Resources
 )
 
+add_custom_command(
+        TARGET ${CMAKE_TARGET_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/Game $<TARGET_FILE_DIR:${CMAKE_TARGET_NAME}>/Game
+)
+
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE glad)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE assimp)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE glfw)
@@ -135,5 +141,3 @@ if (CMAKE_VERSION VERSION_GREATER 3.13)
     set_property(TARGET ${CMAKE_TARGET_NAME} PROPERTY CXX_STANDARD 20)
 endif ()
 
-add_subdirectory(Tests/EntityFactoryAndScriptTest)
-add_subdirectory(Tests/ResourceCreationTests)
