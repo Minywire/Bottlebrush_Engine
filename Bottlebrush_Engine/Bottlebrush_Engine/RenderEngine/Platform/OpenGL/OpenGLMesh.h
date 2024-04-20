@@ -13,6 +13,8 @@
 #include "OpenGLTexture.h"
 #include <filesystem>
 
+/// @author Alan
+/// @brief Mesh class that holds all vertex data, including its texture
 class OpenGLMesh : public Mesh {
 private:
     /// Vertex Array pointer

@@ -11,6 +11,9 @@
 
 #include "Mesh.h"
 
+/// @author Niamh
+/// @brief Model class that uses assimp to load object files
+/// uses a vector of meshes to hold all the vertex and texture data
 class Model {
 public:
 	virtual ~Model() = default;

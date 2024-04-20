@@ -13,6 +13,9 @@
 #include <assimp/postprocess.h>
 #include <glm/glm.hpp>
 
+/// @author Niamh
+/// @brief Model class that uses assimp to load object files
+/// uses a vector of meshes to hold all the vertex and texture data
 class OpenGLModel : public Model {
 public:
     /// @author Niamh

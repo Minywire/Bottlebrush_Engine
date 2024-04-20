@@ -8,6 +8,8 @@
 #include <filesystem>
 #include "VertexArray.h"
 
+/// @author Alan
+/// @brief Mesh class that holds all vertex data, including its texture
 class Mesh {
 protected:
 
