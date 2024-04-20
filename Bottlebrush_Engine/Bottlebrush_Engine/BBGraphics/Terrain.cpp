@@ -11,7 +11,8 @@ Terrain::Terrain(const std::string &heightmap, glm::vec3 scale,
   scale_ = scale;
   shift_ = shift;
   size_ = width_ * length_;
-  centre_ = {w / 2.0f * scale_.x, 0.0f, l / 2.0f * scale_.z};
+  centre_ = {(w / 2.0f * scale_.x) - shift_.x, 0.0f,
+             (l / 2.0f * scale_.z) - shift_.z};
 
   PopulateVertices();
   PopulateElements();
