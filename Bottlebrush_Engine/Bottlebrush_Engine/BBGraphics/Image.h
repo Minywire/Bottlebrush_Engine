@@ -9,14 +9,36 @@
 #include <filesystem>
 #include <iostream>
 
+
 class Image {
 public:
+    /**
+     * Image Constructer
+     * @param imagePath
+     * @param flip
+     */
     Image(const std::filesystem::path& imagePath, bool flip = true);
     ~Image();
 
+    /**
+     * Get Image Height
+     * @return
+     */
     int getImageHeight() const;
+    /**
+     * Get Image Width
+     * @return
+     */
     int getImageWidth() const;
+    /**
+     * Get the number of channels in the image
+     * @return
+     */
     int getChannels() const;
+    /**
+     * Return the image data in unsigned char
+     * @return
+     */
     unsigned char* getImageData();
 private:
     int m_width;
