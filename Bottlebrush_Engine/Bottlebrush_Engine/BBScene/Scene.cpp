@@ -4,19 +4,14 @@
 
 #include "Scene.h"
 
-const std::string & Scene::getMasterFile() const
-{
-    return masterLuaFile;
-}
-
-const ECS & Scene::getECS() const
-{
-    return bbECS;
-}
-
 void Scene::createEntity(const std::string & lua_file) //provides a user-friendly function that you only need to specify the script entity to.
 {
     entityFactory.create_from_file(bbECS, lua.getLuaState(), lua_file);
+}
+
+void Scene::createEntityAndTransform(const std::string & lua_file, float xPos, float yPos, float zPos)
+{
+    entityFactory.create_from_file(bbECS, lua.getLuaState(), lua_file, xPos, yPos, zPos);
 }
 
 Scene::Scene(const std::string & lua_master)
@@ -24,6 +19,7 @@ Scene::Scene(const std::string & lua_master)
     renderEngine = GraphicsFactory<GraphicsAPI::OpenGL>::CreateRenderer();
     masterLuaFile = lua_master;
     lua.getLuaState().set_function("create_entity", &Scene::createEntity, this); //register create entity function into lua state of this instance
+    lua.getLuaState().set_function("create_entity", &Scene::createEntityAndTransform, this);
 }
 
 void Scene::setProjectionMatrix(glm::mat4 projMatrix)

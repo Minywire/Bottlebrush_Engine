@@ -26,7 +26,40 @@ Entity EntityFactory::create_from_file(ECS & ecs, sol::state & lua_state, const 
     return namedEntity;
 }
 
+Entity EntityFactory::create_from_file(ECS & ecs, sol::state & lua_state, const std::filesystem::path & lua_file, float xPos, float yPos, float zPos)
+{
+
+    if(lua_file.extension() != ".lua") { throw std::runtime_error("Lua file is no lua file"); }
+
+    lua_state.script_file(lua_file.string());
+
+    Entity namedEntity;
+
+    auto entityTable = lua_state["Entity"];
+
+    if(entityTable.valid())
+    {
+        namedEntity = ecs.CreateEntity();
+        load_components(ecs, namedEntity, entityTable, xPos, yPos, zPos);
+
+        return namedEntity;
+    }
+    return namedEntity;
+}
+
 void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& table)
+{
+    if(table["Transform"].valid())
+    {
+        loadTransform(ecs, entity, table["Transform"]);
+    }
+    if(table["Model"].valid())
+    {
+        loadModel(ecs, entity, table["Model"]);
+    }
+}
+
+void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& table, float xPos, float yPos, float zPos)
 {
     if(table["Transform"].valid())
     {
@@ -55,6 +88,28 @@ void EntityFactory::loadTransform(ECS& ecs, Entity& entity, const sol::table & t
     TransformComponent& transformComponent = entity.GetComponent<TransformComponent>(ecs.getReg()); //Transform components exist by default so we get here.
 
     transformComponent.position = pos;
+    transformComponent.rotation = rot;
+    transformComponent.scale = scale;
+}
+
+void EntityFactory::loadTransform(ECS& ecs, Entity& entity, const sol::table & transform, float xPos, float yPos, float zPos)
+{
+    glm::vec3 pos = { transform["Position"]["x"],
+                      transform["Position"]["y"],
+                      transform["Position"]["z"] };
+
+    glm::vec3 rot = { transform["Rotation"]["x"],
+                      transform["Rotation"]["y"],
+                      transform["Rotation"]["z"] };
+
+    glm::vec3 scale = { transform["Scale"]["x"],
+                        transform["Scale"]["y"],
+                        transform["Scale"]["z"] };
+
+    TransformComponent& transformComponent = entity.GetComponent<TransformComponent>(ecs.getReg()); //Transform components exist by default so we get here.
+
+    glm::vec3 appliedTransform = {xPos, yPos, zPos};
+    transformComponent.position = pos + appliedTransform;
     transformComponent.rotation = rot;
     transformComponent.scale = scale;
 }
