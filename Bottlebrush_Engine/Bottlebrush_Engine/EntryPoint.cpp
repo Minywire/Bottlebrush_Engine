@@ -102,9 +102,11 @@ int main() {
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+
     std::cerr << "ERROR: Failed to initialize GLAD!" << std::endl;
     return -1;
   }
+
 
   glEnable(GL_DEPTH_TEST);
 
@@ -124,6 +126,7 @@ int main() {
       heightmap.GetHeight(camera.position_.x, camera.position_.z);
   camera.position_ = heightmap.GetCentre();
   camera.movement_speed_ *= 100.0f;
+
 
   std::unique_ptr<Model> testCube = GraphicsFactory<s_API>::CreateModel(
       "Resources/Models/Cube_With_Pizazz.obj",
@@ -204,10 +207,10 @@ int main() {
       terrain_height -= terrain_height_diff * delta;
     if (terrain_height > terrain_height_init)
       terrain_height += terrain_height_diff * delta;
-//    if (terrain_height < 0)
-//      camera.position_.y = -terrain_shift.y * terrain_scale.y;
-//    else
-//      camera.position_.y = terrain_height * terrain_scale.y;
+    if (terrain_height < 0)
+      camera.position_.y = -terrain_shift.y * terrain_scale.y;
+    else
+      camera.position_.y = terrain_height * terrain_scale.y;
 
      //MY SCENE
     gameScene.setProjectionMatrix(projection);

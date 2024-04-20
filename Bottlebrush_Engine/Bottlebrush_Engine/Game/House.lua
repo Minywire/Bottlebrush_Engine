@@ -6,18 +6,18 @@ Entity = {
             z = 0
         },
         Rotation = {
-            x = 90,
+            x = 4.7,
             y = 0,
             z = 0,
         },
         Scale = {
-            x = 10,
-            y = 10,
-            z = 10
+            x = 20,
+            y = 20,
+            z = 20
         }
     },
     Model = {
-        ModelPath = "Resources/Models/10783_TreeHouse_v7_LOD3.obj",
-        MaterialPath = "20960_Front_Gable_House_texture.jpg"
+        ModelPath = "Resources/Models/20960_Front_Gable_House_v1_NEW.obj",
+        MaterialPath = "Resources/Models/20960_Front_Gable_House_texture.jpg"
     }
 }
