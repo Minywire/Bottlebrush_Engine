@@ -15,20 +15,31 @@
 // Settings
 const unsigned int screen_width = 800, screen_height = 600;
 bool wireframe = false, grayscale = false;
-glm::vec3 terrain_scale = {5.0f, 0.25f, 5.0f},
+glm::vec3 terrain_scale = {3.5f, 0.25f, 3.5f},
           terrain_shift = {0.0f, 16.0f, 0.0f};
 
+
 // Camera
-Camera camera(glm::vec3(0.0f, 0.0f, 0.0f));
+Camera camera(glm::vec3(0.0f, 25.0f, 0.0f));
 float last_x = screen_width / 2.0f, last_y = screen_height / 2.0f;
 bool first_mouse_click = true;
+
+bool exitScreen = false;
 
 // Timing
 float delta = 0.0f, last_frame = 0.0f;
 
 void ProcessInput(GLFWwindow *window) {
-  if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-    glfwSetWindowShouldClose(window, true);
+
+  if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+      exitScreen = true;
+  }
+
+  if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT == GLFW_PRESS)) {
+      if (exitScreen) {
+          glfwSetWindowShouldClose(window, true);
+      }
+  }
 
   if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     camera.ProcessKeyboard(FORWARD, delta);
@@ -44,9 +55,11 @@ void ProcessInput(GLFWwindow *window) {
     camera.ProcessKeyboard(DOWN, delta);
 }
 
+
 void FramebufferSizeCallback(GLFWwindow *window, int width, int height) {
   glViewport(0, 0, width, height);
 }
+
 
 void KeyCallback(GLFWwindow *window, int key, int scancode, int action,
                  int mods) {
@@ -61,6 +74,7 @@ void MouseCallback(GLFWwindow *window, double pos_x, double pos_y) {
     last_y = y;
     first_mouse_click = false;
   }
+
 
   float x_offset = x - last_x, y_offset = last_y - y;
 
@@ -102,9 +116,11 @@ int main() {
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+
     std::cerr << "ERROR: Failed to initialize GLAD!" << std::endl;
     return -1;
   }
+
 
   glEnable(GL_DEPTH_TEST);
 
@@ -124,6 +140,7 @@ int main() {
       heightmap.GetHeight(camera.position_.x, camera.position_.z);
   camera.position_ = heightmap.GetCentre();
   camera.movement_speed_ *= 100.0f;
+
 
   std::unique_ptr<Model> testCube = GraphicsFactory<s_API>::CreateModel(
       "Resources/Models/Cube_With_Pizazz.obj",
@@ -204,10 +221,13 @@ int main() {
       terrain_height -= terrain_height_diff * delta;
     if (terrain_height > terrain_height_init)
       terrain_height += terrain_height_diff * delta;
-    if (terrain_height < 0)
-      camera.position_.y = -terrain_shift.y * terrain_scale.y;
-    else
-      camera.position_.y = terrain_height * terrain_scale.y;
+    if(!exitScreen)
+    {
+        if (terrain_height < 0)
+          camera.position_.y = -terrain_shift.y * terrain_scale.y;
+        else
+          camera.position_.y = terrain_height * terrain_scale.y;
+    }
 
      //MY SCENE
     gameScene.setProjectionMatrix(projection);
@@ -268,6 +288,16 @@ int main() {
     }
 
     glDepthFunc(GL_LESS);  // set depth function back to default
+
+    if(exitScreen)
+    {
+        camera.position_.x = -4825;
+        camera.position_.y = 0;
+        camera.position_.z = -5000;
+        camera.movement_speed_ = 0;
+        camera.front_ = {-5000, 0 , 0};
+        camera.up_ = {0,1,0};
+    }
 
     // Swap out buffers and poll for input events
     glfwSwapBuffers(window);
