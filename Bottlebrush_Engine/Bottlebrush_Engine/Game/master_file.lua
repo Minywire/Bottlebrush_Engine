@@ -19,3 +19,5 @@ end
 --        create_entity("Game/Rock1.lua", 3250 + start, 0, 1143 + start1); --Create a grid of 6 instances
 --    end
 --end
+
+create_entity("Game/exitCube.lua");

@@ -90,7 +90,7 @@ float Terrain::Barycentric(glm::vec3 a, glm::vec3 b, glm::vec3 c,
 }
 
 bool Terrain::InBounds(int a, int b) const {
-  return (a > -1 && a < width_) && (b > -1 && b < length_);
+  return (a > -1 && a < width_ -1) && (b > -1 && b < length_ -1);
 }
 
 void Terrain::PopulateElements() {
