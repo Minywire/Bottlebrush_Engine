@@ -1,3 +1,6 @@
+//
+//  Created by Alan 16/04/2024
+//
 #include "Skybox.h"
 
 Skybox::Skybox(std::filesystem::path model, std::vector<std::filesystem::path> texPaths) {

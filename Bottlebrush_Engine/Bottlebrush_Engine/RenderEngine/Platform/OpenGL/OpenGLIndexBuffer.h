@@ -1,14 +1,15 @@
 //
-//  Created by Alan Brunet 12/03/2024
+//  Created by Alan 12/03/2024
 //
 #pragma once
 
 #include "IndexBuffer.h"
 
-/// @author Alan Brunet
+/// @author Alan
 /// @brief indexing which positions in the VertexBuffer are being drawn.
 /// Saving memory space of referencing positions more than once.
-/// IB must be called after Vertex Array Object (VAO) has been set up with VB and VBL
+/// IndexBuffer must be called after Vertex Array Object (VAO) has
+/// added the vertex buffer and its vertex buffer layout
 class OpenGLIndexBuffer : public IndexBuffer 
 {
 private:
@@ -23,15 +24,15 @@ public:
 	/// Deconstructor
 	~OpenGLIndexBuffer() override;
 
-	/// @author Alan Brunet
+	/// @author Alan
 	/// @brief Binding buffer to draw / add
 	void Bind() const override;
 
-	/// @author Alan Brunet
+	/// @author Alan
 	/// @brief Unbinding buffer
 	void Unbind() const override;
 
-	/// @author Alan Brunet
+	/// @author Alan
 	/// @brief returning the number of vertex points used
     unsigned int GetCount() const override;
 };

@@ -1,3 +1,6 @@
+//
+//  Created by Alan 16/04/2024
+//
 #ifndef BOTTLEBRUSH_ENGINE_SKYBOX_H
 #define BOTTLEBRUSH_ENGINE_SKYBOX_H
 
@@ -11,14 +14,14 @@ class Skybox {
   Skybox(std::filesystem::path model, std::vector<std::filesystem::path> texPaths);
   ~Skybox();
 
-  /// @author Alan Brunet
+  /// @author Alan
   /// @brief Inits creation of the mesh
   /// @param model needs a cube obj
   /// @param texPaths requires 6 textures for a cubemap
   void InitMesh(std::filesystem::path model, std::vector<std::filesystem::path> texPaths);
 
-  /// @author Alan Brunet
-  /// @brief Binds the texture before drawing
+  /// @author Alan
+  /// @brief Binds the Cubemap texture before drawing
   void ActiveTexture();
 
   inline std::unique_ptr<Model>& getModel() { return m_Model; }

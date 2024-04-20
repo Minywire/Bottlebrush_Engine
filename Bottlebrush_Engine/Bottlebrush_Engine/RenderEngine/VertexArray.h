@@ -1,12 +1,12 @@
 //
-//  Created by Alan Brunet 12/03/2024
+//  Created by Alan 12/03/2024
 //
 #pragma once
 
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
 
-/// @author Alan Brunet
+/// @author Alan
 /// @brief Object to hold Vertex and Index Buffers. 
 /// Adds Vertex Buffer. 
 /// But IndexObject must be called after Layout has been pushed
@@ -18,7 +18,7 @@ public:
     /// Deconstructor
     virtual ~VertexArray()= default;
 
-    /// @author Alan Brunet
+    /// @author Alan
     /// @brief Adds the vertex Buffer and applies its layout
     /// @param vb Vertex Buffer that contains all vertex data
     /// @see class VertexBuffer
@@ -26,11 +26,11 @@ public:
     /// @see class VertexBufferLayout
     virtual void AddBuffer(const VertexBuffer& vb, VertexBufferLayout& layout) = 0;
 
-    /// @author Alan Brunet
+    /// @author Alan
     /// @brief Bind Vertex Array buffer to add / draw
     virtual void Bind() const = 0;
 
-    /// @author Alan Brunet
+    /// @author Alan
     /// @brief Unbind Vertex Array buffer
     virtual void Unbind() const = 0;
 };

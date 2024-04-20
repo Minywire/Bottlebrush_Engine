@@ -85,9 +85,9 @@ public:
 
     /**
      *
-     * @tparam T
-     * @param reg
-     * @return
+     * @tparam T The type of Component
+     * @param reg The registry to grab the entity containing this component from
+     * @return The component that is grabbed
      */
     template<typename T>
     T& GetComponent(entt::registry& reg)
