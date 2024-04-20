@@ -63,7 +63,7 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
 {
     if(table["Transform"].valid())
     {
-        loadTransform(ecs, entity, table["Transform"]);
+        loadTransform(ecs, entity, table["Transform"], xPos, yPos, zPos);
     }
     if(table["Model"].valid())
     {
@@ -109,7 +109,9 @@ void EntityFactory::loadTransform(ECS& ecs, Entity& entity, const sol::table & t
     TransformComponent& transformComponent = entity.GetComponent<TransformComponent>(ecs.getReg()); //Transform components exist by default so we get here.
 
     glm::vec3 appliedTransform = {xPos, yPos, zPos};
-    transformComponent.position = pos + appliedTransform;
+    glm::vec finalTransform = pos + appliedTransform;
+
+    transformComponent.position = finalTransform;
     transformComponent.rotation = rot;
     transformComponent.scale = scale;
 }

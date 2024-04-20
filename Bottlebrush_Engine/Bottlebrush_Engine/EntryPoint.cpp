@@ -204,10 +204,10 @@ int main() {
       terrain_height -= terrain_height_diff * delta;
     if (terrain_height > terrain_height_init)
       terrain_height += terrain_height_diff * delta;
-    if (terrain_height < 0)
-      camera.position_.y = -terrain_shift.y * terrain_scale.y;
-    else
-      camera.position_.y = terrain_height * terrain_scale.y;
+//    if (terrain_height < 0)
+//      camera.position_.y = -terrain_shift.y * terrain_scale.y;
+//    else
+//      camera.position_.y = terrain_height * terrain_scale.y;
 
      //MY SCENE
     gameScene.setProjectionMatrix(projection);

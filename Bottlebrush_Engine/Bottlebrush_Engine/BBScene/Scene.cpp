@@ -11,6 +11,7 @@ void Scene::createEntity(const std::string & lua_file) //provides a user-friendl
 
 void Scene::createEntityAndTransform(const std::string & lua_file, float xPos, float yPos, float zPos)
 {
+
     entityFactory.create_from_file(bbECS, lua.getLuaState(), lua_file, xPos, yPos, zPos);
 }
 
@@ -19,7 +20,7 @@ Scene::Scene(const std::string & lua_master)
     renderEngine = GraphicsFactory<GraphicsAPI::OpenGL>::CreateRenderer();
     masterLuaFile = lua_master;
     lua.getLuaState().set_function("create_entity", &Scene::createEntity, this); //register create entity function into lua state of this instance
-    lua.getLuaState().set_function("create_entity", &Scene::createEntityAndTransform, this);
+    lua.getLuaState().set_function("create_entityTR", &Scene::createEntityAndTransform, this);
 }
 
 void Scene::setProjectionMatrix(glm::mat4 projMatrix)
@@ -29,6 +30,7 @@ void Scene::setProjectionMatrix(glm::mat4 projMatrix)
 
 void Scene::setViewMatrix(glm::mat4 vMatrix)
 {
+    
     viewMatrix = vMatrix;
 }
 
@@ -37,6 +39,7 @@ void Scene::init()
     if(!lua.getLuaState().do_file(masterLuaFile).valid())
     {
         std::cout << "Could not load master game script file\n";
+        return;
     }//load the master lua scene script containing all entities
 
     bbSystems.createModelComponents(bbECS, resources.getSceneModels());
