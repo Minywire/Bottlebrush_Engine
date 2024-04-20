@@ -20,30 +20,66 @@
 class Scene
 {
 public:
-    Scene(const std::string & lua_master);
+    /**
+     *
+     * @param lua_master
+     */
+    explicit Scene(const std::string & lua_master);
 
+    /**
+     *
+     * @param projMatrix
+     */
     void setProjectionMatrix(glm::mat4 projMatrix);
 
+    /**
+     *
+     * @param viewMatrix
+     */
     void setViewMatrix(glm::mat4 viewMatrix);
 
+    /**
+     *
+     */
     void init();
 
+    /**
+     *
+     * @param lua_file
+     */
     void createEntity(const std::string & lua_file);
 
-    const ECS & getECS() const;
+    /**
+     *
+     * @param lua_file
+     * @param xPos
+     * @param yPos
+     * @param zPos
+     */
+    void createEntityAndTransform(const std::string & lua_file, float xPos, float yPos, float zPos);
 
+    /**
+     *
+     * @param shaderType
+     * @param vertexSource
+     * @param fragSource
+     */
     void setRendererShaderSource(ShaderType shaderType, const std::string & vertexSource, const std::string & fragSource);
 
+    /**
+     *
+     */
     void clearRenderEngine();
 
-    const std::string &getMasterFile() const;
-
+    /**
+     *
+     */
     void update();
 private:
-    glm::mat4 projectionMatrix;
-    glm::mat4 viewMatrix;
+    glm::mat4 projectionMatrix; ///The camera projection matrix (temporary hack until everything from EntryPoint is ported here).
+    glm::mat4 viewMatrix; ///The camera projection matrix (temporary hack until everything from EntryPoint is ported here).
 
-    //Camera sceneCamera;
+    //Camera sceneCamera; This camera will be implemented later. A lot of callback porting is needed for this, so it won't be done in time for Assignment 1 submission.
     std::unique_ptr<RenderEngine> renderEngine; ///The render engine
 
     EntityFactory entityFactory; ///The interface in charge of creating entities from Scripts

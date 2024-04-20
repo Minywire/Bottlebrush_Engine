@@ -4,7 +4,12 @@
 
 #include "Image.h"
 
-Image::Image(const std::filesystem::path& imagePath) {
+Image::Image(const std::filesystem::path& imagePath, bool flip) {
+    
+    if (flip)
+        stbi_set_flip_vertically_on_load(true);
+    else
+        stbi_set_flip_vertically_on_load(false);
 
     m_imageData = stbi_load(imagePath.string().c_str(), &m_width, &m_height, &m_imgChannels, 0);
 
@@ -29,4 +34,8 @@ int Image::getImageWidth() const {
 
 int Image::getImageHeight() const {
     return m_height;
+}
+
+int Image::getChannels() const {
+    return m_imgChannels;
 }

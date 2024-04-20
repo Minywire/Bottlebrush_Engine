@@ -11,11 +11,12 @@
 
 class Image {
 public:
-    Image(const std::filesystem::path& imagePath);
+    Image(const std::filesystem::path& imagePath, bool flip = true);
     ~Image();
 
     int getImageHeight() const;
     int getImageWidth() const;
+    int getChannels() const;
     unsigned char* getImageData();
 private:
     int m_width;
