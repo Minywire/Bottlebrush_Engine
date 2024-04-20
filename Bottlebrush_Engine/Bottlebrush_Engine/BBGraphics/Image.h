@@ -11,7 +11,7 @@
 
 class Image {
 public:
-    Image(const std::filesystem::path& imagePath);
+    Image(const std::filesystem::path& imagePath, bool flip = true);
     ~Image();
 
     int getImageHeight() const;

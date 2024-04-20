@@ -56,7 +56,7 @@ void OpenGLTexture::InitCubeMap() {
 }
 
 void OpenGLTexture::CreateCubemap(const std::filesystem::path& imageFilePath, unsigned int index) {
-    Image cubemapImage(imageFilePath);
+    Image cubemapImage(imageFilePath, false);
     glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + index, 0, GL_RGB, cubemapImage.getImageWidth(), cubemapImage.getImageHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, cubemapImage.getImageData());
 }
 
