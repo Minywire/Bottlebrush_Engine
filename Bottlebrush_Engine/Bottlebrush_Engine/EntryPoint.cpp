@@ -142,7 +142,7 @@ int main() {
 
   camera.SetPosition(heightmap.GetCentre());
   camera.SetPositionY(terrain_height_init);
-  camera.SetSensitivity(0.1f);
+  camera.SetSensitivity(0.05f);
   camera.SetSpeed(5.0f);
   camera.SetZoom(30.0f);
 
@@ -296,9 +296,9 @@ int main() {
     if (exitScreen) {
       glm::vec3 position = {-4825, 0, -5000}, front = {-5000, 0, 0},
                 up = {0, 1, 0};
-      camera.SetViewMatrix(position, front, up);
       camera.SetSpeed(0);
       camera.SetZoom(45);
+      camera.SetViewMatrix(position, front, up);
     }
 
     // Swap out buffers and poll for input events
