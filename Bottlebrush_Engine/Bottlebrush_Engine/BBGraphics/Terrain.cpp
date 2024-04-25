@@ -2,15 +2,15 @@
 
 Terrain::Terrain(const std::string &heightmap, glm::vec3 scale,
                  glm::vec3 shift) {
-  data_ = stbi_load(heightmap.c_str(), &width_, &length_, &channels_, 0);
+  data_ = stbi_load(heightmap.c_str(), &width_, &depth_, &channels_, 0);
 
-  auto w = static_cast<float>(width_), l = static_cast<float>(length_);
-  num_strips_ = length_;
+  auto w = static_cast<float>(width_), l = static_cast<float>(depth_);
+  num_strips_ = depth_;
   num_triangles = width_ * 2;
   path_ = heightmap;
   scale_ = scale;
   shift_ = shift;
-  size_ = width_ * length_;
+  size_ = width_ * depth_;
   centre_ = {(w / 2.0f * scale_.x) - shift_.x, 0.0f,
              (l / 2.0f * scale_.z) - shift_.z};
 
@@ -63,7 +63,7 @@ float Terrain::GetHeight(float x, float z) const {
   return (height / scale_.y) + shift_.y;
 }
 
-int Terrain::GetLength() const { return length_; }
+int Terrain::GetDepth() const { return depth_; }
 
 int Terrain::GetNumStrips() const { return num_strips_; }
 
@@ -90,11 +90,11 @@ float Terrain::Barycentric(glm::vec3 a, glm::vec3 b, glm::vec3 c,
 }
 
 bool Terrain::InBounds(int a, int b) const {
-  return (a > -1 && a < width_ -1) && (b > -1 && b < length_ -1);
+  return (a > -1 && a < width_ -1) && (b > -1 && b < depth_ -1);
 }
 
 void Terrain::PopulateElements() {
-  for (int i = 0; i < length_ - 1; i++) {
+  for (int i = 0; i < depth_ - 1; i++) {
     for (int j = 0; j < width_; j++) {
       for (int k = 0; k < 2; k++) {
         elements_.push_back(j + width_ * (i + k * 1));
@@ -104,7 +104,7 @@ void Terrain::PopulateElements() {
 }
 
 void Terrain::PopulateVertices() {
-  for (int i = 0; i < length_; i++) {
+  for (int i = 0; i < depth_; i++) {
     for (int j = 0; j < width_; j++) {
       unsigned char *texel = data_ + (j + width_ * i) * channels_,
                     height = texel[0];

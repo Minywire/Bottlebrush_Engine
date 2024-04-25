@@ -67,14 +67,14 @@ class Terrain {
   /// @returns A real-valued number that represents the terrain height.
   [[nodiscard]] float GetHeight(float x, float z) const;
 
-  /// @brief Gets the length of the terrain.
+  /// @brief Gets the depth of the terrain.
   /// <p>
-  /// The \c GetLength function retrieves the terrain length in the \a z
+  /// The \c GetDepth function retrieves the terrain length in the \a z
   /// directional plane.
   /// <p>
   /// The return value is an integer value specifying the terrain length.
   /// @returns An integer specifying the terrain length.
-  [[nodiscard]] int GetLength() const;
+  [[nodiscard]] int GetDepth() const;
 
   /// @brief Gets the number of vertex line strips comprising the terrain.
   /// <p>
@@ -142,7 +142,7 @@ class Terrain {
 
   /// @brief Gets the width of the terrain.
   /// <p>
-  /// The \c GetWidth function retrieves the terrain width in the \a x
+  /// The \c GetWidth function retrieves the terrain length in the \a x
   /// directional plane.
   /// <p>
   /// The return value is an integer value specifying the terrain width.
@@ -167,9 +167,9 @@ class Terrain {
   glm::vec3 centre_;
   int channels_;
   unsigned char *data_;
+  int depth_;
   std::vector<unsigned> elements_;
   std::vector<float> heights_;
-  int length_;
   int num_strips_;
   int num_triangles;
   std::string path_;
