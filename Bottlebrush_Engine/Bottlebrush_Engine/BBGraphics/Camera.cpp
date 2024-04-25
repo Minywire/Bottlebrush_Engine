@@ -1,27 +1,26 @@
 #include "Camera.h"
 
-Camera::Camera(glm::vec3 position) {
-  front_ = {0.0f, 0.0f, -1.0f};
-  world_up_ = {0.0f, 1.0f, 0.0f};
-  sensitivity_ = kSensitivity;
-  speed_ = kSpeed;
-  pitch_ = kPitch;
-  position_ = position;
-  yaw_ = kYaw;
-  zoom_ = kMaxZoom;
-
+Camera::Camera(glm::vec3 position)
+    : front_(kFront),
+      pitch_(kPitch),
+      position_(position),
+      sensitivity_(kSensitivity),
+      speed_(kSpeed),
+      world_up_(kWorldUp),
+      yaw_(kYaw),
+      zoom_(kMaxZoom) {
   Update();
 }
 
-Camera::Camera(float x, float y, float z) {
-  front_ = {0.0f, 0.0f, -1.0f};
-  world_up_ = {0.0f, 1.0f, 0.0f};
-  sensitivity_ = kSensitivity;
-  speed_ = kSpeed;
-  pitch_ = kPitch;
-  position_ = {x, y, z};
-  yaw_ = kYaw;
-
+Camera::Camera(float x, float y, float z)
+    : front_(kFront),
+      pitch_(kPitch),
+      position_({x, y, z}),
+      sensitivity_(kSensitivity),
+      speed_(kSpeed),
+      world_up_(kWorldUp),
+      yaw_(kYaw),
+      zoom_(kMaxZoom) {
   Update();
 }
 
