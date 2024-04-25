@@ -298,7 +298,7 @@ int main() {
                 up = {0, 1, 0};
       camera.SetViewMatrix(position, front, up);
       camera.SetSpeed(0);
-      camera.SetZoom(kMaxZoom);
+      camera.SetZoom(45);
     }
 
     // Swap out buffers and poll for input events
