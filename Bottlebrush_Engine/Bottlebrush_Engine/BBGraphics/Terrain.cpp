@@ -41,8 +41,8 @@ float Terrain::GetHeight(float x, float z) const {
 
   if (!InBounds(grid_x, grid_z)) return 0.0f;
 
-  float coord_x = std::fmod(terrain_z, grid_square_size) / grid_square_size;
-  float coord_z = std::fmod(terrain_x, grid_square_size) / grid_square_size;
+  float coord_x = std::fmod(terrain_x, grid_square_size) / grid_square_size;
+  float coord_z = std::fmod(terrain_z, grid_square_size) / grid_square_size;
   float height = 0.0f;
 
   if (coord_x <= 1 - coord_z) {
@@ -60,7 +60,7 @@ float Terrain::GetHeight(float x, float z) const {
     height = Barycentric(a, b, c, p);
   }
 
-  return (height / scale_.y) + shift_.y;
+  return height;
 }
 
 int Terrain::GetDepth() const { return depth_; }
