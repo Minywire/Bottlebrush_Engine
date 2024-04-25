@@ -53,8 +53,6 @@ float Camera::GetZoom() const { return zoom_; }
 
 float Camera::GetYaw() const { return yaw_; }
 
-void Camera::SetFront(float x, float y, float z) { front_ = {x, y, z}; }
-
 void Camera::SetSensitivity(float sensitivity) { sensitivity_ = sensitivity; }
 
 void Camera::SetSpeed(float speed) { speed_ = speed; }

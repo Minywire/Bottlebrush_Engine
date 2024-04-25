@@ -51,12 +51,10 @@ class Camera {
   /// 4x4 matrix object.
   /// @returns A 4x4 matrix object that describes the conceptual look-at matrix.
   [[nodiscard]] glm::mat4 GetViewMatrix() const;
-
   [[nodiscard]] glm::vec3 GetWorldUp() const;
   [[nodiscard]] float GetZoom() const;
   [[nodiscard]] float GetYaw() const;
 
-  void SetFront(float x, float y, float z);
   void SetSensitivity(float sensitivity);
   void SetSpeed(float speed);
   void SetPitch(float pitch);
