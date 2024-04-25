@@ -53,29 +53,60 @@ float Camera::GetZoom() const { return zoom_; }
 
 float Camera::GetYaw() const { return yaw_; }
 
-void Camera::SetSensitivity(float sensitivity) { sensitivity_ = sensitivity; }
+void Camera::SetSensitivity(float sensitivity) {
+  sensitivity_ = sensitivity;
+  Update();
+}
 
-void Camera::SetSpeed(float speed) { speed_ = speed; }
+void Camera::SetSpeed(float speed) {
+  speed_ = speed;
+  Update();
+}
 
-void Camera::SetPitch(float pitch) { pitch_ = pitch; }
+void Camera::SetPitch(float pitch) {
+  pitch_ = pitch;
+  Update();
+}
 
-void Camera::SetPosition(glm::vec3 position) { position_ = position; }
+void Camera::SetPosition(glm::vec3 position) {
+  position_ = position;
+  Update();
+}
 
-void Camera::SetPosition(float x, float y, float z) { position_ = {x, y, z}; }
+void Camera::SetPosition(float x, float y, float z) {
+  position_ = {x, y, z};
+  Update();
+}
 
-void Camera::SetPositionX(float x) { position_.x = x; }
+void Camera::SetPositionX(float x) {
+  position_.x = x;
+  Update();
+}
 
-void Camera::SetPositionY(float y) { position_.y = y; }
+void Camera::SetPositionY(float y) {
+  position_.y = y;
+  Update();
+}
 
-void Camera::SetPositionZ(float z) { position_.z = z; }
+void Camera::SetPositionZ(float z) {
+  position_.z = z;
+  Update();
+}
 
 void Camera::SetViewMatrix(glm::vec3 position, glm::vec3 front, glm::vec3 up) {
   look_at_ = glm::lookAt(position, position + front, up);
+  Update();
 }
 
-void Camera::SetZoom(float zoom) { zoom_ = zoom; }
+void Camera::SetZoom(float zoom) {
+  zoom_ = zoom;
+  Update();
+}
 
-void Camera::SetYaw(float yaw) { yaw_ = yaw; }
+void Camera::SetYaw(float yaw) {
+  yaw_ = yaw;
+  Update();
+}
 
 void Camera::ProcessKeyboard(CameraMovement direction, float delta) {
   float velocity = speed_ * delta;
