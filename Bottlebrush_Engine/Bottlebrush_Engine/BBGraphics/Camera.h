@@ -8,6 +8,7 @@
 
 enum CameraMovement { FORWARD, BACKWARD, LEFT, RIGHT, UP, DOWN };
 
+const glm::vec3 kFront = {0.0f, 0.0f, -1.0f};
 const float kMaxZoom = 80.0f;
 const float kMinZoom = 1.0f;
 const float kMaxPitch = 89.0f;
@@ -15,6 +16,7 @@ const float kMinPitch = -kMaxPitch;
 const float kPitch = 0.0f;
 const float kSensitivity = 0.1f;
 const float kSpeed = 2.5f;
+const glm::vec3 kWorldUp = {0.0f, 1.0f, 0.0f};
 const float kYaw = -90.0f;
 
 /// @class Camera
