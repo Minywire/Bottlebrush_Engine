@@ -14,6 +14,8 @@ NPC::NPC(FSM fsm)
 
 void NPC::Update()
 {
+
+    // currently outputing current state to terminal
     switch (m_fsm.GetCurrentState())
     {
         case FSMState::IDLE:
