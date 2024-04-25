@@ -31,14 +31,15 @@ bool exitScreen = false;
 float delta = 0.0f, last_frame = 0.0f;
 
 void ProcessInput(GLFWwindow *window) {
-  if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-    exitScreen = true;
-  }
-
   if (exitScreen) {
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT == GLFW_PRESS)) {
       glfwSetWindowShouldClose(window, true);
     }
+    return;
+  }
+
+  if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+    exitScreen = true;
   }
 
   if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -61,6 +62,8 @@ void FramebufferSizeCallback(GLFWwindow *window, int width, int height) {
 
 void KeyCallback(GLFWwindow *window, int key, int scancode, int action,
                  int mods) {
+  if (exitScreen) return;
+
   if (key == GLFW_KEY_C && action == GLFW_PRESS) wireframe = !wireframe;
   if (action == GLFW_PRESS && key == GLFW_KEY_G) grayscale = !grayscale;
   if (action == GLFW_PRESS && key == GLFW_KEY_R)
@@ -74,6 +77,8 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action,
 
 void MouseCallback(GLFWwindow *window, double pos_x, double pos_y) {
   auto x = static_cast<float>(pos_x), y = static_cast<float>(pos_y);
+
+  if (exitScreen) return;
 
   if (first_mouse_click) {
     last_x = x;
@@ -90,6 +95,7 @@ void MouseCallback(GLFWwindow *window, double pos_x, double pos_y) {
 }
 
 void ScrollCallback(GLFWwindow *window, double x_offset, double y_offset) {
+  if (exitScreen) return;
   camera.ProcessMouseScroll(static_cast<float>(y_offset));
 }
 
