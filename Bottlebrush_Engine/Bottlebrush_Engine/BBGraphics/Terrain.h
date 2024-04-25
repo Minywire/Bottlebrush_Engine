@@ -154,8 +154,6 @@ class Terrain {
   [[nodiscard]] std::unique_ptr<Mesh> &GetMesh();
 
  private:
-  [[nodiscard]] float Barycentric(glm::vec3 a, glm::vec3 b, glm::vec3 c,
-                                  glm::vec2 p) const;
   [[nodiscard]] bool InBounds(int a, int b) const;
   void PopulateElements();
   void PopulateVertices();
@@ -180,5 +178,7 @@ class Terrain {
   int width_;
   std::unique_ptr<Mesh> mesh_;
 };
+
+float Barycentric(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec2 p);
 
 #endif  // BOTTLEBRUSH_ENGINE_TERRAIN_H

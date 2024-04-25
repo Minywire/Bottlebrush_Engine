@@ -79,18 +79,8 @@ std::vector<float> Terrain::GetVertices() const { return vertices_; }
 
 int Terrain::GetWidth() const { return width_; }
 
-float Terrain::Barycentric(glm::vec3 a, glm::vec3 b, glm::vec3 c,
-                           glm::vec2 p) const {
-  float det = (b.z - c.z) * (a.x - c.x) + (c.x - b.x) * (a.z - c.z);
-  float u = ((b.z - c.z) * (p.x - c.x) + (c.x - b.x) * (p.y - c.z)) / det;
-  float v = ((c.z - a.z) * (p.x - c.x) + (a.x - c.x) * (p.y - c.z)) / det;
-  float w = 1.0f - u - v;
-
-  return u * a.y + v * b.y + w * c.y;
-}
-
 bool Terrain::InBounds(int a, int b) const {
-  return (a > -1 && a < width_ -1) && (b > -1 && b < depth_ -1);
+  return (a > -1 && a < width_ - 1) && (b > -1 && b < depth_ - 1);
 }
 
 void Terrain::PopulateElements() {
@@ -130,3 +120,12 @@ void Terrain::InitMesh() {
 }
 
 std::unique_ptr<Mesh> &Terrain::GetMesh() { return mesh_; }
+
+float Barycentric(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec2 p) {
+  float det = (b.z - c.z) * (a.x - c.x) + (c.x - b.x) * (a.z - c.z);
+  float u = ((b.z - c.z) * (p.x - c.x) + (c.x - b.x) * (p.y - c.z)) / det;
+  float v = ((c.z - a.z) * (p.x - c.x) + (a.x - c.x) * (p.y - c.z)) / det;
+  float w = 1.0f - u - v;
+
+  return u * a.y + v * b.y + w * c.y;
+}
