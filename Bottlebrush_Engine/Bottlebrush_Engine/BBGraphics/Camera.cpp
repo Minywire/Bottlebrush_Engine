@@ -95,7 +95,6 @@ void Camera::SetPositionZ(float z) {
 
 void Camera::SetViewMatrix(glm::vec3 position, glm::vec3 front, glm::vec3 up) {
   look_at_ = glm::lookAt(position, position + front, up);
-  Update();
 }
 
 void Camera::SetZoom(float zoom) {
