@@ -12,12 +12,6 @@ Image::Image(const std::filesystem::path& imagePath, bool flip) {
         stbi_set_flip_vertically_on_load(false);
 
     m_imageData = stbi_load(imagePath.string().c_str(), &m_width, &m_height, &m_imgChannels, 0);
-
-    if(m_imageData) {
-        std::cout << "Image loaded successfully" << std::endl;
-    } else {
-        std::cout << "Failed to load image" << std::endl;
-    }
 }
 
 Image::~Image() {

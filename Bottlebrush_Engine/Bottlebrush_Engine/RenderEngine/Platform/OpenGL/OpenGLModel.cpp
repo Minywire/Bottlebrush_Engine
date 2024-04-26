@@ -22,7 +22,7 @@ bool OpenGLModel::LoadModel(const std::filesystem::path& modelPath, const std::f
 
     file.close();
 
-    const aiScene* scene = import.ReadFile(modelPath.string(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
+    const aiScene* scene = import.ReadFile(modelPath.string(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_GenSmoothNormals);
 
     if(!scene) {
         return false;
@@ -61,6 +61,15 @@ std::unique_ptr<OpenGLMesh> OpenGLModel::InitMesh(const aiMesh* paiMesh, const s
         meshVerts.push_back(pPos.y);
         meshVerts.push_back(pPos.z);
 
+        // Process normal coordinates
+        if(paiMesh->mNormals) {
+            const aiVector3D& pNormals = paiMesh->mNormals[i];
+
+            meshVerts.push_back(pNormals.x);
+            meshVerts.push_back(pNormals.y);
+            meshVerts.push_back(pNormals.z);
+        }
+
         // Process TexCoords
         if(paiMesh->mTextureCoords[0]) {
             glm::vec2 vec;
@@ -83,6 +92,7 @@ std::unique_ptr<OpenGLMesh> OpenGLModel::InitMesh(const aiMesh* paiMesh, const s
 
     std::vector<unsigned int> layout;
     layout.push_back(3); // 3 elements for position
+    layout.push_back(3); // 3 elements for normals
     layout.push_back(2); // 2 elements for the texture
     std::unique_ptr<OpenGLMesh> mesh = std::make_unique<OpenGLMesh>(
         meshVerts, meshInts, texturePath, textureSlot, layout);

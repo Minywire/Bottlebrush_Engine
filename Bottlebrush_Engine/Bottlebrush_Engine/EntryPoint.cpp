@@ -168,7 +168,7 @@ int main() {
   camera.SetPosition(terrain.GetCentre());
   camera.SetPositionY(terrain_height_init);
   camera.SetSensitivity(0.05f);
-  camera.SetSpeed(8.0f);
+  camera.SetSpeed(100.0f);
   camera.SetZoom(30.0f);
 
   std::unique_ptr<Model> testCube = GraphicsFactory<s_API>::CreateModel(
@@ -339,6 +339,7 @@ int main() {
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
+
 
   glfwTerminate();
 
