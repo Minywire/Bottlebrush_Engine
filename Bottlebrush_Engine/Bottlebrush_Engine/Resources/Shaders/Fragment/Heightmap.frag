@@ -9,8 +9,8 @@ in vec4 tex_color;
 in vec2 tex_coord;
 
 void main() {
-    vec4 tex_col = texture(detail, tex_coord);
+    vec4 detail_color = texture(detail, tex_coord);
 
     if (grayscale) frag_color = tex_color;
-    else frag_color = tex_color * tex_col;
+    else frag_color = tex_color * detail_color;
 }
