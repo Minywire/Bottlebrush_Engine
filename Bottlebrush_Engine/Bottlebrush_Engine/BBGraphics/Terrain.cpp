@@ -1,25 +1,23 @@
 #include "Terrain.h"
 
-Terrain::Terrain(const std::string &heightmap, glm::vec3 scale,
-                 glm::vec3 shift) {
-  data_ = stbi_load(heightmap.c_str(), &width_, &length_, &channels_, 0);
-
-  auto w = static_cast<float>(width_), l = static_cast<float>(length_);
-  num_strips_ = length_;
-  num_triangles = width_ * 2;
-  path_ = heightmap;
+Terrain::Terrain(const std::string &path, const std::string &texture,
+                 glm::vec3 scale, glm::vec3 shift) {
+  data_ = stbi_load(path.c_str(), &width_, &depth_, &channels_, 0);
+  num_strips_ = depth_;
+  num_triangles_ = width_ * 2;
+  path_ = path;
   scale_ = scale;
   shift_ = shift;
-  size_ = width_ * length_;
+  size_ = width_ * depth_;
+  texture_ = texture;
+  auto w = static_cast<float>(width_), d = static_cast<float>(depth_);
   centre_ = {(w / 2.0f * scale_.x) - shift_.x, 0.0f,
-             (l / 2.0f * scale_.z) - shift_.z};
+             (d / 2.0f * scale_.z) - shift_.z};
 
   PopulateVertices();
   PopulateElements();
   InitMesh();
-}
 
-Terrain::~Terrain() {
   stbi_image_free(data_);
   data_ = nullptr;
 }
@@ -41,8 +39,8 @@ float Terrain::GetHeight(float x, float z) const {
 
   if (!InBounds(grid_x, grid_z)) return 0.0f;
 
-  float coord_x = std::fmod(terrain_z, grid_square_size) / grid_square_size;
-  float coord_z = std::fmod(terrain_x, grid_square_size) / grid_square_size;
+  float coord_x = std::fmod(terrain_x, grid_square_size) / grid_square_size;
+  float coord_z = std::fmod(terrain_z, grid_square_size) / grid_square_size;
   float height = 0.0f;
 
   if (coord_x <= 1 - coord_z) {
@@ -60,14 +58,22 @@ float Terrain::GetHeight(float x, float z) const {
     height = Barycentric(a, b, c, p);
   }
 
-  return (height / scale_.y) + shift_.y;
+  return height;
 }
 
-int Terrain::GetLength() const { return length_; }
+int Terrain::GetDepth() const { return depth_; }
+
+float Terrain::GetMaxHeight() const {
+  return *std::max_element(heights_.begin(), heights_.end());
+}
+
+float Terrain::GetMinHeight() const {
+  return *std::min_element(heights_.begin(), heights_.end());
+}
 
 int Terrain::GetNumStrips() const { return num_strips_; }
 
-int Terrain::GetNumTriangles() const { return num_triangles; }
+int Terrain::GetNumTriangles() const { return num_triangles_; }
 
 glm::vec3 Terrain::GetScale() const { return scale_; }
 
@@ -79,22 +85,12 @@ std::vector<float> Terrain::GetVertices() const { return vertices_; }
 
 int Terrain::GetWidth() const { return width_; }
 
-float Terrain::Barycentric(glm::vec3 a, glm::vec3 b, glm::vec3 c,
-                           glm::vec2 p) const {
-  float det = (b.z - c.z) * (a.x - c.x) + (c.x - b.x) * (a.z - c.z);
-  float u = ((b.z - c.z) * (p.x - c.x) + (c.x - b.x) * (p.y - c.z)) / det;
-  float v = ((c.z - a.z) * (p.x - c.x) + (a.x - c.x) * (p.y - c.z)) / det;
-  float w = 1.0f - u - v;
-
-  return u * a.y + v * b.y + w * c.y;
-}
-
 bool Terrain::InBounds(int a, int b) const {
-  return (a > -1 && a < width_ -1) && (b > -1 && b < length_ -1);
+  return (a > -1 && a < width_ - 1) && (b > -1 && b < depth_ - 1);
 }
 
 void Terrain::PopulateElements() {
-  for (int i = 0; i < length_ - 1; i++) {
+  for (int i = 0; i < depth_ - 1; i++) {
     for (int j = 0; j < width_; j++) {
       for (int k = 0; k < 2; k++) {
         elements_.push_back(j + width_ * (i + k * 1));
@@ -104,7 +100,9 @@ void Terrain::PopulateElements() {
 }
 
 void Terrain::PopulateVertices() {
-  for (int i = 0; i < length_; i++) {
+  auto w = static_cast<float>(width_), d = static_cast<float>(depth_);
+
+  for (int i = 0; i < depth_; i++) {
     for (int j = 0; j < width_; j++) {
       unsigned char *texel = data_ + (j + width_ * i) * channels_,
                     height = texel[0];
@@ -117,6 +115,9 @@ void Terrain::PopulateVertices() {
       vertices_.push_back(y);
       vertices_.push_back(z);
 
+      vertices_.push_back(x / w);
+      vertices_.push_back(z / d);
+
       heights_.push_back(y);
     }
   }
@@ -125,8 +126,18 @@ void Terrain::PopulateVertices() {
 void Terrain::InitMesh() {
   std::vector<unsigned int> layout;
   layout.push_back(3);  // 3 elements for position
+  layout.push_back(2);  // 2 elements for tex coords
   mesh_ = GraphicsFactory<GraphicsAPI::OpenGL>::CreateMesh(vertices_, elements_,
-                                                           path_, 0, layout);
+                                                           texture_, 0, layout);
 }
 
 std::unique_ptr<Mesh> &Terrain::GetMesh() { return mesh_; }
+
+float Barycentric(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec2 p) {
+  float det = (b.z - c.z) * (a.x - c.x) + (c.x - b.x) * (a.z - c.z);
+  float u = ((b.z - c.z) * (p.x - c.x) + (c.x - b.x) * (p.y - c.z)) / det;
+  float v = ((c.z - a.z) * (p.x - c.x) + (a.x - c.x) * (p.y - c.z)) / det;
+  float w = 1.0f - u - v;
+
+  return u * a.y + v * b.y + w * c.y;
+}
