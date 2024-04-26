@@ -42,9 +42,16 @@ void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEn
             renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("projection", projection);
             renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("view", view);
             renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("model", transform);
-            renderEngine.GetShader(shaderType)->SetUniform3f("lightColour", 1.0f, 1.0f, 1.0f);
-            renderEngine.GetShader(shaderType)->SetUniform3f("lightPos", 0.0f, 200.0f, 0.0f);
 
+            // Inverse of the view matrix gives the world-to-camera transformation
+            glm::mat4 inverseViewMatrix = glm::inverse(view);
+
+            // The camera's position is the translation part of the inverse view matrix
+            glm::vec3 cameraPosition = glm::vec3(inverseViewMatrix[3]);
+
+            renderEngine.GetShader(shaderType)->SetUniform3f("lightColour", 1.0f, 1.0f, 1.0f);
+            renderEngine.GetShader(shaderType)->SetUniform3f("lightPos", 0.0f, 5.0f, 0.0f);
+            renderEngine.GetShader(shaderType)->SetUniform3f("viewPos", cameraPosition.x, cameraPosition.y, cameraPosition.z);
             //draw model
             for (unsigned int i = 0; i < sceneModels.at(currentModelComponent.model_path)->GetSubMeshes().size(); i++) {
                 sceneModels.at(currentModelComponent.model_path)->GetSubMeshes()[i]->SetTexture();
