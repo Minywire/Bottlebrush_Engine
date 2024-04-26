@@ -77,6 +77,9 @@ class Terrain {
   /// @returns An integer specifying the terrain length.
   [[nodiscard]] int GetDepth() const;
 
+  float GetMaxHeight() const;
+  float GetMinHeight() const;
+
   /// @brief Gets the number of vertex line strips comprising the terrain.
   /// <p>
   /// The \c GetNumStrips function retrieves the number of vertex line strips

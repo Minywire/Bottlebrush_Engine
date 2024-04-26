@@ -65,6 +65,14 @@ float Terrain::GetHeight(float x, float z) const {
 
 int Terrain::GetDepth() const { return depth_; }
 
+float Terrain::GetMaxHeight() const {
+  return *std::max_element(heights_.begin(), heights_.end());
+}
+
+float Terrain::GetMinHeight() const {
+  return *std::min_element(heights_.begin(), heights_.end());
+}
+
 int Terrain::GetNumStrips() const { return num_strips_; }
 
 int Terrain::GetNumTriangles() const { return num_triangles; }
