@@ -8,18 +8,28 @@ struct Material {
 };
 
 in vec2 tex_coord;
+in vec3 normal;
+in vec3 fragPos;
 
 out vec4 color;
 
 //uniform Material material;
 uniform vec3 lightColour;
 uniform sampler2D u_Texture;
+uniform vec3 lightPos;
 
 void main()
 {
-	float ambientStrengh = 0.1f;
+	// Ambient
+	float ambientStrengh = 0.9f;
 	vec3 ambient = ambientStrengh * lightColour;
-	vec3 result = ambient * vec3(texture(u_Texture, tex_coord));
+
+	// Diffuse
+	vec3 norm = normalize(normal);
+	vec3 lightDir = normalize(lightPos - fragPos);
+	float diff = max(dot(norm, lightDir), 0.0f);
+	vec3 diffuse = diff * lightColour;
+
+	vec3 result = (ambient * diffuse) * vec3(texture(u_Texture, tex_coord));
 	color = vec4(result, 1.0f);
-//	color = texture(u_Texture, tex_coord);
 }
