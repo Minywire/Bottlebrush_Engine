@@ -50,7 +50,7 @@ void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEn
             glm::vec3 cameraPosition = glm::vec3(inverseViewMatrix[3]);
 
             renderEngine.GetShader(shaderType)->SetUniform3f("lightColour", 1.0f, 1.0f, 1.0f);
-            renderEngine.GetShader(shaderType)->SetUniform3f("lightPos", 0.0f, 5.0f, 0.0f);
+            renderEngine.GetShader(shaderType)->SetUniform3f("lightPos", 100.0f, 0.0f, 0.0f);
             renderEngine.GetShader(shaderType)->SetUniform3f("viewPos", cameraPosition.x, cameraPosition.y, cameraPosition.z);
             //draw model
             for (unsigned int i = 0; i < sceneModels.at(currentModelComponent.model_path)->GetSubMeshes().size(); i++) {

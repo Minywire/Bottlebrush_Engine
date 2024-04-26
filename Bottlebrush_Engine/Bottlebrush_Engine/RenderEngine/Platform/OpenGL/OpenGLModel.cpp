@@ -22,7 +22,7 @@ bool OpenGLModel::LoadModel(const std::filesystem::path& modelPath, const std::f
 
     file.close();
 
-    const aiScene* scene = import.ReadFile(modelPath.string(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
+    const aiScene* scene = import.ReadFile(modelPath.string(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_GenSmoothNormals);
 
     if(!scene) {
         return false;

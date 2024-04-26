@@ -50,7 +50,7 @@ void OpenGLMesh::CreateMesh(
     m_Texture->CreateTexture(textureFilePath);
 
     // bind the texture
-    SetTexture();
+//    SetTexture();
 }
 
 void OpenGLMesh::SetTexture(unsigned int slot) {
