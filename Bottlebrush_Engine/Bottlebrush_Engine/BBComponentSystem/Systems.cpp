@@ -42,7 +42,7 @@ void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEn
             renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("projection", projection);
             renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("view", view);
             renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("model", transform);
-            renderEngine.GetShader(shaderType)->SetUniform3f("lightColour", 1.0f, 0.5f, 0.31f);
+            renderEngine.GetShader(shaderType)->SetUniform3f("lightColour", 1.0f, 1.0f, 1.0f);
 
             //draw model
             for (unsigned int i = 0; i < sceneModels.at(currentModelComponent.model_path)->GetSubMeshes().size(); i++) {
