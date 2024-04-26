@@ -149,7 +149,7 @@ int main() {
   camera.SetPosition(heightmap.GetCentre());
   camera.SetPositionY(terrain_height_init);
   camera.SetSensitivity(0.05f);
-  camera.SetSpeed(5.0f);
+  camera.SetSpeed(100.0f);
   camera.SetZoom(30.0f);
 
   std::unique_ptr<Model> testCube = GraphicsFactory<s_API>::CreateModel(
