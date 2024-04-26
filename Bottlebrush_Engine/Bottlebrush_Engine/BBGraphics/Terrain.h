@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "GraphicsFactory.h"
+#include "Texture.h"
 #include "glm/glm.hpp"
 #include "stb/stb_image.h"
 
@@ -23,10 +24,9 @@
 /// @authors Alan Brunet, Jaiden di Lanzo, Marco Garzon Lara
 class Terrain {
  public:
-  Terrain(const std::string &heightmap, glm::vec3 scale = {1.0f, 1.0f, 1.0f},
+  Terrain(const std::string &path, const std::string &texture,
+          glm::vec3 scale = {1.0f, 1.0f, 1.0f},
           glm::vec3 shift = {0.0f, 0.0f, 0.0f});
-
-  ~Terrain();
 
   /// @brief Gets the terrain centre point.
   /// <p>
@@ -67,14 +67,17 @@ class Terrain {
   /// @returns A real-valued number that represents the terrain height.
   [[nodiscard]] float GetHeight(float x, float z) const;
 
-  /// @brief Gets the length of the terrain.
+  /// @brief Gets the depth of the terrain.
   /// <p>
-  /// The \c GetLength function retrieves the terrain length in the \a z
+  /// The \c GetDepth function retrieves the terrain length in the \a z
   /// directional plane.
   /// <p>
   /// The return value is an integer value specifying the terrain length.
   /// @returns An integer specifying the terrain length.
-  [[nodiscard]] int GetLength() const;
+  [[nodiscard]] int GetDepth() const;
+
+  float GetMaxHeight() const;
+  float GetMinHeight() const;
 
   /// @brief Gets the number of vertex line strips comprising the terrain.
   /// <p>
@@ -142,7 +145,7 @@ class Terrain {
 
   /// @brief Gets the width of the terrain.
   /// <p>
-  /// The \c GetWidth function retrieves the terrain width in the \a x
+  /// The \c GetWidth function retrieves the terrain length in the \a x
   /// directional plane.
   /// <p>
   /// The return value is an integer value specifying the terrain width.
@@ -154,8 +157,6 @@ class Terrain {
   [[nodiscard]] std::unique_ptr<Mesh> &GetMesh();
 
  private:
-  [[nodiscard]] float Barycentric(glm::vec3 a, glm::vec3 b, glm::vec3 c,
-                                  glm::vec2 p) const;
   [[nodiscard]] bool InBounds(int a, int b) const;
   void PopulateElements();
   void PopulateVertices();
@@ -167,18 +168,21 @@ class Terrain {
   glm::vec3 centre_;
   int channels_;
   unsigned char *data_;
+  int depth_;
   std::vector<unsigned> elements_;
   std::vector<float> heights_;
-  int length_;
   int num_strips_;
-  int num_triangles;
+  int num_triangles_;
   std::string path_;
   glm::vec3 scale_;
   glm::vec3 shift_;
   int size_;
+  std::string texture_;
   std::vector<float> vertices_;
   int width_;
   std::unique_ptr<Mesh> mesh_;
 };
+
+float Barycentric(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec2 p);
 
 #endif  // BOTTLEBRUSH_ENGINE_TERRAIN_H

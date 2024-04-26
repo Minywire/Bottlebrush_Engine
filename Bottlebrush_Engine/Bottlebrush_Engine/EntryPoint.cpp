@@ -13,10 +13,29 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+// Paths
+std::filesystem::path heightmap_iceland_path(
+    "Resources/Heightmaps/iceland.png");
+std::filesystem::path heightmap_1_path("Resources/Heightmaps/heightmap-1.png");
+std::filesystem::path heightmap_2_path("Resources/Heightmaps/heightmap-2.png");
+std::filesystem::path heightmap_3_path("Resources/Heightmaps/heightmap-3.png");
+std::filesystem::path heightmap_4_path("Resources/Heightmaps/heightmap-4.png");
+
+std::filesystem::path texture_iceland_path(
+    "Resources/Textures/Terrain/iceland.png");
+std::filesystem::path texture_terrain_1_path(
+    "Resources/Textures/Terrain/terrain-1.png");
+std::filesystem::path texture_terrain_2_path(
+    "Resources/Textures/Terrain/terrain-2.png");
+std::filesystem::path texture_terrain_3_path(
+    "Resources/Textures/Terrain/terrain-3.png");
+std::filesystem::path texture_terrain_4_path(
+    "Resources/Textures/Terrain/terrain-4.png");
+
 // Settings
 const unsigned int screen_width = 800, screen_height = 600;
 bool wireframe = false, grayscale = false, restrict_camera = true;
-glm::vec3 terrain_scale = {3.5f, 0.25f, 3.5f},
+glm::vec3 terrain_scale = {1.0f, 0.25f, 1.0f},
           terrain_shift = {0.0f, 16.0f, 0.0f};
 
 // Camera
@@ -139,17 +158,17 @@ int main() {
   std::unique_ptr<RenderEngine> renderEngine =
       GraphicsFactory<s_API>::CreateRenderer();
 
-  Terrain heightmap(
-      std::filesystem::path("resources/heightmaps/iceland_heightmap.png")
-          .string(),
-      terrain_scale, terrain_shift);
+  Terrain terrain(heightmap_2_path.string(), texture_terrain_4_path.string(),
+                  terrain_scale, terrain_shift);
   float terrain_height_init =
-      heightmap.GetHeight(camera.GetPositionX(), camera.GetPositionZ());
+      terrain.GetHeight(camera.GetPositionX(), camera.GetPositionZ());
+  float terrain_min_height = terrain.GetMinHeight(),
+        terrain_max_height = terrain.GetMaxHeight();
 
-  camera.SetPosition(heightmap.GetCentre());
+  camera.SetPosition(terrain.GetCentre());
   camera.SetPositionY(terrain_height_init);
   camera.SetSensitivity(0.05f);
-  camera.SetSpeed(5.0f);
+  camera.SetSpeed(8.0f);
   camera.SetZoom(30.0f);
 
   std::unique_ptr<Model> testCube = GraphicsFactory<s_API>::CreateModel(
@@ -184,6 +203,11 @@ int main() {
   renderEngine->SetShaderSource(terrainShaderType,
                                 "Resources/Shaders/Vertex/Heightmap.vert",
                                 "Resources/Shaders/Fragment/Heightmap.frag");
+  renderEngine->GetShader(terrainShaderType)->SetUniform1i("detail", 0);
+  renderEngine->GetShader(terrainShaderType)
+      ->SetUniform1f("min_height", terrain_min_height);
+  renderEngine->GetShader(terrainShaderType)
+      ->SetUniform1f("max_height", terrain_max_height);
 
   renderEngine->SetShaderSource(skyboxShaderType,
                                 "Resources/Shaders/Vertex/Skybox.vert",
@@ -201,6 +225,9 @@ int main() {
 
     // Process user input
     ProcessInput(window);
+
+    renderEngine->GetShader(terrainShaderType)
+        ->SetUniform1i("grayscale", grayscale);
 
     // Clear colours and buffers
     renderEngine->Clear();
@@ -241,9 +268,10 @@ int main() {
     renderEngine->GetShader(terrainShaderType)
         ->SetUniformMatrix4fv("model", model);
 
+    terrain.GetMesh()->SetTexture();
     renderEngine->DrawTriangleStrips(
-        terrainShaderType, *heightmap.GetMesh()->GetVertexArray(),
-        heightmap.GetNumStrips(), heightmap.GetNumTriangles());
+        terrainShaderType, *terrain.GetMesh()->GetVertexArray(),
+        terrain.GetNumStrips(), terrain.GetNumTriangles());
 
     // Draw the test cube
     for (unsigned int i = 0; i < testCube->GetSubMeshes().size(); i++) {
@@ -261,7 +289,7 @@ int main() {
           glm::inverse(model) * glm::vec4(camera.GetPosition(), 1);
 
       float terrain_height =
-          heightmap.GetHeight(local_position.x, local_position.z);
+          terrain.GetHeight(local_position.x, local_position.z);
       float terrain_height_diff =
           std::abs(terrain_height_init - terrain_height);
 
