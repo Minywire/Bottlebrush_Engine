@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "GraphicsFactory.h"
+#include "Texture.h"
 #include "glm/glm.hpp"
 #include "stb/stb_image.h"
 
@@ -152,6 +153,8 @@ class Terrain {
   /// @author Alan
   /// @brief Gets the terrain mesh
   [[nodiscard]] std::unique_ptr<Mesh> &GetMesh();
+
+  std::unique_ptr<Texture> texture_;
 
  private:
   [[nodiscard]] bool InBounds(int a, int b) const;

@@ -94,6 +94,8 @@ void Terrain::PopulateElements() {
 }
 
 void Terrain::PopulateVertices() {
+  auto w = static_cast<float>(width_), d = static_cast<float>(depth_);
+
   for (int i = 0; i < depth_; i++) {
     for (int j = 0; j < width_; j++) {
       unsigned char *texel = data_ + (j + width_ * i) * channels_,
@@ -107,6 +109,9 @@ void Terrain::PopulateVertices() {
       vertices_.push_back(y);
       vertices_.push_back(z);
 
+      vertices_.push_back(x / w);
+      vertices_.push_back(z / d);
+
       heights_.push_back(y);
     }
   }
@@ -115,8 +120,9 @@ void Terrain::PopulateVertices() {
 void Terrain::InitMesh() {
   std::vector<unsigned int> layout;
   layout.push_back(3);  // 3 elements for position
+  layout.push_back(2);  // 2 elements for tex coords
   mesh_ = GraphicsFactory<GraphicsAPI::OpenGL>::CreateMesh(vertices_, elements_,
-                                                           path_, 0, layout);
+                                                           "", 0, layout);
 }
 
 std::unique_ptr<Mesh> &Terrain::GetMesh() { return mesh_; }
