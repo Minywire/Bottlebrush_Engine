@@ -24,10 +24,9 @@
 /// @authors Alan Brunet, Jaiden di Lanzo, Marco Garzon Lara
 class Terrain {
  public:
-  Terrain(const std::string &heightmap, glm::vec3 scale = {1.0f, 1.0f, 1.0f},
+  Terrain(const std::string &path, const std::string &texture,
+          glm::vec3 scale = {1.0f, 1.0f, 1.0f},
           glm::vec3 shift = {0.0f, 0.0f, 0.0f});
-
-  ~Terrain();
 
   /// @brief Gets the terrain centre point.
   /// <p>
@@ -157,8 +156,6 @@ class Terrain {
   /// @brief Gets the terrain mesh
   [[nodiscard]] std::unique_ptr<Mesh> &GetMesh();
 
-  std::unique_ptr<Texture> texture_;
-
  private:
   [[nodiscard]] bool InBounds(int a, int b) const;
   void PopulateElements();
@@ -175,11 +172,12 @@ class Terrain {
   std::vector<unsigned> elements_;
   std::vector<float> heights_;
   int num_strips_;
-  int num_triangles;
+  int num_triangles_;
   std::string path_;
   glm::vec3 scale_;
   glm::vec3 shift_;
   int size_;
+  std::string texture_;
   std::vector<float> vertices_;
   int width_;
   std::unique_ptr<Mesh> mesh_;

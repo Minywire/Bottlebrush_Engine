@@ -1,25 +1,23 @@
 #include "Terrain.h"
 
-Terrain::Terrain(const std::string &heightmap, glm::vec3 scale,
-                 glm::vec3 shift) {
-  data_ = stbi_load(heightmap.c_str(), &width_, &depth_, &channels_, 0);
-
-  auto w = static_cast<float>(width_), l = static_cast<float>(depth_);
+Terrain::Terrain(const std::string &path, const std::string &texture,
+                 glm::vec3 scale, glm::vec3 shift) {
+  data_ = stbi_load(path.c_str(), &width_, &depth_, &channels_, 0);
   num_strips_ = depth_;
-  num_triangles = width_ * 2;
-  path_ = heightmap;
+  num_triangles_ = width_ * 2;
+  path_ = path;
   scale_ = scale;
   shift_ = shift;
   size_ = width_ * depth_;
+  texture_ = texture;
+  auto w = static_cast<float>(width_), d = static_cast<float>(depth_);
   centre_ = {(w / 2.0f * scale_.x) - shift_.x, 0.0f,
-             (l / 2.0f * scale_.z) - shift_.z};
+             (d / 2.0f * scale_.z) - shift_.z};
 
   PopulateVertices();
   PopulateElements();
   InitMesh();
-}
 
-Terrain::~Terrain() {
   stbi_image_free(data_);
   data_ = nullptr;
 }
@@ -75,7 +73,7 @@ float Terrain::GetMinHeight() const {
 
 int Terrain::GetNumStrips() const { return num_strips_; }
 
-int Terrain::GetNumTriangles() const { return num_triangles; }
+int Terrain::GetNumTriangles() const { return num_triangles_; }
 
 glm::vec3 Terrain::GetScale() const { return scale_; }
 
@@ -130,7 +128,7 @@ void Terrain::InitMesh() {
   layout.push_back(3);  // 3 elements for position
   layout.push_back(2);  // 2 elements for tex coords
   mesh_ = GraphicsFactory<GraphicsAPI::OpenGL>::CreateMesh(vertices_, elements_,
-                                                           "", 0, layout);
+                                                           texture_, 0, layout);
 }
 
 std::unique_ptr<Mesh> &Terrain::GetMesh() { return mesh_; }
