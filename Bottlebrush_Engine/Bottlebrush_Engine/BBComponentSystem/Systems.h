@@ -32,6 +32,14 @@ public:
 
     /**
      *
+     * @param renderEngine
+     * @param shaderType
+     * @param view
+     */
+    void setLight(RenderEngine & renderEngine, const ShaderType & shaderType, glm::mat4 view);
+
+    /**
+     *
      * @param ecs The registry containing all the entities from which to grab the rendearbles from
      * @param shaderType The type of shader that is used for rendering this model
      * @param renderEngine The specified render engine to use for rendering this model

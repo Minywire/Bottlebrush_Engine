@@ -24,6 +24,19 @@ void Systems::createModelComponents(ECS &ecs, std::unordered_map<std::string, st
     }
 }
 
+void Systems::setLight(RenderEngine & renderEngine, const ShaderType & shaderType, glm::mat4 view)
+{
+    // Inverse of the view matrix gives the world-to-camera transformation
+    glm::mat4 inverseViewMatrix = glm::inverse(view);
+
+    // The camera's position is the translation part of the inverse view matrix
+    glm::vec3 cameraPosition = glm::vec3(inverseViewMatrix[3]);
+
+    renderEngine.GetShader(shaderType)->SetUniform3f("lightColour", 1.0f, 1.0f, 1.0f);
+    renderEngine.GetShader(shaderType)->SetUniform3f("lightPos", 100.0f, 0.0f, 0.0f);
+    renderEngine.GetShader(shaderType)->SetUniform3f("viewPos", cameraPosition.x, cameraPosition.y, cameraPosition.z);
+}
+
 void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEngine & renderEngine, const std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels, glm::mat4 projection, glm::mat4 view)
 {
     auto group = ecs.GetAllEntitiesWith<ModelComponent, TransformComponent>(); //the container with all the matching entities
@@ -46,15 +59,6 @@ void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEn
             renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("view", view);
             renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("model", transform);
 
-            // Inverse of the view matrix gives the world-to-camera transformation
-            glm::mat4 inverseViewMatrix = glm::inverse(view);
-
-            // The camera's position is the translation part of the inverse view matrix
-            glm::vec3 cameraPosition = glm::vec3(inverseViewMatrix[3]);
-
-            renderEngine.GetShader(shaderType)->SetUniform3f("lightColour", 1.0f, 1.0f, 1.0f);
-            renderEngine.GetShader(shaderType)->SetUniform3f("lightPos", 100.0f, 0.0f, 0.0f);
-            renderEngine.GetShader(shaderType)->SetUniform3f("viewPos", cameraPosition.x, cameraPosition.y, cameraPosition.z);
             //draw model
             for (unsigned int i = 0; i < sceneModels.at(currentModelComponent.model_path)->GetSubMeshes().size(); i++) {
                 sceneModels.at(currentModelComponent.model_path)->GetSubMeshes()[i]->SetTexture();
