@@ -8,7 +8,7 @@ Window::Window(WindowMode window_mode, CursorMode cursor_mode,
   }
 
   cursor_mode_ = cursor_mode;
-  fullscreen_ = false;
+  fullscreen_ = true;
   primary_monitor_ = glfwGetPrimaryMonitor();
   window_size_ = {width, height};
   swap_interval_ = kSwapInterval;
