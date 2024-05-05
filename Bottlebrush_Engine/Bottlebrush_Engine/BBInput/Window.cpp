@@ -8,7 +8,7 @@ Window::Window(WindowMode window_mode, CursorMode cursor_mode,
   }
 
   cursor_mode_ = cursor_mode;
-  fullscreen_ = true;
+  fullscreen_ = false;
   primary_monitor_ = glfwGetPrimaryMonitor();
   window_size_ = {width, height};
   swap_interval_ = kSwapInterval;
@@ -147,7 +147,7 @@ void Window::ShiftWindowBuffers() { glfwSwapBuffers(window_context_); }
 void Window::SpawnWindowContext() {
   window_context_ =
       glfwCreateWindow(std::get<0>(window_size_), std::get<1>(window_size_),
-                       window_name_.c_str(), primary_monitor_, nullptr);
+                       window_name_.c_str(), nullptr, nullptr);
 
   if (window_context_ == nullptr) {
     glfwTerminate();
