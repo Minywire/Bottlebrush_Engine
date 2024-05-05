@@ -1,13 +1,13 @@
 ﻿#define GLM_ENABLE_EXPERIMENTAL
 
-#include <Scene.h>
-
 #include <iostream>
 
 #include "Camera.h"
 #include "GraphicsFactory.h"
+#include "Scene.h"
 #include "Skybox.h"
 #include "Terrain.h"
+#include "Window.h"
 #include "glad/glad.h"
 #include "glfw/glfw3.h"
 #include "glm/glm.hpp"
@@ -33,7 +33,7 @@ std::filesystem::path texture_terrain_4_path(
     "Resources/Textures/Terrain/terrain-4.png");
 
 // Settings
-const unsigned int screen_width = 800, screen_height = 600;
+const unsigned int screen_width = 1920, screen_height = 1080;
 bool wireframe = false, grayscale = false, restrict_camera = true;
 glm::vec3 terrain_scale = {1.0f, 0.25f, 1.0f},
           terrain_shift = {0.0f, 16.0f, 0.0f};
@@ -49,38 +49,40 @@ bool exitScreen = false;
 // Timing
 float delta = 0.0f, last_frame = 0.0f;
 
-void ProcessInput(GLFWwindow *window) {
+void ProcessInput(Window window) {
   if (exitScreen) {
-    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT == GLFW_PRESS)) {
-      glfwSetWindowShouldClose(window, true);
+    if (glfwGetMouseButton(window.GetContext(),
+                           GLFW_MOUSE_BUTTON_LEFT == GLFW_PRESS)) {
+      window.SetShouldClose(true);
     }
     return;
   }
 
-  if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+  if (glfwGetKey(window.GetContext(), GLFW_KEY_ESCAPE) == GLFW_PRESS) {
     exitScreen = true;
   }
 
-  if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+  if (glfwGetKey(window.GetContext(), GLFW_KEY_W) == GLFW_PRESS)
     camera.ProcessKeyboard(FORWARD, delta);
-  if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+  if (glfwGetKey(window.GetContext(), GLFW_KEY_S) == GLFW_PRESS)
     camera.ProcessKeyboard(BACKWARD, delta);
-  if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+  if (glfwGetKey(window.GetContext(), GLFW_KEY_A) == GLFW_PRESS)
     camera.ProcessKeyboard(LEFT, delta);
-  if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+  if (glfwGetKey(window.GetContext(), GLFW_KEY_D) == GLFW_PRESS)
     camera.ProcessKeyboard(RIGHT, delta);
-  if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+  if (glfwGetKey(window.GetContext(), GLFW_KEY_SPACE) == GLFW_PRESS)
     camera.ProcessKeyboard(UP, delta);
-  if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+  if (glfwGetKey(window.GetContext(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
     camera.ProcessKeyboard(DOWN, delta);
 }
 
-void FramebufferSizeCallback(GLFWwindow *window, int width, int height) {
+void FramebufferSizeCallback(Window::WindowContext window, int width,
+                             int height) {
   glViewport(0, 0, width, height);
 }
 
-void KeyCallback(GLFWwindow *window, int key, int scancode, int action,
-                 int mods) {
+void KeyCallback(Window::WindowContext window, int key, int scancode,
+                 int action, int mods) {
   if (exitScreen) return;
 
   if (key == GLFW_KEY_C && action == GLFW_PRESS) wireframe = !wireframe;
@@ -94,7 +96,7 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action,
     camera.SetSpeed(camera.GetSpeed() / 2.0f);
 }
 
-void MouseCallback(GLFWwindow *window, double pos_x, double pos_y) {
+void MouseCallback(Window::WindowContext window, double pos_x, double pos_y) {
   auto x = static_cast<float>(pos_x), y = static_cast<float>(pos_y);
 
   if (exitScreen) return;
@@ -113,35 +115,21 @@ void MouseCallback(GLFWwindow *window, double pos_x, double pos_y) {
   camera.ProcessMouseMovement(x_offset, y_offset);
 }
 
-void ScrollCallback(GLFWwindow *window, double x_offset, double y_offset) {
+void ScrollCallback(Window::WindowContext window, double x_offset,
+                    double y_offset) {
   if (exitScreen) return;
   camera.ProcessMouseScroll(static_cast<float>(y_offset));
 }
 
 int main() {
-  glfwInit();
+  Window window(Window::CURSOR, Window::CURSOR_DISABLED, "BOTTLE BRUSH",
+                screen_width, screen_height);
+  window.Create();
 
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#ifdef __APPLE__
-  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-
-  GLFWwindow *window = glfwCreateWindow(screen_width, screen_height,
-                                        "Bottlebrush Engine", nullptr, nullptr);
-  if (window == nullptr) {
-    std::cerr << "ERROR: Failed to create GLFW window!" << std::endl;
-    glfwTerminate();
-    return -1;
-  }
-  glfwMakeContextCurrent(window);
-  glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
-  glfwSetKeyCallback(window, KeyCallback);
-  glfwSetCursorPosCallback(window, MouseCallback);
-  glfwSetScrollCallback(window, ScrollCallback);
-
-  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+  glfwSetFramebufferSizeCallback(window.GetContext(), FramebufferSizeCallback);
+  glfwSetKeyCallback(window.GetContext(), KeyCallback);
+  glfwSetCursorPosCallback(window.GetContext(), MouseCallback);
+  glfwSetScrollCallback(window.GetContext(), ScrollCallback);
 
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     std::cerr << "ERROR: Failed to initialize GLAD!" << std::endl;
@@ -218,7 +206,7 @@ int main() {
                                 "Resources/Shaders/Fragment/Basic.frag");
 
   // RENDER LOOP
-  while (!glfwWindowShouldClose(window)) {
+  while (!window.GetShouldClose()) {
     auto current_frame = static_cast<float>(glfwGetTime());
     delta = current_frame - last_frame;
     last_frame = current_frame;
@@ -335,13 +323,11 @@ int main() {
       camera.SetViewMatrix(position, front, up);
     }
 
-    // Swap out buffers and poll for input events
-    glfwSwapBuffers(window);
-    glfwPollEvents();
+    window.Swap();
+    window.Poll();
   }
 
-
-  glfwTerminate();
+  window.Remove();
 
   return 0;
 }
