@@ -29,6 +29,8 @@ Window::Window(WindowMode window_mode, CursorMode cursor_mode,
   glfwWindowHint(GLFW_REFRESH_RATE, video_mode_->refreshRate);
   glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
   glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+  glfwWindowHint(GLFW_SCALE_TO_MONITOR, GLFW_TRUE);
+  glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
   glfwWindowHint(GLFW_SAMPLES, kMultiSamples);
 }
 
