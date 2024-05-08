@@ -122,7 +122,7 @@ void ScrollCallback(Window::WindowContext window, double x_offset,
 }
 
 int main() {
-  Window window(Window::CURSOR, Window::CURSOR_DISABLED, "BOTTLE BRUSH",
+  Window window(Window::kCursor, Window::kCursorDisabled, "BOTTLE BRUSH",
                 screen_width, screen_height);
   window.Create();
 

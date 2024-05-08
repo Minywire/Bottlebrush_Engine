@@ -1,6 +1,6 @@
 #include "Window.h"
 
-Window::Window(WindowMode window_mode, CursorMode cursor_mode,
+Window::Window(InputMode window_mode, InputModeType cursor_mode,
                const std::string& window_name, int width, int height) {
   if (!glfwInit()) {
     glfwTerminate();
@@ -39,8 +39,8 @@ void Window::Create() {
   GetFrameBufferSize();
   MakeContextCurrent();
   AssignSwapInterval();
-  if (window_mode_ == CURSOR) SetCursorInputMode();
-  if (window_mode_ == RAWMTN) SetRawMtnInputMode();
+  if (window_mode_ == kCursor) SetCursorInputMode();
+  if (window_mode_ == kRawMtn) SetRawMtnInputMode();
 }
 
 float Window::GetAspectRatio() const {
@@ -50,7 +50,7 @@ float Window::GetAspectRatio() const {
 
 Window::WindowContext Window::GetContext() const { return window_context_; }
 
-Window::CursorMode Window::GetCursorMode() const { return cursor_mode_; }
+Window::InputModeType Window::GetCursorMode() const { return cursor_mode_; }
 
 bool Window::GetFullscreen() const { return fullscreen_; }
 
@@ -66,13 +66,13 @@ std::tuple<int, int> Window::GetSize() const { return window_size_; }
 
 Window::WindowVideoMode Window::GetVideoMode() const { return video_mode_; }
 
-Window::WindowMode Window::GetWindowMode() const { return window_mode_; }
+Window::InputMode Window::GetWindowMode() const { return window_mode_; }
 
 void Window::Remove() { CeaseWindowContext(); }
 
 void Window::Swap() { ShiftWindowBuffers(); }
 
-void Window::SetCursorMode(CursorMode cursor_mode) {
+void Window::SetCursorMode(InputModeType cursor_mode) {
   cursor_mode_ = cursor_mode;
 }
 
@@ -93,10 +93,10 @@ void Window::SetSize(int width, int height) {
   GetFrameBufferSize();
 }
 
-void Window::SetWindowMode(WindowMode window_mode) {
+void Window::SetWindowMode(InputMode window_mode) {
   window_mode_ = window_mode;
-  if (window_mode_ == CURSOR) SetCursorInputMode();
-  if (window_mode_ == RAWMTN) SetRawMtnInputMode();
+  if (window_mode_ == kCursor) SetCursorInputMode();
+  if (window_mode_ == kRawMtn) SetRawMtnInputMode();
 }
 
 void Window::Poll() { PollEventsListener(); }
