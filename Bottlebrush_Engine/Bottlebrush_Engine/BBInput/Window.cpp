@@ -9,10 +9,10 @@ Window::Window(InputMode window_mode, InputModeType cursor_mode,
 
   cursor_mode_ = cursor_mode;
   fullscreen_ = false;
-  primary_monitor_ = glfwGetPrimaryMonitor();
+  primary_monitor_ = nullptr;
   window_size_ = {width, height};
   swap_interval_ = kSwapInterval;
-  video_mode_ = glfwGetVideoMode(primary_monitor_);
+  video_mode_ = glfwGetVideoMode(glfwGetPrimaryMonitor());
   window_mode_ = window_mode;
   window_name_ = window_name;
 
@@ -64,6 +64,8 @@ bool Window::GetShouldClose() const {
 
 std::tuple<int, int> Window::GetSize() const { return window_size_; }
 
+int Window::GetSwapInterval() const { return swap_interval_; }
+
 Window::WindowVideoMode Window::GetVideoMode() const { return video_mode_; }
 
 Window::InputMode Window::GetWindowMode() const { return window_mode_; }
@@ -90,6 +92,12 @@ void Window::SetShouldClose(bool should_close) {
 void Window::SetSize(int width, int height) {
   window_size_ = {width, height};
   SetWindowFrameSize();
+  GetFrameBufferSize();
+}
+
+void Window::SetSwapInterval(int swap_interval) {
+  swap_interval_ = swap_interval;
+  AssignSwapInterval();
   GetFrameBufferSize();
 }
 

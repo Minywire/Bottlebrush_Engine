@@ -37,6 +37,7 @@ class Window {
   [[nodiscard]] WindowMonitor GetPrimaryMonitor() const;
   [[nodiscard]] bool GetShouldClose() const;
   [[nodiscard]] std::tuple<int, int> GetSize() const;
+  [[nodiscard]] int GetSwapInterval() const;
   [[nodiscard]] WindowVideoMode GetVideoMode() const;
   [[nodiscard]] InputMode GetWindowMode() const;
   void Remove();
@@ -45,6 +46,7 @@ class Window {
   void SetFullscreen(bool fullscreen);
   void SetShouldClose(bool should_close);
   void SetSize(int width, int height);
+  void SetSwapInterval(int swap_interval);
   void SetWindowMode(InputMode window_mode);
   void Poll();
 
