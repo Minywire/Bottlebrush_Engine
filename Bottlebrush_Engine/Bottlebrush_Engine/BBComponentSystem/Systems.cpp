@@ -34,7 +34,7 @@ void Systems::setLight(RenderEngine & renderEngine, const ShaderType & shaderTyp
     glm::vec3 cameraPosition = glm::vec3(inverseViewMatrix[3]);
 
     renderEngine.GetShader(shaderType)->SetUniform3f("lightColour", 1.0f, 1.0f, 1.0f);
-    renderEngine.GetShader(shaderType)->SetUniform3f("direction", 100.0f, 0.0f, 0.0f);
+    renderEngine.GetShader(shaderType)->SetUniform3f("direction", -0.2f, -1.0f, -0.3f);
     renderEngine.GetShader(shaderType)->SetUniform3f("viewPos", cameraPosition.x, cameraPosition.y, cameraPosition.z);
 }
 
