@@ -6,9 +6,17 @@ in vec3 fragPos;
 
 out vec4 color;
 
+struct Material {
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+	float shininess;
+};
+
+
 uniform vec3 lightColour;
 uniform sampler2D u_Texture;
-uniform vec3 lightPos;
+uniform vec3 lightDir;
 uniform vec3 viewPos;
 
 void main()
@@ -19,7 +27,7 @@ void main()
 
 	// Diffuse
 	vec3 norm = normalize(normal);
-	vec3 lightDir = normalize(lightPos - fragPos);
+	vec3 lightDir = normalize(lightDir - fragPos);
 	float diff = max(dot(norm, lightDir), 0.0f);
 	vec3 diffuse = diff * lightColour;
 
