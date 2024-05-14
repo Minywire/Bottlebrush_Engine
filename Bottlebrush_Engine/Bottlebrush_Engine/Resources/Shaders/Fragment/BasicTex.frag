@@ -16,7 +16,7 @@ struct Material {
 
 uniform vec3 lightColour;
 uniform sampler2D u_Texture;
-uniform vec3 lightDir;
+uniform vec3 direction;
 uniform vec3 viewPos;
 
 void main()
@@ -27,7 +27,7 @@ void main()
 
 	// Diffuse
 	vec3 norm = normalize(normal);
-	vec3 lightDir = normalize(lightDir - fragPos);
+	vec3 lightDir = normalize(direction - fragPos);
 	float diff = max(dot(norm, lightDir), 0.0f);
 	vec3 diffuse = diff * lightColour;
 
