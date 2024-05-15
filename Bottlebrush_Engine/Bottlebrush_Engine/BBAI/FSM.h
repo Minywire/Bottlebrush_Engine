@@ -2,37 +2,38 @@
 // Created by Alan 24/04/2024
 //
 
-/// @author
-/// @brief states that the FSM can be in
-enum class FSMState {
-	IDLE,
-	PATROL,
-	SEEK,
-	CHASE,
-};
-
-/// @author Alan
-/// @brief Events that can occur
-enum class FSMEvent {
-	PlayerSpotted,
-	PlayerLost,
-	PatrolMode
-};
+#include "State.h"
 
 /// @author Alan
 /// @brief Finite State Machine for NPCs
+template <typename entity_type>
 class FSM
 {
 public:
-  FSM();
+  FSM(entity_type* FSMowner);
+  virtual ~FSM();
 
-  /// @author Alan
-  /// @brief event handler for when different events occur
-  /// @param event is the type of event that occurred
-  void HandleEvent(FSMEvent event);
+  void update() const;
 
-  FSMState GetCurrentState() const;
+  void changeState(State<entity_type>* newState); // @TODO find lua object to replace State<entity_type>
+
+  void revertToPreviousState();
+
+  bool isInState(const State<entity_type>& st) const;
+
+  // set states
+  void setPreviousState(const State<entity_type>* st); // @TODO find lua object to replace State<entity_type>
+  void setCurrentState(const State<entity_type>* st);
+  void setGlobalState(const State<entity_type>* st);
+
+  State<entity_type>& getPreviousState();
+  State<entity_type>& getCurrentState();
+  State<entity_type>& getGlobalState();
 
 private:
-  FSMState m_currentState;
+	entity_type* m_owner; // owning AI object
+	
+	State<entity_type>* m_previousState; // @TODO find lua object to replace State<entity_type>
+	State<entity_type>*	m_globalState;
+	State<entity_type>* m_currentState;
 };
