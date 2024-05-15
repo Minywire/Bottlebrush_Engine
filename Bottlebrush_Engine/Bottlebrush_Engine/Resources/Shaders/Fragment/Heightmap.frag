@@ -1,10 +1,16 @@
 #version 330 core
 
-out vec4 frag_col;
+uniform bool grayscale;
+uniform sampler2D detail;
 
-in float height;
+layout(location = 0) out vec4 frag_color;
+
+in vec4 tex_color;
+in vec2 tex_coord;
 
 void main() {
-    float shift = (height + 16.0f) / 32.0f;
-    frag_col = vec4(shift, shift, shift, 1.0f);
+    vec4 detail_color = texture(detail, tex_coord);
+
+    if (grayscale) frag_color = tex_color;
+    else frag_color = tex_color * detail_color;
 }

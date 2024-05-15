@@ -34,9 +34,8 @@ void OpenGLMesh::CreateMesh(
     m_VertexArray = std::make_unique<OpenGLVertexArray>();
 
     // define the format of each vertex
-    for (unsigned int i = 0; i < layout.size(); i++) {
-      //@TODO DataType is hard coded currently.
-      m_VertexBufferLayout->Push(layout[i], DataType::FLOAT);
+    for (unsigned int i : layout) {
+      m_VertexBufferLayout->Push(i, DataType::FLOAT);
     }
 
     // add current buffer with its layout specs to the vertex array
@@ -51,7 +50,7 @@ void OpenGLMesh::CreateMesh(
     m_Texture->CreateTexture(textureFilePath);
 
     // bind the texture
-    SetTexture(); // @TODO probably not needed? as it needs to bind before draw call
+//    SetTexture();
 }
 
 void OpenGLMesh::SetTexture(unsigned int slot) {

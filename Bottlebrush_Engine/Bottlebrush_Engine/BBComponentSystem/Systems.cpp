@@ -6,7 +6,10 @@
 
 void Systems::generateModelFromComponent(const ModelComponent & modelComp, std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels)
 {
-    sceneModels.emplace(std::pair<std::string, std::unique_ptr<Model>>(modelComp.model_path, GraphicsFactory<GraphicsAPI::OpenGL>::CreateModel(modelComp.model_path, modelComp.material_path)));
+    if(sceneModels.find(modelComp.model_path) == sceneModels.end())
+    {
+        sceneModels.emplace(std::pair<std::string, std::unique_ptr<Model>>(modelComp.model_path, GraphicsFactory<GraphicsAPI::OpenGL>::CreateModel(modelComp.model_path, modelComp.material_path)));
+    }
 }
 
 void Systems::createModelComponents(ECS &ecs, std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels)
@@ -19,6 +22,19 @@ void Systems::createModelComponents(ECS &ecs, std::unordered_map<std::string, st
 
         generateModelFromComponent(currentModelComponent, sceneModels);
     }
+}
+
+void Systems::setLight(RenderEngine & renderEngine, const ShaderType & shaderType, glm::mat4 view)
+{
+    // Inverse of the view matrix gives the world-to-camera transformation
+    glm::mat4 inverseViewMatrix = glm::inverse(view);
+
+    // The camera's position is the translation part of the inverse view matrix
+    glm::vec3 cameraPosition = glm::vec3(inverseViewMatrix[3]);
+
+    renderEngine.GetShader(shaderType)->SetUniform3f("lightColour", 1.0f, 1.0f, 1.0f);
+    renderEngine.GetShader(shaderType)->SetUniform3f("lightPos", 100.0f, 0.0f, 0.0f);
+    renderEngine.GetShader(shaderType)->SetUniform3f("viewPos", cameraPosition.x, cameraPosition.y, cameraPosition.z);
 }
 
 void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEngine & renderEngine, const std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels, glm::mat4 projection, glm::mat4 view)
