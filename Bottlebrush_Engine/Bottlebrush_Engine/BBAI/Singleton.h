@@ -6,12 +6,14 @@
 
 #include <memory>
 
+/// @author Alan
 /// @brief singleton pattern provider
 /// @tparam T any object type
 template <class T>
 class Singleton
 {
 	public:
+		/// @author Alan
 		/// @brief returns an static instance of the object, checks if it exists first
 		/// @return a static object
 		static T& Instance() 
