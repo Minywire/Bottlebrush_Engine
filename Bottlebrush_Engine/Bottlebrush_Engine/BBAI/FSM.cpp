@@ -46,7 +46,7 @@ void FSM<entity_type>::revertToPreviousState()
 template <typename entity_type>
 bool FSM<entity_type>::isInState(const State<entity_type>& st) const 
 {
-  return typeid(*m_currentState) == typeid(st);
+        return typeid(*m_currentState) == typeid(st);
 }
 
 template <typename entity_type>
