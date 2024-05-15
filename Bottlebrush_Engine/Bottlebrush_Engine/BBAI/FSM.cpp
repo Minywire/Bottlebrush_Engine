@@ -20,8 +20,6 @@ FSM<entity_type>::~FSM()
 
 }
 
-
-
 template <typename entity_type>
 void FSM<entity_type>::update() const 
 {
