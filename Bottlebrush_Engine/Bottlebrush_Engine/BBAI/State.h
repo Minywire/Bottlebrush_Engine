@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "Singleton.h"
+
 /// @author Alan
 /// @brief abstract class that defines how states of an FSM is structured
 /// @tparam entity_type 
