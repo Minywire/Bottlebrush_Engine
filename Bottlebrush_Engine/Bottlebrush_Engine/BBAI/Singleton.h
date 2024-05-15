@@ -9,7 +9,7 @@
 /// @author Alan
 /// @brief singleton pattern provider
 /// @tparam T any object type
-template <class T>
+template <typename T>
 class Singleton
 {
 	public:
