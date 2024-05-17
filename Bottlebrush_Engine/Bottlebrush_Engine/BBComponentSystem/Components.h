@@ -3,9 +3,11 @@
 //
 #pragma once
 
-#include <string>
 #include <glm/glm.hpp>
 #include <sol/sol.hpp>
+#include <string>
+
+#include "NPC.h"
 
 /**
  * @brief Component that binds a lua function to an Entity
@@ -56,4 +58,9 @@ struct PlayerControllerComponent
     float current_speed;
     float acceleration_rate;
     float deceleration_rate;
+};
+
+struct AIControllerComponent
+{
+  NPC npc;
 };
