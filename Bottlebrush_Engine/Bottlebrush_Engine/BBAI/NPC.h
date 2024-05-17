@@ -13,8 +13,6 @@ public:
 
     void update();
 
-
-
 private:
     std::unique_ptr<FSM<NPC>> m_FSM;
 };

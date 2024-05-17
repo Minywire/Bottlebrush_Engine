@@ -46,6 +46,6 @@ private:
 	entity_type* m_owner; // owning AI object
 	
 	State<entity_type>* m_previousState; // @TODO find lua object to replace State<entity_type>
-	State<entity_type>*	m_globalState;
+	State<entity_type>* m_globalState;
 	State<entity_type>* m_currentState;
 };
