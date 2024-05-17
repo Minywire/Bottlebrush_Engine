@@ -57,6 +57,10 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     {
         loadModel(ecs, entity, table["Model"]);
     }
+    if(table["AI"].valid())
+    {
+      loadAIController(ecs, entity, table["AI"]);
+    }
 }
 
 void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& table, float xPos, float yPos, float zPos)
@@ -68,6 +72,10 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     if(table["Model"].valid())
     {
         loadModel(ecs, entity, table["Model"]);
+    }
+    if(table["AI"].valid())
+    {
+      loadAIController(ecs, entity, table["AI"]);
     }
 }
 
@@ -125,4 +133,9 @@ void EntityFactory::loadModel(ECS &ecs, Entity &entity, const sol::table &model)
 
     modelComponent.model_path = model_location;
     modelComponent.material_path = material_location;
+}
+
+void EntityFactory::loadAIController(ECS& ecs, Entity& entity, const sol::table& ai)
+{
+    AIControllerComponent& aicComponent = entity.AddComponent<AIControllerComponent>(ecs.getReg()); // add an AI controller to entity
 }
