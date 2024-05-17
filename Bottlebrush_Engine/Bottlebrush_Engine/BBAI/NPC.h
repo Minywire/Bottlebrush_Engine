@@ -6,7 +6,8 @@
 
 #include "FSM.h"
 
-class NPC {
+class NPC 
+{
 public:
     NPC();
     virtual ~NPC();
