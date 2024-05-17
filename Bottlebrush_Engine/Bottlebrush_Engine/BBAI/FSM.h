@@ -47,7 +47,7 @@ public:
 	/// @brief checks whether the param st is indeed what the current state is
 	/// @param st is the state to check whether the FSM is currently in
 	/// @return true or false of whether it is currently in that state or not
-	bool isInState(const State<entity_type>& st) const  return typeid(*m_currentState) == typeid(st); // @TODO find lua object to replace State<entity_type>
+	bool isInState(const State<entity_type>& st) const { return typeid(*m_currentState) == typeid(st); } // @TODO find lua object to replace State<entity_type>
 
 	// set states
 	void setPreviousState(const State<entity_type>* st) { m_previousState = st; } // @TODO find lua object to replace State<entity_type>
