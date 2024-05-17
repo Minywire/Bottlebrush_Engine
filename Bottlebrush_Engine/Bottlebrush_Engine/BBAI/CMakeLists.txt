@@ -5,10 +5,10 @@ add_library(BBAI STATIC)
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(SOURCES FSM.cpp FSM.h
+set(SOURCES  FSM.h
 	Singleton.h
 	State.h
-		NPC.h NPC.cpp)
+	NPC.h NPC.cpp)
 
 target_sources(BBAI PRIVATE ${SOURCES})
 
