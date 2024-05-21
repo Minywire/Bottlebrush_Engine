@@ -6,21 +6,21 @@
 state_global = {}
 
 
-state_global["enter"] = function(player)
+state_global["onEnter"] = function(player)
 	print("entered global state")
 
 
 end
 
 
-state_global["execute"] = function(player)
+state_global["Update"] = function(player)
 	print("in global state")
 
 
 end
 
   
-state_global["exit"] = function(player)
+state_global["onExit"] = function(player)
 	print("exited global state")
 
 
@@ -44,7 +44,7 @@ state_idle["onEnter"] = function(player)
 
 end
 
-state_idle["update"] = function(player)
+state_idle["Update"] = function(player)
 	print("in idle state")
 
 end
@@ -68,7 +68,7 @@ state_patrol["onEnter"] = function(player)
 end
 
 
-state_patrol["update"] = function(player)
+state_patrol["Update"] = function(player)
 	print ("in patrol state")
 
 end

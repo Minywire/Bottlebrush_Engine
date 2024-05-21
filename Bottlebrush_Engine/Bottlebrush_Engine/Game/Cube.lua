@@ -19,8 +19,8 @@ Entity = {
     Model = {
         ModelPath = "Resources/Models/Rock_THE.obj",
         MaterialPath = "Resources/heightmaps/Grass.png"
-    }
+    },
     AI = {
-        States = "Game/AI/States.lua"
+        StatesPath = "Game/AI/States.lua"
     }
 }
