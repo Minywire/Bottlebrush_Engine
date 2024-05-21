@@ -26,6 +26,7 @@ void Systems::createModelComponents(ECS &ecs, std::unordered_map<std::string, st
 
 void Systems::setLight(RenderEngine & renderEngine, const ShaderType & shaderType, glm::mat4 view)
 {
+    // we can ignore this given we're handling a direction instead of a pos - nvm its needed for specular
     // Inverse of the view matrix gives the world-to-camera transformation
     glm::mat4 inverseViewMatrix = glm::inverse(view);
 
@@ -33,7 +34,7 @@ void Systems::setLight(RenderEngine & renderEngine, const ShaderType & shaderTyp
     glm::vec3 cameraPosition = glm::vec3(inverseViewMatrix[3]);
 
     renderEngine.GetShader(shaderType)->SetUniform3f("lightColour", 1.0f, 1.0f, 1.0f);
-    renderEngine.GetShader(shaderType)->SetUniform3f("lightPos", 100.0f, 0.0f, 0.0f);
+    renderEngine.GetShader(shaderType)->SetUniform3f("direction", 0.2f, -0.7f, 0.4f);
     renderEngine.GetShader(shaderType)->SetUniform3f("viewPos", cameraPosition.x, cameraPosition.y, cameraPosition.z);
 }
 
