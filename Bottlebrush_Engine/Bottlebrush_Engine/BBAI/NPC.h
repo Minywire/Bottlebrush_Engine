@@ -15,12 +15,12 @@ public:
     NPC();
     virtual ~NPC();
 
-    void initFSM(const std::filesystem::path& statesPath);
+    void initFSM(const std::filesystem::path& statesPath, const std::string& initialState);
 
     void Update();
 
     FSM<NPC>& GetFSM() { return m_FSM; }
 
 private:
-    FSM<NPC>& m_FSM;
+    FSM<NPC> m_FSM;
 };

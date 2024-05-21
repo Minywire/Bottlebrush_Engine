@@ -20,7 +20,7 @@ public:
 	explicit FSM(entity_type* FSMOwner) :
             m_owner(FSMOwner),
             m_currentState(""),
-            m_globalState("global_state"),
+            m_globalState("state_global"),
             m_previousState(""),
             m_statePath("")
 	{};
@@ -70,14 +70,12 @@ public:
 	{
 		if(path.extension() != ".lua") { throw std::runtime_error("Lua file is no lua file"); }
 		m_statePath = path;
-		std::cout << "State Path: " << m_statePath << std::endl; //@Debug Line, to be removed
 		m_lua.getLuaState().script_file(path.string());
 	}
 
 	std::filesystem::path GetStatePath() { return m_statePath; }
 
 private:
-    friend class Singleton<FSM<entity_type>>; // Allow Singleton to access the private constructor
 	entity_type* m_owner; // owning AI object
 
     std::filesystem::path m_statePath;

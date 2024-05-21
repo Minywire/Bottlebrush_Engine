@@ -85,3 +85,14 @@ void Systems::updateTransformComponent(ECS &ecs, const std::string& tag, glm::ve
     }
 
 }
+
+void Systems::updateAI(ECS& ecs) 
+{
+    auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
+
+    for (auto entity : group)
+    {
+        AIControllerComponent& AIC = group.get<AIControllerComponent>(entity);
+        AIC.npc.Update();
+    }
+}
