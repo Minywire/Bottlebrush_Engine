@@ -45,6 +45,7 @@ void Scene::init()
     }//load the master lua scene script containing all entities
 
     bbSystems.createModelComponents(bbECS, resources.getSceneModels());
+    bbSystems.createAIComponents(bbECS, resources.getSceneNPCs(), lua.getLuaState());
 }
 
 void Scene::update(float deltaTime)
@@ -57,7 +58,7 @@ void Scene::update(float deltaTime)
     if (accumulatedFrameTime > UpdateAIInterval) 
     {
         std::cout << "update all AI call" << std::endl;
-        Systems::updateAI(bbECS);
+        Systems::updateAI(resources.getSceneNPCs(), lua.getLuaState());
         accumulatedFrameTime = 0;
     }
 }

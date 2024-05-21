@@ -28,6 +28,7 @@ public:
 	/// @author Alan
 	/// @brief normal update call for state machine
 	/// runs current state update, and global state update
+	/// @param lua_state the script to read from
 	void update(sol::state & lua_state)
 	{
         if (m_globalState.compare("") != 0) lua_state[m_globalState]["Update"](m_owner);
@@ -38,6 +39,7 @@ public:
 	/// @author Alan
 	/// @brief changes states, updates previous state, runs onExit and onEnter accordingly
 	/// @param newState the new state to transition to
+	/// @param lua_state the script to read from
 	void changeState(const std::string& newState, sol::state & lua_state) {
         m_previousState = m_currentState;  // track previous state
         lua_state[m_currentState]["onExit"](m_owner);   // execute exit code

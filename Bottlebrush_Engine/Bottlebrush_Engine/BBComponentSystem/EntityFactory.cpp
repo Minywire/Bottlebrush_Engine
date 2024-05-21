@@ -144,5 +144,6 @@ void EntityFactory::loadAIController(ECS& ecs, Entity& entity, const sol::table&
 
     std::cout << "Loaded AI component" << std::endl; //@Debug Line, to be removed
 
-    aicComponent.npc.initFSM(statesPath, initialState);
+    aicComponent.initialState = initialState;
+    aicComponent.statesPath = statesPath;
 }

@@ -60,7 +60,11 @@ struct PlayerControllerComponent
     float deceleration_rate;
 };
 
+/**
+ * @brief Component that contains data for AI controlled NPCs
+ */
 struct AIControllerComponent
 {
-    NPC npc;
+    std::filesystem::path statesPath;
+    std::string initialState;
 };
