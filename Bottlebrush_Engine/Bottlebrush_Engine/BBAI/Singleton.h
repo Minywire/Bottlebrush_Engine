@@ -16,24 +16,30 @@ public:
     /// @author Alan
     /// @brief returns an static instance of the object, checks if it exists first
     /// @return a static object
-    static T& Instance()
+    template <typename... Args>
+    static T& Instance(Args... args)
     {
         // check if instance exists first
-        if (_instance == nullptr)
+        if (!_instance)
         {
-                _instance = new T();
+                _instance = std::unique_ptr<T>(new T(std::forward<Args>(args)...));
         }
-        else return *_instance;
+        return *_instance;
     }
 
     // delete copy ctor
     Singleton(Singleton const&) = delete;
     Singleton& operator=(Singleton const&) = delete;
 
+protected:
+    // hide ctor, dtor
+    Singleton(){};
+    ~Singleton(){};
+
 private:
     static std::unique_ptr<T> _instance;
 
-    // hide ctor, dtor
-    Singleton() {};
-    ~Singleton() {};
 };
+
+template <typename T>
+std::unique_ptr<T> Singleton<T>::_instance = nullptr;
