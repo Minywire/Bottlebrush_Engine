@@ -137,5 +137,12 @@ void EntityFactory::loadModel(ECS &ecs, Entity &entity, const sol::table &model)
 
 void EntityFactory::loadAIController(ECS& ecs, Entity& entity, const sol::table& ai)
 {
+    std::string statesPath = ai["StatesPath"];
+    std::string initialState = ai["InitialState"];
+
     AIControllerComponent& aicComponent = entity.AddComponent<AIControllerComponent>(ecs.getReg()); // add an AI controller to entity
+
+    std::cout << "Loaded AI component" << std::endl; //@Debug Line, to be removed
+
+    aicComponent.npc.initFSM(statesPath, initialState);
 }
