@@ -3,6 +3,7 @@
 //
 
 #include "Systems.h"
+#include "BBScript.h"
 
 void Systems::generateModelFromComponent(const ModelComponent & modelComp, std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels)
 {
@@ -21,6 +22,19 @@ void Systems::createModelComponents(ECS &ecs, std::unordered_map<std::string, st
         auto& currentModelComponent = group.get<ModelComponent>(entity);
 
         generateModelFromComponent(currentModelComponent, sceneModels);
+    }
+}
+
+void Systems::createAIComponents(ECS& ecs, std::vector<NPC>& sceneNPCs, sol::state & lua_state) 
+{
+    auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
+
+    for (auto entity : group)
+    {
+        auto& aic = group.get<AIControllerComponent>(entity);
+
+        sceneNPCs.emplace_back(aic.statesPath, aic.initialState);
+        lua_state.script_file(aic.statesPath.string());
     }
 }
 
@@ -86,13 +100,11 @@ void Systems::updateTransformComponent(ECS &ecs, const std::string& tag, glm::ve
 
 }
 
-void Systems::updateAI(ECS& ecs) 
-{
-    auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
 
-    for (auto entity : group)
+void Systems::updateAI(std::vector<NPC>& sceneNPCs, sol::state & lua_state) 
+{
+    for (auto& npc : sceneNPCs)
     {
-        //AIControllerComponent& AIC = group.get<AIControllerComponent>(entity);
-        //AIC.npc.Update();
+        npc.Update(lua_state);
     }
 }

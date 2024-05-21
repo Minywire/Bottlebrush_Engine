@@ -9,6 +9,8 @@
 #include <Components.h>
 #include <GraphicsFactory.h>
 #include "glm/gtc/matrix_transform.hpp"
+#include "NPC.h"
+
 /**
  * @class systems
  * @Author Marco Garzon Lara
@@ -29,6 +31,8 @@ public:
      * @param sceneModels The structure containing the models in a scene
      */
     void createModelComponents(ECS &ecs, std::unordered_map<std::string, std::unique_ptr<Model>>& sceneModels);
+
+    void createAIComponents(ECS &ecs, std::vector<NPC>& sceneNPCs, sol::state & lua_state);
 
     /**
      *
@@ -58,5 +62,11 @@ public:
      */
     void updateTransformComponent(ECS &ecs, const std::string& tag, glm::vec3 trans, glm::vec3 rot);
 
-    static void updateAI(ECS &ecs);
+    /**
+     * @author Alan
+     * @brief update AI call
+     * @param sceneNPCs vector of all npcs to iterate through
+     * @param lua_state AI script to read for FSM in NPCs
+     */
+    static void updateAI(std::vector<NPC> &sceneNPCs, sol::state & lua_state);
 };
