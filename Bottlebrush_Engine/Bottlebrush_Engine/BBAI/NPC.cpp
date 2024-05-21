@@ -4,16 +4,22 @@
 
 #include "NPC.h"
 
-NPC::NPC()
+NPC::NPC() : m_FSM(Singleton<FSM<NPC>>::Instance(this)) 
 {
-    m_FSM = std::make_unique<FSM<NPC>>(FSM<NPC>(this));
+
 }
 
 NPC::~NPC()
 {
 
 }
-void NPC::update()
+
+void NPC::initFSM(const std::filesystem::path& statesPath) 
 {
-    m_FSM->update();
+	m_FSM.SetStatePath(statesPath);
+}
+
+void NPC::Update()
+{
+	m_FSM.update();
 }
