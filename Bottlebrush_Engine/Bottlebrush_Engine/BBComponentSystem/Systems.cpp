@@ -92,7 +92,7 @@ void Systems::updateAI(ECS& ecs)
 
     for (auto entity : group)
     {
-        AIControllerComponent& AIC = group.get<AIControllerComponent>(entity);
-        AIC.npc.Update();
+        //AIControllerComponent& AIC = group.get<AIControllerComponent>(entity);
+        //AIC.npc.Update();
     }
 }
