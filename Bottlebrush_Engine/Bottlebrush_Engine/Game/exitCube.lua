@@ -19,5 +19,9 @@ Entity = {
     Model = {
         ModelPath = "Resources/Models/Splashcreen.obj",
         MaterialPath = "Resources/Models/splashscreen.png"
+    },
+    AI = {
+        StatesPath = "Game/AI/States.lua",
+        InitialState = "state_patrol"
     }
 }

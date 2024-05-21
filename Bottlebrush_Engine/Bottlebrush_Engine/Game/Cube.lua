@@ -21,6 +21,7 @@ Entity = {
         MaterialPath = "Resources/heightmaps/Grass.png"
     },
     AI = {
-        StatesPath = "Game/AI/States.lua"
+        StatesPath = "Game/AI/States.lua",
+        InitialState = "state_idle"
     }
 }
