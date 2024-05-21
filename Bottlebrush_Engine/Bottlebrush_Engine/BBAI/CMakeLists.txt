@@ -12,4 +12,4 @@ set(SOURCES  FSM.h
 
 target_sources(BBAI PRIVATE ${SOURCES})
 
-target_link_libraries(BBAI PRIVATE )
+target_link_libraries(BBAI PRIVATE BBScript)
