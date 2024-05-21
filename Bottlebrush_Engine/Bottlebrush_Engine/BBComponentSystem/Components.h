@@ -62,5 +62,5 @@ struct PlayerControllerComponent
 
 struct AIControllerComponent
 {
-  NPC npc;
+    NPC npc;
 };
