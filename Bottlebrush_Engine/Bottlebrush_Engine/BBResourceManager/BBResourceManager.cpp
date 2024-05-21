@@ -13,3 +13,13 @@ std::unordered_map<std::string, std::unique_ptr<Model>> & BBResourceManager::get
 {
     return sceneModels;
 }
+
+const std::vector<NPC>& BBResourceManager::getSceneNPCs() const
+{
+    return sceneNPCs;
+}
+
+std::vector<NPC>& BBResourceManager::getSceneNPCs()
+{
+    return sceneNPCs;
+}
