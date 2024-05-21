@@ -58,5 +58,5 @@ public:
      */
     void updateTransformComponent(ECS &ecs, const std::string& tag, glm::vec3 trans, glm::vec3 rot);
 
-    void updateAI(ECS &ecs);
+    static void updateAI(ECS &ecs);
 };
