@@ -205,6 +205,8 @@ int main() {
                                 "Resources/Shaders/Vertex/Basic.vert",
                                 "Resources/Shaders/Fragment/Basic.frag");
 
+  
+
   // RENDER LOOP
   while (!window.GetShouldClose()) {
     auto current_frame = static_cast<float>(glfwGetTime());
@@ -269,7 +271,7 @@ int main() {
                          testCube->GetSubMeshes()[i]->GetIndexCount());
     }
 
-    gameScene.update();  // currently this is just drawing all the models in the
+    gameScene.update(delta);  // currently this is just drawing all the models in the
                          // sceneModels map
 
     if (restrict_camera) {

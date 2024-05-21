@@ -15,12 +15,14 @@ void Scene::createEntityAndTransform(const std::string & lua_file, float xPos, f
     entityFactory.create_from_file(bbECS, lua.getLuaState(), lua_file, xPos, yPos, zPos);
 }
 
-Scene::Scene(const std::string & lua_master)
+Scene::Scene(const std::string& lua_master)
+    : accumulatedFrameTime(0), UpdateAIInterval(2.f)
 {
     renderEngine = GraphicsFactory<GraphicsAPI::OpenGL>::CreateRenderer();
     masterLuaFile = lua_master;
     lua.getLuaState().set_function("create_entity", &Scene::createEntity, this); //register create entity function into lua state of this instance
     lua.getLuaState().set_function("create_entityTR", &Scene::createEntityAndTransform, this);
+
 }
 
 void Scene::setProjectionMatrix(glm::mat4 projMatrix)
@@ -45,10 +47,19 @@ void Scene::init()
     bbSystems.createModelComponents(bbECS, resources.getSceneModels());
 }
 
-void Scene::update()
+void Scene::update(float deltaTime)
 {
+    accumulatedFrameTime += deltaTime;
+    
     bbSystems.setLight(*renderEngine, ShaderType::Default, viewMatrix);
     Systems::drawModels(bbECS, ShaderType::Default, *renderEngine, resources.getSceneModels(), projectionMatrix, viewMatrix);
+
+    if (accumulatedFrameTime > UpdateAIInterval) 
+    {
+        std::cout << "update all AI call" << std::endl;
+        Systems::updateAI(bbECS);
+        accumulatedFrameTime = 0;
+    }
 }
 
 void Scene::setRendererShaderSource(ShaderType shaderType, const std::string & vertexSource, const std::string & fragSource)
