@@ -4,9 +4,9 @@
 
 #include "NPC.h"
 
-NPC::NPC() : m_FSM(FSM<NPC>(this)) 
+NPC::NPC(const std::filesystem::path& statesPath, const std::string& initialState) : m_FSM(FSM<NPC>(this)) 
 {
-
+	initFSM(statesPath,initialState);
 }
 
 NPC::~NPC()
@@ -24,7 +24,7 @@ void NPC::initFSM(const std::filesystem::path& statesPath, const std::string& in
 	std::cout << "Initial State: " << initialState << std::endl; //@Debug Line, to be removed
 }
 
-void NPC::Update()
+void NPC::Update(sol::state & lua_state)
 {
-	m_FSM.update();
+	m_FSM.update(lua_state);
 }
