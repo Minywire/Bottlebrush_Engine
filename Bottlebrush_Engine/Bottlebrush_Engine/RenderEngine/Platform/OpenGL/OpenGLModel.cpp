@@ -39,6 +39,7 @@ bool OpenGLModel::LoadModel(const std::filesystem::path& modelPath, const std::f
 }
 
 OpenGLModel::OpenGLModel(const std::filesystem::path &modelPath, const std::filesystem::path &texturePath) {
+    modelDirectory = modelPath.parent_path();
     LoadModel(modelPath, texturePath);
 }
 
@@ -88,6 +89,10 @@ std::unique_ptr<OpenGLMesh> OpenGLModel::InitMesh(const aiMesh* paiMesh, const s
         meshInts.push_back(Face.mIndices[0]);
         meshInts.push_back(Face.mIndices[1]);
         meshInts.push_back(Face.mIndices[2]);
+    }
+
+    if(paiMesh->mMaterialIndex >= 0) {
+
     }
 
     std::vector<unsigned int> layout;

@@ -46,7 +46,8 @@ private:
 
     std::vector<std::unique_ptr<Mesh>> mSubMeshes;
 
-//    OpenGLTexture loadMaterialTextures(aiMaterial* material, aiTextureType textureType, std::string typeName);
+    std::filesystem::path modelDirectory;
+
 };
 
 

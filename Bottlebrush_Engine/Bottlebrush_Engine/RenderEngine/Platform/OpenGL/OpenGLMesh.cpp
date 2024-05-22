@@ -25,7 +25,7 @@ void OpenGLMesh::CreateMesh(
     std::vector<unsigned int> layout) 
 {
     // create a vertex buffer with vertices data
-    m_VertexBuffer = std::make_unique<OpenGLVertexBuffer>(vertices.data(), vertices.size() * sizeof(float)) ;
+    m_VertexBuffer = std::make_unique<OpenGLVertexBuffer>(vertices.data(), vertices.size() * sizeof(float));
 
     // create a vertex buffer layout, this defines the format of each vertex data
     m_VertexBufferLayout = std::make_unique<OpenGLVertexBufferLayout>();
@@ -48,9 +48,6 @@ void OpenGLMesh::CreateMesh(
     m_Texture = std::make_unique<OpenGLTexture>();
     // loads texture and creates in openGL format
     m_Texture->CreateTexture(textureFilePath);
-
-    // bind the texture
-//    SetTexture();
 }
 
 void OpenGLMesh::SetTexture(unsigned int slot) {
