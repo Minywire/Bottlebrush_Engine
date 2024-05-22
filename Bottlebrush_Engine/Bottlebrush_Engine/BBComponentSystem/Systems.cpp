@@ -4,7 +4,6 @@
 
 #include "Systems.h"
 #include "BBScript.h"
-#include "NPC.h"
 
 void Systems::generateModelFromComponent(const ModelComponent & modelComp, std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels)
 {

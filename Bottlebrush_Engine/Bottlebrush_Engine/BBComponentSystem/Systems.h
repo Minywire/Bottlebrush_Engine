@@ -9,7 +9,6 @@
 #include <Components.h>
 #include <GraphicsFactory.h>
 #include "glm/gtc/matrix_transform.hpp"
-
 /**
  * @class systems
  * @Author Marco Garzon Lara
@@ -31,6 +30,12 @@ public:
      */
     void createModelComponents(ECS &ecs, std::unordered_map<std::string, std::unique_ptr<Model>>& sceneModels);
 
+    /**
+     * @author Alan
+     * @brief Loads the AI scripts onto the lua_state in preparation for the update call
+     * @param ecs The registry to load all components with AIControllerComponent in it
+     * @param lua_state to read in the AI scripts to the state
+     */
     void ReadAIScripts(ECS &ecs, sol::state &lua_state);
 
     /**
