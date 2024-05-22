@@ -25,7 +25,7 @@ void Systems::createModelComponents(ECS &ecs, std::unordered_map<std::string, st
     }
 }
 
-void Systems::createAIComponents(ECS& ecs, std::vector<NPC>& sceneNPCs, sol::state & lua_state) 
+void Systems::ReadAIScripts(ECS& ecs, sol::state & lua_state) 
 {
     auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
 
@@ -33,8 +33,8 @@ void Systems::createAIComponents(ECS& ecs, std::vector<NPC>& sceneNPCs, sol::sta
     {
         auto& aic = group.get<AIControllerComponent>(entity);
 
-        sceneNPCs.emplace_back(aic.statesPath, aic.initialState);
-        lua_state.script_file(aic.statesPath.string());
+        if(aic.npc.GetFSM().GetStatePath().extension() != ".lua") { throw std::runtime_error("Lua file is no lua file"); }
+        lua_state.script_file(aic.npc.GetFSM().GetStatePath().string());
     }
 }
 
@@ -101,10 +101,13 @@ void Systems::updateTransformComponent(ECS &ecs, const std::string& tag, glm::ve
 }
 
 
-void Systems::updateAI(std::vector<NPC>& sceneNPCs, sol::state & lua_state) 
+void Systems::updateAI(ECS &ecs, sol::state & lua_state) 
 {
-    for (auto& npc : sceneNPCs)
+    auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
+
+    for (auto entity : group)
     {
-        npc.Update(lua_state);
+      auto aic = group.get<AIControllerComponent>(entity);
+      aic.npc.Update(lua_state);
     }
 }

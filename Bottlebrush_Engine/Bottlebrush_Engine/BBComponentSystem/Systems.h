@@ -32,7 +32,7 @@ public:
      */
     void createModelComponents(ECS &ecs, std::unordered_map<std::string, std::unique_ptr<Model>>& sceneModels);
 
-    void createAIComponents(ECS &ecs, std::vector<NPC>& sceneNPCs, sol::state & lua_state);
+    void ReadAIScripts(ECS &ecs, sol::state &lua_state);
 
     /**
      *
@@ -68,5 +68,5 @@ public:
      * @param sceneNPCs vector of all npcs to iterate through
      * @param lua_state AI script to read for FSM in NPCs
      */
-    static void updateAI(std::vector<NPC> &sceneNPCs, sol::state & lua_state);
+    static void updateAI(ECS &ecs, sol::state & lua_state);
 };
