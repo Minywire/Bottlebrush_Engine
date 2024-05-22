@@ -44,7 +44,6 @@ public:
 			std::cout << "AI Global not found" << std::endl;
 		}
 
-
 		if (m_currentState.compare("") != 0 && lua_state[m_currentState].valid())
 		{
 			lua_state[m_currentState]["Update"](*m_npcOwner);
@@ -62,18 +61,18 @@ public:
 	void changeState(const std::string& newState, sol::state & lua_state) {
 		if (lua_state[m_currentState].valid())
 		{
-            std::cout << "AI state: " << m_currentState << " not found on change state method" << std::endl;
+			std::cout << "AI state: " << m_currentState << " not found on change state method" << std::endl;
 			return;
 		}
-        m_previousState = m_currentState;  // track previous state
-        lua_state[m_currentState]["onExit"](*m_npcOwner);   // execute exit code
-        m_currentState = newState;         // change states
-        lua_state[m_currentState]["onEnter"](*m_npcOwner);  // execute enter code of new state
-    }
+		m_previousState = m_currentState;  // track previous state
+		lua_state[m_currentState]["onExit"](*m_npcOwner);   // execute exit code
+		m_currentState = newState;         // change states
+		lua_state[m_currentState]["onEnter"](*m_npcOwner);  // execute enter code of new state
+	}
 
 	/// @author Alan
 	/// @brief reverts back to original state, used with globalState changing states temporarily
-    void revertToPreviousState() { m_currentState = m_previousState; }
+	void revertToPreviousState() { m_currentState = m_previousState; }
 
 	/// @author Alan
 	/// @brief checks whether the param st is indeed what the current state is
@@ -101,7 +100,7 @@ public:
 private:
 	NPC* m_npcOwner; // owning AI object
 
-    std::filesystem::path m_statePath;
+	std::filesystem::path m_statePath;
 
 	std::string m_previousState;
 	std::string m_globalState;
