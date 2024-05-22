@@ -54,10 +54,10 @@ struct TagComponent
  */
 struct PlayerControllerComponent 
 {
-  float max_speed;
-  float current_speed;
-  float acceleration_rate;
-  float deceleration_rate;
+    float max_speed;
+    float current_speed;
+    float acceleration_rate;
+    float deceleration_rate;
 };
 
 /**
