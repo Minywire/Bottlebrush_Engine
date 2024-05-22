@@ -52,7 +52,8 @@ struct TagComponent
  * @brief Component that contains movement data for player
  * @author Marco Garzon Lara
  */
-struct PlayerControllerComponent {
+struct PlayerControllerComponent 
+{
   float max_speed;
   float current_speed;
   float acceleration_rate;
