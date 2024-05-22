@@ -33,7 +33,7 @@ public:
     std::filesystem::path& GetStatePath();
 
 private:
-    NPC* m_npcReference; // owning NPC
+    NPC* m_npcReference; // reference to the NPC that owns this FSM
 
     std::filesystem::path m_statePath; // relative file path to the AI scripts
 
