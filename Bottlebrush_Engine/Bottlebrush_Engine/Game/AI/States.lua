@@ -19,12 +19,6 @@ Global = {
 		print("exited global state")
 
 	end,
-
-	onEvent = function(player,event)
-
-		return false
-
-	end
 }
 
 -------------------------------------------------------------------------------
