@@ -22,7 +22,6 @@ Scene::Scene(const std::string& lua_master)
     masterLuaFile = lua_master;
     lua.getLuaState().set_function("create_entity", &Scene::createEntity, this); //register create entity function into lua state of this instance
     lua.getLuaState().set_function("create_entityTR", &Scene::createEntityAndTransform, this);
-
 }
 
 void Scene::setProjectionMatrix(glm::mat4 projMatrix)
