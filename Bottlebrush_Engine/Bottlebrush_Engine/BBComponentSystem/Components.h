@@ -3,9 +3,9 @@
 //
 #pragma once
 
+#include <string>
 #include <glm/glm.hpp>
 #include <sol/sol.hpp>
-#include <string>
 
 #include "NPC.h"
 
@@ -52,12 +52,11 @@ struct TagComponent
  * @brief Component that contains movement data for player
  * @author Marco Garzon Lara
  */
-struct PlayerControllerComponent
-{
-    float max_speed;
-    float current_speed;
-    float acceleration_rate;
-    float deceleration_rate;
+struct PlayerControllerComponent {
+  float max_speed;
+  float current_speed;
+  float acceleration_rate;
+  float deceleration_rate;
 };
 
 /**
