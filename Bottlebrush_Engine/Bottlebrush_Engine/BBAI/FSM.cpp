@@ -6,7 +6,7 @@
 #include "NPC.h"
 
 FSM::FSM(NPC* FSMOwner, const std::filesystem::path& statesPath, const std::string& initialState) : 
-    m_fsmOwner(FSMOwner),
+    m_npcReference(FSMOwner),
     m_currentState(initialState),
     m_globalState("Global"),
     m_previousState(initialState) 
@@ -20,7 +20,7 @@ void FSM::update(sol::state & lua_state)
 {
     if (m_globalState.compare("") != 0 && lua_state[m_globalState].valid())
     {
-        lua_state[m_globalState]["Update"](*m_fsmOwner);
+        lua_state[m_globalState]["Update"](*m_npcReference);
     } 
     else
     {
@@ -29,7 +29,7 @@ void FSM::update(sol::state & lua_state)
 
     if (m_currentState.compare("") != 0 && lua_state[m_currentState].valid())
     {
-        lua_state[m_currentState]["Update"](*m_fsmOwner);
+        lua_state[m_currentState]["Update"](*m_npcReference);
     }
     else
     {
@@ -40,8 +40,8 @@ void FSM::update(sol::state & lua_state)
 
 void FSM::SetStatePath(const std::filesystem::path& path)
 {
-	if(path.extension() != ".lua") { throw std::runtime_error("Lua file is no lua file"); }
-	m_statePath = path;
+    if(path.extension() != ".lua") { throw std::runtime_error("Lua file is no lua file"); }
+    m_statePath = path;
 }
 
 std::filesystem::path& FSM::GetStatePath() 

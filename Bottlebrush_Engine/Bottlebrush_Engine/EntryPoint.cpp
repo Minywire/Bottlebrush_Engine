@@ -205,8 +205,6 @@ int main() {
                                 "Resources/Shaders/Vertex/Basic.vert",
                                 "Resources/Shaders/Fragment/Basic.frag");
 
-  
-
   // RENDER LOOP
   while (!window.GetShouldClose()) {
     auto current_frame = static_cast<float>(glfwGetTime());

@@ -50,13 +50,12 @@ void Scene::init()
 
 void Scene::update(float deltaTime)
 {
-    if (deltaTime > 0.25f) deltaTime = 0.25f;
     accumulatedFrameTime += deltaTime;
     
     bbSystems.setLight(*renderEngine, ShaderType::Default, viewMatrix);
     Systems::drawModels(bbECS, ShaderType::Default, *renderEngine, resources.getSceneModels(), projectionMatrix, viewMatrix);
 
-    if (accumulatedFrameTime > UpdateAIInterval) 
+    while (accumulatedFrameTime >= UpdateAIInterval) 
     {
         std::cout << "update all AI call" << std::endl;
         Systems::updateAI(bbECS, lua.getLuaState());

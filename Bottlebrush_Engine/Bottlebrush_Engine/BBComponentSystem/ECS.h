@@ -48,7 +48,7 @@ public:
     void DeleteEntity(Entity entity);
 
     /**
-     *@brief Gets all entities with the provided components. (read)
+     *@brief Gets all entities with the provided components. const function
      * @tparam components All of the existing components in the ECS
      * @return view The EnTT view containing all entities with any existing components
      * @author Marco Garzon Lara
@@ -60,7 +60,7 @@ public:
     }
 
     /**
-     *@brief Gets all entities with the provided components. (write)
+     *@brief Gets all entities with the provided components. non-const function
      * @tparam components All of the existing components in the ECS
      * @return view The EnTT view containing all entities with any existing components
      * @author Alan

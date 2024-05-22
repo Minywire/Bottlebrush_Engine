@@ -12,28 +12,31 @@
 class NPC;
 
 /// @author Alan
-/// @brief Finite State Machine for NPCs
+/// @brief Finite State Machine for NPCs, handles updating and changing states
 class FSM
 {
 public:
-	FSM(NPC* FSMOwner, const std::filesystem::path& statesPath, const std::string& initialState);
+    FSM(NPC* FSMOwner, const std::filesystem::path& statesPath, const std::string& initialState);
 
-	/// @author Alan
-	/// @brief normal update call for state machine
-	/// runs current state update, and global state update
-	/// @param lua_state the script to read from
-	void update(sol::state & lua_state);
+    /// @author Alan
+    /// @brief normal update call for state machine
+    /// runs current state update, and global state update
+    /// @param lua_state the script to read from
+    void update(sol::state & lua_state);
 
-	void SetStatePath(const std::filesystem::path& path);
+    /// @author Alan
+    /// @brief evaluate if path extension is correct and then sets the member statePath its value
+    /// @param path the string to get the ai script
+    void SetStatePath(const std::filesystem::path& path);
 
-	std::filesystem::path& GetStatePath();
+    std::filesystem::path& GetStatePath();
 
 private:
-	NPC* m_fsmOwner; // owning AI object
+    NPC* m_npcReference; // owning AI object
 
-	std::filesystem::path m_statePath;
+    std::filesystem::path m_statePath;
 
-	std::string m_previousState;
-	std::string m_globalState;
-	std::string m_currentState;
+    std::string m_previousState;
+    std::string m_globalState;
+    std::string m_currentState;
 };

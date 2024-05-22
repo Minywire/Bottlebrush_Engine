@@ -4,6 +4,7 @@
 
 #include "Systems.h"
 #include "BBScript.h"
+#include "NPC.h"
 
 void Systems::generateModelFromComponent(const ModelComponent & modelComp, std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels)
 {
@@ -101,14 +102,13 @@ void Systems::updateTransformComponent(ECS &ecs, const std::string& tag, glm::ve
 
 }
 
-
 void Systems::updateAI(ECS &ecs, sol::state & lua_state) 
 {
     auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
 
     for (auto entity : group)
     {
-      auto aic = group.get<AIControllerComponent>(entity);
+      auto& aic = group.get<AIControllerComponent>(entity);
       aic.npc.Update(lua_state);
     }
 }

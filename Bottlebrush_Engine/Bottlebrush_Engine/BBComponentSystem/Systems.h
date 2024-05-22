@@ -9,7 +9,6 @@
 #include <Components.h>
 #include <GraphicsFactory.h>
 #include "glm/gtc/matrix_transform.hpp"
-#include "NPC.h"
 
 /**
  * @class systems
