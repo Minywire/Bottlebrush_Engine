@@ -7,6 +7,8 @@
 #include <glm/glm.hpp>
 #include <sol/sol.hpp>
 
+#include "NPC.h"
+
 /**
  * @brief Component that binds a lua function to an Entity
  * @author Marco Garzon Lara
@@ -56,4 +58,16 @@ struct PlayerControllerComponent
     float current_speed;
     float acceleration_rate;
     float deceleration_rate;
+};
+
+/**
+ * @brief Component that contains data for AI controlled NPCs
+ */
+struct AIControllerComponent
+{
+    NPC npc;
+
+    AIControllerComponent(const std::filesystem::path& statesPath, const std::string& initialState)
+        : npc(NPC(statesPath, initialState))
+    {}
 };

@@ -48,13 +48,25 @@ public:
     void DeleteEntity(Entity entity);
 
     /**
-     *@brief Gets all entities with the provided components.
+     *@brief Gets all entities with the provided components. const function
      * @tparam components All of the existing components in the ECS
      * @return view The EnTT view containing all entities with any existing components
      * @author Marco Garzon Lara
      */
     template<typename... Components>
     auto GetAllEntitiesWith() const
+    {
+        return registry.view<Components...>();
+    }
+
+    /**
+     *@brief Gets all entities with the provided components. non-const function
+     * @tparam components All of the existing components in the ECS
+     * @return view The EnTT view containing all entities with any existing components
+     * @author Alan
+     */
+    template<typename... Components>
+    auto GetAllEntitiesWith()
     {
         return registry.view<Components...>();
     }

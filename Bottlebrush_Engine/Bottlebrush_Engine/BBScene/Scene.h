@@ -74,7 +74,7 @@ public:
     /**
      *
      */
-    void update();
+    void update(float deltaTime);
 private:
     glm::mat4 projectionMatrix; ///The camera projection matrix (temporary hack until everything from EntryPoint is ported here).
     glm::mat4 viewMatrix; ///The camera projection matrix (temporary hack until everything from EntryPoint is ported here).
@@ -89,4 +89,7 @@ private:
     ECS bbECS; ///The ECS object containing the enTT registry.
     Systems bbSystems; ///The Systems of the ECS operating on entity data
     BBResourceManager resources; ///The resources stored in the scene (only model data for now)
+
+    float accumulatedFrameTime; // a time counter used to slow AI updates, so that it is not called everyframe
+    const float UpdateAIInterval; // interval at which to update AI, a value of 1 roughly represents a second
 };

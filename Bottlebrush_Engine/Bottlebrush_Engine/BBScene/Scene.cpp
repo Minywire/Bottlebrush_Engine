@@ -15,7 +15,8 @@ void Scene::createEntityAndTransform(const std::string & lua_file, float xPos, f
     entityFactory.create_from_file(bbECS, lua.getLuaState(), lua_file, xPos, yPos, zPos);
 }
 
-Scene::Scene(const std::string & lua_master)
+Scene::Scene(const std::string& lua_master)
+    : accumulatedFrameTime(0), UpdateAIInterval(2.f)
 {
     renderEngine = GraphicsFactory<GraphicsAPI::OpenGL>::CreateRenderer();
     masterLuaFile = lua_master;
@@ -43,12 +44,22 @@ void Scene::init()
     }//load the master lua scene script containing all entities
 
     bbSystems.createModelComponents(bbECS, resources.getSceneModels());
+    bbSystems.ReadAIScripts(bbECS, lua.getLuaState());
 }
 
-void Scene::update()
+void Scene::update(float deltaTime)
 {
+    accumulatedFrameTime += deltaTime;
+    
     bbSystems.setLight(*renderEngine, ShaderType::Default, viewMatrix);
     Systems::drawModels(bbECS, ShaderType::Default, *renderEngine, resources.getSceneModels(), projectionMatrix, viewMatrix);
+
+    while (accumulatedFrameTime >= UpdateAIInterval) 
+    {
+        std::cout << "update all AI call" << std::endl;
+        Systems::updateAI(bbECS, lua.getLuaState());
+        accumulatedFrameTime -= UpdateAIInterval;
+    }
 }
 
 void Scene::setRendererShaderSource(ShaderType shaderType, const std::string & vertexSource, const std::string & fragSource)

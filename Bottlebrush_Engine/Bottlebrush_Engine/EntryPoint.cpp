@@ -269,7 +269,7 @@ int main() {
                          testCube->GetSubMeshes()[i]->GetIndexCount());
     }
 
-    gameScene.update();  // currently this is just drawing all the models in the
+    gameScene.update(delta);  // currently this is just drawing all the models in the
                          // sceneModels map
 
     if (restrict_camera) {

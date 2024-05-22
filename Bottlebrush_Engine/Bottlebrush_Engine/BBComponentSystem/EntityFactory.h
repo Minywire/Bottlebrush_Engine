@@ -75,4 +75,12 @@ private:
      * @param model the model table to compare against
      */
     void loadModel(ECS& ecs, Entity &entity, const sol::table &model);
+
+    /**
+     *
+     * @param ecs the ecs registry to load model component from
+     * @param entity the entity to attach to
+     * @param ai the ai table to compare against
+     */
+    void loadAIController(ECS &ecs, Entity &entity, const sol::table &ai);
 };
