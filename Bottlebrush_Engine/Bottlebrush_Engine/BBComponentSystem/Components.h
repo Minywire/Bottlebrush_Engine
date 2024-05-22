@@ -65,6 +65,9 @@ struct PlayerControllerComponent
  */
 struct AIControllerComponent
 {
-    std::filesystem::path statesPath;
-    std::string initialState;
+    NPC npc;
+
+    AIControllerComponent(const std::filesystem::path& statesPath, const std::string& initialState)
+        : npc(NPC(statesPath, initialState))
+    {}
 };

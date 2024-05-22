@@ -27,21 +27,6 @@ public:
      * @return A reference map structure contain all the model data stored for the scene (write usage)
      */
     std::unordered_map<std::string, std::unique_ptr<Model>> & getSceneModels();
-    
-    /**
-     *
-     * @return A vector that contains all the NPC data stored for the scene (read usage)
-     */
-    const std::vector<NPC>& getSceneNPCs() const;
-
-    /**
-     *
-     * @return A vector that contains all the NPC data stored for the scene (write usage)
-     */
-    std::vector<NPC>& getSceneNPCs();
-
 private:
     std::unordered_map<std::string, std::unique_ptr<Model>> sceneModels; ///The models stored in a scene
-    std::vector<NPC> sceneNPCs; // NPCs stored in a scene
-
 };

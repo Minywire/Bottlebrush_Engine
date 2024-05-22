@@ -59,7 +59,7 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     }
     if(table["AI"].valid())
     {
-      loadAIController(ecs, entity, table["AI"]);
+        loadAIController(ecs, entity, table["AI"]);
     }
 }
 
@@ -75,7 +75,7 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     }
     if(table["AI"].valid())
     {
-      loadAIController(ecs, entity, table["AI"]);
+        loadAIController(ecs, entity, table["AI"]);
     }
 }
 
@@ -140,10 +140,7 @@ void EntityFactory::loadAIController(ECS& ecs, Entity& entity, const sol::table&
     std::string statesPath = ai["StatesPath"];
     std::string initialState = ai["InitialState"];
 
-    AIControllerComponent& aicComponent = entity.AddComponent<AIControllerComponent>(ecs.getReg()); // add an AI controller to entity
+    AIControllerComponent& aicComponent = entity.AddComponent<AIControllerComponent>(ecs.getReg(), statesPath, initialState); // add an AI controller to entity
 
     std::cout << "Loaded AI component" << std::endl; //@Debug Line, to be removed
-
-    aicComponent.initialState = initialState;
-    aicComponent.statesPath = statesPath;
 }
