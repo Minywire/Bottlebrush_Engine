@@ -16,59 +16,19 @@ class NPC;
 class FSM
 {
 public:
-	FSM(NPC* FSMOwner, const std::filesystem::path& statesPath, const std::string& initialState) :
-            m_npcOwner(FSMOwner),
-            m_currentState(initialState),
-            m_globalState("Global"),
-            m_previousState(initialState)
-	{
-		SetStatePath(statesPath);
-		std::cout << "State Path: " << statesPath.string() << std::endl; //@Debug Line, to be removed
-		std::cout << "Initial State: " << initialState << std::endl; //@Debug Line, to be removed
-	};
-
-	~FSM() = default;
+	FSM(NPC* FSMOwner, const std::filesystem::path& statesPath, const std::string& initialState);
 
 	/// @author Alan
 	/// @brief normal update call for state machine
 	/// runs current state update, and global state update
 	/// @param lua_state the script to read from
-	void update(sol::state & lua_state)
-	{
-		if (m_globalState.compare("") != 0 && lua_state[m_globalState].valid())
-		{
-			lua_state[m_globalState]["Update"](*m_npcOwner);
-		} 
-		else
-		{
-			std::cout << "AI Global not found" << std::endl;
-		}
-
-		if (m_currentState.compare("") != 0 && lua_state[m_currentState].valid())
-		{
-			lua_state[m_currentState]["Update"](*m_npcOwner);
-		}
-		else
-		{
-			std::cout << "AI state: " << m_currentState << " not found" << std::endl;
-		}
-	}
+	void update(sol::state & lua_state);
 
 	/// @author Alan
 	/// @brief changes states, updates previous state, runs onExit and onEnter accordingly
 	/// @param newState the new state to transition to
 	/// @param lua_state the script to read from
-	void changeState(const std::string& newState, sol::state & lua_state) {
-		if (lua_state[m_currentState].valid())
-		{
-			std::cout << "AI state: " << m_currentState << " not found on change state method" << std::endl;
-			return;
-		}
-		m_previousState = m_currentState;  // track previous state
-		lua_state[m_currentState]["onExit"](*m_npcOwner);   // execute exit code
-		m_currentState = newState;         // change states
-		lua_state[m_currentState]["onEnter"](*m_npcOwner);  // execute enter code of new state
-	}
+	void changeState(const std::string& newState, sol::state & lua_state);
 
 	/// @author Alan
 	/// @brief reverts back to original state, used with globalState changing states temporarily
@@ -85,20 +45,16 @@ public:
 	void SetCurrentState(const std::string& st) { m_currentState = st; }
 	void SetGlobalState(const std::string& st) { m_globalState = st; }
 
-	std::string GetPreviousState()& { return m_previousState; }
-	std::string GetCurrentState()& { return m_currentState; }
-	std::string GetGlobalState()& { return m_globalState; }
+	std::string& GetPreviousState() { return m_previousState; }
+	std::string& GetCurrentState() { return m_currentState; }
+	std::string& GetGlobalState() { return m_globalState; }
 
-	void SetStatePath(const std::filesystem::path& path)
-	{
-		if(path.extension() != ".lua") { throw std::runtime_error("Lua file is no lua file"); }
-		m_statePath = path;
-	}
+	void SetStatePath(const std::filesystem::path& path);
 
 	std::filesystem::path GetStatePath() { return m_statePath; }
 
 private:
-	NPC* m_npcOwner; // owning AI object
+	NPC* m_fsmOwner; // owning AI object
 
 	std::filesystem::path m_statePath;
 
