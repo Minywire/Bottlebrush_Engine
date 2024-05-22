@@ -12,7 +12,8 @@
 class NPC;
 
 /// @author Alan
-/// @brief Finite State Machine for NPCs, handles updating and changing states
+/// @brief Finite State Machine for NPCs, handles updating within game loop with AI Scripts
+/// and changing states
 class FSM
 {
 public:
@@ -32,9 +33,9 @@ public:
     std::filesystem::path& GetStatePath();
 
 private:
-    NPC* m_npcReference; // owning AI object
+    NPC* m_ownerReference; // owning AI object
 
-    std::filesystem::path m_statePath;
+    std::filesystem::path m_statePath; // relative file path to the AI scripts
 
     std::string m_previousState;
     std::string m_globalState;
