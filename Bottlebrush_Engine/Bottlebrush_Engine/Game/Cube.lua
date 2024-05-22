@@ -22,6 +22,6 @@ Entity = {
     },
     AI = {
         StatesPath = "Game/AI/States.lua",
-        InitialState = "state_idle"
+        InitialState = "Idle"
     }
 }

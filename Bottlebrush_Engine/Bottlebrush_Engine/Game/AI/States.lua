@@ -3,80 +3,77 @@
 -- create the global state
 
 -------------------------------------------------------------------------------
-state_global = {}
+Global = {
+	onEnter = function(player)
+		print("entered global state")
 
+	end,
 
-state_global["onEnter"] = function(player)
-	print("entered global state")
+	Update = function(player)
+		print("in global state")
 
-
-end
-
-
-state_global["Update"] = function(player)
-	print("in global state")
-
-
-end
+	end,
 
   
-state_global["onExit"] = function(player)
-	print("exited global state")
+	onExit = function(player)
+		print("exited global state")
 
+	end,
 
-end
+	onEvent = function(player,event)
 
-state_global["onEvent"] = function(player,event)
+		return false
 
-return false
-
-end
+	end
+}
 
 -------------------------------------------------------------------------------
 
 -- create the idle state
 
 -------------------------------------------------------------------------------
-state_idle = {}
+Idle = {
+	onEnter = function(player)
+		print("entered idle state")
 
-state_idle["onEnter"] = function(player)
-	print("entered idle state")
+	end,
 
-end
+	Update = function(player)
+		print("in idle state")
 
-state_idle["Update"] = function(player)
-	print("in idle state")
-
-end
+	end,
   
-state_idle["onExit"] = function(player)
-	print("executing idle state")
+	onExit = function(player)
+		print("executing idle state")
 
-end
+	end
+}
+
+
 
 -------------------------------------------------------------------------------
 
 -- create the patrol state
 
 -------------------------------------------------------------------------------
-state_patrol = {}
-
-
-state_patrol["onEnter"] = function(player)
-	print ("enter patrol state")
+Patrol = {
+	onEnter = function(player)
+		print ("enter patrol state")
   
-end
+	end,
+
+	Update = function(player)
+		print ("in patrol state")
+
+	end,
+
+	onExit = function(player)
+		print ("exit patrol state")
+
+	end
+}
 
 
-state_patrol["Update"] = function(player)
-	print ("in patrol state")
 
-end
-
-  
-state_patrol["onExit"] = function(player)
-	print ("exit patrol state")
-
-end
 
 
