@@ -26,7 +26,7 @@ public:
 
 	void SetStatePath(const std::filesystem::path& path);
 
-	std::filesystem::path& GetStatePath() { return m_statePath; }
+	std::filesystem::path& GetStatePath();
 
 private:
 	NPC* m_fsmOwner; // owning AI object
