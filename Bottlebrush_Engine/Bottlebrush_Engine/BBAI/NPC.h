@@ -13,14 +13,15 @@
 class NPC 
 {
 public:
-    NPC(const std::filesystem::path& statesPath, const std::string& initialState);
+    NPC(const std::filesystem::path& statesPath, const std::string& initialState, sol::state& lua_state);
 
+    /*
     /// @author Alan
     /// @brief update call for FSM
     /// @param lua_state ai script to read from
-    void Update(sol::state& lua_state);
-
-    FSM& GetFSM();
+    void update(sol::state& lua_state);
+    */
+    FSM& getFSM();
 
 private:
     FSM m_FSM;

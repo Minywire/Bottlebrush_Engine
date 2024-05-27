@@ -36,19 +36,21 @@ private:
      *
      * @param ecs The ecs to load components from
      * @param entity entity to add components to
+     * @param lua_state lua state
      * @param table tables
      */
-    void load_components(ECS &ecs, Entity &entity, const sol::table &table);
+    void load_components(ECS &ecs, Entity &entity, sol::state& lua_state, const sol::table &table);
 
     /**
      * @param ecs  The ecs to load components from
      * @param entity the entity to attach components to
+     * @param lua_state lua state
      * @param table the sol table to compare
      * @param xPos x translate
      * @param yPos y translate
      * @param zPos z translate
      */
-    void load_components(ECS &ecs, Entity &entity, const sol::table &table, float xPos, float yPos, float zPos);
+    void load_components(ECS &ecs, Entity &entity, sol::state& lua_state, const sol::table &table, float xPos, float yPos, float zPos);
 
     /**
      *
@@ -79,8 +81,9 @@ private:
     /**
      *
      * @param ecs the ecs registry to load model component from
+     * @param lua_state lua state
      * @param entity the entity to attach to
      * @param ai the ai table to compare against
      */
-    void loadAIController(ECS &ecs, Entity &entity, const sol::table &ai);
+    void loadAIController(ECS &ecs, Entity &entity, sol::state& lua_state, const sol::table &ai);
 };

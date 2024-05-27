@@ -5,31 +5,33 @@
 #include "FSM.h"
 #include "NPC.h"
 
-FSM::FSM(NPC* FSMOwner, const std::filesystem::path& statesPath, const std::string& initialState) : 
+FSM::FSM(NPC* FSMOwner, const std::filesystem::path& statesPath, const std::string& initialState,
+    sol::state& lua_state) : 
     m_npcReference(FSMOwner),
     m_currentState(initialState),
     m_globalState("Global"),
-    m_previousState(initialState) 
+    m_previousState(initialState),
+    m_luaState(lua_state) 
 {
-    SetStatePath(statesPath);
+    setStatePath(statesPath);
     std::cout << "State Path: " << statesPath.string() << std::endl;  //@Debug Line, to be removed
     std::cout << "Initial State: " << initialState << std::endl;  //@Debug Line, to be removed
 }
 
-void FSM::update(sol::state & lua_state)
+void FSM::update()
 {
-    if (m_globalState.compare("") != 0 && lua_state[m_globalState].valid())
+    if (m_globalState.compare("") != 0 && m_luaState[m_globalState].valid())
     {
-        lua_state[m_globalState]["Update"](*m_npcReference);
+        m_luaState[m_globalState]["Update"](*m_npcReference);
     } 
     else
     {
         throw std::runtime_error("AI Global not found");
     }
 
-    if (m_currentState.compare("") != 0 && lua_state[m_currentState].valid())
+    if (m_currentState.compare("") != 0 && m_luaState[m_currentState].valid())
     {
-        lua_state[m_currentState]["Update"](*m_npcReference);
+        m_luaState[m_currentState]["Update"](*m_npcReference);
     }
     else
     {
@@ -38,13 +40,33 @@ void FSM::update(sol::state & lua_state)
     }
 }
 
-void FSM::SetStatePath(const std::filesystem::path& path)
+void FSM::changeState(const std::string& newState) 
+{  
+  std::cout << "Current State: " << m_currentState << std::endl;
+  if (m_npcReference) std::cout << "playerbound" << std::endl;
+  else std::cout << "player not bound" << std::endl;
+
+  if (m_luaState[newState].valid()) {
+    std::string errMsg =
+        "AI state: " + newState + " not found on change state method";
+    throw std::runtime_error(errMsg);
+  }
+
+  m_previousState = m_currentState;                      // track previous state
+  m_luaState[m_currentState]["onExit"](*m_npcReference);  // execute exit code
+  m_currentState = newState;                             // change states
+  m_luaState[m_currentState]["onEnter"](*m_npcReference);  // execute enter code of new state
+
+  std::cout << "New Current State: " << m_currentState << std::endl;
+}
+
+void FSM::setStatePath(const std::filesystem::path& path)
 {
     if(path.extension() != ".lua") { throw std::runtime_error("Lua file is no lua file"); }
     m_statePath = path;
 }
 
-std::filesystem::path& FSM::GetStatePath() 
+std::filesystem::path& FSM::getStatePath() 
 { 
     return m_statePath; 
 }

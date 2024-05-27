@@ -70,7 +70,6 @@ public:
      * @author Alan
      * @brief update AI call
      * @param sceneNPCs vector of all npcs to iterate through
-     * @param lua_state AI script to read for FSM in NPCs
      */
-    static void updateAI(ECS &ecs, sol::state & lua_state);
+    static void updateAI(ECS &ecs);
 };

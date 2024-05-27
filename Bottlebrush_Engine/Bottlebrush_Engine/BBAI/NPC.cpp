@@ -4,17 +4,19 @@
 
 #include "NPC.h"
 
-NPC::NPC(const std::filesystem::path& statesPath, const std::string& initialState) : m_FSM(this, statesPath, initialState) 
-{
+NPC::NPC(const std::filesystem::path& statesPath,
+         const std::string& initialState, sol::state& lua_state)
+    : m_FSM(this, statesPath, initialState, lua_state) {
 
 }
 
-void NPC::Update(sol::state & lua_state)
+/*
+void NPC::update()
 {
-	m_FSM.update(lua_state);
+	m_FSM.update();
 }
-
-FSM& NPC::GetFSM() 
+*/
+FSM& NPC::getFSM() 
 { 
 	return m_FSM; 
 }

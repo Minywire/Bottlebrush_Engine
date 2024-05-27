@@ -4,9 +4,17 @@
 
 -------------------------------------------------------------------------------
 Global = {
-	Update = function(NPC)
-		print("in global state")
+	onEnter = function(NPC)
+		print("Entered Global state");
+	end,
 
+	Update = function(NPC)
+		print("in global state");
+
+	end,
+
+	onExit = function(NPC)
+		print("Exiting Global state");
 	end
 }
 
@@ -16,10 +24,18 @@ Global = {
 
 -------------------------------------------------------------------------------
 Idle = {
-	Update = function(NPC)
-		print("in idle state")
-		NPC:changeState("Patrol")
+	onEnter = function(NPC)
+		print("Entered Idle state");
+	end,
 
+	Update = function(NPC)
+		print("in idle state");
+		NPC:getFSM():changeState("Patrol");
+
+	end,
+
+	onExit = function(NPC)
+		print("Exiting Idle state");
 	end
 }
 
@@ -29,8 +45,16 @@ Idle = {
 
 -------------------------------------------------------------------------------
 Patrol = {
-	Update = function(NPC)
-		print ("in patrol state")
+	onEnter = function(NPC)
+		print("Entered Patrol state");
+	end,
 
+	Update = function(NPC)
+		print ("in patrol state");
+
+	end,
+
+	onExit = function(NPC)
+		print("Exiting Patrol state");
 	end
 }

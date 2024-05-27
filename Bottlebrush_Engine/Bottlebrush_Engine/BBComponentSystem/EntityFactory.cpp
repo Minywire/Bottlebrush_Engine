@@ -19,7 +19,7 @@ Entity EntityFactory::create_from_file(ECS & ecs, sol::state & lua_state, const 
     if(entityTable.valid())
     {
         namedEntity = ecs.CreateEntity();
-        load_components(ecs, namedEntity, entityTable);
+        load_components(ecs, namedEntity, lua_state, entityTable);
 
         return namedEntity;
     }
@@ -40,14 +40,14 @@ Entity EntityFactory::create_from_file(ECS & ecs, sol::state & lua_state, const 
     if(entityTable.valid())
     {
         namedEntity = ecs.CreateEntity();
-        load_components(ecs, namedEntity, entityTable, xPos, yPos, zPos);
+        load_components(ecs, namedEntity, lua_state, entityTable, xPos, yPos, zPos);
 
         return namedEntity;
     }
     return namedEntity;
 }
 
-void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& table)
+void EntityFactory::load_components(ECS& ecs, Entity& entity, sol::state& lua_state, const sol::table& table)
 {
     if(table["Transform"].valid())
     {
@@ -59,11 +59,11 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     }
     if(table["AI"].valid())
     {
-        loadAIController(ecs, entity, table["AI"]);
+        loadAIController(ecs, entity, lua_state, table["AI"]);
     }
 }
 
-void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& table, float xPos, float yPos, float zPos)
+void EntityFactory::load_components(ECS& ecs, Entity& entity, sol::state& lua_state, const sol::table& table, float xPos, float yPos, float zPos)
 {
     if(table["Transform"].valid())
     {
@@ -75,7 +75,7 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     }
     if(table["AI"].valid())
     {
-        loadAIController(ecs, entity, table["AI"]);
+        loadAIController(ecs, entity, lua_state, table["AI"]);
     }
 }
 
@@ -135,12 +135,12 @@ void EntityFactory::loadModel(ECS &ecs, Entity &entity, const sol::table &model)
     modelComponent.material_path = material_location;
 }
 
-void EntityFactory::loadAIController(ECS& ecs, Entity& entity, const sol::table& ai)
+void EntityFactory::loadAIController(ECS& ecs, Entity& entity, sol::state& lua_state, const sol::table& ai)
 {
     std::string statesPath = ai["StatesPath"];
     std::string initialState = ai["InitialState"];
 
-    AIControllerComponent& aicComponent = entity.AddComponent<AIControllerComponent>(ecs.getReg(), statesPath, initialState); // add an AI controller to entity
+    AIControllerComponent& aicComponent = entity.AddComponent<AIControllerComponent>(ecs.getReg(), statesPath, initialState, lua_state); // add an AI controller to entity
 
     std::cout << "Loaded AI component" << std::endl; //@Debug Line, to be removed
 }
