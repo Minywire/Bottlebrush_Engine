@@ -42,11 +42,7 @@ void FSM::update()
 
 void FSM::changeState(const std::string& newState) 
 {  
-  std::cout << "Current State: " << m_currentState << std::endl;
-  if (m_npcReference) std::cout << "playerbound" << std::endl;
-  else std::cout << "player not bound" << std::endl;
-
-  if (m_luaState[newState].valid()) {
+  if (!m_luaState[m_currentState].valid()) {
     std::string errMsg =
         "AI state: " + newState + " not found on change state method";
     throw std::runtime_error(errMsg);
@@ -56,8 +52,6 @@ void FSM::changeState(const std::string& newState)
   m_luaState[m_currentState]["onExit"](*m_npcReference);  // execute exit code
   m_currentState = newState;                             // change states
   m_luaState[m_currentState]["onEnter"](*m_npcReference);  // execute enter code of new state
-
-  std::cout << "New Current State: " << m_currentState << std::endl;
 }
 
 void FSM::setStatePath(const std::filesystem::path& path)
