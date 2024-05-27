@@ -4,7 +4,7 @@
 
 -------------------------------------------------------------------------------
 Global = {
-	Update = function(player)
+	Update = function(NPC)
 		print("in global state")
 
 	end
@@ -16,8 +16,9 @@ Global = {
 
 -------------------------------------------------------------------------------
 Idle = {
-	Update = function(player)
+	Update = function(NPC)
 		print("in idle state")
+		NPC:changeState("Patrol")
 
 	end
 }
@@ -28,7 +29,7 @@ Idle = {
 
 -------------------------------------------------------------------------------
 Patrol = {
-	Update = function(player)
+	Update = function(NPC)
 		print ("in patrol state")
 
 	end
