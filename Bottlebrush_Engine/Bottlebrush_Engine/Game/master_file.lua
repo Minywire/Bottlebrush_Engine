@@ -1,6 +1,8 @@
 --Load all game entities from scripts here!
 
 create_entity("Game/Cube.lua");
+create_entityTR("Game/NPC.lua", 500, 10, 450);
+create_entityTR("Game/NPC.lua", 400, 10, 450);
 
 for start=0, 4000, 1000 do
     for start1=0, 4000, 1000 do
@@ -21,4 +23,4 @@ end
 --end
 
 create_entity("Game/exitCube.lua");
-create_entity("Game/ico-sphere.lua");
+--create_entity("Game/ico-sphere.lua");
