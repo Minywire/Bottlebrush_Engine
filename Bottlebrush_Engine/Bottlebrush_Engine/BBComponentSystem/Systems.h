@@ -66,6 +66,8 @@ public:
      */
     void updateTransformComponent(ECS &ecs, const std::string& tag, glm::vec3 trans, glm::vec3 rot);
 
+    static void updateAIMovements(ECS &ecs, float deltaTime);
+
     /**
      * @author Alan
      * @brief update AI call

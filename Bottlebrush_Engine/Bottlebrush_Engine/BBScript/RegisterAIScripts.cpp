@@ -17,7 +17,16 @@ void registerScriptedFSM(sol::state& lua_state) {
 }
 
 void registerScriptedNPC(sol::state& lua_state) {
-    lua_state.new_usertype<NPC>("NPC");
+    lua_state.new_usertype<NPC>("NPC", 
+        "MoveTo", sol::overload(
+            static_cast<void(NPC::*)(float, float)>(&NPC::MoveTo),
+            static_cast<void(NPC::*)(glm::vec2)>(&NPC::MoveTo))
+    );
 }
 
+void registerScriptedGLM(sol::state& lua_state) {
+    lua_state.new_usertype<glm::vec2>("vec2",
+        sol::constructors<glm::vec2(float, float)>());
 }
+
+} // namespace AIScripts

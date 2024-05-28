@@ -16,7 +16,7 @@ void Scene::createEntityAndTransform(const std::string & lua_file, float xPos, f
 }
 
 Scene::Scene(const std::string& lua_master)
-    : accumulatedFrameTime(0), UpdateAIInterval(2.f)
+    : accumulatedFrameTime(0), UpdateAIInterval(0.2f)
 {
     renderEngine = GraphicsFactory<GraphicsAPI::OpenGL>::CreateRenderer();
     masterLuaFile = lua_master;
@@ -53,6 +53,7 @@ void Scene::update(float deltaTime)
     
     bbSystems.setLight(*renderEngine, ShaderType::Default, viewMatrix);
     Systems::drawModels(bbECS, ShaderType::Default, *renderEngine, resources.getSceneModels(), projectionMatrix, viewMatrix);
+    Systems::updateAIMovements(bbECS, deltaTime);
 
     while (accumulatedFrameTime >= UpdateAIInterval) 
     {

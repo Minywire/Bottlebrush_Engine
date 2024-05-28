@@ -19,7 +19,7 @@ Entity EntityFactory::create_from_file(ECS & ecs, sol::state & lua_state, const 
     if(entityTable.valid())
     {
         namedEntity = ecs.CreateEntity();
-        load_components(ecs, namedEntity, lua_state, entityTable);
+        load_components(ecs, namedEntity, entityTable);
 
         return namedEntity;
     }
@@ -140,7 +140,15 @@ void EntityFactory::loadAIController(ECS& ecs, Entity& entity, const sol::table&
     std::string statesPath = ai["StatesPath"];
     std::string initialState = ai["InitialState"];
 
-    AIControllerComponent& aicComponent = entity.AddComponent<AIControllerComponent>(ecs.getReg(), statesPath, initialState); // add an AI controller to entity
+    MovementComponent& MV = entity.AddComponent<MovementComponent>(ecs.getReg()); // add movement component to AI
+    // manually give a default movement properties
+    MV.acceleration_rate = 10.0f;
+    MV.deceleration_rate = 10.0f;
+    MV.current_speed = 0.f;
+    MV.max_speed = 100.f;
+    MV.direction = glm::vec2(1, 1);
+
+    AIControllerComponent& aicComponent = entity.AddComponent<AIControllerComponent>(ecs.getReg(), statesPath, initialState, ecs, entity); // add an AI controller to entity
 
     std::cout << "Loaded AI component" << std::endl; //@Debug Line, to be removed
 }

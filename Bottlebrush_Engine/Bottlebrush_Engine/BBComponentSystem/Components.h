@@ -9,6 +9,10 @@
 
 #include "NPC.h"
 
+/** forward decl to avoid circle linking */
+class ECS;
+class Entity;
+
 /**
  * @brief Component that binds a lua function to an Entity
  * @author Marco Garzon Lara
@@ -52,12 +56,13 @@ struct TagComponent
  * @brief Component that contains movement data for player
  * @author Marco Garzon Lara
  */
-struct PlayerControllerComponent
+struct MovementComponent
 {
     float max_speed;
     float current_speed;
     float acceleration_rate;
     float deceleration_rate;
+    glm::vec2 direction;
 };
 
 /**
@@ -67,7 +72,8 @@ struct AIControllerComponent
 {
     NPC npc;
 
-    AIControllerComponent(const std::filesystem::path& statesPath, const std::string& initialState)
-        : npc(NPC(statesPath, initialState))
+    AIControllerComponent(const std::filesystem::path& statesPath, const std::string& initialState, ECS& ecs,
+                          Entity& entity)
+        : npc(NPC(statesPath, initialState, ecs, entity))
     {}
 };

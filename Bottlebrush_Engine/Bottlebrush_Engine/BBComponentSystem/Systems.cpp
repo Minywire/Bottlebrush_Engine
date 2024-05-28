@@ -39,6 +39,7 @@ void Systems::ReadAIScripts(ECS& ecs, sol::state & lua_state)
     }
     AIScripts::registerScriptedFSM(lua_state);
     AIScripts::registerScriptedNPC(lua_state);
+    AIScripts::registerScriptedGLM(lua_state);
 }
 
 void Systems::setLight(RenderEngine & renderEngine, const ShaderType & shaderType, glm::mat4 view)
@@ -102,6 +103,25 @@ void Systems::updateTransformComponent(ECS &ecs, const std::string& tag, glm::ve
         }
     }
 
+}
+
+void Systems::updateAIMovements(ECS& ecs, float deltaTime)
+{
+    auto group = ecs.GetAllEntitiesWith<MovementComponent, TransformComponent, AIControllerComponent>();
+
+    for (auto entity : group)
+    {
+        auto& aic = group.get<AIControllerComponent>(entity);
+        if (!aic.npc.WantsToMove()) continue;
+
+        auto& move = group.get<MovementComponent>(entity);
+        auto& transform = group.get<TransformComponent>(entity);
+
+        if (move.current_speed <= move.max_speed) move.current_speed += move.acceleration_rate;
+
+        transform.position.x += move.direction.x * deltaTime * move.current_speed;
+        transform.position.z += move.direction.y * deltaTime * move.current_speed;
+    }
 }
 
 void Systems::updateAI(ECS &ecs, sol::state& lua_state, float deltaTime) 

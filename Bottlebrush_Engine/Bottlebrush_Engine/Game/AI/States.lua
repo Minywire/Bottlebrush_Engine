@@ -51,7 +51,9 @@ Patrol = {
 
 	Update = function(NPC)
 		print ("in patrol state");
-
+		NPC:MoveTo(100.0, 100.0);
+		a=vec2(50.0, 50.0);
+		NPC:MoveTo(a);
 	end,
 
 	onExit = function(NPC)
