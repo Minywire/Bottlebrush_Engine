@@ -31,6 +31,13 @@ public:
     void ChangeState(const std::string& newState, sol::state& lua_state);
 
     /// @author Alan
+    /// @brief changes states, updates previous state, runs onExit and onEnter
+    /// accordingly
+    /// @param newState the new state to transition to
+    /// @param lua_state used to reference to the next section of the script to run
+    void ChangeState(const std::string& newState, sol::state& lua_state);
+
+    /// @author Alan
     /// @brief evaluate if path extension is correct and then sets the member statePath its value
     /// @param path the string to get the ai script
     void SetStatePath(const std::filesystem::path& path);
