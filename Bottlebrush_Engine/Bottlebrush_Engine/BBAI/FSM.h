@@ -28,6 +28,7 @@ public:
     /// @brief changes states, updates previous state, runs onExit and onEnter
     /// accordingly
     /// @param newState the new state to transition to
+    /// @param lua_state used to reference to the next section of the script to run
     void ChangeState(const std::string& newState, sol::state& lua_state);
 
     /// @author Alan
