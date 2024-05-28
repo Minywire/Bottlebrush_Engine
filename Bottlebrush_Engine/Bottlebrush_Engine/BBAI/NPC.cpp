@@ -10,12 +10,12 @@ NPC::NPC(const std::filesystem::path& statesPath,
 
 }
 
-/*
-void NPC::update()
+void NPC::update(const float deltaTime)
 {
+    m_DeltaTimeAI = deltaTime;
 	m_FSM.update();
 }
-*/
+
 FSM& NPC::getFSM() 
 { 
 	return m_FSM; 

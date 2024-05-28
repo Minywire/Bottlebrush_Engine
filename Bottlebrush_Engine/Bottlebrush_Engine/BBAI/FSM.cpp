@@ -42,16 +42,16 @@ void FSM::update()
 
 void FSM::changeState(const std::string& newState) 
 {  
-  if (!m_luaState[newState].valid()) {
+    if (!m_luaState[newState].valid()) {
     std::string errMsg =
         "AI state: " + newState + " not found on change state method";
     throw std::runtime_error(errMsg);
-  }
+    }
 
-  m_previousState = m_currentState;                      // track previous state
-  m_luaState[m_currentState]["onExit"](*m_npcReference);  // execute exit code
-  m_currentState = newState;                             // change states
-  m_luaState[m_currentState]["onEnter"](*m_npcReference);  // execute enter code of new state
+    m_previousState = m_currentState;                      // track previous state
+    m_luaState[m_currentState]["onExit"](*m_npcReference);  // execute exit code
+    m_currentState = newState;                             // change states
+    m_luaState[m_currentState]["onEnter"](*m_npcReference);  // execute enter code of new state
 }
 
 void FSM::setStatePath(const std::filesystem::path& path)

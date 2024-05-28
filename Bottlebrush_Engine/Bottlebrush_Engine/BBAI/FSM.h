@@ -6,8 +6,7 @@
 
 #include <string>
 #include <filesystem>
-
-#include "BBScript.h"
+#include <sol/sol.hpp>
 
 class NPC;
 
@@ -24,12 +23,6 @@ public:
     /// @brief normal update call for state machine
     /// runs current state update, and global state update
     void update();
-
-    /// @author Alan
-    /// @brief changes states, updates previous state, runs onExit and onEnter
-    /// accordingly
-    /// @param newState the new state to transition to
-    void changeStateAI(const std::string& newState);
 
     /// @author Alan
     /// @brief changes states, updates previous state, runs onExit and onEnter

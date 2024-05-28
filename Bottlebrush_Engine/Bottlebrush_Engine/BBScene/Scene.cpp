@@ -47,7 +47,7 @@ void Scene::init()
     bbSystems.ReadAIScripts(bbECS, lua.getLuaState());
 }
 
-void Scene::update(float deltaTime)
+void Scene::update(const float deltaTime)
 {
     accumulatedFrameTime += deltaTime;
     
@@ -57,7 +57,7 @@ void Scene::update(float deltaTime)
     while (accumulatedFrameTime >= UpdateAIInterval) 
     {
         std::cout << "update all AI call" << std::endl;
-        Systems::updateAI(bbECS);
+        Systems::updateAI(bbECS, deltaTime);
         accumulatedFrameTime -= UpdateAIInterval;
     }
 }

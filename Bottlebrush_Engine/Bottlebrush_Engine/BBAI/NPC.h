@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "BBScript.h"
 #include "FSM.h"
 
 /// @author Alan
@@ -14,15 +13,17 @@ class NPC
 {
 public:
     NPC(const std::filesystem::path& statesPath, const std::string& initialState, sol::state& lua_state);
-
-    /*
+    
     /// @author Alan
     /// @brief update call for FSM
     /// @param lua_state ai script to read from
-    void update(sol::state& lua_state);
-    */
+    void update(const float deltaTime);
+
     FSM& getFSM();
 
 private:
     FSM m_FSM;
+
+    float m_DeltaTimeAI; // time elasped for AI update call
+
 };

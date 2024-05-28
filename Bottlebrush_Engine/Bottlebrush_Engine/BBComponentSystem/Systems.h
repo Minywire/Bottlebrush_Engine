@@ -71,5 +71,5 @@ public:
      * @brief update AI call
      * @param sceneNPCs vector of all npcs to iterate through
      */
-    static void updateAI(ECS &ecs);
+    static void updateAI(ECS &ecs, const float deltaTime);
 };

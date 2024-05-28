@@ -104,13 +104,14 @@ void Systems::updateTransformComponent(ECS &ecs, const std::string& tag, glm::ve
 
 }
 
-void Systems::updateAI(ECS &ecs) 
+void Systems::updateAI(ECS &ecs, const float deltaTime) 
 {
     auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
 
     for (auto entity : group)
     {
       auto& aic = group.get<AIControllerComponent>(entity);
-      aic.npc.getFSM().update();
+
+      aic.npc.update(deltaTime);
     }
 }
