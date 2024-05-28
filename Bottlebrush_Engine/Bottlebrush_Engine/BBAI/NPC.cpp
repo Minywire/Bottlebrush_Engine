@@ -9,7 +9,7 @@ NPC::NPC(const std::filesystem::path& statesPath, const std::string& initialStat
 
 }
 
-void NPC::Update(sol::state & lua_state) 
+void NPC::Update(sol::state & lua_state)
 {
 	m_FSM.update(lua_state);
 }
