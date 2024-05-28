@@ -6,21 +6,18 @@
 #include "FSM.h"
 #include "NPC.h"
 
-namespace AIScipts {
+namespace AIScripts {
 
 void registerScriptedFSM(sol::state& lua_state) {
-    lua_state.new_usertype<FSM>("FSM", 
-        //sol::constructors<FSM(NPC*, const std::filesystem::path&, const std::string&, sol::state&)>(),
-        "changeState", &FSM::ChangeState
-    );
+    auto fsmTable = lua_state["FSM"].get_or_create<sol::table>();
+    fsmTable["ChangeState"] = [&lua_state](NPC& npc, const std::string& state)
+    {
+        npc.GetFSM().ChangeState(state, lua_state);
+    };
 }
 
 void registerScriptedNPC(sol::state& lua_state) {
-    lua_state.new_usertype<NPC>("NPC", 
-        //sol::constructors<NPC(const std::filesystem::path&, const std::string&, sol::state&)>(),
-        "getFSM", &NPC::GetFSM
-    );
+    lua_state.new_usertype<NPC>("NPC");
 }
 
 }
-

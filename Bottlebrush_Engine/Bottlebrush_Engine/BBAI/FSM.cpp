@@ -40,7 +40,7 @@ void FSM::update(sol::state & lua_state)
 
 void FSM::ChangeState(const std::string& newState, sol::state& lua_state) 
 {  
-    if (lua_state[newState].valid()) {
+    if (!lua_state[newState].valid()) {
     const std::string errMsg =
         "AI state: " + newState + " not found on change state method";
     throw std::runtime_error(errMsg);

@@ -30,7 +30,7 @@ Idle = {
 
 	Update = function(NPC)
 		print("in idle state");
-		NPC:getFSM():changeState("Patrol");
+		FSM.ChangeState(NPC, "Patrol");
 
 	end,
 
