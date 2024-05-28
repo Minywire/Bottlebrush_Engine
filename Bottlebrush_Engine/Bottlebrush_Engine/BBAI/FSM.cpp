@@ -38,6 +38,20 @@ void FSM::update(sol::state & lua_state)
     }
 }
 
+void FSM::ChangeState(const std::string& newState, sol::state& lua_state) 
+{  
+    if (!lua_state[newState].valid()) {
+    const std::string errMsg =
+        "AI state: " + newState + " not found on change state method";
+    throw std::runtime_error(errMsg);
+    }
+
+    m_previousState = m_currentState;                      // track previous state
+    lua_state[m_currentState]["onExit"](*m_npcReference);    // execute exit code
+    m_currentState = newState;                             // change states
+    lua_state[m_currentState]["onEnter"](*m_npcReference);  // execute enter code of new state
+}
+
 void FSM::SetStatePath(const std::filesystem::path& path)
 {
     if(path.extension() != ".lua") { throw std::runtime_error("Lua file is no lua file"); }
