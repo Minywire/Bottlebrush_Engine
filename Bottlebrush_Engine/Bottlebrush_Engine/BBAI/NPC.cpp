@@ -5,18 +5,18 @@
 #include "NPC.h"
 
 NPC::NPC(const std::filesystem::path& statesPath,
-         const std::string& initialState, sol::state& lua_state)
-    : m_FSM(this, statesPath, initialState, lua_state) {
+         const std::string& initialState)
+    : m_FSM(this, statesPath, initialState) {
 
 }
 
-void NPC::update(const float deltaTime)
+void NPC::Update(sol::state& lua_state, float deltaTime) 
 {
     m_DeltaTimeAI = deltaTime;
-	m_FSM.update();
+	m_FSM.update(lua_state);
 }
 
-FSM& NPC::getFSM() 
+FSM& NPC::GetFSM() 
 { 
 	return m_FSM; 
 }

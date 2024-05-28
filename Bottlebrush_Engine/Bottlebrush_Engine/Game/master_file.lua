@@ -23,4 +23,4 @@ end
 --end
 
 create_entity("Game/exitCube.lua");
---create_entity("Game/ico-sphere.lua");
+create_entity("Game/ico-sphere.lua");

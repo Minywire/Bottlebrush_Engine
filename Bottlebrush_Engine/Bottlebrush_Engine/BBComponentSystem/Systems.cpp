@@ -34,8 +34,8 @@ void Systems::ReadAIScripts(ECS& ecs, sol::state & lua_state)
     {
         auto& aic = group.get<AIControllerComponent>(entity);
 
-        if(aic.npc.getFSM().getStatePath().extension() != ".lua") { throw std::runtime_error("Lua file is no lua file"); }
-        lua_state.script_file(aic.npc.getFSM().getStatePath().string());
+        if(aic.npc.GetFSM().GetStatePath().extension() != ".lua") { throw std::runtime_error("Lua file is no lua file"); }
+        lua_state.script_file(aic.npc.GetFSM().GetStatePath().string());
     }
     registerScriptedFSM(lua_state);
     registerScriptedNPC(lua_state);
@@ -104,7 +104,7 @@ void Systems::updateTransformComponent(ECS &ecs, const std::string& tag, glm::ve
 
 }
 
-void Systems::updateAI(ECS &ecs, const float deltaTime) 
+void Systems::updateAI(ECS &ecs, sol::state& lua_state, float deltaTime) 
 {
     auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
 
@@ -112,6 +112,6 @@ void Systems::updateAI(ECS &ecs, const float deltaTime)
     {
       auto& aic = group.get<AIControllerComponent>(entity);
 
-      aic.npc.update(deltaTime);
+      aic.npc.Update(lua_state, deltaTime);
     }
 }
