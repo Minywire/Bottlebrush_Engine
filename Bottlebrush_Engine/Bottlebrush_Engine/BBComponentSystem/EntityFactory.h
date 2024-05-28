@@ -79,7 +79,6 @@ private:
     /**
      *
      * @param ecs the ecs registry to load model component from
-     * @param lua_state lua state
      * @param entity the entity to attach to
      * @param ai the ai table to compare against
      */

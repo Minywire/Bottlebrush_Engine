@@ -4,9 +4,8 @@
 
 #include "NPC.h"
 
-NPC::NPC(const std::filesystem::path& statesPath,
-         const std::string& initialState)
-    : m_FSM(this, statesPath, initialState) {
+NPC::NPC(const std::filesystem::path& statesPath, const std::string& initialState) : m_FSM(this, statesPath, initialState) 
+{
 
 }
 

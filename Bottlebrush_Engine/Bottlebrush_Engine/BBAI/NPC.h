@@ -13,10 +13,11 @@ class NPC
 {
 public:
     NPC(const std::filesystem::path& statesPath, const std::string& initialState);
-    
+
     /// @author Alan
     /// @brief update call for FSM
     /// @param lua_state ai script to read from
+    /// @param deltaTime to pass into NPC for movement calcs
     void Update(sol::state& lua_state, float deltaTime);
 
     FSM& GetFSM();

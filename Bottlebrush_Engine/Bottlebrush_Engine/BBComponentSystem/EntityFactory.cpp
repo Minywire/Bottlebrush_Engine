@@ -19,7 +19,7 @@ Entity EntityFactory::create_from_file(ECS & ecs, sol::state & lua_state, const 
     if(entityTable.valid())
     {
         namedEntity = ecs.CreateEntity();
-        load_components(ecs, namedEntity, lua_state, entityTable);
+        load_components(ecs, namedEntity, entityTable);
 
         return namedEntity;
     }

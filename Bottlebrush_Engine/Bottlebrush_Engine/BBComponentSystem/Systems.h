@@ -70,6 +70,8 @@ public:
      * @author Alan
      * @brief update AI call
      * @param sceneNPCs vector of all npcs to iterate through
+     * @param lua_state AI script to read for FSM in NPCs
+     * @param deltaTime to pass into NPC for movement calcs
      */
     static void updateAI(ECS &ecs, sol::state &lua_state, float deltaTime);
 };

@@ -6,5 +6,9 @@
 
 #include "BBScript.h"
 
+namespace AIScripts {
+
 void registerScriptedFSM(sol::state& lua_state);
 void registerScriptedNPC(sol::state& lua_state);
+
+}

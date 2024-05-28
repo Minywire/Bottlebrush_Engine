@@ -37,8 +37,8 @@ void Systems::ReadAIScripts(ECS& ecs, sol::state & lua_state)
         if(aic.npc.GetFSM().GetStatePath().extension() != ".lua") { throw std::runtime_error("Lua file is no lua file"); }
         lua_state.script_file(aic.npc.GetFSM().GetStatePath().string());
     }
-    registerScriptedFSM(lua_state);
-    registerScriptedNPC(lua_state);
+    AIScripts::registerScriptedFSM(lua_state);
+    AIScripts::registerScriptedNPC(lua_state);
 }
 
 void Systems::setLight(RenderEngine & renderEngine, const ShaderType & shaderType, glm::mat4 view)
@@ -104,7 +104,7 @@ void Systems::updateTransformComponent(ECS &ecs, const std::string& tag, glm::ve
 
 }
 
-void Systems::updateAI(ECS &ecs, sol::state& lua_state, float deltaTime) 
+void Systems::updateAI(ECS &ecs, sol::state & lua_state, float deltaTime) 
 {
     auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
 
