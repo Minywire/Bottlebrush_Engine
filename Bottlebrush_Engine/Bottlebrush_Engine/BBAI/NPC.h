@@ -17,14 +17,10 @@ public:
     /// @author Alan
     /// @brief update call for FSM
     /// @param lua_state ai script to read from
-    /// @param deltaTime to pass into NPC for movement calcs
-    void Update(sol::state& lua_state, float deltaTime);
+    void Update(sol::state& lua_state);
 
     FSM& GetFSM();
 
 private:
     FSM m_FSM;
-
-    float m_DeltaTimeAI; // time elasped for AI update call
-
 };

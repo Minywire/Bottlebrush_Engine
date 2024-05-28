@@ -104,14 +104,13 @@ void Systems::updateTransformComponent(ECS &ecs, const std::string& tag, glm::ve
 
 }
 
-void Systems::updateAI(ECS &ecs, sol::state & lua_state, float deltaTime) 
+void Systems::updateAI(ECS &ecs, sol::state & lua_state) 
 {
     auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
 
     for (auto entity : group)
     {
       auto& aic = group.get<AIControllerComponent>(entity);
-
-      aic.npc.Update(lua_state, deltaTime);
+      aic.npc.Update(lua_state);
     }
 }
