@@ -9,7 +9,7 @@ NPC::NPC(const std::filesystem::path& statesPath, const std::string& initialStat
 
 }
 
-void NPC::Update(sol::state& lua_state, float deltaTime) 
+void NPC::Update(sol::state & lua_state, float deltaTime) 
 {
     m_DeltaTimeAI = deltaTime;
 	m_FSM.update(lua_state);
