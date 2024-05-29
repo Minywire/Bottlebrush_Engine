@@ -17,6 +17,10 @@
 const unsigned int screen_width = 1920, screen_height = 1080;
 bool wireframe = false;
 
+Scene gameScene(
+    "Game/master_file.lua", screen_width,
+    screen_height);  // Temporarily global until input manager is implemented.
+
 float last_x = screen_width / 2.0f, last_y = screen_height / 2.0f,
       offset_y = 1.5f;
 bool first_mouse_click = true;
@@ -112,7 +116,7 @@ int main() {
 
   glEnable(GL_DEPTH_TEST);
 
-  Scene gameScene("Game/master_file.lua", screen_width, screen_height);
+  //Scene gameScene("Game/master_file.lua", screen_width, screen_height);
   gameScene.init();
 
   // TODO: Implement and test Texture.h
