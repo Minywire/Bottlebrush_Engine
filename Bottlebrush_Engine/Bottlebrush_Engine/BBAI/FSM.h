@@ -22,7 +22,8 @@ public:
     /// @author Alan
     /// @brief normal update call for state machine
     /// runs current state update, and global state update
-    void update(sol::state& lua_state);
+    /// @param lua_state the script to read from
+    void update(sol::state & lua_state);
 
     /// @author Alan
     /// @brief changes states, updates previous state, runs onExit and onEnter

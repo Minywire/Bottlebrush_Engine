@@ -9,7 +9,7 @@ FSM::FSM(NPC* FSMOwner, const std::filesystem::path& statesPath, const std::stri
     m_npcReference(FSMOwner),
     m_currentState(initialState),
     m_globalState("Global"),
-    m_previousState(initialState)
+    m_previousState(initialState) 
 {
     SetStatePath(statesPath);
     std::cout << "State Path: " << statesPath.string() << std::endl;  //@Debug Line, to be removed
@@ -20,7 +20,7 @@ void FSM::update(sol::state & lua_state)
 {
     if (m_globalState.compare("") != 0 && lua_state[m_globalState].valid())
     {
-        lua_state[m_globalState]["Update"](m_npcReference);
+        lua_state[m_globalState]["Update"](*m_npcReference);
     } 
     else
     {
@@ -29,7 +29,7 @@ void FSM::update(sol::state & lua_state)
 
     if (m_currentState.compare("") != 0 && lua_state[m_currentState].valid())
     {
-        lua_state[m_currentState]["Update"](m_npcReference);
+        lua_state[m_currentState]["Update"](*m_npcReference);
     }
     else
     {
