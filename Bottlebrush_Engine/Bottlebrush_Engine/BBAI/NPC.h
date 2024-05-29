@@ -27,12 +27,6 @@ public:
 
     /// @author Alan
     /// @brief move to a position
-    /// @param PosX x world coords
-    /// @param PosZ z world coords
-    void MoveTo(float PosX, float PosZ);
-
-    /// @author Alan
-    /// @brief move to a position
     /// @param targetPos vec2 of x and z world coords
     void MoveTo(const glm::vec2& targetPos);
 
@@ -50,4 +44,5 @@ private:
 
     float m_DeltaTimeAI; // time elasped for AI update call
     bool m_Moving; // bool for checking if NPC has movement input
+    std::vector<glm::vec2> m_Waypoints // waypoints for patrolling
 };

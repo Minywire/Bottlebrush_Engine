@@ -18,9 +18,7 @@ void registerScriptedFSM(sol::state& lua_state) {
 
 void registerScriptedNPC(sol::state& lua_state) {
     lua_state.new_usertype<NPC>("NPC", 
-        "MoveTo", sol::overload(
-            static_cast<void(NPC::*)(float, float)>(&NPC::MoveTo),
-            static_cast<void(NPC::*)(const glm::vec2&)>(&NPC::MoveTo))
+        "MoveTo", &NPC::MoveTo
     );
 }
 

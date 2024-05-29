@@ -23,12 +23,6 @@ void NPC::Update(sol::state& lua_state, float deltaTime)
 	m_FSM.update(lua_state);
 }
 
-void NPC::MoveTo(float PosX, float PosZ)
-{
-    glm::vec2 targetPos = glm::vec2(PosX, PosZ);
-    MoveTo(targetPos);
-}
-
 void NPC::MoveTo(const glm::vec2& targetPos)
 {
     // get transform
