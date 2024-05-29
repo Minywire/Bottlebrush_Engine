@@ -25,54 +25,26 @@ void NPC::Update(sol::state& lua_state, float deltaTime)
 
 void NPC::MoveTo(float PosX, float PosZ)
 {
-    std::cout << "in moveTo func" << std::endl;
-
     glm::vec2 targetPos = glm::vec2(PosX, PosZ);
-    // get transform
-    auto& transform = m_Entity.GetComponent<TransformComponent>(m_ECS.getReg());
-    glm::vec3& v3Pos = transform.position;
-    glm::vec2 pos = {v3Pos.x, v3Pos.z};
-    
-    std::cout << "Current Pos x: " << v3Pos.x << " z: " << v3Pos.z << std::endl;
-
-    // get movement
-    auto& movement = m_Entity.GetComponent<MovementComponent>(m_ECS.getReg());
-    glm::vec2& curVel = movement.direction;
-
-    // call move to function
-    m_Moving = !Movement::MoveTo(pos, targetPos, curVel, movement.current_speed, movement.acceleration_rate, m_DeltaTimeAI, 100.f);
-    
-    std::cout << "wants to move" << m_Moving << std::endl;
-    //std::cout << "New Pos x: " << v3Pos.x << " z: " << v3Pos.z << std::endl;
-
-    std::cout << "out moveTo func" << std::endl;
+    MoveTo(targetPos);
 }
 
-
-void NPC::MoveTo(glm::vec2 targetPos)
+void NPC::MoveTo(const glm::vec2& targetPos)
 {
-    std::cout << "in moveTo func" << std::endl;
-
     // get transform
     auto& transform = m_Entity.GetComponent<TransformComponent>(m_ECS.getReg());
-    glm::vec3& v3Pos = transform.position;
-    glm::vec2 pos = {v3Pos.x, v3Pos.z};
-    
-    std::cout << "Current Pos x: " << v3Pos.x << " z: " << v3Pos.z << std::endl;
+    // get x and z position as vec2
+    glm::vec2 pos = {transform.position.x, transform.position.z};
 
     // get movement
     auto& movement = m_Entity.GetComponent<MovementComponent>(m_ECS.getReg());
-    glm::vec2& curVel = movement.direction;
 
     // call move to function
-    m_Moving = Movement::MoveTo(pos, targetPos, curVel, movement.current_speed, movement.acceleration_rate, m_DeltaTimeAI);
-
-    //std::cout << "New Pos x: " << v3Pos.x << " z: " << v3Pos.z << std::endl;
-
-    std::cout << "out moveTo func" << std::endl;
+    m_Moving = !Movement::MoveTo(pos, targetPos, movement.direction, 
+        movement.current_speed, m_DeltaTimeAI);
 }
 
-bool NPC::WantsToMove()
+bool NPC::IsMoving()
 {
     return m_Moving;
 }

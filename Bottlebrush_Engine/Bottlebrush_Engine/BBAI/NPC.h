@@ -6,13 +6,10 @@
 
 #include "FSM.h"
 #include "Movement.h"
-//#include "ECS.h"
 #include "Entity.h"
 
 /** forward decl to avoid circle linking */
 class ECS;
-//class Entity;
-
 
 /// @author Alan
 /// @brief NPC class that holds an FSM to determine it's states and transitions
@@ -34,9 +31,15 @@ public:
     /// @param PosZ z world coords
     void MoveTo(float PosX, float PosZ);
 
-    void MoveTo(glm::vec2 targetPos);
+    /// @author Alan
+    /// @brief move to a position
+    /// @param targetPos vec2 of x and z world coords
+    void MoveTo(const glm::vec2& targetPos);
 
-    bool WantsToMove();
+    /// @author Alan
+    /// @brief see if NPC has movement input
+    /// @return is NPC trying to move
+    bool IsMoving();
 
     FSM& GetFSM();
 
@@ -46,5 +49,5 @@ private:
     Entity m_Entity; // reference to this entity on construction
 
     float m_DeltaTimeAI; // time elasped for AI update call
-    bool m_Moving;
+    bool m_Moving; // bool for checking if NPC has movement input
 };

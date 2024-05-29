@@ -112,13 +112,22 @@ void Systems::updateAIMovements(ECS& ecs, float deltaTime)
     for (auto entity : group)
     {
         auto& aic = group.get<AIControllerComponent>(entity);
-        if (!aic.npc.WantsToMove()) continue;
-
         auto& move = group.get<MovementComponent>(entity);
         auto& transform = group.get<TransformComponent>(entity);
 
-        if (move.current_speed <= move.max_speed) move.current_speed += move.acceleration_rate;
+        // check if we need to decelerate
+        if (!aic.npc.IsMoving()) {
+            // stopped moving, leave this entity
+            if (move.current_speed <= 0) continue;
 
+            move.current_speed -= move.deceleration_rate;
+        } else { // accelerate to max speed
+            if (move.current_speed <= move.max_speed) move.current_speed += move.acceleration_rate;
+        }
+
+        std::cout << "speed: " << move.current_speed << std::endl;
+
+        // move in its current direction by its current speed
         transform.position.x += move.direction.x * deltaTime * move.current_speed;
         transform.position.z += move.direction.y * deltaTime * move.current_speed;
     }

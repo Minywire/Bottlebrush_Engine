@@ -17,6 +17,6 @@ namespace Movement {
     /// @param offset how far to stand away from target position
     /// @return whether the object has reached the targetPos
     bool MoveTo(glm::vec2& curPos, const glm::vec2 targetPos, 
-        glm::vec2& curVelocity, float& curMoveSpeed, float moveAcceleration,
-        float deltaTime, float offset = 0);
+        glm::vec2& curVelocity, float curMoveSpeed,
+        float deltaTime, float offset = 100);
 }

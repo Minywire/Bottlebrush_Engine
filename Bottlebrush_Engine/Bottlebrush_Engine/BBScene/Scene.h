@@ -72,9 +72,9 @@ public:
     void clearRenderEngine();
 
     /**
-     *
+     * @param deltaTime time difference between frames
      */
-    void update(const float deltaTime);
+    void update(float deltaTime);
 private:
     glm::mat4 projectionMatrix; ///The camera projection matrix (temporary hack until everything from EntryPoint is ported here).
     glm::mat4 viewMatrix; ///The camera projection matrix (temporary hack until everything from EntryPoint is ported here).

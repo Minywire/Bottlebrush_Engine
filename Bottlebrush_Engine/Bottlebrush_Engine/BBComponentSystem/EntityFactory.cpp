@@ -142,8 +142,8 @@ void EntityFactory::loadAIController(ECS& ecs, Entity& entity, const sol::table&
 
     MovementComponent& MV = entity.AddComponent<MovementComponent>(ecs.getReg()); // add movement component to AI
     // manually give a default movement properties
-    MV.acceleration_rate = 10.0f;
-    MV.deceleration_rate = 10.0f;
+    MV.acceleration_rate = 1.0f;
+    MV.deceleration_rate = 1.0f;
     MV.current_speed = 0.f;
     MV.max_speed = 100.f;
     MV.direction = glm::vec2(1, 1);
