@@ -61,6 +61,10 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     {
         loadAIController(ecs, entity, table["AI"]);
     }
+    if (table["Terrain"]) 
+    {
+        loadTerrain(ecs, entity, table["Terrain"]);
+    }
 }
 
 void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& table, float xPos, float yPos, float zPos)
@@ -76,6 +80,10 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     if(table["AI"].valid())
     {
         loadAIController(ecs, entity, table["AI"]);
+    }
+    if (table["Terrain"]) 
+    {
+        loadTerrain(ecs, entity, table["Terrain"]);
     }
 }
 
@@ -143,4 +151,14 @@ void EntityFactory::loadAIController(ECS& ecs, Entity& entity, const sol::table&
     AIControllerComponent& aicComponent = entity.AddComponent<AIControllerComponent>(ecs.getReg(), statesPath, initialState); // add an AI controller to entity
 
     std::cout << "Loaded AI component" << std::endl; //@Debug Line, to be removed
+}
+
+void EntityFactory::loadTerrain(ECS& ecs, Entity& entity, const sol::table& terrain)
+{
+    std::string terrainPath = terrain["TerrainPath"];
+    std::string terrainTexturePath = terrain["TerrainTexturePath"];
+
+    TerrainComponent& terrainComponent = entity.AddComponent<TerrainComponent>(ecs.getReg(), terrainPath, terrainTexturePath); //add terrain component to entity.
+
+    std::cout << "Loaded terrain component\n";
 }
