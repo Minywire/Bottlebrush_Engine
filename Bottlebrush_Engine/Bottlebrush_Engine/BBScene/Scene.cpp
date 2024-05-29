@@ -78,11 +78,6 @@ void Scene::setRendererShaderSource(ShaderType shaderType, const std::string & v
     renderEngine->SetShaderSource(shaderType, vertexSource, fragSource);
 }
 
-std::unique_ptr<Shader>& Scene::GetShader(ShaderType shaderType) 
-{
-    return renderEngine->GetShader(shaderType);
-}
-
 void Scene::clearRenderEngine()
 {
     renderEngine->Clear();
