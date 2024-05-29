@@ -116,8 +116,12 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, Rende
 
     for(auto entity : group)
     {
+
         auto& currentTerrainComponent = group.get<TerrainComponent>(entity);
         auto& currentTransformComponent = group.get<TransformComponent>(entity);
+        
+        const float & currTerrainMin = sceneTerrain.at(currentTerrainComponent.terrain_path).GetMinHeight();
+        const float & currTerrainMax = sceneTerrain.at(currentTerrainComponent.terrain_path).GetMaxHeight();
        
         glm::mat4 transform = {1};
         //transform = glm::translate(transform, currentTransformComponent.position);
@@ -132,8 +136,8 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, Rende
         renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("model", transform);
 
         renderEngine.GetShader(terrainShader)->SetUniform1i("detail", 0);
-        renderEngine.GetShader(terrainShader)->SetUniform1f("min_height", sceneTerrain.at(currentTerrainComponent.terrain_path).GetMinHeight());
-        renderEngine.GetShader(terrainShader)->SetUniform1f("max_height", sceneTerrain.at(currentTerrainComponent.terrain_path).GetMaxHeight());
+        renderEngine.GetShader(terrainShader)->SetUniform1f("min_height", currTerrainMin);
+        renderEngine.GetShader(terrainShader)->SetUniform1f("max_height", currTerrainMax);
 
         //draw 
         sceneTerrain.at(currentTerrainComponent.terrain_path).GetMesh()->SetTexture();
