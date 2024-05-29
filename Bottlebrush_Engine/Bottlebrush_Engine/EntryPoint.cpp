@@ -13,30 +13,9 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
-// Paths
-std::filesystem::path heightmap_iceland_path(
-    "Resources/Heightmaps/iceland.png");
-std::filesystem::path heightmap_1_path("Resources/Heightmaps/heightmap-1.png");
-std::filesystem::path heightmap_2_path("Resources/Heightmaps/heightmap-2.png");
-std::filesystem::path heightmap_3_path("Resources/Heightmaps/heightmap-3.png");
-std::filesystem::path heightmap_4_path("Resources/Heightmaps/heightmap-4.png");
-
-std::filesystem::path texture_iceland_path(
-    "Resources/Textures/Terrain/iceland.png");
-std::filesystem::path texture_terrain_1_path(
-    "Resources/Textures/Terrain/terrain-1.png");
-std::filesystem::path texture_terrain_2_path(
-    "Resources/Textures/Terrain/terrain-2.png");
-std::filesystem::path texture_terrain_3_path(
-    "Resources/Textures/Terrain/terrain-3.png");
-std::filesystem::path texture_terrain_4_path(
-    "Resources/Textures/Terrain/terrain-4.png");
-
 // Settings 
 const unsigned int screen_width = 1920, screen_height = 1080;
-bool wireframe = false, grayscale = false, restrict_camera = true;
-glm::vec3 terrain_scale = {1.0f, 0.25f, 1.0f},
-          terrain_shift = {0.0f, 16.0f, 0.0f};
+bool wireframe = false, restrict_camera = false, grayscale = false;
 
 // Camera
 Camera camera(glm::vec3(0.0f, 25.0f, 0.0f));
@@ -146,16 +125,7 @@ int main() {
   std::unique_ptr<RenderEngine> renderEngine =
       GraphicsFactory<s_API>::CreateRenderer();
 
-  Terrain terrain(heightmap_2_path.string(), texture_terrain_4_path.string(),
-                  terrain_scale, terrain_shift);
-
-  float terrain_height_init =
-      terrain.GetHeight(camera.GetPositionX(), camera.GetPositionZ());
-  float terrain_min_height = terrain.GetMinHeight(),
-        terrain_max_height = terrain.GetMaxHeight();
-
-  camera.SetPosition(terrain.GetCentre());
-  camera.SetPositionY(terrain_height_init);
+  camera.SetPositionY(50.0f);
   camera.SetSensitivity(0.05f);
   camera.SetSpeed(100.0f);
   camera.SetZoom(30.0f);
@@ -231,7 +201,7 @@ int main() {
 
     gameScene.update(delta);
 
-    if (restrict_camera) {
+    /*if (restrict_camera) {
       glm::vec3 local_position =
           glm::inverse(model) * glm::vec4(camera.GetPosition(), 1);
 
@@ -246,7 +216,7 @@ int main() {
         terrain_height += terrain_height_diff * delta;
 
       camera.SetPositionY(terrain_height + offset_y);
-    }
+    }*/
 
     // SKYBOX
     //  change depth function so depth test passes when
