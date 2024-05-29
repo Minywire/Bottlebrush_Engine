@@ -82,3 +82,8 @@ void Scene::clearRenderEngine()
 {
     renderEngine->Clear();
 }
+
+const Camera& Scene::getCamera() const
+{ 
+    return mainCamera; 
+}
