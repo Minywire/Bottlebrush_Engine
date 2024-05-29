@@ -5,6 +5,7 @@
 
 #include "ECS.h"
 #include "GraphicsFactory.h"
+#include "Terrain.h"
 #include <unordered_map>
 /**
  * @class BBResourceManager
@@ -26,7 +27,19 @@ public:
      */
     std::unordered_map<std::string, std::unique_ptr<Model>> & getSceneModels();
 
+    /**
+    *@return A reference map strcture
+    */
+    const std::unordered_map<std::string, std::unique_ptr<Terrain>> & getSceneTerrain() const;
+    
+    /**
+    *@return A reference map structure contain all the terrain data stored for the scene (write usage)
+    */
+    std::unordered_map<std::string, std::unique_ptr<Terrain>> & getSceneTerrain();
+
 private:
     std::unordered_map<std::string, std::unique_ptr<Model>> sceneModels; ///The models stored in a scene
+
+    std::unordered_map<std::string, std::unique_ptr<Terrain>> sceneTerrain; //The terrain stored in a scene
 
 };

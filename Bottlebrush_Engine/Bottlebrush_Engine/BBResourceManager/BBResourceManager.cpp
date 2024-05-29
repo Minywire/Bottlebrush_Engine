@@ -13,3 +13,13 @@ std::unordered_map<std::string, std::unique_ptr<Model>> & BBResourceManager::get
 {
     return sceneModels;
 }
+
+const std::unordered_map<std::string, std::unique_ptr<Terrain>> & BBResourceManager::getSceneTerrain() const
+{
+    return sceneTerrain;
+}
+
+std::unordered_map<std::string, std::unique_ptr<Terrain>>& BBResourceManager::getSceneTerrain()
+{
+    return sceneTerrain;
+}
