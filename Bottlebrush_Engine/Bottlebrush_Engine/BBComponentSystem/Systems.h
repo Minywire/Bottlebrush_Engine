@@ -87,7 +87,7 @@ public:
      * @param projection The specified projection matrix used
      * @param view The specified view matrix used
      */
-    static void drawTerrain(const ECS& ecs, const ShaderType& shaderType, RenderEngine& renderEngine, std::unordered_map<std::string, Terrain> & sceneTerrain, bool grayscale, glm::mat4 projection, glm::mat4 view);
+    static void drawTerrain(const ECS& ecs, const ShaderType& terrainShader, RenderEngine& renderEngine, std::unordered_map<std::string, Terrain> & sceneTerrain, bool grayscale, glm::mat4 projection, glm::mat4 view);
 
     /**
      *
