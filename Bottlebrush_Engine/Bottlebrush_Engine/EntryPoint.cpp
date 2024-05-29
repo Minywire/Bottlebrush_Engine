@@ -148,6 +148,7 @@ int main() {
 
   Terrain terrain(heightmap_2_path.string(), texture_terrain_4_path.string(),
                   terrain_scale, terrain_shift);
+
   float terrain_height_init =
       terrain.GetHeight(camera.GetPositionX(), camera.GetPositionZ());
   float terrain_min_height = terrain.GetMinHeight(),
@@ -196,16 +197,6 @@ int main() {
   gameScene.GetShader(terrainShaderType)->SetUniform1f("min_height", terrain_min_height);
   gameScene.GetShader(terrainShaderType)->SetUniform1f("max_height", terrain_max_height);
 
-  renderEngine->SetShaderSource(terrainShaderType,
-                                "Resources/Shaders/Vertex/Heightmap.vert",
-                                "Resources/Shaders/Fragment/Heightmap.frag");
-
-  renderEngine->GetShader(terrainShaderType)->SetUniform1i("detail", 0);
-  renderEngine->GetShader(terrainShaderType)
-      ->SetUniform1f("min_height", terrain_min_height);
-  renderEngine->GetShader(terrainShaderType)
-      ->SetUniform1f("max_height", terrain_max_height);
-
   renderEngine->SetShaderSource(skyboxShaderType,
                                 "Resources/Shaders/Vertex/Skybox.vert",
                                 "Resources/Shaders/Fragment/Skybox.frag");
@@ -222,9 +213,6 @@ int main() {
 
     // Process user input
     ProcessInput(window);
-
-    renderEngine->GetShader(terrainShaderType)
-        ->SetUniform1i("grayscale", grayscale);
 
     // Clear colours and buffers
     renderEngine->Clear();
@@ -249,26 +237,6 @@ int main() {
     // MY SCENE
     gameScene.setProjectionMatrix(projection);
     gameScene.setViewMatrix(view);
-
-    // TERRAIN
-  /* renderEngine->GetShader(defaultShaderType)
-        ->SetUniformMatrix4fv("projection", projection);
-    renderEngine->GetShader(defaultShaderType)
-        ->SetUniformMatrix4fv("view", view);
-    renderEngine->GetShader(defaultShaderType)
-        ->SetUniformMatrix4fv("model", model);
-
-    renderEngine->GetShader(terrainShaderType)
-        ->SetUniformMatrix4fv("projection", projection);
-    renderEngine->GetShader(terrainShaderType)
-        ->SetUniformMatrix4fv("view", view);
-    renderEngine->GetShader(terrainShaderType)
-        ->SetUniformMatrix4fv("model", model);
-
-    terrain.GetMesh()->SetTexture();
-    renderEngine->DrawTriangleStrips(
-        terrainShaderType, *terrain.GetMesh()->GetVertexArray(),
-        terrain.GetNumStrips(), terrain.GetNumTriangles());*/
 
     // Draw the test cube
     for (unsigned int i = 0; i < testCube->GetSubMeshes().size(); i++) {
