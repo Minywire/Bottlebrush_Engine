@@ -16,7 +16,7 @@ void Systems::generateModelFromComponent(const ModelComponent & modelComp, std::
 
 void Systems::generateTerrainFromComponent(const TerrainComponent & terrainComp, const TransformComponent & terrainTransform, std::unordered_map<std::string, Terrain> & sceneTerrain) 
 {
-    if(sceneTerrain.find(terrainComp.terrain_path) == sceneTerrain.end())
+    if(!sceneTerrain.contains(terrainComp.terrain_path))
     {
         sceneTerrain.emplace(std::pair<std::string, Terrain>(terrainComp.terrain_path, Terrain(terrainComp.terrain_path, terrainComp.terrain_texture, terrainTransform.scale, terrainTransform.position)));
     }
