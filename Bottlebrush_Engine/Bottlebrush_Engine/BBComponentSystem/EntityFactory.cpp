@@ -158,5 +158,5 @@ void EntityFactory::loadTerrain(ECS& ecs, Entity& entity, const sol::table& terr
     const std::string terrainPath = terrain["TerrainPath"];
     const std::string terrainTexturePath = terrain["TerrainTexturePath"];
 
-    const TerrainComponent terrainComponent = entity.AddComponent<TerrainComponent>(ecs.getReg(), terrainPath, terrainTexturePath); //add terrain component to entity.
+    entity.AddComponent<TerrainComponent>(ecs.getReg(), terrainPath, terrainTexturePath); //add terrain component to entity.
 }
