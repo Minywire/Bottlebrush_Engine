@@ -44,5 +44,5 @@ private:
 
     float m_DeltaTimeAI; // time elasped for AI update call
     bool m_Moving; // bool for checking if NPC has movement input
-    std::vector<glm::vec2> m_Waypoints // waypoints for patrolling
+    std::vector<glm::vec2> m_Waypoints;  // waypoints for patrolling
 };
