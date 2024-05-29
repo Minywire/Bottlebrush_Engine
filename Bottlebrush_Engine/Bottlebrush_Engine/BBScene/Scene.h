@@ -92,4 +92,6 @@ private:
 
     float accumulatedFrameTime; // a time counter used to slow AI updates, so that it is not called everyframe
     const float UpdateAIInterval; // interval at which to update AI, a value of 1 roughly represents a second
+
+    Camera mainCamera; // main scene camera. Scene realistically only needs one camera for this project
 };
