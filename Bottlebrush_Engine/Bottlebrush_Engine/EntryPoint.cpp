@@ -15,7 +15,7 @@
 
 // Settings 
 const unsigned int screen_width = 1920, screen_height = 1080;
-bool wireframe = false, restrict_camera = false, grayscale = false;
+bool wireframe = false;
 
 // Camera
 Camera camera(glm::vec3(0.0f, 25.0f, 0.0f));
@@ -65,9 +65,6 @@ void KeyCallback(Window::WindowContext window, int key, int scancode,
   if (exitScreen) return;
 
   if (key == GLFW_KEY_C && action == GLFW_PRESS) wireframe = !wireframe;
-  if (action == GLFW_PRESS && key == GLFW_KEY_G) grayscale = !grayscale;
-  if (action == GLFW_PRESS && key == GLFW_KEY_R)
-    restrict_camera = !restrict_camera;
 
   if (action == GLFW_PRESS && key == GLFW_KEY_LEFT_SHIFT)
     camera.SetSpeed(camera.GetSpeed() * 2.0f);
