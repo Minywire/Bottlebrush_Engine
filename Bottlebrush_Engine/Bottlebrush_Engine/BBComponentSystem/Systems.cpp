@@ -75,7 +75,7 @@ void Systems::setLight(RenderEngine & renderEngine, const ShaderType & shaderTyp
     renderEngine.GetShader(shaderType)->SetUniform3f("viewPos", cameraPosition.x, cameraPosition.y, cameraPosition.z);
 }
 
-void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEngine & renderEngine, const std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels, glm::mat4 projection, glm::mat4 view)
+void Systems::drawModels(const ECS &ecs, const ShaderType & terrainShader, RenderEngine & renderEngine, const std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels, glm::mat4 projection, glm::mat4 view)
 {
     auto group = ecs.GetAllEntitiesWith<ModelComponent, TransformComponent>(); //the container with all the matching entities-
 
@@ -93,14 +93,15 @@ void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEn
 
         if(sceneModels.count(currentModelComponent.model_path) != 0)
         {
-            renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("projection", projection);
-            renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("view", view);
-            renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("model", transform);
+            //set uniforms for model
+            renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("projection", projection);
+            renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("view", view);
+            renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("model", transform);
 
             //draw model
             for (unsigned int i = 0; i < sceneModels.at(currentModelComponent.model_path)->GetSubMeshes().size(); i++) {
                 sceneModels.at(currentModelComponent.model_path)->GetSubMeshes()[i]->SetTexture();
-                renderEngine.Draw(shaderType,
+                renderEngine.Draw(terrainShader,
                                    *sceneModels.at(currentModelComponent.model_path)->GetSubMeshes()[i]->GetVertexArray(),
                                    sceneModels.at(currentModelComponent.model_path)->GetSubMeshes()[i]->GetIndexCount());
             }
@@ -108,7 +109,7 @@ void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEn
     }
 }
 
-void Systems::drawTerrain(const ECS& ecs, const ShaderType& shaderType, RenderEngine& renderEngine, std::unordered_map<std::string, Terrain> & sceneTerrain, glm::mat4 projection, glm::mat4 view)
+void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, RenderEngine& renderEngine, std::unordered_map<std::string, Terrain> & sceneTerrain, bool grayscale, glm::mat4 projection, glm::mat4 view)
 {
     auto group = ecs.GetAllEntitiesWith<TerrainComponent, TransformComponent>(); //the container with all the matching entities
 
@@ -126,14 +127,19 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& shaderType, RenderEn
 
         if(sceneTerrain.count(currentTerrainComponent.terrain_path) != 0)
         {
-            renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("projection", projection);
-            renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("view", view);
-            renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("model", transform);
+            renderEngine.GetShader(terrainShader)->SetUniform1i("grayscale", grayscale);
+            renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("projection", projection);
+            renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("view", view);
+            renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("model", transform);
+
+            renderEngine.GetShader(terrainShader)->SetUniform1i("detail", 0);
+            renderEngine.GetShader(terrainShader)->SetUniform1f("min_height", sceneTerrain.at(currentTerrainComponent.terrain_path).GetMinHeight());
+            renderEngine.GetShader(terrainShader)->SetUniform1f("max_height", sceneTerrain.at(currentTerrainComponent.terrain_path).GetMaxHeight());
 
             //draw 
             sceneTerrain.at(currentTerrainComponent.terrain_path).GetMesh()->SetTexture();
 
-            renderEngine.DrawTriangleStrips(shaderType, 
+            renderEngine.DrawTriangleStrips(terrainShader, 
                 *sceneTerrain.at(currentTerrainComponent.terrain_path).GetMesh()->GetVertexArray(),
                 sceneTerrain.at(currentTerrainComponent.terrain_path).GetNumStrips(), 
                 sceneTerrain.at(currentTerrainComponent.terrain_path).GetNumTriangles());

@@ -180,22 +180,13 @@ int main() {
   const ShaderType skyboxShaderType = ShaderType::Skybox;
   const ShaderType terrainShaderType = ShaderType::Terrain;
 
-  gameScene.setRendererShaderSource(
-      defaultShaderType, "Resources/Shaders/Vertex/Basic.vert",
-      "Resources/Shaders/Fragment/Basic.frag");  // scene currently only needs
-                                                 // one type of shader.
-  gameScene.setRendererShaderSource(
-      defaultShaderType, "Resources/Shaders/Vertex/BasicTex.vert",
-      "Resources/Shaders/Fragment/BasicTex.frag");  // scene currently only
-                                                    // needs one type of shader.
+  gameScene.setRendererShaderSource(defaultShaderType, 
+                              "Resources/Shaders/Vertex/BasicTex.vert",
+                              "Resources/Shaders/Fragment/BasicTex.frag");
 
   gameScene.setRendererShaderSource(terrainShaderType,
                                "Resources/Shaders/Vertex/Heightmap.vert",
                                "Resources/Shaders/Fragment/Heightmap.frag");
-
-  gameScene.GetShader(terrainShaderType)->SetUniform1i("detail", 0);
-  gameScene.GetShader(terrainShaderType)->SetUniform1f("min_height", terrain_min_height);
-  gameScene.GetShader(terrainShaderType)->SetUniform1f("max_height", terrain_max_height);
 
   renderEngine->SetShaderSource(skyboxShaderType,
                                 "Resources/Shaders/Vertex/Skybox.vert",
@@ -245,15 +236,6 @@ int main() {
                          *testCube->GetSubMeshes()[i]->GetVertexArray(),
                          testCube->GetSubMeshes()[i]->GetIndexCount());
     }
-
-    gameScene.GetShader(terrainShaderType)
-        ->SetUniform1i("grayscale", grayscale);
-    gameScene.GetShader(terrainShaderType)
-        ->SetUniformMatrix4fv("projection", projection);
-    gameScene.GetShader(terrainShaderType)
-        ->SetUniformMatrix4fv("view", view);
-    gameScene.GetShader(terrainShaderType)
-        ->SetUniformMatrix4fv("model", model);
 
     gameScene.update(delta);
 

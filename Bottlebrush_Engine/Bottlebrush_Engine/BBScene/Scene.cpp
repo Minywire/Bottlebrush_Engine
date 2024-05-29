@@ -53,7 +53,7 @@ void Scene::update(float deltaTime)
     accumulatedFrameTime += deltaTime;
     
     bbSystems.setLight(*renderEngine, ShaderType::Default, viewMatrix);
-    Systems::drawTerrain(bbECS, ShaderType::Terrain, *renderEngine, resources.getSceneTerrain(), projectionMatrix, viewMatrix);
+    Systems::drawTerrain(bbECS, ShaderType::Terrain, *renderEngine, resources.getSceneTerrain(), false, projectionMatrix, viewMatrix);
     Systems::drawModels(bbECS, ShaderType::Default, *renderEngine, resources.getSceneModels(), projectionMatrix, viewMatrix);
 
     while (accumulatedFrameTime >= UpdateAIInterval) 
