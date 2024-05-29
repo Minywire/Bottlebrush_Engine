@@ -11,6 +11,7 @@
 #include <sol/sol.hpp>
 #include <BBResourceManager.hpp>
 #include <Camera.h>
+#include <InputManager.h>
 
 /**
  * @class Scene
@@ -118,4 +119,6 @@ public:
     unsigned int screenWidth, screenHeight; // The width and height of the window, required for camera constraints
     glm::mat4 projectionMat; //scene projection matrix
     glm::mat4 viewMat; //view matrix
+
+    InputManager sceneInput; //the input manager for the scene - handles keyboard and mouse movement
 };
