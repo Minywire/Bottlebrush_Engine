@@ -201,23 +201,6 @@ int main() {
 
     gameScene.update(delta);
 
-    /*if (restrict_camera) {
-      glm::vec3 local_position =
-          glm::inverse(model) * glm::vec4(camera.GetPosition(), 1);
-
-      float terrain_height =
-          terrain.GetHeight(local_position.x, local_position.z);
-      float terrain_height_diff =
-          std::abs(terrain_height_init - terrain_height);
-
-      if (terrain_height < terrain_height_init)
-        terrain_height -= terrain_height_diff * delta;
-      if (terrain_height > terrain_height_init)
-        terrain_height += terrain_height_diff * delta;
-
-      camera.SetPositionY(terrain_height + offset_y);
-    }*/
-
     // SKYBOX
     //  change depth function so depth test passes when
     //  values are equal to depth buffer's content
