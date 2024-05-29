@@ -120,9 +120,7 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, Rende
         auto& currentTerrainComponent = group.get<TerrainComponent>(entity);
         auto& currentTransformComponent = group.get<TransformComponent>(entity);
         
-        const float & currTerrainMin = sceneTerrain.at(currentTerrainComponent.terrain_path).GetMinHeight();
-        const float & currTerrainMax = sceneTerrain.at(currentTerrainComponent.terrain_path).GetMaxHeight();
-        const std::string& terrain_path = currentTerrainComponent.terrain_path;
+        auto& terrain = sceneTerrain.at(currentTerrainComponent.terrain_path);
        
         glm::mat4 transform = {1};
         //transform = glm::translate(transform, currentTransformComponent.position);
@@ -137,16 +135,16 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, Rende
         renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("model", transform);
 
         renderEngine.GetShader(terrainShader)->SetUniform1i("detail", 0);
-        renderEngine.GetShader(terrainShader)->SetUniform1f("min_height", currTerrainMin);
-        renderEngine.GetShader(terrainShader)->SetUniform1f("max_height", currTerrainMax);
+        renderEngine.GetShader(terrainShader)->SetUniform1f("min_height", terrain.GetMinHeight());
+        renderEngine.GetShader(terrainShader)->SetUniform1f("max_height", terrain.GetMaxHeight());
 
         //draw 
-        sceneTerrain.at(terrain_path).GetMesh()->SetTexture();
+        terrain.GetMesh()->SetTexture();
 
         renderEngine.DrawTriangleStrips(terrainShader, 
-            *sceneTerrain.at(terrain_path).GetMesh()->GetVertexArray(),
-            sceneTerrain.at(terrain_path).GetNumStrips(), 
-            sceneTerrain.at(terrain_path).GetNumTriangles());
+            *terrain.GetMesh()->GetVertexArray(),
+            terrain.GetNumStrips(), 
+            terrain.GetNumTriangles());
     }
 }
 
