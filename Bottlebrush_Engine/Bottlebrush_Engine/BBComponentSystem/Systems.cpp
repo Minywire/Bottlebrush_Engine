@@ -132,7 +132,6 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& shaderType, RenderEn
 
             //draw 
             sceneTerrain.at(currentTerrainComponent.terrain_path).GetMesh()->SetTexture();
-            //renderEngine.Draw(shaderType, *sceneTerrain.at(currentTerrainComponent.terrain_path)->GetMesh()->GetVertexArray(), sceneTerrain.at(currentTerrainComponent.terrain_path)->GetMesh()->GetIndexCount()); //this is wrong lol
 
             renderEngine.DrawTriangleStrips(shaderType, 
                 *sceneTerrain.at(currentTerrainComponent.terrain_path).GetMesh()->GetVertexArray(),
