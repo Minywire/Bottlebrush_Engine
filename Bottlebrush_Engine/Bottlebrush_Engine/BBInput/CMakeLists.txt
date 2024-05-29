@@ -5,7 +5,7 @@ target_include_directories(BBInput
         PRIVATE BBInput
 )
 target_sources(BBInput
-        PRIVATE Window.cpp
+        PRIVATE KeyInput.cpp Window.cpp
 )
 target_link_libraries(BBInput
         PRIVATE glfw
