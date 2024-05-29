@@ -30,7 +30,7 @@ public:
      * @param modelComp The model component to generate the model from
      * @param sceneModels The scene structure holding all of the model data
      */
-    void generateTerrainFromComponent(const TerrainComponent & terrainComp, std::unordered_map<std::string, Terrain> & sceneTerrain);
+    void generateTerrainFromComponent(const TerrainComponent & terrainComp, const TransformComponent & terrainTransform, std::unordered_map<std::string, Terrain> & sceneTerrain); 
 
     /**
      *

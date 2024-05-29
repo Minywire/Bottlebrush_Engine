@@ -14,11 +14,11 @@ void Systems::generateModelFromComponent(const ModelComponent & modelComp, std::
     }
 }
 
-void Systems::generateTerrainFromComponent(const TerrainComponent & terrainComp, std::unordered_map<std::string, Terrain> & sceneTerrain) 
+void Systems::generateTerrainFromComponent(const TerrainComponent & terrainComp, const TransformComponent & terrainTransform, std::unordered_map<std::string, Terrain> & sceneTerrain) 
 {
     if(sceneTerrain.find(terrainComp.terrain_path) == sceneTerrain.end())
     {
-        sceneTerrain.emplace(std::pair<std::string, Terrain>(terrainComp.terrain_path, Terrain(terrainComp.terrain_path, terrainComp.terrain_texture, glm::vec3(1.0f,1.0f,1.0f), terrainComp.terrain_shift)));
+        sceneTerrain.emplace(std::pair<std::string, Terrain>(terrainComp.terrain_path, Terrain(terrainComp.terrain_path, terrainComp.terrain_texture, terrainTransform.scale, terrainTransform.position)));
     }
 }
 
@@ -36,13 +36,14 @@ void Systems::createModelComponents(ECS &ecs, std::unordered_map<std::string, st
 
 void Systems::createTerrainComponents(ECS &ecs, std::unordered_map<std::string, Terrain> & sceneTerrain)
 {
-    auto group = ecs.GetAllEntitiesWith<TerrainComponent>(); //the container with all the matching entities
+    auto group = ecs.GetAllEntitiesWith<TransformComponent, TerrainComponent>(); //the container with all the matching entities
 
     for(auto entity : group)
     {
         auto& currentTerrainComponent = group.get<TerrainComponent>(entity);
+        auto& currentTransform = group.get<TransformComponent>(entity);
 
-        generateTerrainFromComponent(currentTerrainComponent, sceneTerrain);
+        generateTerrainFromComponent(currentTerrainComponent, currentTransform, sceneTerrain);
     }
 }
 
@@ -119,11 +120,11 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, Rende
         auto& currentTransformComponent = group.get<TransformComponent>(entity);
        
         glm::mat4 transform = {1};
-        transform = glm::translate(transform, currentTransformComponent.position);
+        //transform = glm::translate(transform, currentTransformComponent.position);
         transform = glm::rotate(transform, currentTransformComponent.rotation.x, glm::vec3(1,0,0));
         transform = glm::rotate(transform, currentTransformComponent.rotation.y, glm::vec3(0,1,0));
         transform = glm::rotate(transform, currentTransformComponent.rotation.z, glm::vec3(0,0,1));
-        transform = glm::scale(transform, currentTransformComponent.scale);
+        //transform = glm::scale(transform, currentTransformComponent.scale);
 
         if(sceneTerrain.count(currentTerrainComponent.terrain_path) != 0)
         {

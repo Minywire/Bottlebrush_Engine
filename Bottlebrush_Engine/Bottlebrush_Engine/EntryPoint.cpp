@@ -181,9 +181,9 @@ int main() {
   const ShaderType terrainShaderType = ShaderType::Terrain;
 
   gameScene.setRendererShaderSource(defaultShaderType, 
-                              "Resources/Shaders/Vertex/BasicTex.vert",
-                              "Resources/Shaders/Fragment/BasicTex.frag");
-
+                          "Resources/Shaders/Vertex/BasicTex.vert",
+                          "Resources/Shaders/Fragment/BasicTex.frag");
+  
   gameScene.setRendererShaderSource(terrainShaderType,
                                "Resources/Shaders/Vertex/Heightmap.vert",
                                "Resources/Shaders/Fragment/Heightmap.frag");

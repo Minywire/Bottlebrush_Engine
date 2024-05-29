@@ -155,5 +155,8 @@ void EntityFactory::loadAIController(ECS& ecs, Entity& entity, const sol::table&
 
 void EntityFactory::loadTerrain(ECS& ecs, Entity& entity, const sol::table& terrain)
 {
-    entity.AddComponent<TerrainComponent>(ecs.getReg(), terrain["TerrainPath"], terrain["TerrainTexturePath"], glm::vec3(terrain["TerrainShift"]["x"], terrain["TerrainShift"]["y"], terrain["TerrainShift"]["z"])); //add terrain component to entity.
+    const std::string& terrainPath = terrain["TerrainPath"];
+    const std::string& terrainTexturePath = terrain["TerrainTexturePath"];
+
+    const TerrainComponent & terrainComponent = entity.AddComponent<TerrainComponent>(ecs.getReg(), terrain["TerrainPath"], terrain["TerrainTexturePath"]); //add terrain component to entity.
 }
