@@ -122,7 +122,7 @@ int main() {
   std::unique_ptr<RenderEngine> renderEngine =
       GraphicsFactory<s_API>::CreateRenderer();
 
-  camera.SetPositionY(50.0f);
+  camera.SetPosition(1000.0f, 100.0f, 1000.0f);
   camera.SetSensitivity(0.05f);
   camera.SetSpeed(100.0f);
   camera.SetZoom(30.0f);
