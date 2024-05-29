@@ -3,11 +3,12 @@
 //
 
 #include "Movement.h"
+#include "Components.h"
 
 namespace Movement {
 
-    bool MoveTo(glm::vec2& curPos, const glm::vec2 targetPos,
-            glm::vec2& curVelocity, float curMoveSpeed,
+    bool MoveTo(const glm::vec2& curPos, const glm::vec2& targetPos,
+            MovementComponent& moveComp,
             float deltaTime, float offset)
     {
         // calculate the heading from the object's position to target
@@ -15,9 +16,12 @@ namespace Movement {
         toTarget = glm::normalize(toTarget);
         if (glm::length(toTarget) == 0) return true; // early return if already at destination
 
-        // calculate new velocity and new character position
-        curVelocity = toTarget * glm::length(curVelocity);
-        glm::vec2 displacement = curVelocity * deltaTime * curMoveSpeed;
+        // get new speed after acceleration
+        float newSpeed = moveComp.current_speed + moveComp.acceleration_rate;
+
+        // calculate new direction and assigning it
+        moveComp.direction = toTarget * glm::length(moveComp.direction); // changes direction towards the target
+        glm::vec2 displacement = moveComp.direction * deltaTime * newSpeed;
         glm::vec2 newPos = curPos + displacement;
 
         // calculate real target position
@@ -28,7 +32,6 @@ namespace Movement {
 
         toRealTarget = glm::normalize(toRealTarget);
         if (glm::length(toRealTarget) == 0) {
-            curPos = realTargetPos;
             return true;
         }
 
@@ -36,13 +39,9 @@ namespace Movement {
         // dot product of 2 vectors
         float dp = glm::dot(toRealTarget, toTarget);
         if (dp < 0.0) {
-            //newPos has passed realTargetPos, as their angle > 90 degree
-            curPos = realTargetPos; // step back to realTargetPos
             return true;
         }
 
-        // newPos has not yet passed realTargetPos
-        curPos = newPos; // update character position
         return false;
     }
 }

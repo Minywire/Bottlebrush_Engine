@@ -35,8 +35,7 @@ void NPC::MoveTo(const glm::vec2& targetPos)
     auto& movement = m_Entity.GetComponent<MovementComponent>(m_ECS.getReg());
 
     // call move to function
-    m_Moving = !Movement::MoveTo(pos, targetPos, movement.direction, 
-        movement.current_speed, m_DeltaTimeAI);
+    m_Moving = !Movement::MoveTo(pos, targetPos, movement, m_DeltaTimeAI);
 }
 
 void NPC::AddWaypoint(glm::vec2 point)
