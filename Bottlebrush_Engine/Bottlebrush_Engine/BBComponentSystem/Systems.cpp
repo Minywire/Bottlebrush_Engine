@@ -110,7 +110,7 @@ void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEn
 
 void Systems::drawTerrain(const ECS& ecs, const ShaderType& shaderType, RenderEngine& renderEngine, std::unordered_map<std::string, Terrain> & sceneTerrain, glm::mat4 projection, glm::mat4 view)
 {
-    auto group = ecs.GetAllEntitiesWith<TerrainComponent, TransformComponent>(); //the container with all the matching entities-
+    auto group = ecs.GetAllEntitiesWith<TerrainComponent, TransformComponent>(); //the container with all the matching entities
 
     for(auto entity : group)
     {
