@@ -1,7 +1,7 @@
 #include "Terrain.h"
 
-Terrain::Terrain(const std::string &path, const std::string &texture,
-                 glm::vec3 scale, glm::vec3 shift) {
+Terrain::Terrain(const std::string &path, const std::string &texture, 
+        glm::vec3 scale, glm::vec3 shift) {
   data_ = stbi_load(path.c_str(), &width_, &depth_, &channels_, 0);
   num_strips_ = depth_;
   num_triangles_ = width_ * 2;
@@ -21,7 +21,7 @@ Terrain::Terrain(const std::string &path, const std::string &texture,
   stbi_image_free(data_);
   data_ = nullptr;
 }
- 
+
 glm::vec3 Terrain::GetCentre() const { return centre_; }
 
 std::vector<unsigned> Terrain::GetElements() const { return elements_; }

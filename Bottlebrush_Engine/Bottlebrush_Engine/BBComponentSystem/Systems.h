@@ -30,7 +30,7 @@ public:
      * @param modelComp The model component to generate the model from
      * @param sceneModels The scene structure holding all of the model data
      */
-    void generateTerrainFromComponent(const TerrainComponent & terrainComp, std::unordered_map<std::string, Terrain> & sceneTerrain);
+    void generateTerrainFromComponent(const TerrainComponent & terrainComp, const TransformComponent & terrainTransform, std::unordered_map<std::string, Terrain> & sceneTerrain); 
 
     /**
      *
@@ -87,7 +87,7 @@ public:
      * @param projection The specified projection matrix used
      * @param view The specified view matrix used
      */
-    static void drawTerrain(const ECS& ecs, const ShaderType& shaderType, RenderEngine& renderEngine, std::unordered_map<std::string, Terrain> & sceneTerrain, glm::mat4 projection, glm::mat4 view);
+    static void drawTerrain(const ECS& ecs, const ShaderType& terrainShader, RenderEngine& renderEngine, std::unordered_map<std::string, Terrain> & sceneTerrain, bool grayscale, glm::mat4 projection, glm::mat4 view);
 
     /**
      *

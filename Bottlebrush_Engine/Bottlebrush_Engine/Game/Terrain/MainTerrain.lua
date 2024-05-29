@@ -18,11 +18,6 @@ Entity = {
     },
     Terrain = {
         TerrainPath = "Resources/Heightmaps/heightmap-2.png",
-        TerrainTexturePath = "Resources/Textures/Terrain/terrain-4.png",
-        TerrainShift = {
-            x = 0.0,
-            y = 16.0,
-            z = 0.0
-        }
+        TerrainTexturePath = "Resources/Textures/Terrain/terrain-4.png"
     }
 }

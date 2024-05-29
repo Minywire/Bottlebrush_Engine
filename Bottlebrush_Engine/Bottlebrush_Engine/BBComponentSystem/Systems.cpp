@@ -14,11 +14,11 @@ void Systems::generateModelFromComponent(const ModelComponent & modelComp, std::
     }
 }
 
-void Systems::generateTerrainFromComponent(const TerrainComponent & terrainComp, std::unordered_map<std::string, Terrain> & sceneTerrain) 
+void Systems::generateTerrainFromComponent(const TerrainComponent & terrainComp, const TransformComponent & terrainTransform, std::unordered_map<std::string, Terrain> & sceneTerrain) 
 {
-    if(sceneTerrain.find(terrainComp.terrain_path) == sceneTerrain.end())
+    if(!sceneTerrain.contains(terrainComp.terrain_path))
     {
-        sceneTerrain.emplace(std::pair<std::string, Terrain>(terrainComp.terrain_path, Terrain(terrainComp.terrain_path, terrainComp.terrain_texture, glm::vec3(1.0f,1.0f,1.0f), terrainComp.terrain_shift)));
+        sceneTerrain.emplace(std::pair<std::string, Terrain>(terrainComp.terrain_path, Terrain(terrainComp.terrain_path, terrainComp.terrain_texture, terrainTransform.scale, terrainTransform.position)));
     }
 }
 
@@ -36,13 +36,14 @@ void Systems::createModelComponents(ECS &ecs, std::unordered_map<std::string, st
 
 void Systems::createTerrainComponents(ECS &ecs, std::unordered_map<std::string, Terrain> & sceneTerrain)
 {
-    auto group = ecs.GetAllEntitiesWith<TerrainComponent>(); //the container with all the matching entities
+    auto group = ecs.GetAllEntitiesWith<TransformComponent, TerrainComponent>(); //the container with all the matching entities
 
     for(auto entity : group)
     {
         auto& currentTerrainComponent = group.get<TerrainComponent>(entity);
+        auto& currentTransform = group.get<TransformComponent>(entity);
 
-        generateTerrainFromComponent(currentTerrainComponent, sceneTerrain);
+        generateTerrainFromComponent(currentTerrainComponent, currentTransform, sceneTerrain);
     }
 }
 
@@ -77,7 +78,7 @@ void Systems::setLight(RenderEngine & renderEngine, const ShaderType & shaderTyp
 
 void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEngine & renderEngine, const std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels, glm::mat4 projection, glm::mat4 view)
 {
-    auto group = ecs.GetAllEntitiesWith<ModelComponent, TransformComponent>(); //the container with all the matching entities-
+    auto group = ecs.GetAllEntitiesWith<ModelComponent, TransformComponent>(); //the container with all the matching entities
 
     for(auto entity : group)
     {
@@ -93,6 +94,7 @@ void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEn
 
         if(sceneModels.count(currentModelComponent.model_path) != 0)
         {
+            //set uniforms for model
             renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("projection", projection);
             renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("view", view);
             renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("model", transform);
@@ -108,37 +110,41 @@ void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEn
     }
 }
 
-void Systems::drawTerrain(const ECS& ecs, const ShaderType& shaderType, RenderEngine& renderEngine, std::unordered_map<std::string, Terrain> & sceneTerrain, glm::mat4 projection, glm::mat4 view)
+void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, RenderEngine& renderEngine, std::unordered_map<std::string, Terrain> & sceneTerrain, bool grayscale, glm::mat4 projection, glm::mat4 view)
 {
-    auto group = ecs.GetAllEntitiesWith<TerrainComponent, TransformComponent>(); //the container with all the matching entities-
+    auto group = ecs.GetAllEntitiesWith<TerrainComponent, TransformComponent>(); //the container with all the matching entities
 
     for(auto entity : group)
     {
+
         auto& currentTerrainComponent = group.get<TerrainComponent>(entity);
         auto& currentTransformComponent = group.get<TransformComponent>(entity);
+        
+        auto& terrain = sceneTerrain.at(currentTerrainComponent.terrain_path);
        
         glm::mat4 transform = {1};
-        transform = glm::translate(transform, currentTransformComponent.position);
+        //transform = glm::translate(transform, currentTransformComponent.position);
         transform = glm::rotate(transform, currentTransformComponent.rotation.x, glm::vec3(1,0,0));
         transform = glm::rotate(transform, currentTransformComponent.rotation.y, glm::vec3(0,1,0));
         transform = glm::rotate(transform, currentTransformComponent.rotation.z, glm::vec3(0,0,1));
-        transform = glm::scale(transform, currentTransformComponent.scale);
+        //transform = glm::scale(transform, currentTransformComponent.scale);
 
-        if(sceneTerrain.count(currentTerrainComponent.terrain_path) != 0)
-        {
-            renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("projection", projection);
-            renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("view", view);
-            renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("model", transform);
+        renderEngine.GetShader(terrainShader)->SetUniform1i("grayscale", grayscale);
+        renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("projection", projection);
+        renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("view", view);
+        renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("model", transform);
 
-            //draw 
-            sceneTerrain.at(currentTerrainComponent.terrain_path).GetMesh()->SetTexture();
-            //renderEngine.Draw(shaderType, *sceneTerrain.at(currentTerrainComponent.terrain_path)->GetMesh()->GetVertexArray(), sceneTerrain.at(currentTerrainComponent.terrain_path)->GetMesh()->GetIndexCount()); //this is wrong lol
+        renderEngine.GetShader(terrainShader)->SetUniform1i("detail", 0);
+        renderEngine.GetShader(terrainShader)->SetUniform1f("min_height", terrain.GetMinHeight());
+        renderEngine.GetShader(terrainShader)->SetUniform1f("max_height", terrain.GetMaxHeight());
 
-            renderEngine.DrawTriangleStrips(shaderType, 
-                *sceneTerrain.at(currentTerrainComponent.terrain_path).GetMesh()->GetVertexArray(),
-                sceneTerrain.at(currentTerrainComponent.terrain_path).GetNumStrips(), 
-                sceneTerrain.at(currentTerrainComponent.terrain_path).GetNumTriangles());
-        }
+        //draw 
+        terrain.GetMesh()->SetTexture();
+
+        renderEngine.DrawTriangleStrips(terrainShader, 
+            *terrain.GetMesh()->GetVertexArray(),
+            terrain.GetNumStrips(), 
+            terrain.GetNumTriangles());
     }
 }
 
