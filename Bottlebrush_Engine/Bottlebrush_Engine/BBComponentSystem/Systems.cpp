@@ -124,8 +124,9 @@ void Systems::updateAIMovements(ECS& ecs, float deltaTime)
         } else { // accelerate to max speed
             if (move.current_speed <= move.max_speed) move.current_speed += move.acceleration_rate;
         }
-
-        std::cout << "speed: " << move.current_speed << std::endl;
+        
+        // @Debug Line
+        //std::cout << "speed: " << move.current_speed << std::endl;
 
         // move in its current direction by its current speed
         transform.position.x += move.direction.x * deltaTime * move.current_speed;
