@@ -31,6 +31,15 @@ public:
     void MoveTo(const glm::vec2& targetPos);
 
     /// @author Alan
+    /// @brief adds a waypoint to the member vector, used for patrolling
+    /// @param point x and z vec2 of world coords
+    void AddWaypoint(glm::vec2 point);
+    
+    /// @author Alan
+    /// @brief Moves to all waypoints in member vector
+    void Patrol();
+
+    /// @author Alan
     /// @brief see if NPC has movement input
     /// @return is NPC trying to move
     bool IsMoving();
@@ -45,4 +54,5 @@ private:
     float m_DeltaTimeAI; // time elasped for AI update call
     bool m_Moving; // bool for checking if NPC has movement input
     std::vector<glm::vec2> m_Waypoints;  // waypoints for patrolling
+    int m_CurrentWaypoint; // tracking what is the current waypoint
 };

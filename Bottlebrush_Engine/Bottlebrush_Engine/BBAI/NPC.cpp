@@ -12,7 +12,8 @@ NPC::NPC(const std::filesystem::path& statesPath,
     : m_FSM(this, statesPath, initialState), 
     m_DeltaTimeAI(0.f),
     m_ECS(ecs), 
-    m_Entity(entity)
+    m_Entity(entity),
+    m_CurrentWaypoint(0)
 {
 
 }
@@ -36,6 +37,21 @@ void NPC::MoveTo(const glm::vec2& targetPos)
     // call move to function
     m_Moving = !Movement::MoveTo(pos, targetPos, movement.direction, 
         movement.current_speed, m_DeltaTimeAI);
+}
+
+void NPC::AddWaypoint(glm::vec2 point)
+{
+    m_Waypoints.push_back(point);
+}
+
+void NPC::Patrol()
+{
+    if (m_Waypoints.size() == 0) return;
+    if (m_CurrentWaypoint >= m_Waypoints.size()) m_CurrentWaypoint = 0;
+
+    MoveTo(m_Waypoints[m_CurrentWaypoint]);
+
+    if (!m_Moving) m_CurrentWaypoint++;
 }
 
 bool NPC::IsMoving()

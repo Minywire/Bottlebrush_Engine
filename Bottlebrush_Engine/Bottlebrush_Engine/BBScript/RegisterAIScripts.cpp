@@ -18,7 +18,9 @@ void registerScriptedFSM(sol::state& lua_state) {
 
 void registerScriptedNPC(sol::state& lua_state) {
     lua_state.new_usertype<NPC>("NPC", 
-        "MoveTo", &NPC::MoveTo
+        "MoveTo", &NPC::MoveTo,
+        "AddWaypoint", &NPC::AddWaypoint,
+        "Patrol", &NPC::Patrol
     );
 }
 
