@@ -67,6 +67,11 @@ public:
     void setRendererShaderSource(ShaderType shaderType, const std::string & vertexSource, const std::string & fragSource);
 
     /**
+    *
+    */
+    std::unique_ptr<Shader>& GetShader(ShaderType shaderType);
+
+    /**
      *
      */
     void clearRenderEngine();

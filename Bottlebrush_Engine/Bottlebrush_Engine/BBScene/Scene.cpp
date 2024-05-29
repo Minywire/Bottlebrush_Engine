@@ -43,6 +43,7 @@ void Scene::init()
         return;
     }//load the master lua scene script containing all entities
 
+    bbSystems.createTerrainComponents(bbECS, resources.getSceneTerrain());
     bbSystems.createModelComponents(bbECS, resources.getSceneModels());
     bbSystems.ReadAIScripts(bbECS, lua.getLuaState());
 }
@@ -52,6 +53,7 @@ void Scene::update(float deltaTime)
     accumulatedFrameTime += deltaTime;
     
     bbSystems.setLight(*renderEngine, ShaderType::Default, viewMatrix);
+    Systems::drawTerrain(bbECS, ShaderType::Terrain, *renderEngine, resources.getSceneTerrain(), projectionMatrix, viewMatrix);
     Systems::drawModels(bbECS, ShaderType::Default, *renderEngine, resources.getSceneModels(), projectionMatrix, viewMatrix);
 
     while (accumulatedFrameTime >= UpdateAIInterval) 
@@ -65,6 +67,11 @@ void Scene::update(float deltaTime)
 void Scene::setRendererShaderSource(ShaderType shaderType, const std::string & vertexSource, const std::string & fragSource)
 {
     renderEngine->SetShaderSource(shaderType, vertexSource, fragSource);
+}
+
+std::unique_ptr<Shader>& Scene::GetShader(ShaderType shaderType) 
+{
+    return renderEngine->GetShader(shaderType);
 }
 
 void Scene::clearRenderEngine()

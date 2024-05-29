@@ -32,7 +32,7 @@ std::filesystem::path texture_terrain_3_path(
 std::filesystem::path texture_terrain_4_path(
     "Resources/Textures/Terrain/terrain-4.png");
 
-// Settings
+// Settings 
 const unsigned int screen_width = 1920, screen_height = 1080;
 bool wireframe = false, grayscale = false, restrict_camera = true;
 glm::vec3 terrain_scale = {1.0f, 0.25f, 1.0f},
@@ -188,9 +188,18 @@ int main() {
       "Resources/Shaders/Fragment/BasicTex.frag");  // scene currently only
                                                     // needs one type of shader.
 
+  gameScene.setRendererShaderSource(terrainShaderType,
+                               "Resources/Shaders/Vertex/Heightmap.vert",
+                               "Resources/Shaders/Fragment/Heightmap.frag");
+
+  gameScene.GetShader(terrainShaderType)->SetUniform1i("detail", 0);
+  gameScene.GetShader(terrainShaderType)->SetUniform1f("min_height", terrain_min_height);
+  gameScene.GetShader(terrainShaderType)->SetUniform1f("max_height", terrain_max_height);
+
   renderEngine->SetShaderSource(terrainShaderType,
                                 "Resources/Shaders/Vertex/Heightmap.vert",
                                 "Resources/Shaders/Fragment/Heightmap.frag");
+
   renderEngine->GetShader(terrainShaderType)->SetUniform1i("detail", 0);
   renderEngine->GetShader(terrainShaderType)
       ->SetUniform1f("min_height", terrain_min_height);
@@ -242,7 +251,7 @@ int main() {
     gameScene.setViewMatrix(view);
 
     // TERRAIN
-    renderEngine->GetShader(defaultShaderType)
+  /* renderEngine->GetShader(defaultShaderType)
         ->SetUniformMatrix4fv("projection", projection);
     renderEngine->GetShader(defaultShaderType)
         ->SetUniformMatrix4fv("view", view);
@@ -259,7 +268,7 @@ int main() {
     terrain.GetMesh()->SetTexture();
     renderEngine->DrawTriangleStrips(
         terrainShaderType, *terrain.GetMesh()->GetVertexArray(),
-        terrain.GetNumStrips(), terrain.GetNumTriangles());
+        terrain.GetNumStrips(), terrain.GetNumTriangles());*/
 
     // Draw the test cube
     for (unsigned int i = 0; i < testCube->GetSubMeshes().size(); i++) {
@@ -269,8 +278,16 @@ int main() {
                          testCube->GetSubMeshes()[i]->GetIndexCount());
     }
 
-    gameScene.update(delta);  // currently this is just drawing all the models in the
-                         // sceneModels map
+    gameScene.GetShader(terrainShaderType)
+        ->SetUniform1i("grayscale", grayscale);
+    gameScene.GetShader(terrainShaderType)
+        ->SetUniformMatrix4fv("projection", projection);
+    gameScene.GetShader(terrainShaderType)
+        ->SetUniformMatrix4fv("view", view);
+    gameScene.GetShader(terrainShaderType)
+        ->SetUniformMatrix4fv("model", model);
+
+    gameScene.update(delta);
 
     if (restrict_camera) {
       glm::vec3 local_position =

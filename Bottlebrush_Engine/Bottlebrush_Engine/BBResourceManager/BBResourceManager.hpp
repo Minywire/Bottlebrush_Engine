@@ -30,16 +30,16 @@ public:
     /**
     *@return A reference map strcture
     */
-    const std::unordered_map<std::string, std::unique_ptr<Terrain>> & getSceneTerrain() const;
+    const std::unordered_map<std::string, Terrain> & getSceneTerrain() const;
     
     /**
     *@return A reference map structure contain all the terrain data stored for the scene (write usage)
     */
-    std::unordered_map<std::string, std::unique_ptr<Terrain>> & getSceneTerrain();
+    std::unordered_map<std::string, Terrain> & getSceneTerrain();
 
 private:
     std::unordered_map<std::string, std::unique_ptr<Model>> sceneModels; ///The models stored in a scene
 
-    std::unordered_map<std::string, std::unique_ptr<Terrain>> sceneTerrain; //The terrain stored in a scene
+    std::unordered_map<std::string, Terrain> sceneTerrain; //The terrain stored in a scene
 
 };

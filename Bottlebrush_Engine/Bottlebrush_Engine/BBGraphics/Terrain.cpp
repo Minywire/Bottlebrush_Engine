@@ -21,7 +21,7 @@ Terrain::Terrain(const std::string &path, const std::string &texture,
   stbi_image_free(data_);
   data_ = nullptr;
 }
-
+ 
 glm::vec3 Terrain::GetCentre() const { return centre_; }
 
 std::vector<unsigned> Terrain::GetElements() const { return elements_; }
@@ -122,7 +122,7 @@ void Terrain::PopulateVertices() {
     }
   }
 }
-
+ 
 void Terrain::InitMesh() {
   std::vector<unsigned int> layout;
   layout.push_back(3);  // 3 elements for position

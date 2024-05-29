@@ -79,5 +79,6 @@ struct TerrainComponent
 {
     std::string terrain_path;
     std::string terrain_texture;
+    glm::vec3 terrain_shift;
 };
 
