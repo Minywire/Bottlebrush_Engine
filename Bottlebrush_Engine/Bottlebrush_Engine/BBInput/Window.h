@@ -13,9 +13,14 @@ class Window {
   typedef GLFWmonitor* WindowMonitor;
   typedef const GLFWvidmode* WindowVideoMode;
 
-  enum InputMode { kCursor = GLFW_CURSOR, kRawMtn = GLFW_RAW_MOUSE_MOTION };
+  enum InputMode {
+    kNone = -1,
+    kCursor = GLFW_CURSOR,
+    kRawMtn = GLFW_RAW_MOUSE_MOTION
+  };
 
   enum InputModeType {
+    kCursorNone = -1,
     kCursorDisabled = GLFW_CURSOR_DISABLED,
     kCursorHidden = GLFW_CURSOR_HIDDEN,
     kCursorNormal = GLFW_CURSOR_NORMAL
