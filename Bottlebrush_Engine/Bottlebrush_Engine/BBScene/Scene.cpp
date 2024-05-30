@@ -109,7 +109,7 @@ Scene::Scene(const std::string& lua_master, float screenwidth, float screenheigh
     const ShaderType terrainShaderType = ShaderType::Terrain;
     const ShaderType skyboxShaderType = ShaderType::Skybox;
 
-    setRendererShaderSource(defaultShaderType, 
+    setRendererShaderSource(defaultShaderType,
                         "Resources/Shaders/Vertex/BasicTex.vert",
                         "Resources/Shaders/Fragment/BasicTex.frag");
 

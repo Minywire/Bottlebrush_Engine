@@ -123,11 +123,6 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, Rende
         auto& terrain = sceneTerrain.at(currentTerrainComponent.terrain_path);
        
         glm::mat4 transform = {1};
-        //transform = glm::translate(transform, currentTransformComponent.position);
-        transform = glm::rotate(transform, currentTransformComponent.rotation.x, glm::vec3(1,0,0));
-        transform = glm::rotate(transform, currentTransformComponent.rotation.y, glm::vec3(0,1,0));
-        transform = glm::rotate(transform, currentTransformComponent.rotation.z, glm::vec3(0,0,1));
-        //transform = glm::scale(transform, currentTransformComponent.scale);
 
         renderEngine.GetShader(terrainShader)->SetUniform1i("grayscale", grayscale);
         renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("projection", projection);

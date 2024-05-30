@@ -13,10 +13,11 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
-int main() {
-  Scene gameScene("Game/master_file.lua", 1920, 1080);
 
-  gameScene.update();
+int main() {
+    Scene gameScene("Game/master_file.lua", 1920, 1080);
+
+    gameScene.update(delta);
 
   return 0;
 }
