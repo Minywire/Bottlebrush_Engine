@@ -53,19 +53,6 @@ struct TagComponent
 };
 
 /**
- * @brief Component that contains movement data for player
- * @author Marco Garzon Lara
- */
-struct MovementComponent
-{
-    float max_speed;
-    float current_speed;
-    float acceleration_rate;
-    float deceleration_rate;
-    glm::vec2 direction;
-};
-
-/**
  * @brief Component that contains data for AI controlled NPCs
  */
 struct AIControllerComponent

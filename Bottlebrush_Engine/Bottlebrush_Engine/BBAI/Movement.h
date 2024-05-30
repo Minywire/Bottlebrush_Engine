@@ -15,11 +15,14 @@ namespace Movement {
     /// @brief Steers an object to targetPos by its current velocity
     /// @param curPos objects current position
     /// @param targetPos position to reach
-    /// @param curVelocity current velocity
+    /// @param currentSpeed current speed
+    /// @param acceleration current acceleration
+    /// @param currentDirection the direction the object is currently facing, 
+    /// this will be adjusted to face towards targetPos
     /// @param deltaTime delta time in frames
     /// @param offset how far to stand away from target position
     /// @return whether the object has reached the targetPos
     bool MoveTo(const glm::vec2& curPos, const glm::vec2& targetPos, 
-        MovementComponent& moveComp,
+        const float& currentSpeed, const float& acceleration, glm::vec2& currentDirection,
         float deltaTime, float offset = 100);
 }

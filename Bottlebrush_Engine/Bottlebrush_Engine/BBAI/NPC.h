@@ -45,6 +45,16 @@ public:
     /// @return is NPC trying to move
     bool IsMoving();
 
+    float& GetCurrentSpeed();
+
+    float& GetMaxSpeed();
+
+    float& GetAcceleration();
+
+    float& GetDecceleration();
+
+    glm::vec2& GetDirection();
+
     FSM& GetFSM();
 
 private:
@@ -55,6 +65,13 @@ private:
     bool m_Moving; // bool for checking if NPC has movement input
     std::vector<glm::vec2> m_Waypoints;  // waypoints for patrolling
     int m_CurrentWaypoint; // tracking what is the current waypoint
-    int m_WaitTimeElapsed; // its accumulated waiting time
-    int m_PatrolWaitDuration; // patrol max waiting duration
+    float m_WaitTimeElapsed; // its accumulated waiting time
+    float m_PatrolWaitDuration;  // patrol max waiting duration
+
+    //movement properties
+    float m_max_speed = 100.f;
+    float m_current_speed = 0.f;
+    float m_acceleration_rate = 0.1f;
+    float m_deceleration_rate = 0.1f;
+    glm::vec2 m_direction = {1, 1};
 };

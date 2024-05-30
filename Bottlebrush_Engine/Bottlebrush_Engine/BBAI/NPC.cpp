@@ -14,7 +14,7 @@ NPC::NPC(const std::filesystem::path& statesPath,
     m_Entity(entity),
     m_CurrentWaypoint(0),
     m_WaitTimeElapsed(0),
-    m_PatrolWaitDuration(10)
+    m_PatrolWaitDuration(1)
 {
 
 }
@@ -32,11 +32,8 @@ void NPC::MoveTo(const glm::vec2& targetPos, ECS& ecs)
     // get x and z position as vec2
     glm::vec2 pos = {transform.position.x, transform.position.z};
 
-    // get movement
-    auto& movement = m_Entity.GetComponent<MovementComponent>(ecs.getReg());
-
     // call move to function
-    m_Moving = !Movement::MoveTo(pos, targetPos, movement, m_DeltaTimeAI);
+    m_Moving = !Movement::MoveTo(pos, targetPos, m_current_speed, m_acceleration_rate, m_direction, m_DeltaTimeAI);
 }
 
 void NPC::AddWaypoint(glm::vec2 point)
@@ -53,7 +50,7 @@ void NPC::Patrol(ECS& ecs)
 
     if (m_Moving) return;
 
-    m_WaitTimeElapsed++;
+    m_WaitTimeElapsed += m_DeltaTimeAI * 300;
     // waits for a duration
     if (m_WaitTimeElapsed > m_PatrolWaitDuration) {
         m_CurrentWaypoint++; // move to next waypoint
@@ -64,6 +61,31 @@ void NPC::Patrol(ECS& ecs)
 bool NPC::IsMoving()
 {
     return m_Moving;
+}
+
+float& NPC::GetCurrentSpeed()
+{
+    return m_current_speed;
+}
+
+float& NPC::GetMaxSpeed()
+{
+    return m_max_speed;
+}
+
+float& NPC::GetAcceleration()
+{
+    return m_acceleration_rate;
+}
+
+float& NPC::GetDecceleration()
+{
+    return m_deceleration_rate;
+}
+
+glm::vec2& NPC::GetDirection()
+{
+    return m_direction;
 }
 
 FSM& NPC::GetFSM() 

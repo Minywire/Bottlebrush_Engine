@@ -140,14 +140,6 @@ void EntityFactory::loadAIController(ECS& ecs, Entity& entity, const sol::table&
     std::string statesPath = ai["StatesPath"];
     std::string initialState = ai["InitialState"];
 
-    MovementComponent& MV = entity.AddComponent<MovementComponent>(ecs.getReg()); // add movement component to AI
-    // manually give a default movement properties
-    MV.acceleration_rate = 0.1f;
-    MV.deceleration_rate = 0.1f;
-    MV.current_speed = 0.f;
-    MV.max_speed = 100.f;
-    MV.direction = glm::vec2(1, 1);
-
     AIControllerComponent& aicComponent = entity.AddComponent<AIControllerComponent>(ecs.getReg(), statesPath, initialState, entity); // add an AI controller to entity
 
     std::cout << "Loaded AI component" << std::endl; //@Debug Line, to be removed
