@@ -2,23 +2,17 @@
 
 create_entity("Game/Cube.lua");
 
-for start=0, 4000, 1000 do
-    for start1=0, 4000, 1000 do
-        create_entityTR("Game/PineTree.lua", 4750 + start, 0, 2500 + start1); --Create a grid of 16 instances
+for start=0, 400, 100 do
+    for start1=0, 400, 100 do
+        create_entityTR("Game/PineTree.lua", start, 0, start1); --Create a grid of 16 instances
     end
 end
 
-for start=0, 4000, 1000 do
-    for start1=0, 3000, 1000 do
-        create_entityTR("Game/House.lua", 5500 + start, 0, 2650 + start1); --Create a grid of 12 instances
+for start=0, 400, 100 do
+    for start1=0, 300, 100 do
+        create_entityTR("Game/House.lua", start, 0, start1); --Create a grid of 12 instances
     end
 end
-
---for start=0, 2000, 1000 do
---    for start1=0, 3000, 1000 do
---        create_entity("Game/Rock1.lua", 3250 + start, 0, 1143 + start1); --Create a grid of 6 instances
---    end
---end
 
 create_entity("Game/exitCube.lua");
 create_entity("Game/ico-sphere.lua");

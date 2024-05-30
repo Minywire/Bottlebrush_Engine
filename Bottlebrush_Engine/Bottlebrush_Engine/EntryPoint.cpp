@@ -36,7 +36,7 @@ std::filesystem::path texture_terrain_4_path(
 const unsigned int screen_width = 1920, screen_height = 1080;
 bool wireframe = false, grayscale = false, restrict_camera = true;
 glm::vec3 terrain_scale = {1.0f, 0.25f, 1.0f},
-          terrain_shift = {0.0f, 16.0f, 0.0f};
+          terrain_shift = {0.0f, 0.0f, 0.0f};
 
 // Camera
 Camera camera(glm::vec3(0.0f, 25.0f, 0.0f));
