@@ -13,31 +13,12 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
-// Paths
-std::filesystem::path heightmap_iceland_path(
-    "Resources/Heightmaps/iceland.png");
-std::filesystem::path heightmap_1_path("Resources/Heightmaps/heightmap-1.png");
-std::filesystem::path heightmap_2_path("Resources/Heightmaps/heightmap-2.png");
-std::filesystem::path heightmap_3_path("Resources/Heightmaps/heightmap-3.png");
-std::filesystem::path heightmap_4_path("Resources/Heightmaps/heightmap-4.png");
-
-std::filesystem::path texture_iceland_path(
-    "Resources/Textures/Terrain/iceland.png");
-std::filesystem::path texture_terrain_1_path(
-    "Resources/Textures/Terrain/terrain-1.png");
-std::filesystem::path texture_terrain_2_path(
-    "Resources/Textures/Terrain/terrain-2.png");
-std::filesystem::path texture_terrain_3_path(
-    "Resources/Textures/Terrain/terrain-3.png");
-std::filesystem::path texture_terrain_4_path(
-    "Resources/Textures/Terrain/terrain-4.png");
-
-// Settings
+// Settings 
 const unsigned int screen_width = 1920, screen_height = 1080;
+
 bool wireframe = false, grayscale = false, restrict_camera = true;
 glm::vec3 terrain_scale = {1.0f, 0.25f, 1.0f},
           terrain_shift = {0.0f, 0.0f, 0.0f};
-
 // Camera
 Camera camera(glm::vec3(0.0f, 25.0f, 0.0f));
 float last_x = screen_width / 2.0f, last_y = screen_height / 2.0f,
@@ -86,9 +67,6 @@ void KeyCallback(Window::WindowContext window, int key, int scancode,
   if (exitScreen) return;
 
   if (key == GLFW_KEY_C && action == GLFW_PRESS) wireframe = !wireframe;
-  if (action == GLFW_PRESS && key == GLFW_KEY_G) grayscale = !grayscale;
-  if (action == GLFW_PRESS && key == GLFW_KEY_R)
-    restrict_camera = !restrict_camera;
 
   if (action == GLFW_PRESS && key == GLFW_KEY_LEFT_SHIFT)
     camera.SetSpeed(camera.GetSpeed() * 2.0f);
@@ -146,15 +124,7 @@ int main() {
   std::unique_ptr<RenderEngine> renderEngine =
       GraphicsFactory<s_API>::CreateRenderer();
 
-  Terrain terrain(heightmap_2_path.string(), texture_terrain_4_path.string(),
-                  terrain_scale, terrain_shift);
-  float terrain_height_init =
-      terrain.GetHeight(camera.GetPositionX(), camera.GetPositionZ());
-  float terrain_min_height = terrain.GetMinHeight(),
-        terrain_max_height = terrain.GetMaxHeight();
-
-  camera.SetPosition(terrain.GetCentre());
-  camera.SetPositionY(terrain_height_init);
+  camera.SetPosition(1000.0f, 100.0f, 1000.0f);
   camera.SetSensitivity(0.05f);
   camera.SetSpeed(100.0f);
   camera.SetZoom(30.0f);
@@ -179,24 +149,6 @@ int main() {
   const ShaderType skyboxShaderType = ShaderType::Skybox;
   const ShaderType terrainShaderType = ShaderType::Terrain;
 
-  gameScene.setRendererShaderSource(
-      defaultShaderType, "Resources/Shaders/Vertex/Basic.vert",
-      "Resources/Shaders/Fragment/Basic.frag");  // scene currently only needs
-                                                 // one type of shader.
-  gameScene.setRendererShaderSource(
-      defaultShaderType, "Resources/Shaders/Vertex/BasicTex.vert",
-      "Resources/Shaders/Fragment/BasicTex.frag");  // scene currently only
-                                                    // needs one type of shader.
-
-  renderEngine->SetShaderSource(terrainShaderType,
-                                "Resources/Shaders/Vertex/Heightmap.vert",
-                                "Resources/Shaders/Fragment/Heightmap.frag");
-  renderEngine->GetShader(terrainShaderType)->SetUniform1i("detail", 0);
-  renderEngine->GetShader(terrainShaderType)
-      ->SetUniform1f("min_height", terrain_min_height);
-  renderEngine->GetShader(terrainShaderType)
-      ->SetUniform1f("max_height", terrain_max_height);
-
   renderEngine->SetShaderSource(skyboxShaderType,
                                 "Resources/Shaders/Vertex/Skybox.vert",
                                 "Resources/Shaders/Fragment/Skybox.frag");
@@ -213,9 +165,6 @@ int main() {
 
     // Process user input
     ProcessInput(window);
-
-    renderEngine->GetShader(terrainShaderType)
-        ->SetUniform1i("grayscale", grayscale);
 
     // Clear colours and buffers
     renderEngine->Clear();
@@ -241,26 +190,6 @@ int main() {
     gameScene.setProjectionMatrix(projection);
     gameScene.setViewMatrix(view);
 
-    // TERRAIN
-    renderEngine->GetShader(defaultShaderType)
-        ->SetUniformMatrix4fv("projection", projection);
-    renderEngine->GetShader(defaultShaderType)
-        ->SetUniformMatrix4fv("view", view);
-    renderEngine->GetShader(defaultShaderType)
-        ->SetUniformMatrix4fv("model", model);
-
-    renderEngine->GetShader(terrainShaderType)
-        ->SetUniformMatrix4fv("projection", projection);
-    renderEngine->GetShader(terrainShaderType)
-        ->SetUniformMatrix4fv("view", view);
-    renderEngine->GetShader(terrainShaderType)
-        ->SetUniformMatrix4fv("model", model);
-
-    terrain.GetMesh()->SetTexture();
-    renderEngine->DrawTriangleStrips(
-        terrainShaderType, *terrain.GetMesh()->GetVertexArray(),
-        terrain.GetNumStrips(), terrain.GetNumTriangles());
-
     // Draw the test cube
     for (unsigned int i = 0; i < testCube->GetSubMeshes().size(); i++) {
       testCube->GetSubMeshes()[i]->SetTexture();
@@ -269,25 +198,7 @@ int main() {
                          testCube->GetSubMeshes()[i]->GetIndexCount());
     }
 
-    gameScene.update(delta);  // currently this is just drawing all the models in the
-                         // sceneModels map
-
-    if (restrict_camera) {
-      glm::vec3 local_position =
-          glm::inverse(model) * glm::vec4(camera.GetPosition(), 1);
-
-      float terrain_height =
-          terrain.GetHeight(local_position.x, local_position.z);
-      float terrain_height_diff =
-          std::abs(terrain_height_init - terrain_height);
-
-      if (terrain_height < terrain_height_init)
-        terrain_height -= terrain_height_diff * delta;
-      if (terrain_height > terrain_height_init)
-        terrain_height += terrain_height_diff * delta;
-
-      camera.SetPositionY(terrain_height + offset_y);
-    }
+    gameScene.update(delta);
 
     // SKYBOX
     //  change depth function so depth test passes when

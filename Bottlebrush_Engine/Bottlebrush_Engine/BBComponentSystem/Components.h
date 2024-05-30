@@ -80,3 +80,12 @@ struct MD2Component
     std::string model_path;
     std::string texture_path;
 };
+
+/**
+* @brief Component that contains Terrain data
+*/
+struct TerrainComponent 
+{
+    std::string terrain_path;
+    std::string terrain_texture;
+};

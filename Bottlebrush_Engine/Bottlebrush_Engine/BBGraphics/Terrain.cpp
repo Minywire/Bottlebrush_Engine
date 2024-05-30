@@ -1,7 +1,7 @@
 #include "Terrain.h"
 
-Terrain::Terrain(const std::string &path, const std::string &texture,
-                 glm::vec3 scale, glm::vec3 shift) {
+Terrain::Terrain(const std::string &path, const std::string &texture, 
+        glm::vec3 scale, glm::vec3 shift) {
   data_ = stbi_load(path.c_str(), &width_, &depth_, &channels_, 0);
   num_strips_ = depth_;
   num_triangles_ = width_ * 2;
@@ -122,7 +122,7 @@ void Terrain::PopulateVertices() {
     }
   }
 }
-
+ 
 void Terrain::InitMesh() {
   std::vector<unsigned int> layout;
   layout.push_back(3);  // 3 elements for position
