@@ -1,17 +1,16 @@
 #ifndef BOTTLEBRUSH_ENGINE_KEYINPUT_H
 #define BOTTLEBRUSH_ENGINE_KEYINPUT_H
 
-#include <algorithm>
-#include <functional>
 #include <map>
-#include <tuple>
+#include <memory>
+#include <vector>
 
 #include "glfw/glfw3.h"
 
 class KeyInput {
  public:
-  enum Key {
-    Key0 = GLFW_KEY_0,
+  enum KeyType {
+    kKey0 = GLFW_KEY_0,
     kKey1 = GLFW_KEY_1,
     kKey2 = GLFW_KEY_2,
     kKey3 = GLFW_KEY_3,
@@ -122,7 +121,7 @@ class KeyInput {
     kKeyZ = GLFW_KEY_Z
   };
 
-  enum Modifier {
+  enum KeyModifier {
     kModNone = 0x0000,
     kModAlt = GLFW_MOD_ALT,
     kModCapsLock = GLFW_MOD_CAPS_LOCK,
@@ -139,9 +138,17 @@ class KeyInput {
     kRepeat = GLFW_REPEAT
   };
 
+  KeyInput(const std::vector<KeyType>& keys_to_monitor);
+
+  ~KeyInput();
+
+  [[nodiscard]] KeyState GetKeyState(KeyType key) const;
+  [[nodiscard]] const std::vector<KeyType>& GetKeyTypes() const;
+  void SetKeyState(KeyType key, KeyState state);
+
  private:
-  std::map<Key, std::tuple<KeyState, KeyState>> key_states_;
-  std::map<Key, std::function<void>> key_callbacks_;
+  std::map<KeyType, KeyState> keys_;
+  std::vector<KeyType> keys_to_monitor_;
 };
 
 #endif  // BOTTLEBRUSH_ENGINE_KEYINPUT_H
