@@ -5,4 +5,4 @@ add_library(BBScene STATIC)
 set(SOURCES Scene.h Scene.cpp)
 target_sources(BBScene PRIVATE ${SOURCES})
 
-target_link_libraries(BBScene RenderEngine BBResourceManager BBComponentSystem EnTT glm) #assimp, camera lib (if any), physics lib, etc.
+target_link_libraries(BBScene RenderEngine BBResourceManager BBComponentSystem EnTT glm BBInput BBGUI) #assimp, camera lib (if any), physics lib, etc.
