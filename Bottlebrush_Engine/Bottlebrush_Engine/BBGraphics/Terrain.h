@@ -23,6 +23,19 @@
 /// the \c scale and \c shift parameters, respectively.
 /// @authors Alan Brunet, Jaiden di Lanzo, Marco Garzon Lara
 class Terrain {
+  struct Elem {
+    unsigned int idx;
+  };
+
+  struct Vert {
+    void Init(float a, float b, float c, float width, float depth,
+              glm::vec3 scale, glm::vec3 shift, bool texture_stretch);
+
+    glm::vec3 nrm;
+    glm::vec3 pos;
+    glm::vec2 tex;
+  };
+
  public:
   Terrain(const std::string &path, const std::string &texture,
           glm::vec3 scale = {1.0f, 1.0f, 1.0f},
@@ -49,7 +62,7 @@ class Terrain {
   /// positions describing the vertex positions for the generated terrain.
   /// @returns A vector container object that represents the terrain vertex
   /// indices.
-  [[nodiscard]] std::vector<unsigned> GetElements() const;
+  [[nodiscard]] std::vector<unsigned int> GetElements() const;
 
   /// @brief Gets the height value at the given \a x and \a z co-ordinates.
   /// <p>
@@ -76,30 +89,8 @@ class Terrain {
   /// @returns An integer specifying the terrain length.
   [[nodiscard]] int GetDepth() const;
 
-  float GetMaxHeight() const;
-  float GetMinHeight() const;
-
-  /// @brief Gets the number of vertex line strips comprising the terrain.
-  /// <p>
-  /// The \c GetNumStrips function retrieves the number of vertex line strips
-  /// that comprise the terrain and it's underlying array of generated vertices.
-  /// The number of strips is equal to the terrain length.
-  /// <p>
-  /// The return value is an integer value specifying the number of vertex
-  /// strips that comprise the generated terrain.
-  /// @returns An integer specifying the number of vertex strips.
-  [[nodiscard]] int GetNumStrips() const;
-
-  /// @brief Gets the number of triangles comprising the terrain.
-  /// <p>
-  /// The \c GetNumTriangles function retrieves the number of triangles that
-  /// compose the terrain and it's underlying array of generated vertex faces.
-  /// The number of triangles is equal to two times the terrain width.
-  /// <p>
-  /// The return value is an integer value specifying the number of triangles
-  /// that compose the generated terrain.
-  /// @returns An integer specifying the number of triangles.
-  [[nodiscard]] int GetNumTriangles() const;
+  [[nodiscard]] float GetMaxHeight() const;
+  [[nodiscard]] float GetMinHeight() const;
 
   /// @brief Gets the terrain scaling factors.
   /// <p>
@@ -156,10 +147,17 @@ class Terrain {
   /// @brief Gets the terrain mesh
   [[nodiscard]] std::unique_ptr<Mesh> &GetMesh();
 
+  bool texture_stretch_ = false;
+
  private:
+  static float Transpose(float value, float scale, float shift);
+
   [[nodiscard]] bool InBounds(int a, int b) const;
+  void CalculateNormals();
+  void EvaluateMidpoint();
   void PopulateElements();
   void PopulateVertices();
+  void TransposeHeights();
 
   /// @author Alan
   /// @brief Creates the mesh on the Graphics API format
@@ -168,19 +166,20 @@ class Terrain {
   glm::vec3 centre_;
   int channels_;
   unsigned char *data_;
-  int depth_;
-  std::vector<unsigned> elements_;
+  std::vector<Elem> elements_;
   std::vector<float> heights_;
-  int num_strips_;
-  int num_triangles_;
-  std::string path_;
+  int depth_;
+  std::unique_ptr<Mesh> mesh_;
   glm::vec3 scale_;
   glm::vec3 shift_;
   int size_;
   std::string texture_;
-  std::vector<float> vertices_;
+  std::vector<Vert> vertices_;
   int width_;
-  std::unique_ptr<Mesh> mesh_;
+
+  // Raw buffers
+  std::vector<unsigned int> elem_buf_;
+  std::vector<float> vert_buf_;
 };
 
 float Barycentric(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec2 p);
