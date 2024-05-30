@@ -10,7 +10,7 @@
 NPC::NPC(const std::filesystem::path& statesPath,
          const std::string& initialState, Entity& entity)
     : m_FSM(this, statesPath, initialState), 
-    m_DeltaTimeAI(0.f),
+    m_AIUpdateIntervalTime(0.f),
     m_Entity(entity),
     m_CurrentWaypoint(0),
     m_WaitTimeElapsed(0),
@@ -19,9 +19,8 @@ NPC::NPC(const std::filesystem::path& statesPath,
 
 }
 
-void NPC::Update(sol::state& lua_state, float deltaTime) 
-{
-    m_DeltaTimeAI = deltaTime;
+void NPC::Update(sol::state& lua_state, float AIUpdateIntervalTime) {
+    m_AIUpdateIntervalTime = AIUpdateIntervalTime;
 	m_FSM.update(lua_state);
 }
 
@@ -33,7 +32,7 @@ void NPC::MoveTo(const glm::vec2& targetPos, ECS& ecs)
     glm::vec2 pos = {transform.position.x, transform.position.z};
 
     // call move to function
-    m_Moving = !Movement::MoveTo(pos, targetPos, m_current_speed, m_acceleration_rate, m_direction, m_DeltaTimeAI);
+    m_Moving = !Movement::MoveTo(pos, targetPos, m_current_speed, m_acceleration_rate, m_direction, m_AIUpdateIntervalTime);
 }
 
 void NPC::AddWaypoint(glm::vec2 point)
@@ -50,7 +49,7 @@ void NPC::Patrol(ECS& ecs)
 
     if (m_Moving) return;
 
-    m_WaitTimeElapsed += m_DeltaTimeAI * 300;
+    m_WaitTimeElapsed += m_AIUpdateIntervalTime;
     // waits for a duration
     if (m_WaitTimeElapsed > m_PatrolWaitDuration) {
         m_CurrentWaypoint++; // move to next waypoint

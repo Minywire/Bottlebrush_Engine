@@ -136,7 +136,7 @@ void Systems::updateAIMovements(ECS& ecs, float deltaTime)
     }
 }
 
-void Systems::updateAI(ECS &ecs, sol::state& lua_state, float deltaTime) 
+void Systems::updateAI(ECS &ecs, sol::state& lua_state, float AIUpdateIntervalTime) 
 {
     auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
 
@@ -144,6 +144,6 @@ void Systems::updateAI(ECS &ecs, sol::state& lua_state, float deltaTime)
     {
       auto& aic = group.get<AIControllerComponent>(entity);
 
-      aic.npc.Update(lua_state, deltaTime);
+      aic.npc.Update(lua_state, AIUpdateIntervalTime);
     }
 }

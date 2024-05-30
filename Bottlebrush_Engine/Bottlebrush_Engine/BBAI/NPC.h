@@ -22,7 +22,8 @@ public:
     /// @author Alan
     /// @brief update call for FSM
     /// @param lua_state ai script to read from
-    void Update(sol::state& lua_state, float deltaTime);
+    /// @param AIUpdateIntervalTime is the time between ai update calls
+    void Update(sol::state& lua_state, float AIUpdateIntervalTime);
 
     /// @author Alan
     /// @brief move to a position
@@ -61,7 +62,7 @@ private:
     FSM m_FSM;
     Entity m_Entity; // reference to this entity on construction
 
-    float m_DeltaTimeAI; // time elasped for AI update call
+    float m_AIUpdateIntervalTime;  // time elasped for AI update call
     bool m_Moving; // bool for checking if NPC has movement input
     std::vector<glm::vec2> m_Waypoints;  // waypoints for patrolling
     int m_CurrentWaypoint; // tracking what is the current waypoint
