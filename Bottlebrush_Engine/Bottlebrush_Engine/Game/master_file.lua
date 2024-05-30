@@ -1,5 +1,7 @@
 --Load all game entities from scripts here!
 
+create_entity("Game/Terrain/MainTerrain.lua");
+
 create_entity("Game/Cube.lua");
 create_entityTR("Game/NPC.lua", 500, 30, 450);
 create_entityTR("Game/NPC.lua", 400, 20, 450);

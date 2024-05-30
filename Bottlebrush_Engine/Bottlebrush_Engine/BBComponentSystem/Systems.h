@@ -7,6 +7,7 @@
 #include <ECS.h>
 #include <Entity.h>
 #include <Components.h>
+#include <Terrain.h>
 #include <GraphicsFactory.h>
 #include "glm/gtc/matrix_transform.hpp"
 /**
@@ -24,11 +25,27 @@ public:
     static void generateModelFromComponent(const ModelComponent & modelComp, std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels);
 
     /**
+     * Generates a terrain mesh from an existing component into a map structure holding
+     * terrain render data
+     * @param modelComp The model component to generate the model from
+     * @param sceneModels The scene structure holding all of the model data
+     */
+    void generateTerrainFromComponent(const TerrainComponent & terrainComp, const TransformComponent & terrainTransform, std::unordered_map<std::string, Terrain> & sceneTerrain); 
+
+    /**
      *
      * @param ecs The registry for which to create the model components onto the entity
      * @param sceneModels The structure containing the models in a scene
      */
     void createModelComponents(ECS &ecs, std::unordered_map<std::string, std::unique_ptr<Model>>& sceneModels);
+
+     /**
+     *
+     * @param ecs The registry for which to create the model components onto the
+     * entity
+     * @param sceneModels The structure containing the models in a scene
+     */
+    void createTerrainComponents(ECS &ecs, std::unordered_map<std::string, Terrain> &sceneTerrain);
 
     /**
      * @author Alan
@@ -56,6 +73,21 @@ public:
      * @param view The specified view matrix used
      */
     static void drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEngine & renderEngine, const std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels, glm::mat4 projection, glm::mat4 view);
+    
+    /**
+     *
+     * @param ecs The registry containing all the entities from which to grab
+     * the rendearbles from
+     * @param shaderType The type of shader that is used for rendering this
+     * model
+     * @param renderEngine The specified render engine to use for rendering this
+     * model
+     * @param sceneTerrain The structure from which to grab this renderable's
+     * data
+     * @param projection The specified projection matrix used
+     * @param view The specified view matrix used
+     */
+    static void drawTerrain(const ECS& ecs, const ShaderType& terrainShader, RenderEngine& renderEngine, std::unordered_map<std::string, Terrain> & sceneTerrain, bool grayscale, glm::mat4 projection, glm::mat4 view);
 
     /**
      *
