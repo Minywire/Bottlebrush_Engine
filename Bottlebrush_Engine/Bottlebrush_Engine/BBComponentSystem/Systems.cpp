@@ -124,13 +124,6 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, Rende
 
         glm::mat4 transform = {1};
 
-        // Example lighting cycle (remove later)
-        static float f = 0.0f;
-        f += 0.002;
-        glm::vec3 terrain_light_dir = {std::sin(f * 0.8f),
-                                       std::min(-0.4f, std::cos(f)),
-                                       std::cos(f * 0.8f)};
-
         // Vert Uniforms
         renderEngine.GetShader(terrainShader)
             ->SetUniformMatrix4fv("gModel", transform);
@@ -146,17 +139,10 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, Rende
         // Frag Uniforms
         renderEngine.GetShader(terrainShader)
             ->SetUniform1i("gGrayscale", grayscale);
-        renderEngine.GetShader(terrainShader)->SetUniform1i("gTexHeight0", 0);
-        renderEngine.GetShader(terrainShader)->SetUniform1i("gTexHeight1", 0);
-        renderEngine.GetShader(terrainShader)->SetUniform1i("gTexHeight2", 0);
-        renderEngine.GetShader(terrainShader)->SetUniform1i("gTexHeight3", 0);
-        renderEngine.GetShader(terrainShader)->SetUniform1f("gHeight0", 32.0f);
-        renderEngine.GetShader(terrainShader)->SetUniform1f("gHeight1", 128.0f);
-        renderEngine.GetShader(terrainShader)->SetUniform1f("gHeight2", 160.0f);
-        renderEngine.GetShader(terrainShader)->SetUniform1f("gHeight3", 256.0f);
+        renderEngine.GetShader(terrainShader)->SetUniform1i("gTex", 0);
         renderEngine.GetShader(terrainShader)
             ->SetUniform3fv("gReversedLightDir",
-                            glm::normalize(terrain_light_dir));
+                            glm::normalize(-glm::vec3(0.0f, 1.0f, 0.5f)));
 
         //draw
         terrain.GetMesh()->SetTexture(0);

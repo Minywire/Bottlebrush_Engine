@@ -116,7 +116,7 @@ bool Terrain::InBounds(int a, int b) const {
 }
 
 void Terrain::CalculateNormals() {
-  for (int i = 0; i < elements_.size(); i += 3) {
+  for (size_t i = 0; i < elements_.size(); i += 3) {
     unsigned int a = elements_.at(i).idx, b = elements_.at(i + 1).idx,
                  c = elements_.at(i + 2).idx;
 
@@ -163,7 +163,7 @@ void Terrain::PopulateElements() {
   }
 
   // Populate raw buffer
-  for (auto e : elements_) {
+  for (auto &e : elements_) {
     elem_buf_.push_back(e.idx);
   }
 }
@@ -186,7 +186,7 @@ void Terrain::PopulateVertices() {
   }
 
   // Populate raw buffer
-  for (auto v : vertices_) {
+  for (auto &v : vertices_) {
     vert_buf_.push_back(v.pos.x);
     vert_buf_.push_back(v.pos.y);
     vert_buf_.push_back(v.pos.z);
