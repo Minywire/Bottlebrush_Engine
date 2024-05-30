@@ -121,9 +121,15 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, Rende
         auto& currentTransformComponent = group.get<TransformComponent>(entity);
 
         auto& terrain = sceneTerrain.at(currentTerrainComponent.terrain_path);
+
         glm::mat4 transform = {1};
-        glm::vec3 terrain_light_dir =
-            glm::normalize(-glm::vec3(0.05f, -0.75f, -1.0f));
+
+        // Example lighting cycle (remove later)
+        static float f = 0.0f;
+        f += 0.002;
+        glm::vec3 terrain_light_dir = {std::sin(f * 0.8f),
+                                       std::min(-0.4f, std::cos(f)),
+                                       std::cos(f * 0.8f)};
 
         // Vert Uniforms
         renderEngine.GetShader(terrainShader)
@@ -149,12 +155,11 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, Rende
         renderEngine.GetShader(terrainShader)->SetUniform1f("gHeight2", 160.0f);
         renderEngine.GetShader(terrainShader)->SetUniform1f("gHeight3", 256.0f);
         renderEngine.GetShader(terrainShader)
-            ->SetUniform3f("gReversedLightDir", terrain_light_dir.x,
-                           terrain_light_dir.y, terrain_light_dir.z);
+            ->SetUniform3fv("gReversedLightDir",
+                            glm::normalize(terrain_light_dir));
 
         //draw
         terrain.GetMesh()->SetTexture(0);
-        printf("%s", "GOT HERE\n");
         renderEngine.Draw(terrainShader, *terrain.GetMesh()->GetVertexArray(),
                           terrain.GetElements().size());
     }
