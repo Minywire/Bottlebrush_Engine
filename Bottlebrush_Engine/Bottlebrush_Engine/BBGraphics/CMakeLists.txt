@@ -5,8 +5,8 @@ target_include_directories(BBGraphics
         PRIVATE BBGraphics
 )
 target_sources(BBGraphics
-        PRIVATE Camera.cpp Image.cpp Skybox.cpp Terrain.cpp Light.cpp InputManager.cpp
- "InputManager.h" "InputManager.cpp")
+        PRIVATE Camera.cpp Image.cpp Skybox.cpp Terrain.cpp Light.cpp
+)
 target_link_libraries(BBGraphics
         PRIVATE assimp
 )
