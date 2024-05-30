@@ -31,10 +31,11 @@ void MouseCallback(Window::WindowContext window, double pos_x, double pos_y)
 
     if (scene->getExitScreenFlag()) return;
 
-    if (scene->getFirstMouseFlag()) {
-    scene->setLastX(pos_x);
-    scene->setLastY(pos_y);
-    scene->setFirstMouseFlag(false);
+    if (scene->getFirstMouseFlag()) 
+    {
+        scene->setLastX(pos_x);
+        scene->setLastY(pos_y);
+        scene->setFirstMouseFlag(false);
     }
 
     float x_offset = pos_x - scene->getLastX(), y_offset = scene->getLastY() - pos_y;
@@ -56,29 +57,30 @@ void ScrollCallback(Window::WindowContext window, double x_offset, double y_offs
 
 void Scene::ProcessInput(float deltaTime) {
     if (exitScreen) {
-    if (glfwGetMouseButton(window.GetContext(),
-                            GLFW_MOUSE_BUTTON_LEFT == GLFW_PRESS)) {
-        window.SetShouldClose(true);
-    }
-    return;
+        if (glfwGetMouseButton(window.GetContext(), GLFW_MOUSE_BUTTON_LEFT == GLFW_PRESS)) 
+        {
+            window.SetShouldClose(true);
+        }
+        return;
     }
 
-    if (glfwGetKey(window.GetContext(), GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-    exitScreen = true;
+    if (glfwGetKey(window.GetContext(), GLFW_KEY_ESCAPE) == GLFW_PRESS) 
+    {
+        exitScreen = true;
     }
 
     if (glfwGetKey(window.GetContext(), GLFW_KEY_W) == GLFW_PRESS)
-    mainCamera.ProcessKeyboard(FORWARD, deltaTime);
+        mainCamera.ProcessKeyboard(FORWARD, deltaTime);
     if (glfwGetKey(window.GetContext(), GLFW_KEY_S) == GLFW_PRESS)
-    mainCamera.ProcessKeyboard(BACKWARD, deltaTime);
+        mainCamera.ProcessKeyboard(BACKWARD, deltaTime);
     if (glfwGetKey(window.GetContext(), GLFW_KEY_A) == GLFW_PRESS)
-    mainCamera.ProcessKeyboard(LEFT, deltaTime);
+        mainCamera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window.GetContext(), GLFW_KEY_D) == GLFW_PRESS)
-    mainCamera.ProcessKeyboard(RIGHT, deltaTime);
+        mainCamera.ProcessKeyboard(RIGHT, deltaTime);
     if (glfwGetKey(window.GetContext(), GLFW_KEY_SPACE) == GLFW_PRESS)
-    mainCamera.ProcessKeyboard(UP, deltaTime);
+        mainCamera.ProcessKeyboard(UP, deltaTime);
     if (glfwGetKey(window.GetContext(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-    mainCamera.ProcessKeyboard(DOWN, deltaTime);
+        mainCamera.ProcessKeyboard(DOWN, deltaTime);
 }
 
 void Scene::createEntity(const std::string & lua_file) //provides a user-friendly function that you only need to specify the script entity to.
@@ -150,7 +152,7 @@ void Scene::init()
     glfwSetFramebufferSizeCallback(window.GetContext(), FramebufferSizeCallback);
     glfwSetKeyCallback(window.GetContext(), KeyCallback);
     glfwSetCursorPosCallback(window.GetContext(), MouseCallback);
-    glfwSetScrollCallback(window.GetContext(), ScrollCallback);\
+    glfwSetScrollCallback(window.GetContext(), ScrollCallback);
 
    
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
