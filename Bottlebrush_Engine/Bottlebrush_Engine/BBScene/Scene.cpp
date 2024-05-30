@@ -222,17 +222,17 @@ void Scene::update()
                             viewMatrix);
 
         while (accumulatedFrameTime >= UpdateAIInterval) {
-          std::cout << "update all AI call" << std::endl;
-          Systems::updateAI(bbECS, lua.getLuaState());
-          accumulatedFrameTime -= UpdateAIInterval;
+            std::cout << "update all AI call" << std::endl;
+            Systems::updateAI(bbECS, lua.getLuaState());
+            accumulatedFrameTime -= UpdateAIInterval;
         }
 
         if (exitScreen) {
-          glm::vec3 position = {-4825, 0, -5000}, front = {-5000, 0, 0},
+            glm::vec3 position = {-4825, 0, -5000}, front = {-5000, 0, 0},
                     up = {0, 1, 0};
-          mainCamera.SetSpeed(0);
-          mainCamera.SetZoom(45);
-          mainCamera.SetViewMatrix(position, front, up);
+            mainCamera.SetSpeed(0);
+            mainCamera.SetZoom(45);
+            mainCamera.SetViewMatrix(position, front, up);
         }
 
         // SKYBOX
