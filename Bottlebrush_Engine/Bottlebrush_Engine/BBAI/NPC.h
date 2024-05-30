@@ -28,7 +28,8 @@ public:
     /// @author Alan
     /// @brief move to a position
     /// @param targetPos vec2 of x and z world coords
-    void MoveTo(const glm::vec2& targetPos);
+    /// @param ecs the register to get entity and its components
+    void MoveTo(const glm::vec2& targetPos, ECS& ecs);
 
     /// @author Alan
     /// @brief adds a waypoint to the member vector, used for patrolling
@@ -37,7 +38,8 @@ public:
     
     /// @author Alan
     /// @brief Moves to all waypoints in member vector
-    void Patrol();
+    /// @param ecs register to get entity and its components
+    void Patrol(ECS& ecs);
 
     /// @author Alan
     /// @brief see if NPC has movement input
@@ -55,4 +57,6 @@ private:
     bool m_Moving; // bool for checking if NPC has movement input
     std::vector<glm::vec2> m_Waypoints;  // waypoints for patrolling
     int m_CurrentWaypoint; // tracking what is the current waypoint
+    int m_PatrolWaitDuration;
+    int m_WaitTimeElapsed;
 };

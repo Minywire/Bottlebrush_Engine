@@ -13,7 +13,9 @@ NPC::NPC(const std::filesystem::path& statesPath,
     m_DeltaTimeAI(0.f),
     m_ECS(ecs), 
     m_Entity(entity),
-    m_CurrentWaypoint(0)
+    m_CurrentWaypoint(0),
+    m_WaitTimeElapsed(0),
+    m_PatrolWaitDuration(10)
 {
 
 }
@@ -24,15 +26,15 @@ void NPC::Update(sol::state& lua_state, float deltaTime)
 	m_FSM.update(lua_state);
 }
 
-void NPC::MoveTo(const glm::vec2& targetPos)
+void NPC::MoveTo(const glm::vec2& targetPos, ECS& ecs)
 {
     // get transform
-    auto& transform = m_Entity.GetComponent<TransformComponent>(m_ECS.getReg());
+    auto& transform = m_Entity.GetComponent<TransformComponent>(ecs.getReg());
     // get x and z position as vec2
     glm::vec2 pos = {transform.position.x, transform.position.z};
 
     // get movement
-    auto& movement = m_Entity.GetComponent<MovementComponent>(m_ECS.getReg());
+    auto& movement = m_Entity.GetComponent<MovementComponent>(ecs.getReg());
 
     // call move to function
     m_Moving = !Movement::MoveTo(pos, targetPos, movement, m_DeltaTimeAI);
@@ -43,14 +45,21 @@ void NPC::AddWaypoint(glm::vec2 point)
     m_Waypoints.push_back(point);
 }
 
-void NPC::Patrol()
+void NPC::Patrol(ECS& ecs)
 {
     if (m_Waypoints.size() == 0) return;
     if (m_CurrentWaypoint >= m_Waypoints.size()) m_CurrentWaypoint = 0;
 
-    MoveTo(m_Waypoints[m_CurrentWaypoint]);
+    MoveTo(m_Waypoints[m_CurrentWaypoint], ecs);
 
-    if (!m_Moving) m_CurrentWaypoint++;
+    if (m_Moving) return;
+
+    m_WaitTimeElapsed++;
+    // waits for a duration
+    if (m_WaitTimeElapsed > m_PatrolWaitDuration) {
+        m_CurrentWaypoint++; // move to next waypoint
+        m_WaitTimeElapsed = 0;
+    }
 }
 
 bool NPC::IsMoving()

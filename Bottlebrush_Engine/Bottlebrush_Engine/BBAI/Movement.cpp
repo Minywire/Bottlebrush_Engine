@@ -20,7 +20,7 @@ namespace Movement {
         float newSpeed = moveComp.current_speed + moveComp.acceleration_rate;
 
         // calculate new direction and assigning it
-        moveComp.direction = toTarget * glm::length(moveComp.direction); // changes direction towards the target
+        moveComp.direction = toTarget * glm::length(moveComp.direction); // assigns the direction to be towards the target
         glm::vec2 displacement = moveComp.direction * deltaTime * newSpeed;
         glm::vec2 newPos = curPos + displacement;
 
