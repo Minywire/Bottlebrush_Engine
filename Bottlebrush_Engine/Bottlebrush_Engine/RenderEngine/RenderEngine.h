@@ -9,7 +9,7 @@
 
 /// @author Alan
 /// @brief enum to specify which shader is being used
-enum class ShaderType { Default, Pixelated, Water, Shadowmap, Skybox, Terrain };
+enum class ShaderType { Default, Pixelated, Water, Shadowmap, Skybox, Terrain, MD2 };
 
 /// @author Alan
 /// @brief Base class for rendering objects.

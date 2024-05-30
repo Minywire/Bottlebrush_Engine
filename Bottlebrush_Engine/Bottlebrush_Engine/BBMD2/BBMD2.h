@@ -8,7 +8,7 @@ public:
 	int getSpecificAnim(std::string animName);
 	std::string getSpecificAnim(int animIndx);
 
-	int getCurrentAnimationFrame(int AnimIndx, float interpolation);
+	int getAnimationCurrentFrame(int AnimIndx, float interpolation);
 
 	const MD2Model & returnMD2() const;
 
