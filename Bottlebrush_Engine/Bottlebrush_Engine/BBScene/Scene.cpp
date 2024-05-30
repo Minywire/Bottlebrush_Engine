@@ -44,7 +44,7 @@ void Scene::init()
     }//load the master lua scene script containing all entities
 
     bbSystems.createModelComponents(bbECS, resources.getSceneModels());
-    bbSystems.ReadAIScripts(bbECS, lua.getLuaState());
+    bbSystems.RegisterAIFunctions(bbECS, lua.getLuaState());
 }
 
 void Scene::update(float deltaTime)
