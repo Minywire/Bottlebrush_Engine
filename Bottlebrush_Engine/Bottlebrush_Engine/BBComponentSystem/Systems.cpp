@@ -18,7 +18,7 @@ void Systems::generateTerrainFromComponent(const TerrainComponent & terrainComp,
 {
     if(!sceneTerrain.contains(terrainComp.terrain_path))
     {
-        sceneTerrain.emplace(std::pair<std::string, Terrain>(terrainComp.terrain_path, Terrain(terrainComp.terrain_path, terrainComp.terrain_texture, terrainTransform.scale, terrainTransform.position)));
+        sceneTerrain.emplace(std::pair<std::string, Terrain>(terrainComp.terrain_path, Terrain(terrainComp.terrain_path, terrainComp.terrain_texture, terrainTransform.scale)));
     }
 }
 
@@ -119,27 +119,44 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, Rende
 
         auto& currentTerrainComponent = group.get<TerrainComponent>(entity);
         auto& currentTransformComponent = group.get<TransformComponent>(entity);
-        
+
         auto& terrain = sceneTerrain.at(currentTerrainComponent.terrain_path);
-       
         glm::mat4 transform = {1};
+        glm::vec3 terrain_light_dir =
+            glm::normalize(-glm::vec3(0.05f, -0.75f, -1.0f));
 
-        renderEngine.GetShader(terrainShader)->SetUniform1i("grayscale", grayscale);
-        renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("projection", projection);
-        renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("view", view);
-        renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("model", transform);
+        // Vert Uniforms
+        renderEngine.GetShader(terrainShader)
+            ->SetUniformMatrix4fv("gModel", transform);
+        renderEngine.GetShader(terrainShader)
+            ->SetUniformMatrix4fv("gView", view);
+        renderEngine.GetShader(terrainShader)
+            ->SetUniformMatrix4fv("gProjection", projection);
+        renderEngine.GetShader(terrainShader)
+            ->SetUniform1f("gMinHeight", terrain.GetMinHeight());
+        renderEngine.GetShader(terrainShader)
+            ->SetUniform1f("gMaxHeight", terrain.GetMaxHeight());
 
-        renderEngine.GetShader(terrainShader)->SetUniform1i("detail", 0);
-        renderEngine.GetShader(terrainShader)->SetUniform1f("min_height", terrain.GetMinHeight());
-        renderEngine.GetShader(terrainShader)->SetUniform1f("max_height", terrain.GetMaxHeight());
+        // Frag Uniforms
+        renderEngine.GetShader(terrainShader)
+            ->SetUniform1i("gGrayscale", grayscale);
+        renderEngine.GetShader(terrainShader)->SetUniform1i("gTexHeight0", 0);
+        renderEngine.GetShader(terrainShader)->SetUniform1i("gTexHeight1", 0);
+        renderEngine.GetShader(terrainShader)->SetUniform1i("gTexHeight2", 0);
+        renderEngine.GetShader(terrainShader)->SetUniform1i("gTexHeight3", 0);
+        renderEngine.GetShader(terrainShader)->SetUniform1f("gHeight0", 32.0f);
+        renderEngine.GetShader(terrainShader)->SetUniform1f("gHeight1", 128.0f);
+        renderEngine.GetShader(terrainShader)->SetUniform1f("gHeight2", 160.0f);
+        renderEngine.GetShader(terrainShader)->SetUniform1f("gHeight3", 256.0f);
+        renderEngine.GetShader(terrainShader)
+            ->SetUniform3f("gReversedLightDir", terrain_light_dir.x,
+                           terrain_light_dir.y, terrain_light_dir.z);
 
-        //draw 
-        terrain.GetMesh()->SetTexture();
-
-        renderEngine.DrawTriangleStrips(terrainShader, 
-            *terrain.GetMesh()->GetVertexArray(),
-            terrain.GetNumStrips(), 
-            terrain.GetNumTriangles());
+        //draw
+        terrain.GetMesh()->SetTexture(0);
+        printf("%s", "GOT HERE\n");
+        renderEngine.Draw(terrainShader, *terrain.GetMesh()->GetVertexArray(),
+                          terrain.GetElements().size());
     }
 }
 
