@@ -182,12 +182,12 @@ void Scene::update()
 {
     while (!window.GetShouldClose()) {
         auto current_frame = static_cast<float>(glfwGetTime());
-        float delta = current_frame - last_frame;
+        float deltaTime = current_frame - last_frame;
         last_frame = current_frame;
-        accumulatedFrameTime += delta;
+        accumulatedFrameTime += deltaTime;
 
         // Process user input
-        ProcessInput(delta);
+        ProcessInput(deltaTime);
 
         // Clear colours and buffers
         clearRenderEngine();
