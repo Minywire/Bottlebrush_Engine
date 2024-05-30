@@ -17,7 +17,7 @@
 int main() {
     Scene gameScene("Game/master_file.lua", 1920, 1080);
 
-    gameScene.update(delta);
+    gameScene.update();
 
   return 0;
 }
