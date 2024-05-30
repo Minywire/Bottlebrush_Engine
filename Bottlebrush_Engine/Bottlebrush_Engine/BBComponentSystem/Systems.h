@@ -45,7 +45,9 @@ public:
      * entity
      * @param sceneModels The structure containing the models in a scene
      */
-    void createTerrainComponents(ECS &ecs, std::unordered_map<std::string, Terrain> &sceneTerrain);
+    void createTerrainComponents(
+        ECS &ecs, std::unordered_map<std::string, Terrain> &sceneTerrain,
+        RenderEngine &renderEngine);
 
     /**
      * @author Alan

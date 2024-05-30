@@ -52,7 +52,7 @@ void Scene::init()
         return;
     }//load the master lua scene script containing all entities
 
-    bbSystems.createTerrainComponents(bbECS, resources.getSceneTerrain());
+    bbSystems.createTerrainComponents(bbECS, resources.getSceneTerrain(), *renderEngine);
     bbSystems.createModelComponents(bbECS, resources.getSceneModels());
     bbSystems.ReadAIScripts(bbECS, lua.getLuaState());
 }

@@ -34,7 +34,7 @@ void Systems::createModelComponents(ECS &ecs, std::unordered_map<std::string, st
     }
 }
 
-void Systems::createTerrainComponents(ECS &ecs, std::unordered_map<std::string, Terrain> & sceneTerrain)
+void Systems::createTerrainComponents(ECS &ecs, std::unordered_map<std::string, Terrain> & sceneTerrain, RenderEngine & renderEngine)
 {
     auto group = ecs.GetAllEntitiesWith<TransformComponent, TerrainComponent>(); //the container with all the matching entities
 
@@ -44,6 +44,12 @@ void Systems::createTerrainComponents(ECS &ecs, std::unordered_map<std::string, 
         auto& currentTransform = group.get<TransformComponent>(entity);
 
         generateTerrainFromComponent(currentTerrainComponent, currentTransform, sceneTerrain);
+
+        auto& terrain = sceneTerrain.at(currentTerrainComponent.terrain_path);
+
+        renderEngine.GetShader(ShaderType::Terrain)->SetUniform1i("detail", 0);
+        renderEngine.GetShader(ShaderType::Terrain)->SetUniform1f("min_height", terrain.GetMinHeight());
+        renderEngine.GetShader(ShaderType::Terrain)->SetUniform1f("max_height", terrain.GetMaxHeight());
     }
 }
 
@@ -129,10 +135,6 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, Rende
         renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("projection", projection);
         renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("view", view);
         renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("model", transform);
-
-        renderEngine.GetShader(terrainShader)->SetUniform1i("detail", 0);
-        renderEngine.GetShader(terrainShader)->SetUniform1f("min_height", terrain.GetMinHeight());
-        renderEngine.GetShader(terrainShader)->SetUniform1f("max_height", terrain.GetMaxHeight());
 
         //draw 
         terrain.GetMesh()->SetTexture();
