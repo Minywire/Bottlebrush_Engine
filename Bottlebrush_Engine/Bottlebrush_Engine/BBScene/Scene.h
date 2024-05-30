@@ -24,7 +24,7 @@ public:
      *
      * @param lua_master
      */
-    explicit Scene(const std::string& lua_master, unsigned int screen_width, unsigned int screen_height);
+    explicit Scene(const std::string & lua_master);
 
     /**
      *
@@ -81,21 +81,6 @@ public:
     */
     const Camera & getCamera() const;
 
-    /**
-     *
-     */
-    Camera & fetchCamera();
-
-    /**
-     *
-     */
-    const glm::mat4& getProjMat() const;
-
-    /**
-     *
-     */
-    const glm::mat4& getViewMat() const;
-
    private:
     glm::mat4 projectionMatrix; ///The camera projection matrix (temporary hack until everything from EntryPoint is ported here).
     glm::mat4 viewMatrix; ///The camera projection matrix (temporary hack until everything from EntryPoint is ported here).
@@ -115,7 +100,4 @@ public:
     const float UpdateAIInterval; // interval at which to update AI, a value of 1 roughly represents a second
 
     Camera mainCamera; // main scene camera. Scene realistically only needs one camera for this project
-    unsigned int screenWidth, screenHeight; // The width and height of the window, required for camera constraints
-    glm::mat4 projectionMat; //scene projection matrix
-    glm::mat4 viewMat; //view matrix
 };

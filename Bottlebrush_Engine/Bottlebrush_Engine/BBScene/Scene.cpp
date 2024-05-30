@@ -14,8 +14,9 @@ void Scene::createEntityAndTransform(const std::string & lua_file, float xPos, f
     entityFactory.create_from_file(bbECS, lua.getLuaState(), lua_file, xPos, yPos, zPos);
 }
 
-Scene::Scene(const std::string& lua_master, unsigned int screen_width, unsigned int screen_height)
-    : accumulatedFrameTime(0), UpdateAIInterval(2.f), screenWidth(screen_width), screenHeight(screen_height) {
+Scene::Scene(const std::string& lua_master)
+    : accumulatedFrameTime(0), UpdateAIInterval(2.f)
+{
     renderEngine = GraphicsFactory<GraphicsAPI::OpenGL>::CreateRenderer();
     masterLuaFile = lua_master;
     lua.getLuaState().set_function("create_entity", &Scene::createEntity, this); //register create entity function into lua state of this instance
@@ -54,26 +55,15 @@ void Scene::init()
     bbSystems.createTerrainComponents(bbECS, resources.getSceneTerrain());
     bbSystems.createModelComponents(bbECS, resources.getSceneModels());
     bbSystems.ReadAIScripts(bbECS, lua.getLuaState());
-
-    mainCamera.SetPosition(1000.0f, 100.0f, 1000.0f);
-    mainCamera.SetSensitivity(0.05f);
-    mainCamera.SetSpeed(100.0f);
-    mainCamera.SetZoom(30.0f);
 }
 
 void Scene::update(float deltaTime)
 {
     accumulatedFrameTime += deltaTime;
     
-    projectionMat = glm::perspective(
-        glm::radians(mainCamera.GetZoom()),
-        (float)screenWidth / (float)screenHeight, 0.1f, 100000.0f);
-
-    viewMat = mainCamera.GetViewMatrix();
-
     bbSystems.setLight(*renderEngine, ShaderType::Default, viewMatrix);
-    Systems::drawTerrain(bbECS, ShaderType::Terrain, *renderEngine, resources.getSceneTerrain(), false, projectionMat, viewMat);
-    Systems::drawModels(bbECS, ShaderType::Default, *renderEngine, resources.getSceneModels(), projectionMat, viewMat);
+    Systems::drawTerrain(bbECS, ShaderType::Terrain, *renderEngine, resources.getSceneTerrain(), false, projectionMatrix, viewMatrix);
+    Systems::drawModels(bbECS, ShaderType::Default, *renderEngine, resources.getSceneModels(), projectionMatrix, viewMatrix);
 
     while (accumulatedFrameTime >= UpdateAIInterval) 
     {
@@ -96,19 +86,4 @@ void Scene::clearRenderEngine()
 const Camera& Scene::getCamera() const
 { 
     return mainCamera; 
-}
-
-Camera& Scene::fetchCamera()
-{
-    return mainCamera;
-}
-
-const glm::mat4& Scene::getProjMat() const 
-{
-    return projectionMat;
-}
-
-const glm::mat4& Scene::getViewMat() const
-{
-    return viewMat;
 }

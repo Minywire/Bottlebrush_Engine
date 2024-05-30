@@ -17,6 +17,8 @@
 const unsigned int screen_width = 1920, screen_height = 1080;
 bool wireframe = false;
 
+// Camera
+Camera camera(glm::vec3(0.0f, 25.0f, 0.0f));
 float last_x = screen_width / 2.0f, last_y = screen_height / 2.0f,
       offset_y = 1.5f;
 bool first_mouse_click = true;
@@ -40,17 +42,17 @@ void ProcessInput(Window window) {
   }
 
   if (glfwGetKey(window.GetContext(), GLFW_KEY_W) == GLFW_PRESS)
-    gameScene.fetchCamera().ProcessKeyboard(FORWARD, delta);
+    camera.ProcessKeyboard(FORWARD, delta);
   if (glfwGetKey(window.GetContext(), GLFW_KEY_S) == GLFW_PRESS)
-    gameScene.fetchCamera().ProcessKeyboard(BACKWARD, delta);
+    camera.ProcessKeyboard(BACKWARD, delta);
   if (glfwGetKey(window.GetContext(), GLFW_KEY_A) == GLFW_PRESS)
-    gameScene.fetchCamera().ProcessKeyboard(LEFT, delta);
+    camera.ProcessKeyboard(LEFT, delta);
   if (glfwGetKey(window.GetContext(), GLFW_KEY_D) == GLFW_PRESS)
-    gameScene.fetchCamera().ProcessKeyboard(RIGHT, delta);
+    camera.ProcessKeyboard(RIGHT, delta);
   if (glfwGetKey(window.GetContext(), GLFW_KEY_SPACE) == GLFW_PRESS)
-    gameScene.fetchCamera().ProcessKeyboard(UP, delta);
+    camera.ProcessKeyboard(UP, delta);
   if (glfwGetKey(window.GetContext(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-    gameScene.fetchCamera().ProcessKeyboard(DOWN, delta);
+    camera.ProcessKeyboard(DOWN, delta);
 }
 
 void FramebufferSizeCallback(Window::WindowContext window, int width,
@@ -65,9 +67,9 @@ void KeyCallback(Window::WindowContext window, int key, int scancode,
   if (key == GLFW_KEY_C && action == GLFW_PRESS) wireframe = !wireframe;
 
   if (action == GLFW_PRESS && key == GLFW_KEY_LEFT_SHIFT)
-    gameScene.fetchCamera().SetSpeed(gameScene.getCamera().GetSpeed() * 2.0f);
+    camera.SetSpeed(camera.GetSpeed() * 2.0f);
   if (action == GLFW_RELEASE && key == GLFW_KEY_LEFT_SHIFT)
-    gameScene.fetchCamera().SetSpeed(gameScene.getCamera().GetSpeed() / 2.0f);
+    camera.SetSpeed(camera.GetSpeed() / 2.0f);
 }
 
 void MouseCallback(Window::WindowContext window, double pos_x, double pos_y) {
@@ -86,13 +88,13 @@ void MouseCallback(Window::WindowContext window, double pos_x, double pos_y) {
   last_x = x;
   last_y = y;
 
-  gameScene.fetchCamera().ProcessMouseMovement(x_offset, y_offset);
+  camera.ProcessMouseMovement(x_offset, y_offset);
 }
 
 void ScrollCallback(Window::WindowContext window, double x_offset,
                     double y_offset) {
   if (exitScreen) return;
-  gameScene.fetchCamera().ProcessMouseScroll(static_cast<float>(y_offset));
+  camera.ProcessMouseScroll(static_cast<float>(y_offset));
 }
 
 int main() {
@@ -112,13 +114,18 @@ int main() {
 
   glEnable(GL_DEPTH_TEST);
 
-  Scene gameScene("Game/master_file.lua", screen_width, screen_height);
+  Scene gameScene("Game/master_file.lua");
   gameScene.init();
 
   // TODO: Implement and test Texture.h
   const GraphicsAPI s_API = GraphicsAPI::OpenGL;
   std::unique_ptr<RenderEngine> renderEngine =
       GraphicsFactory<s_API>::CreateRenderer();
+
+  camera.SetPosition(1000.0f, 100.0f, 1000.0f);
+  camera.SetSensitivity(0.05f);
+  camera.SetSpeed(100.0f);
+  camera.SetZoom(30.0f);
 
   std::unique_ptr<Model> testCube = GraphicsFactory<s_API>::CreateModel(
       "Resources/Models/Cube_With_Pizazz.obj",
@@ -166,12 +173,20 @@ int main() {
       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     else
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    
-    gameScene.update(delta);
+
+    glm::mat4 projection = glm::perspective(
+        glm::radians(camera.GetZoom()),
+        (float)screen_width / (float)screen_height, 0.1f, 100000.0f);
+
+    glm::mat4 view = camera.GetViewMatrix();
 
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
     model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.3f, 0.5f));
+
+    // MY SCENE
+    gameScene.setProjectionMatrix(projection);
+    gameScene.setViewMatrix(view);
 
     // Draw the test cube
     for (unsigned int i = 0; i < testCube->GetSubMeshes().size(); i++) {
@@ -181,6 +196,7 @@ int main() {
                          testCube->GetSubMeshes()[i]->GetIndexCount());
     }
 
+    gameScene.update(delta);
 
     // SKYBOX
     //  change depth function so depth test passes when
@@ -188,12 +204,12 @@ int main() {
     glDepthFunc(GL_LEQUAL);
     // draw skybox as last
     // draw skybox as last
-    //view =
-    //    glm::mat4(glm::mat3(view));  // remove translation from the view matrix
+    view =
+        glm::mat4(glm::mat3(view));  // remove translation from the view matrix
     renderEngine->GetShader(skyboxShaderType)
-        ->SetUniformMatrix4fv("view", gameScene.getViewMat());
+        ->SetUniformMatrix4fv("view", view);
     renderEngine->GetShader(skyboxShaderType)
-        ->SetUniformMatrix4fv("projection", gameScene.getProjMat());
+        ->SetUniformMatrix4fv("projection", projection);
     renderEngine->GetShader(skyboxShaderType)->SetUniform1i("skybox", 0);
 
     // Draw the Skybox
@@ -211,9 +227,9 @@ int main() {
     if (exitScreen) {
       glm::vec3 position = {-4825, 0, -5000}, front = {-5000, 0, 0},
                 up = {0, 1, 0};
-      gameScene.fetchCamera().SetSpeed(0);
-      gameScene.fetchCamera().SetZoom(45);
-      gameScene.fetchCamera().SetViewMatrix(position, front, up);
+      camera.SetSpeed(0);
+      camera.SetZoom(45);
+      camera.SetViewMatrix(position, front, up);
     }
 
     window.Swap();
