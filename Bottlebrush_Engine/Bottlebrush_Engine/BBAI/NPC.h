@@ -73,5 +73,5 @@ private:
     float m_current_speed = 0.f;
     float m_acceleration_rate = 0.1f;
     float m_deceleration_rate = 0.1f;
-    glm::vec2 m_direction = {1, 1};
+    glm::vec2 m_direction = {1, 1}; // direction that the NPC is facing
 };
