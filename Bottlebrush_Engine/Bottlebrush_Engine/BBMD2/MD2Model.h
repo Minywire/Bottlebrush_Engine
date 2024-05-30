@@ -16,10 +16,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "MD2Texture.h"
-#include "Movement.h"
-
-const float MOVEMENTSPEED = 100.f;
-const float TURNSPEED = 100.f;
 
 typedef struct
 {
@@ -105,26 +101,27 @@ struct MD2Header {
 
 class MD2Model {
 public:
-    MD2Model(std::string filename, std::string texturefile, Transform transform);
+    MD2Model() = default;
+    MD2Model(std::string filename, std::string texturefile);
     
     void displayModelDetails();
     void displayAnimNames();
     int GetSpecificAnim(std::string animName);
     std::string GetSpecificAnim(int animIndex);
-    void RenderAnimation(int animIndex, float interpolation);
-    void RenderFrame(int frame);
 
-    void processKeyboard(enum_Movement direction, float deltaTime);
-    void updatePosHeight(float newHeight);
+    int GetCurrentAnimationFrame(int animIndex, float interpolation);
+
+    void RenderFrame(int frame);
 
     std::vector<std::string> AnimationNames();
     int getNumAnims() { return m_animation.size(); }
 
     Transform getTransform() { return m_transform; }
     glm::vec3 getPosition() { return m_transform.position; }
-    glm::mat4 getModelMatrix();
 
     std::unique_ptr<MD2Header>& GetHeader() { return m_header; }
+
+    const std::vector<unsigned int> & returnVaos() const;
 
 private:
     bool LoadModel(std::string filename);
@@ -136,8 +133,6 @@ private:
 
     //in world coords
     Transform m_transform;
-    float m_movementSpeed;
-    float m_turnSpeed;
 
     // MD2 file contents
     std::unique_ptr<MD2Header> m_header;                    // header file with details about the mesh

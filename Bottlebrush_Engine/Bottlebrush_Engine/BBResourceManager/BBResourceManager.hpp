@@ -4,9 +4,9 @@
 #pragma once
 
 #include "ECS.h"
-#include "BBMD2.h"
 #include "GraphicsFactory.h"
 #include <unordered_map>
+#include <BBMD2.h>
 /**
  * @class BBResourceManager
  * @brief Stores data generated from ECS systems which utilise metadata that is saved into the ECS Entities.

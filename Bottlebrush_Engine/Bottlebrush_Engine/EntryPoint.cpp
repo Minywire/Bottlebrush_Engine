@@ -20,7 +20,6 @@ std::filesystem::path heightmap_1_path("Resources/Heightmaps/heightmap-1.png");
 std::filesystem::path heightmap_2_path("Resources/Heightmaps/heightmap-2.png");
 std::filesystem::path heightmap_3_path("Resources/Heightmaps/heightmap-3.png");
 std::filesystem::path heightmap_4_path("Resources/Heightmaps/heightmap-4.png");
-std::filesystem::path heightmap_4_path("Resources/Heightmaps/fmap.png");
 
 std::filesystem::path texture_iceland_path(
     "Resources/Textures/Terrain/iceland.png");

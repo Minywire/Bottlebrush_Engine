@@ -71,3 +71,12 @@ struct AIControllerComponent
         : npc(NPC(statesPath, initialState))
     {}
 };
+
+/**
+* @brief Component that contains data for the MD2 Model
+*/
+struct MD2Component
+{
+    std::string model_path;
+    std::string texture_path;
+};

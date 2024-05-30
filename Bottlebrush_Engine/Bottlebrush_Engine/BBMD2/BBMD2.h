@@ -3,18 +3,16 @@
 class BBMD2
 {
 public:
-  BBMD2(std::string model_path, std::string texture_path);
+	BBMD2(std::string model_path, std::string texture_path);
 
-  int getSpecificAnim(std::string animName);
-  std::string getSpecificAnim(int animIndx);
+	int getSpecificAnim(std::string animName);
+	std::string getSpecificAnim(int animIndx);
 
-  void renderAnimation(int animIndex, float interpolation);
+	int getCurrentAnimationFrame(int AnimIndx, float interpolation);
 
-  void updatePosHeight(float newHeight);
+	const MD2Model & returnMD2() const;
 
-  const glm::mat4 getModelMatrix() const;
-
-  const MD2Model& returnMD2() const;
+	const std::vector<unsigned int> & getVecArrays() const;
 
  private:
 	MD2Model m_model;

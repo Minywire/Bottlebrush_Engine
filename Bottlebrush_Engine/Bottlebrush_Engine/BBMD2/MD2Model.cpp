@@ -4,11 +4,9 @@
 #include <iostream>
 #include <fstream>
 
-MD2Model::MD2Model(std::string filename, std::string texturefile, Transform transform) 
-    : m_currentFrame(0), m_transform(transform),
-    m_movementSpeed(MOVEMENTSPEED), m_turnSpeed(TURNSPEED)
+MD2Model::MD2Model(std::string filename, std::string texturefile) 
+    : m_currentFrame(0)
 {
-
     if (!LoadModel(filename))
     {
         std::cout << "Could not load M2D model" << std::endl;
@@ -179,8 +177,6 @@ std::string MD2Model::GetSpecificAnim(int animIndex)
     return it->first;
 }
 
-
-
 void MD2Model::InitBuffers()
 {
     int nextFrameIndex = 0;
@@ -242,7 +238,7 @@ void MD2Model::InitBuffers()
         }
     }
 
-    
+
     unsigned int vao, vbo;
     for (int i = 0; i < maxFrame; i++)
     {
@@ -283,19 +279,17 @@ void MD2Model::InitBuffers()
     
 }
 
-void MD2Model::RenderAnimation(int animIndex, float interpolation)
+int MD2Model::GetCurrentAnimationFrame(int animIndex, float interpolation)
 {
     std::string animName = GetSpecificAnim(animIndex);
     
     if (m_currentFrame > m_animation[animName].endIndex || m_currentFrame < m_animation[animName].startIndex)
         m_currentFrame = m_animation[animName].startIndex;
-   
-
-    RenderFrame(m_currentFrame);
 
     if (interpolation >= 1.0f && m_currentFrame <= m_animation[animName].endIndex)
         m_currentFrame++;
 
+    return m_currentFrame;
 }
 
 void MD2Model::RenderFrame(int frame)
@@ -320,55 +314,7 @@ std::vector<std::string> MD2Model::AnimationNames()
     return anims;
 }
 
-glm::mat4 MD2Model::getModelMatrix()
+const std::vector<unsigned int>& MD2Model::returnVaos() const
 {
-    // used to translate and rotate MD2 model
-    glm::mat4 model = glm::mat4(1.0f);
-
-    // assign model2's transform
-    model = glm::translate(model, m_transform.position);
-    model = glm::rotate(model, glm::radians(m_transform.rotation.x), glm::vec3(1, 0, 0));
-    model = glm::rotate(model, glm::radians(m_transform.rotation.y), glm::vec3(0, 1, 0));
-    model = glm::rotate(model, glm::radians(m_transform.rotation.z), glm::vec3(0, 0, 1));
-    model = glm::scale(model, m_transform.scale);
-
-    return model;
+    return m_vertexArray;
 }
-
-void MD2Model::processKeyboard(enum_Movement direction, float deltaTime)
-{
-    //if (m_transform.rotation.z >= 360) m_transform.rotation.z = 0;
-    //if (m_transform.rotation.z <= -360) m_transform.rotation.z = 0;
-
-    glm::vec3 front;
-    front.x = cos(glm::radians(m_transform.rotation.z)) * cos(glm::radians(0.f));
-    front.y = sin(glm::radians(0.f));
-    front.z = -sin(glm::radians(m_transform.rotation.z)) * cos(glm::radians(0.f));
-    front = glm::normalize(front);
-
-    float velocity = m_movementSpeed * deltaTime;
-    float turnSpeed = m_turnSpeed * deltaTime;
-    switch (direction)
-    {
-    case LEFT:
-        m_transform.rotation.z += turnSpeed;
-        break;
-    case RIGHT:
-        m_transform.rotation.z -= turnSpeed;
-        break;
-    case FORWARD:
-        m_transform.position += front * velocity;
-        break;
-    case BACKWARD:
-        m_transform.position -= front * velocity;
-        break;
-    default:
-        break;
-    }
-}
-
-void MD2Model::updatePosHeight(float newHeight)
-{
-    m_transform.position.y = newHeight;
-}
-
