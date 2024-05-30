@@ -3,6 +3,7 @@
 //
 
 #include "Scene.h"
+#include "BBGUI.h"
 
 void FramebufferSizeCallback(Window::WindowContext window, int width,  int height) 
 {
@@ -94,7 +95,7 @@ void Scene::createEntityAndTransform(const std::string & lua_file, float xPos, f
 Scene::Scene(const std::string& lua_master, float screenwidth, float screenheight)
     : accumulatedFrameTime(0), UpdateAIInterval(2.f), screen_width(screenwidth), screen_height(screenheight)
 {
-    window = Window(Window::CURSOR, Window::CURSOR_DISABLED, "BOTTLE BRUSH", screen_width, screen_height);
+    window = Window(Window::CURSOR, Window::CURSOR_NORMAL, "BOTTLE BRUSH", screen_width, screen_height);
 
     window.Create();
 
@@ -174,11 +175,43 @@ void Scene::init()
     bbSystems.createTerrainComponents(bbECS, resources.getSceneTerrain());
     bbSystems.createModelComponents(bbECS, resources.getSceneModels());
     bbSystems.ReadAIScripts(bbECS, lua.getLuaState());
+    initBBGUI(window.GetContext());
 }
 
 void Scene::update()
 {
     while (!window.GetShouldClose()) {
+        updateBBGUIFrameStart();
+        if(ImGui::CollapsingHeader("Controls")) {
+            if(ImGui::TreeNode("Movement")) {
+                ImGui::Text("Forward: W");
+                ImGui::Text("Left: A");
+                ImGui::Text("Backwards: S");
+                ImGui::Text("Right: D");
+                ImGui::Text("Up: Spacebar");
+                ImGui::Text("Down: Left Control");
+                ImGui::Text("Zoom (speedy): Left Shift");
+            }
+
+            if(ImGui::TreeNode("Scene")) {
+                ImGui::Text("Toggle wireframe: C");
+            }
+
+            ImGui::Text("Exit: Escape");
+
+        }
+
+
+        if(ImGui::CollapsingHeader("Credits")) {
+            ImGui::Text("Alan Brunet");
+            ImGui::Text("Jaiden di Lanzo");
+            ImGui::Text("Marco Garzon Lara");
+            ImGui::Text("Niamh Wilson");
+        }
+
+        if(ImGui::Button("Exit")) {
+            window.SetShouldClose(true);
+        }
         auto current_frame = static_cast<float>(glfwGetTime());
         float delta = current_frame - last_frame;
         last_frame = current_frame;
@@ -260,10 +293,12 @@ void Scene::update()
 
         glDepthFunc(GL_LESS);  // set depth function back to default
 
+        updateBBGUIFrameEnd();
         window.Swap();
         window.Poll();
     }
 
+    shutDownBBGUI();
     window.Remove();
 }
 
