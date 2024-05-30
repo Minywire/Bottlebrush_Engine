@@ -15,7 +15,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "Texture.h"
+#include "MD2Texture.h"
 #include "Movement.h"
 
 const float MOVEMENTSPEED = 100.f;
@@ -106,7 +106,6 @@ struct MD2Header {
 class MD2Model {
 public:
     MD2Model(std::string filename, std::string texturefile, Transform transform);
-    ~MD2Model();
     
     void displayModelDetails();
     void displayAnimNames();
@@ -153,7 +152,7 @@ private:
     std::map<int, std::pair<std::string, std::vector<vec3_md2>>> m_frameVerts;      // Vertex data per frame
 
     // OpenGL variables
-    Texture m_texture;                                      // texture buffer
+    MD2Texture m_texture;                                      // texture buffer
     std::vector<float> m_vertices;                          // stream of vertex data to upload
 
     std::vector<unsigned int> m_vertexBuffer;               // vertex buffer

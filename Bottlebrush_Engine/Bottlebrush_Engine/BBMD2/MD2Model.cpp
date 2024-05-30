@@ -24,11 +24,6 @@ MD2Model::MD2Model(std::string filename, std::string texturefile, Transform tran
     InitBuffers();
 }
 
-MD2Model::~MD2Model()
-{
-    
-}
-
 bool MD2Model::LoadModel(std::string filename)
 {
     std::ifstream file(filename, std::ios::binary);
