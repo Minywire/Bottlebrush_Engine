@@ -14,6 +14,14 @@ void Systems::generateModelFromComponent(const ModelComponent & modelComp, std::
     }
 }
 
+void Systems::generateMD2ModelFromComponent(const MD2Component & modelComp, std::unordered_map<std::string, BBMD2> & sceneMD2Models)
+{
+    if(!sceneMD2Models.contains(modelComp.model_path))
+    {
+        sceneMD2Models.emplace(std::pair<std::string, BBMD2>(modelComp.model_path, BBMD2(modelComp.model_path, modelComp.texture_path)));
+    }
+}
+
 void Systems::generateTerrainFromComponent(const TerrainComponent & terrainComp, const TransformComponent & terrainTransform, std::unordered_map<std::string, Terrain> & sceneTerrain) 
 {
     if(!sceneTerrain.contains(terrainComp.terrain_path))
@@ -31,6 +39,18 @@ void Systems::createModelComponents(ECS &ecs, std::unordered_map<std::string, st
         auto& currentModelComponent = group.get<ModelComponent>(entity);
 
         generateModelFromComponent(currentModelComponent, sceneModels);
+    }
+}
+
+void Systems::createMD2ModelComponents(ECS &ecs, std::unordered_map<std::string, BBMD2> & sceneMD2Models)
+{
+    auto group = ecs.GetAllEntitiesWith<MD2Component>(); //the container with all the matching entities
+
+    for(auto entity : group)
+    {
+        auto& currentModelComponent = group.get<ModelComponent>(entity);
+
+        generateMD2ModelFromComponent(currentModelComponent, sceneMD2Models);
     }
 }
 
@@ -108,6 +128,12 @@ void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEn
             }
         }
     }
+}
+
+
+void Systems::drawMD2Models(const ECS& ecs, const ShaderType& shaderType, RenderEngine& renderEngine, const std::unordered_map<std::string, BBMD2> & MD2s, glm::mat4 projection, glm::mat4 view)
+{
+
 }
 
 void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, RenderEngine& renderEngine, std::unordered_map<std::string, Terrain> & sceneTerrain, bool grayscale, glm::mat4 projection, glm::mat4 view)

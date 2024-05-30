@@ -279,7 +279,7 @@ void MD2Model::InitBuffers()
     
 }
 
-int MD2Model::GetCurrentAnimationFrame(int animIndex, float interpolation)
+int MD2Model::GetAnimationCurrentFrame(int animIndex, float interpolation)
 {
     std::string animName = GetSpecificAnim(animIndex);
     

@@ -15,9 +15,9 @@ std::string BBMD2::getSpecificAnim(int animIndx)
 	return m_model.GetSpecificAnim(animIndx);
 }
 
-int BBMD2::getCurrentAnimationFrame(int animIndex, float interpolation) 
+int BBMD2::getAnimationCurrentFrame(int animIndex, float interpolation) 
 {
-	return m_model.GetCurrentAnimationFrame(animIndex, interpolation);
+	return m_model.GetAnimationCurrentFrame(animIndex, interpolation);
 }
 
 const MD2Model& BBMD2::returnMD2() const
@@ -27,5 +27,5 @@ const MD2Model& BBMD2::returnMD2() const
 
 const std::vector<unsigned int>& BBMD2::getVecArrays() const
 {
-  return m_model.returnVaos();
+	return m_model.returnVaos();
 }

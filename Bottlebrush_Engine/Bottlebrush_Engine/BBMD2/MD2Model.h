@@ -109,7 +109,7 @@ public:
     int GetSpecificAnim(std::string animName);
     std::string GetSpecificAnim(int animIndex);
 
-    int GetCurrentAnimationFrame(int animIndex, float interpolation);
+    int GetAnimationCurrentFrame(int animIndex, float interpolation);
 
     void RenderFrame(int frame);
 

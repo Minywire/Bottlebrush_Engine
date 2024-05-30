@@ -65,6 +65,10 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     {
         loadTerrain(ecs, entity, table["Terrain"]);
     }
+    if (table["MD2Model"].valid())
+    {
+        loadMD2(ecs, entity, table["MD2Model"]);
+    }
 }
 
 void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& table, float xPos, float yPos, float zPos)
@@ -84,6 +88,10 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     if (table["Terrain"].valid()) 
     {
         loadTerrain(ecs, entity, table["Terrain"]);
+    }
+    if (table["MD2Model"].valid()) 
+    {
+      loadMD2(ecs, entity, table["MD2Model"]);
     }
 }
 
@@ -159,4 +167,12 @@ void EntityFactory::loadTerrain(ECS& ecs, Entity& entity, const sol::table& terr
     const std::string terrainTexturePath = terrain["TerrainTexturePath"];
 
     entity.AddComponent<TerrainComponent>(ecs.getReg(), terrainPath, terrainTexturePath); //add terrain component to entity.
+}
+
+void EntityFactory::loadMD2(ECS & ecs, Entity & entity, const sol::table & MD2)
+{
+    const std::string MD2Path = MD2["ModelPath"];
+    const std::string MD2TexPath = MD2["TexturePath"];
+
+    entity.AddComponent<MD2Component>(ecs.getReg(), MD2Path, MD2TexPath);
 }

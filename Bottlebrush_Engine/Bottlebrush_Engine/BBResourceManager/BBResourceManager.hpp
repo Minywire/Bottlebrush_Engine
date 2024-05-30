@@ -38,6 +38,16 @@ public:
     */
     std::unordered_map<std::string, Terrain> & getSceneTerrain();
 
+     /**
+     *@return A reference map structure contain all the MD2 model data stored for the scene (write usage)
+     */
+    const std::unordered_map<std::string, BBMD2>& getSceneMD2Models() const;
+
+    /**
+     *@return A reference map structure contain all the MD2 model data stored for the scene (write usage)
+     */
+    std::unordered_map<std::string, BBMD2>& getSceneMD2Models();
+
 private:
     std::unordered_map<std::string, std::unique_ptr<Model>> sceneModels; ///The models stored in a scene
 
