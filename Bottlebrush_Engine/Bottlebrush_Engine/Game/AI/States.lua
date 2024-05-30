@@ -52,7 +52,7 @@ Patrol = {
 
 	Update = function(NPC)
 		print ("in patrol state");
-		NPC:Patrol();
+		Movement.Patrol(NPC);
 	end,
 
 	onExit = function(NPC)

@@ -8,10 +8,9 @@
 #include "Entity.h"
 
 NPC::NPC(const std::filesystem::path& statesPath,
-         const std::string& initialState, ECS& ecs, Entity& entity)
+         const std::string& initialState, Entity& entity)
     : m_FSM(this, statesPath, initialState), 
     m_DeltaTimeAI(0.f),
-    m_ECS(ecs), 
     m_Entity(entity),
     m_CurrentWaypoint(0),
     m_WaitTimeElapsed(0),

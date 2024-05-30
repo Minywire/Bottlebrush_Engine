@@ -148,7 +148,7 @@ void EntityFactory::loadAIController(ECS& ecs, Entity& entity, const sol::table&
     MV.max_speed = 100.f;
     MV.direction = glm::vec2(1, 1);
 
-    AIControllerComponent& aicComponent = entity.AddComponent<AIControllerComponent>(ecs.getReg(), statesPath, initialState, ecs, entity); // add an AI controller to entity
+    AIControllerComponent& aicComponent = entity.AddComponent<AIControllerComponent>(ecs.getReg(), statesPath, initialState, entity); // add an AI controller to entity
 
     std::cout << "Loaded AI component" << std::endl; //@Debug Line, to be removed
 }

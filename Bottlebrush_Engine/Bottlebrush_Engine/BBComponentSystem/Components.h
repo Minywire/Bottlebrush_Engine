@@ -72,8 +72,8 @@ struct AIControllerComponent
 {
     NPC npc;
 
-    AIControllerComponent(const std::filesystem::path& statesPath, const std::string& initialState, ECS& ecs,
+    AIControllerComponent(const std::filesystem::path& statesPath, const std::string& initialState,
                           Entity& entity)
-        : npc(NPC(statesPath, initialState, ecs, entity))
+        : npc(NPC(statesPath, initialState, entity))
     {}
 };

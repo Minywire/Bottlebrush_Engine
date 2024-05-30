@@ -17,8 +17,7 @@ class ECS;
 class NPC 
 {
 public:
-    NPC(const std::filesystem::path& statesPath, const std::string& initialState,
-        ECS& ecs, Entity& entity);
+    NPC(const std::filesystem::path& statesPath, const std::string& initialState, Entity& entity);
     
     /// @author Alan
     /// @brief update call for FSM
@@ -50,13 +49,12 @@ public:
 
 private:
     FSM m_FSM;
-    ECS& m_ECS; // reference to the ECS
     Entity m_Entity; // reference to this entity on construction
 
     float m_DeltaTimeAI; // time elasped for AI update call
     bool m_Moving; // bool for checking if NPC has movement input
     std::vector<glm::vec2> m_Waypoints;  // waypoints for patrolling
     int m_CurrentWaypoint; // tracking what is the current waypoint
-    int m_PatrolWaitDuration;
-    int m_WaitTimeElapsed;
+    int m_WaitTimeElapsed; // its accumulated waiting time
+    int m_PatrolWaitDuration; // patrol max waiting duration
 };

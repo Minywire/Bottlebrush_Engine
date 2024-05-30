@@ -38,7 +38,7 @@ void Systems::ReadAIScripts(ECS& ecs, sol::state & lua_state)
         lua_state.script_file(aic.npc.GetFSM().GetStatePath().string());
     }
     AIScripts::registerScriptedFSM(lua_state);
-    AIScripts::registerScriptedNPC(lua_state);
+    AIScripts::registerScriptedNPC(lua_state, ecs);
     AIScripts::registerScriptedGLM(lua_state);
 }
 

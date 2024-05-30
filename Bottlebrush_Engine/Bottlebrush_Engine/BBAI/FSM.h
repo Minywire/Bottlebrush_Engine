@@ -16,8 +16,7 @@ class NPC;
 class FSM
 {
 public:
-    FSM(NPC* FSMOwner, const std::filesystem::path& statesPath,
-        const std::string& initialState);
+    FSM(NPC* FSMOwner, const std::filesystem::path& statesPath, const std::string& initialState);
 
     /// @author Alan
     /// @brief normal update call for state machine
