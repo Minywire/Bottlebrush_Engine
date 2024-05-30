@@ -147,7 +147,7 @@ class Terrain {
   /// @brief Gets the terrain mesh
   [[nodiscard]] std::unique_ptr<Mesh> &GetMesh();
 
-  bool texture_stretch_ = false;
+  bool texture_stretch_ = true;
 
  private:
   static float Transpose(float value, float scale, float shift);

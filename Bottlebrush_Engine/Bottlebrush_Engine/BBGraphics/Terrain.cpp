@@ -33,6 +33,8 @@ Terrain::Terrain(const std::string &path, const std::string &texture,
   PopulateElements();
   CalculateNormals();
 
+  InitMesh();
+
   stbi_image_free(data_);
   data_ = nullptr;
 }
