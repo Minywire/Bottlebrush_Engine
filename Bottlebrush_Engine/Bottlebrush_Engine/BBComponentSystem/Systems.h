@@ -80,5 +80,5 @@ public:
      * @param lua_state AI script to read for FSM in NPCs
      * @param AIUpdateIntervalTime this is the time representing the time for the ai to be called
      */
-    static void updateAI(ECS &ecs, sol::state &lua_state, float AIUpdateIntervalTime);
+    static void updateAI(ECS &ecs, sol::state &lua_state, float deltaTime);
 };

@@ -62,7 +62,7 @@ private:
     FSM m_FSM;
     Entity m_Entity; // reference to this entity on construction
 
-    float m_AIUpdateIntervalTime;  // time elasped for AI update call
+    float m_DeltaTime;  // time elasped for AI update call
     bool m_Moving; // bool for checking if NPC has movement input
     std::vector<glm::vec2> m_Waypoints;  // waypoints for patrolling
     int m_CurrentWaypoint; // tracking what is the current waypoint
