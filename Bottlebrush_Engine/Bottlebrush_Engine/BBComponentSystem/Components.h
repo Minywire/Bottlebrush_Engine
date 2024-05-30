@@ -71,3 +71,13 @@ struct AIControllerComponent
         : npc(NPC(statesPath, initialState))
     {}
 };
+
+/**
+* @brief Component that contains Terrain data
+*/
+struct TerrainComponent 
+{
+    std::string terrain_path;
+    std::string terrain_texture;
+};
+

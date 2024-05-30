@@ -83,4 +83,11 @@ private:
      * @param ai the ai table to compare against
      */
     void loadAIController(ECS &ecs, Entity &entity, const sol::table &ai);
+
+    /**
+    *  @param ecs the ecs registry to load model component from
+     * @param entity the entity to attach to
+     * @param terrain the terrain table to compare against
+    */
+    void loadTerrain(ECS &ecs, Entity &entity, const sol::table &terrain);
 };
