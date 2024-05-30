@@ -3,8 +3,8 @@
 create_entity("Game/Terrain/MainTerrain.lua");
 
 create_entity("Game/Cube.lua");
-create_entityTR("Game/NPC.lua", 500, 30, 450);
-create_entityTR("Game/NPC.lua", 400, 20, 450);
+create_entityTR("Game/NPC.lua", 500, 50, 450);
+create_entityTR("Game/NPC.lua", 400, 40, 450);
 
 for start=0, 4000, 1000 do
     for start1=0, 4000, 1000 do
