@@ -170,6 +170,12 @@ void OpenGLShader::SetUniform3f(const std::string& name, float v0, float v1, flo
     glUniform3f(GetUniformLocation(name), v0, v1, v2);
 }
 
+void OpenGLShader::SetUniform3fv(const std::string& name,
+                                 const glm::vec3& value) {
+  Bind();
+  glUniform3fv(GetUniformLocation(name), 1, &value[0]);
+}
+
 void OpenGLShader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
 {
     Bind();
