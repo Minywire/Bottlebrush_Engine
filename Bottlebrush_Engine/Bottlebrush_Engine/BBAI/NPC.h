@@ -29,7 +29,8 @@ public:
     /// @brief move to a position
     /// @param targetPos vec2 of x and z world coords
     /// @param ecs the register to get entity and its components
-    void MoveTo(const glm::vec2& targetPos, ECS& ecs);
+    /// @param the acceptable range to be considered at targetpos
+    void MoveTo(const glm::vec2& targetPos, ECS& ecs, float offset = 100);
 
     /// @author Alan
     /// @brief adds a waypoint to the member vector, used for patrolling

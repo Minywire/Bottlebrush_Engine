@@ -24,7 +24,7 @@ void NPC::Update(sol::state& lua_state, float deltaTime) {
 	m_FSM.update(lua_state);
 }
 
-void NPC::MoveTo(const glm::vec2& targetPos, ECS& ecs)
+void NPC::MoveTo(const glm::vec2& targetPos, ECS& ecs, float offset)
 {
     // get transform
     auto& transform = m_Entity.GetComponent<TransformComponent>(ecs.getReg());
@@ -32,7 +32,7 @@ void NPC::MoveTo(const glm::vec2& targetPos, ECS& ecs)
     glm::vec2 pos = {transform.position.x, transform.position.z};
 
     // call move to function
-    m_Moving = !Movement::MoveTo(pos, targetPos, m_current_speed, m_acceleration_rate, m_direction, m_DeltaTime);
+    m_Moving = !Movement::MoveTo(pos, targetPos, m_current_speed, m_acceleration_rate, m_direction, m_DeltaTime, offset);
 }
 
 void NPC::AddWaypoint(glm::vec2 point)
