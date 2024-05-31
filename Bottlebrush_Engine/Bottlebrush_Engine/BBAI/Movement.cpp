@@ -39,4 +39,11 @@ namespace Movement {
         float dp = glm::dot(toRealTarget, toTarget);
         return dp < 0.0f;
     }
+
+    bool SeeTarget(const glm::vec2& curPos, const glm::vec2& targetPos,
+        const glm::vec2& curDirection, float coneDistance,
+        float fov)
+    {
+
+    }
 }
