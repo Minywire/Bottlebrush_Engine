@@ -32,7 +32,7 @@ void MouseCallback(Window::WindowContext window, double pos_x, double pos_y)
     auto* data = glfwGetWindowUserPointer(window);
     auto* scene = reinterpret_cast<Scene*>(data);
 
-    if (scene->getExitScreenFlag()) return;
+    if (scene->getExitScreenFlag() || scene->getMenuActive()) return;
 
     if (scene->getFirstMouseFlag()) 
     {
@@ -54,7 +54,7 @@ void ScrollCallback(Window::WindowContext window, double x_offset, double y_offs
     auto* data = glfwGetWindowUserPointer(window);
     auto* scene = reinterpret_cast<Scene*>(data);
 
-    if (scene->getExitScreenFlag()) return;
+    if (scene->getExitScreenFlag() || scene->getMenuActive()) return;
     scene->getCamera().ProcessMouseScroll(static_cast<float>(y_offset));
 }
 
@@ -71,6 +71,8 @@ void Scene::ProcessInput(float deltaTime) {
     {
         exitScreen = true;
     }
+
+    if(menuActive) return;
 
     if (glfwGetKey(window.GetContext(), GLFW_KEY_W) == GLFW_PRESS)
         mainCamera.ProcessKeyboard(FORWARD, deltaTime);
@@ -390,4 +392,8 @@ void Scene::toggleMenuActive() {
     } else {
         window.SetCursorMode(Window::CURSOR_DISABLED);
     }
+}
+
+bool Scene::getMenuActive() const {
+    return menuActive;
 }
