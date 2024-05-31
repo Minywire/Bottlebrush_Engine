@@ -153,5 +153,5 @@ class Scene
 
     float last_frame = 0;
 
-    bool menuActive = true;
+    bool menuActive = false;
 };

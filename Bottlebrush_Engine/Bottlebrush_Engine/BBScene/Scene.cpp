@@ -23,7 +23,7 @@ void KeyCallback(Window::WindowContext window, int key, int scancode, int action
       scene->getCamera().SetSpeed(scene->getCamera().GetSpeed() * 2.0f);
     if (action == GLFW_RELEASE && key == GLFW_KEY_LEFT_SHIFT)
       scene->getCamera().SetSpeed(scene->getCamera().GetSpeed() / 2.0f);
-    if(action == GLFW_PRESS && key == GLFW_KEY_M)
+    if(action == GLFW_PRESS && key == GLFW_KEY_ESCAPE)
         scene->toggleMenuActive();
 }
 
@@ -67,10 +67,11 @@ void Scene::ProcessInput(float deltaTime) {
         return;
     }
 
-    if (glfwGetKey(window.GetContext(), GLFW_KEY_ESCAPE) == GLFW_PRESS) 
-    {
-        exitScreen = true;
-    }
+//    if (glfwGetKey(window.GetContext(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
+//    {
+//        //toggleMenuActive();
+////        exitScreen = true;
+//    }
 
     if(menuActive) return;
 
@@ -101,7 +102,7 @@ void Scene::createEntityAndTransform(const std::string & lua_file, float xPos, f
 Scene::Scene(const std::string& lua_master, float screenwidth, float screenheight)
     : accumulatedFrameTime(0), UpdateAIInterval(0.2f), screen_width(screenwidth), screen_height(screenheight)
 {
-    window = Window(Window::CURSOR, Window::CURSOR_NORMAL, "BOTTLE BRUSH", screen_width, screen_height);
+    window = Window(Window::CURSOR, Window::CURSOR_DISABLED, "BOTTLE BRUSH", screen_width, screen_height);
 
     window.Create();
 
@@ -217,7 +218,7 @@ void Scene::update()
             }
 
             if(ImGui::Button("Exit")) {
-                window.SetShouldClose(true);
+                exitScreen = true;
             }
         }
 
