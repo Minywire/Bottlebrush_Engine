@@ -103,8 +103,10 @@ public:
      * @author Alan
      * @param ecs The registry for which to update components to
      * @param deltaTime to translate in accordance to FPS
+     * @param sceneTerrain a map containing all terrains
      */
-    static void updateAIMovements(ECS &ecs, float deltaTime);
+    static void updateAIMovements(ECS &ecs, float deltaTime, 
+        std::unordered_map<std::string, Terrain> & sceneTerrain);
 
     /**
      * @author Alan
