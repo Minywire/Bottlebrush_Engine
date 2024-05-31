@@ -4,6 +4,8 @@
 
 #include "WaterTile.h"
 
-WaterTile::WaterTile(glm::vec3 waterPosition) {
+WaterTile::WaterTile(glm::vec3 waterPosition, int waterWidth, int waterHeight) {
     position = waterPosition;
+    width = waterWidth;
+    height = waterHeight;
 }

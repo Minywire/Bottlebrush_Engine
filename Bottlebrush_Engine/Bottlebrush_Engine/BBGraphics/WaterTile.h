@@ -10,10 +10,10 @@
 class WaterTile {
 
 public:
-    WaterTile(glm::vec3 waterPosition);
-    Water
+    WaterTile(glm::vec3 waterPosition, int waterWidth, int waterHeight);
 private:
     glm::vec3 position;
+    int width, height;
 };
 
 
