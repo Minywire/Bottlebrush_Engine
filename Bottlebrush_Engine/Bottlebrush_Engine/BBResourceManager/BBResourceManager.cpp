@@ -23,3 +23,7 @@ std::unordered_map<std::string, Terrain> & BBResourceManager::getSceneTerrain()
 {
     return sceneTerrain;
 }
+
+std::unordered_map<std::string, std::unique_ptr<Texture>> &BBResourceManager::getSceneTextures() {
+    return sceneTextures;
+}
