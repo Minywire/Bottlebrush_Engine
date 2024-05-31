@@ -62,14 +62,6 @@ public:
      */
     void createMD2ModelComponents(ECS &ecs, std::unordered_map<std::string, BBMD2> & sceneMD2Models);
 
-     /**
-     *
-     * @param ecs The registry for which to create the model components onto the
-     * entity
-     * @param sceneModels The structure containing the models in a scene
-     */
-    void createTerrainComponents(ECS &ecs, std::unordered_map<std::string, Terrain> &sceneTerrain);
-
     /**
      * @author Alan
      * @brief Loads the AI scripts onto the lua_state in preparation for the update call
@@ -96,21 +88,6 @@ public:
      * @param view The specified view matrix used
      */
     static void drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEngine & renderEngine, const std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels, glm::mat4 projection, glm::mat4 view);
-    
-    /**
-     *
-     * @param ecs The registry containing all the entities from which to grab
-     * the rendearbles from
-     * @param shaderType The type of shader that is used for rendering this
-     * model
-     * @param renderEngine The specified render engine to use for rendering this
-     * model
-     * @param sceneTerrain The structure from which to grab this renderable's
-     * data
-     * @param projection The specified projection matrix used
-     * @param view The specified view matrix used
-     */
-    static void drawTerrain(const ECS& ecs, const ShaderType& terrainShader, RenderEngine& renderEngine, std::unordered_map<std::string, Terrain> & sceneTerrain, bool grayscale, glm::mat4 projection, glm::mat4 view);
 
     /**
      *

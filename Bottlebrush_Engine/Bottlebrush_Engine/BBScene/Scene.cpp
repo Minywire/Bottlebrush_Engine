@@ -180,8 +180,6 @@ void Scene::init()
 
 void Scene::update()
 {
-    accumulatedFrameTime += deltaTime;
-    
     bbSystems.setLight(*renderEngine, ShaderType::Default, viewMatrix);
     Systems::drawTerrain(bbECS, ShaderType::Terrain, *renderEngine, resources.getSceneTerrain(), false, projectionMatrix, viewMatrix);
     Systems::drawModels(bbECS, ShaderType::Default, *renderEngine, resources.getSceneModels(), projectionMatrix, viewMatrix);

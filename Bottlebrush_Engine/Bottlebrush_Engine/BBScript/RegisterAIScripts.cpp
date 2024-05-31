@@ -20,8 +20,6 @@ void registerScriptedNPC(sol::state& lua_state) {
     lua_state.new_usertype<NPC>("NPC");
 }
 
-}
-
 void registerScriptedNPC(sol::state& lua_state, ECS& ecs) {
     lua_state.new_usertype<NPC>("NPC", 
         "AddWaypoint", &NPC::AddWaypoint
@@ -39,4 +37,4 @@ void registerScriptedGLM(sol::state& lua_state) {
     );
 }
 
-} // namespace AIScripts
+}  // namespace AIScripts

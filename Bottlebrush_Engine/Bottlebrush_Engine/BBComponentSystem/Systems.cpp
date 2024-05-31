@@ -48,7 +48,7 @@ void Systems::createMD2ModelComponents(ECS &ecs, std::unordered_map<std::string,
 
     for(auto entity : group)
     {
-        auto& currentModelComponent = group.get<ModelComponent>(entity);
+        auto& currentModelComponent = group.get<MD2Component>(entity);
 
         generateMD2ModelFromComponent(currentModelComponent, sceneMD2Models);
     }

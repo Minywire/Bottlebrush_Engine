@@ -1,3 +1,5 @@
+#pragma once
+
 #include "MD2Model.h"
 
 class BBMD2
