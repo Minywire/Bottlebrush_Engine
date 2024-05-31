@@ -148,9 +148,17 @@ void EntityFactory::loadAIController(ECS& ecs, Entity& entity, const sol::table&
     std::string statesPath = ai["StatesPath"];
     std::string initialState = ai["InitialState"];
 
-    AIControllerComponent& aicComponent = entity.AddComponent<AIControllerComponent>(ecs.getReg(), statesPath, initialState, entity); // add an AI controller to entity
-    if (aicComponent.npc.GetFSM().GetStatePath().extension() != ".lua") {
-      throw std::runtime_error("Lua file is no lua file");
+    AIControllerComponent& aic = entity.AddComponent<AIControllerComponent>(ecs.getReg(), statesPath, initialState, entity); // add an AI controller to entity
+    if (aic.npc.GetFSM().GetStatePath().extension() != ".lua") {
+        throw std::runtime_error("Lua file is no lua file");
+    }
+
+    // if NPC has waypoints add them
+    if (ai["Waypoints"].valid()) {
+        sol::table waypoints = ai["Waypoints"];
+        for (int i = 1; i <= waypoints.size(); ++i) {
+            aic.npc.AddWaypoint(waypoints[i]);
+        }
     }
 
     std::cout << "Loaded AI component" << std::endl; //@Debug Line, to be removed

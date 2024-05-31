@@ -46,6 +46,7 @@ void Scene::setViewMatrix(glm::mat4 vMatrix)
 
 void Scene::init()
 {
+    bbSystems.RegisterAIFunctions(bbECS, lua.getLuaState()); // register functions before running scripts
     if(!lua.getLuaState().do_file(masterLuaFile).valid())
     {
         std::cout << "Could not load master game script file\n";
@@ -54,7 +55,6 @@ void Scene::init()
 
     bbSystems.createTerrainComponents(bbECS, resources.getSceneTerrain());
     bbSystems.createModelComponents(bbECS, resources.getSceneModels());
-    bbSystems.RegisterAIFunctions(bbECS, lua.getLuaState());
 }
 
 void Scene::update(float deltaTime)
