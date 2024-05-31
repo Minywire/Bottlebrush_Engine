@@ -204,8 +204,8 @@ void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<st
             auto& terrainComp = terrainGroup.get<TerrainComponent>(terrainEnitity);
             auto& terrain = sceneTerrain.at(terrainComp.terrain_path);
 
-            // as getHeight returns 0 if its out of bounds. Avoids collision
-            // with other terrains, if there were more than 1.
+            // Optional returns if its out of bounds. 
+            // Avoids collision with other terrains, if there were more than 1.
             auto heightOpt = terrain.GetHeight(transform.position.x, transform.position.z);
             if (!heightOpt.has_value()) continue;
 
