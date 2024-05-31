@@ -390,5 +390,4 @@ void Scene::toggleMenuActive() {
     } else {
         window.SetCursorMode(Window::CURSOR_DISABLED);
     }
-
 }
