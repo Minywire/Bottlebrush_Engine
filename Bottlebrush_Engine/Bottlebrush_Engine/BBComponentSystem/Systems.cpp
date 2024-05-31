@@ -111,27 +111,34 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, Rende
 
         auto& currentTerrainComponent = group.get<TerrainComponent>(entity);
         auto& currentTransformComponent = group.get<TransformComponent>(entity);
-        
+
         auto& terrain = sceneTerrain.at(currentTerrainComponent.terrain_path);
-       
+
         glm::mat4 transform = {1};
 
-        renderEngine.GetShader(terrainShader)->SetUniform1i("grayscale", grayscale);
-        renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("projection", projection);
-        renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("view", view);
-        renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("model", transform);
+        // Vert Uniforms
+        renderEngine.GetShader(terrainShader)
+            ->SetUniformMatrix4fv("gModel", transform);
+        renderEngine.GetShader(terrainShader)
+            ->SetUniformMatrix4fv("gView", view);
+        renderEngine.GetShader(terrainShader)
+            ->SetUniformMatrix4fv("gProjection", projection);
+        renderEngine.GetShader(terrainShader)
+            ->SetUniform1f("gMinHeight", terrain.GetMinHeight());
+        renderEngine.GetShader(terrainShader)
+            ->SetUniform1f("gMaxHeight", terrain.GetMaxHeight());
 
-        renderEngine.GetShader(terrainShader)->SetUniform1i("detail", 0);
-        renderEngine.GetShader(terrainShader)->SetUniform1f("min_height", terrain.GetMinHeight());
-        renderEngine.GetShader(terrainShader)->SetUniform1f("max_height", terrain.GetMaxHeight());
+        // Frag Uniforms
+        renderEngine.GetShader(terrainShader)
+            ->SetUniform1i("gGrayscale", grayscale);
+        renderEngine.GetShader(terrainShader)->SetUniform1i("gTex", 0);
+        renderEngine.GetShader(terrainShader)
+            ->SetUniform3fv("gReversedLightDir", {-0.2f, 0.7f, -0.4f});
 
-        //draw 
-        terrain.GetMesh()->SetTexture();
-
-        renderEngine.DrawTriangleStrips(terrainShader, 
-            *terrain.GetMesh()->GetVertexArray(),
-            terrain.GetNumStrips(), 
-            terrain.GetNumTriangles());
+        // draw
+        terrain.GetMesh()->SetTexture(0);
+        renderEngine.Draw(terrainShader, *terrain.GetMesh()->GetVertexArray(),
+                          terrain.GetElements().size());
     }
 }
 

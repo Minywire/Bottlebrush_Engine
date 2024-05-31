@@ -13,4 +13,5 @@ set(SOURCES
 target_sources(BBAI PRIVATE ${SOURCES})
 
 target_link_libraries(BBAI PRIVATE BBComponentSystem)
+target_link_libraries(BBAI PRIVATE BBScript)
 target_link_libraries(BBAI PUBLIC glm sol2 EnTT)
