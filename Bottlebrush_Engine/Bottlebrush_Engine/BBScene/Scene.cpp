@@ -384,4 +384,11 @@ void Scene::setLastY(float lY)
 
 void Scene::toggleMenuActive() {
     this->menuActive = !this->menuActive;
+
+    if(menuActive) {
+        window.SetCursorMode(Window::CURSOR_NORMAL);
+    } else {
+        window.SetCursorMode(Window::CURSOR_DISABLED);
+    }
+
 }
