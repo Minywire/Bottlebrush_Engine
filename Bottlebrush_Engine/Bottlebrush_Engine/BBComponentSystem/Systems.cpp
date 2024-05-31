@@ -159,26 +159,27 @@ void Systems::updateAIMovements(ECS& ecs, float deltaTime)
     {
         auto& aic = group.get<AIControllerComponent>(entity);
         auto& transform = group.get<TransformComponent>(entity);
+        auto& npc = aic.npc;
 
         // check if we need to decelerate
-        if (!aic.npc.IsMoving()) {
+        if (!npc.IsMoving()) {
             // stopped moving, leave this entity
-            if (aic.npc.GetCurrentSpeed() <= 0) continue;
+            if (npc.GetCurrentSpeed() <= 0) continue;
 
-            aic.npc.GetCurrentSpeed() -= aic.npc.GetDecceleration();
+            npc.GetCurrentSpeed() -= npc.GetDecceleration();
         } else { // accelerate to max speed
-            if (aic.npc.GetCurrentSpeed() <= aic.npc.GetMaxSpeed()) 
-                aic.npc.GetCurrentSpeed() += aic.npc.GetAcceleration();
+            if (npc.GetCurrentSpeed() <= npc.GetMaxSpeed()) 
+                npc.GetCurrentSpeed() += npc.GetAcceleration();
         }
         
         // @Debug Line
         //std::cout << "speed: " << move.current_speed << std::endl;
 
         // move in its current direction by its current speed
-        transform.position.x += aic.npc.GetDirection().x * deltaTime * aic.npc.GetCurrentSpeed();
-        transform.position.z += aic.npc.GetDirection().y * deltaTime * aic.npc.GetCurrentSpeed();
+        transform.position.x += npc.GetDirection().x * deltaTime * npc.GetCurrentSpeed();
+        transform.position.z += npc.GetDirection().y * deltaTime * npc.GetCurrentSpeed();
         // rotate the character to face the direction, currently given in radians
-        transform.rotation.y = std::atan2(aic.npc.GetDirection().y, aic.npc.GetDirection().x);
+        transform.rotation.y = std::atan2(npc.GetDirection().y, npc.GetDirection().x);
     }
 }
 

@@ -24,5 +24,5 @@ namespace Movement {
     /// @return whether the object has reached the targetPos
     bool MoveTo(const glm::vec2& curPos, const glm::vec2& targetPos, 
         const float& currentSpeed, const float& acceleration, glm::vec2& currentDirection,
-        float deltaTime, float offset = 100);
+        float deltaTime, float offset);
 }
