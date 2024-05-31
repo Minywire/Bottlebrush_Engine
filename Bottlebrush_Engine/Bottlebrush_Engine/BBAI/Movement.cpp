@@ -58,9 +58,7 @@ namespace Movement {
 
 	    //compute angle between patroller and target
 	    double angle = glm::dot(direction, toTarget);
-	    //getting some precision problem ensure cos angle is in -1.0 to 1.0
-	    //if (angle > 1.0) angle = 1.0;
-	    //else if (angle < -1.0) angle = -1.0;
+
         //get heading in degrees
         angle = glm::degrees(acos(angle));
 
