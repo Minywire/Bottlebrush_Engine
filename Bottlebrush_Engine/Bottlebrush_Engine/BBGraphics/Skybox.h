@@ -11,8 +11,8 @@
 
 class Skybox {
  public:
+  Skybox() = default;
   Skybox(std::filesystem::path model, std::vector<std::filesystem::path> texPaths);
-  ~Skybox();
 
   /// @author Alan
   /// @brief Inits creation of the mesh
