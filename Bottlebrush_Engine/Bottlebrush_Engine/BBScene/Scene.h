@@ -117,6 +117,7 @@ class Scene
 
     float getLastY() const;
 
+    void toggleMenuActive();
    private:
     Window window;
 

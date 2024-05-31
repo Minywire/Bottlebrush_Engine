@@ -23,6 +23,8 @@ void KeyCallback(Window::WindowContext window, int key, int scancode, int action
       scene->getCamera().SetSpeed(scene->getCamera().GetSpeed() * 2.0f);
     if (action == GLFW_RELEASE && key == GLFW_KEY_LEFT_SHIFT)
       scene->getCamera().SetSpeed(scene->getCamera().GetSpeed() / 2.0f);
+    if(action == GLFW_PRESS && key == GLFW_KEY_M)
+        scene->toggleMenuActive();
 }
 
 void MouseCallback(Window::WindowContext window, double pos_x, double pos_y) 
@@ -378,4 +380,8 @@ void Scene::setLastX(float lX)
 void Scene::setLastY(float lY)
 { 
     last_y = lY; 
+}
+
+void Scene::toggleMenuActive() {
+    this->menuActive = !this->menuActive;
 }
