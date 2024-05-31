@@ -76,19 +76,19 @@ std::optional<float> Terrain::GetHeight(float x, float z) const {
 
     // Evaluate current xz-position on terrain mesh.
     float x_m = x / scale_.x;
-    float z_t = z / scale_.z;
+    float z_m = z / scale_.z;
 
     // Evaluate grid square size and current grid location.
     float size_s = size_m / size_g;
     int x_g = std::floor(x_m / size_s);
-    int z_g = std::floor(z_t / size_s);
+    int z_g = std::floor(z_m / size_s);
 
     // Check within terrain bounds.
     if (!InBounds(x_g, z_g)) return std::nullopt;
 
     // Evaluate x and z co-ordinates inside grid square.
     float x_c = std::fmod(x_m, size_s) / size_s;
-    float z_c = std::fmod(z_t, size_s) / size_s;
+    float z_c = std::fmod(z_m, size_s) / size_s;
 
     // Triangulate position using the line x = 1 - z that defines the triangles
     // in a quad.
