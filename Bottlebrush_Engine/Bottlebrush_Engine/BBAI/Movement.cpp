@@ -30,6 +30,10 @@ namespace Movement {
         glm::vec2 toRealTarget = realTargetPos - newPos;
 
         toRealTarget = glm::normalize(toRealTarget);
+        // returns true if predicted new pos is within the acceptable range
+        if (glm::length(toRealTarget) == 0) {
+          return true;
+        }
         // check to see whether newPos has gone passed the realTargetPos
         // dot product of 2 vectors
         float dp = glm::dot(toRealTarget, toTarget);

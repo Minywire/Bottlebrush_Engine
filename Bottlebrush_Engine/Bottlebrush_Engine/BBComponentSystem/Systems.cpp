@@ -14,6 +14,14 @@ void Systems::generateModelFromComponent(const ModelComponent & modelComp, std::
     }
 }
 
+void Systems::generateTerrainFromComponent(const TerrainComponent & terrainComp, const TransformComponent & terrainTransform, std::unordered_map<std::string, Terrain> & sceneTerrain) 
+{
+    if(!sceneTerrain.contains(terrainComp.terrain_path))
+    {
+        sceneTerrain.emplace(std::pair<std::string, Terrain>(terrainComp.terrain_path, Terrain(terrainComp.terrain_path, terrainComp.terrain_texture, terrainTransform.scale, terrainTransform.position)));
+    }
+}
+
 void Systems::createModelComponents(ECS &ecs, std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels)
 {
     auto group = ecs.GetAllEntitiesWith<ModelComponent>(); //the container with all the matching entities
@@ -23,6 +31,19 @@ void Systems::createModelComponents(ECS &ecs, std::unordered_map<std::string, st
         auto& currentModelComponent = group.get<ModelComponent>(entity);
 
         generateModelFromComponent(currentModelComponent, sceneModels);
+    }
+}
+
+void Systems::createTerrainComponents(ECS &ecs, std::unordered_map<std::string, Terrain> & sceneTerrain)
+{
+    auto group = ecs.GetAllEntitiesWith<TransformComponent, TerrainComponent>(); //the container with all the matching entities
+
+    for(auto entity : group)
+    {
+        auto& currentTerrainComponent = group.get<TerrainComponent>(entity);
+        auto& currentTransform = group.get<TransformComponent>(entity);
+
+        generateTerrainFromComponent(currentTerrainComponent, currentTransform, sceneTerrain);
     }
 }
 
@@ -65,6 +86,7 @@ void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEn
 
         if(sceneModels.count(currentModelComponent.model_path) != 0)
         {
+            //set uniforms for model
             renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("projection", projection);
             renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("view", view);
             renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("model", transform);
@@ -77,6 +99,39 @@ void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEn
                                    sceneModels.at(currentModelComponent.model_path)->GetSubMeshes()[i]->GetIndexCount());
             }
         }
+    }
+}
+
+void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, RenderEngine& renderEngine, std::unordered_map<std::string, Terrain> & sceneTerrain, bool grayscale, glm::mat4 projection, glm::mat4 view)
+{
+    auto group = ecs.GetAllEntitiesWith<TerrainComponent, TransformComponent>(); //the container with all the matching entities
+
+    for(auto entity : group)
+    {
+
+        auto& currentTerrainComponent = group.get<TerrainComponent>(entity);
+        auto& currentTransformComponent = group.get<TransformComponent>(entity);
+        
+        auto& terrain = sceneTerrain.at(currentTerrainComponent.terrain_path);
+       
+        glm::mat4 transform = {1};
+
+        renderEngine.GetShader(terrainShader)->SetUniform1i("grayscale", grayscale);
+        renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("projection", projection);
+        renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("view", view);
+        renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("model", transform);
+
+        renderEngine.GetShader(terrainShader)->SetUniform1i("detail", 0);
+        renderEngine.GetShader(terrainShader)->SetUniform1f("min_height", terrain.GetMinHeight());
+        renderEngine.GetShader(terrainShader)->SetUniform1f("max_height", terrain.GetMaxHeight());
+
+        //draw 
+        terrain.GetMesh()->SetTexture();
+
+        renderEngine.DrawTriangleStrips(terrainShader, 
+            *terrain.GetMesh()->GetVertexArray(),
+            terrain.GetNumStrips(), 
+            terrain.GetNumTriangles());
     }
 }
 
