@@ -21,7 +21,8 @@ Entity = {
         MaterialPath = "Resources/Models/Disabled_Pokemon_Go_-_Eevee___Zubat_0-3_screenshot.png"
     },
     AI = {
-        StatesPath = "Game/AIStates/Patroller2.lua",
-        InitialState = "Idle"
+        StatesPath = "Game/AIStates/States.lua",
+        InitialState = "Patrol",
+        Waypoints = {vec2(250, 100), vec2(600, 450), vec2(250, 600)}
     }
 }
