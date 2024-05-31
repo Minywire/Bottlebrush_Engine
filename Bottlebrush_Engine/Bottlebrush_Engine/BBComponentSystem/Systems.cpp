@@ -160,7 +160,7 @@ void Systems::updateTransformComponent(ECS &ecs, const std::string& tag, glm::ve
 
 }
 
-void Systems::updateAIMovements(ECS& ecs, float deltaTime)
+void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<std::string, Terrain> & sceneTerrain)
 {
     auto group = ecs.GetAllEntitiesWith<TransformComponent, AIControllerComponent>();
 
@@ -189,6 +189,22 @@ void Systems::updateAIMovements(ECS& ecs, float deltaTime)
         transform.position.z += npc.GetDirection().y * deltaTime * npc.GetCurrentSpeed();
         // rotate the character to face the direction, currently given in radians
         transform.rotation.y = std::atan2(npc.GetDirection().y, npc.GetDirection().x);
+
+        //change the NPC's y position to the terrain height
+        auto terrainGroup = ecs.GetAllEntitiesWith<TerrainComponent>();
+        for (auto terrainEnitity : terrainGroup)
+        {
+            auto& terrainComp = terrainGroup.get<TerrainComponent>(terrainEnitity);
+            auto& terrain = sceneTerrain.at(terrainComp.terrain_path);
+            float newY = terrain.GetHeight(transform.position.x, transform.position.z);
+
+            // as getHeight returns 0 if its out of bounds. Avoids collision
+            // with other terrains, if there were more than 1.
+            if (newY == 0) continue; 
+
+            // set the new y position
+            transform.position.y = newY + 10; // plus an offset, should be taken out once other physics is implemented
+        }
     }
 }
 

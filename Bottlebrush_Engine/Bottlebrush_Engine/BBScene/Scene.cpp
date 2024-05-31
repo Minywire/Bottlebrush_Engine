@@ -220,7 +220,7 @@ void Scene::update()
         Systems::drawModels(bbECS, ShaderType::Default, *renderEngine,
                             resources.getSceneModels(), projectionMatrix,
                             viewMatrix);
-        Systems::updateAIMovements(bbECS, deltaTime);
+        Systems::updateAIMovements(bbECS, deltaTime, resources.getSceneTerrain());
         while (accumulatedFrameTime >= UpdateAIInterval) {
             std::cout << "update all AI call" << std::endl;
             Systems::updateAI(bbECS, lua.getLuaState(), accumulatedFrameTime);
