@@ -20,7 +20,10 @@ public:
 
 	void updateInterpolation(float deltaTime);
 
+	float getInterpolation() const { return interpolation; }
+
  private:
 	MD2Model m_model;
     float interpolation = 0.f;
+	float animSpeed = 5.0f;
 };	

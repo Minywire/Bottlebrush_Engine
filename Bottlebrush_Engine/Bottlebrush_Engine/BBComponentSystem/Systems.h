@@ -103,7 +103,7 @@ public:
      * @param view The specified view matrix used
      * @param interpolation The MD2 animation 
      */
-    static void drawMD2Models(const ECS &ecs, const ShaderType & shaderType, RenderEngine & renderEngine, std::unordered_map<std::string, BBMD2> & MD2s, glm::mat4 projection, glm::mat4 view, float interpolation);
+    static void drawMD2Models(const ECS &ecs, const ShaderType & shaderType, RenderEngine & renderEngine, std::unordered_map<std::string, BBMD2> & MD2s, glm::mat4 projection, glm::mat4 view);
     
     /**
     *

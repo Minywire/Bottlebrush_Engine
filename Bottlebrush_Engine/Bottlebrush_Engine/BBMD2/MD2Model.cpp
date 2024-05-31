@@ -119,7 +119,8 @@ bool MD2Model::LoadModel(std::string filename)
 
 bool MD2Model::LoadTexture(std::string texturefile)
 {
-    m_texture.CreateTexture(texturefile);
+    m_texture = GraphicsFactory<GraphicsAPI::OpenGL>::CreateTextureBuffer();
+    m_texture->CreateTexture(texturefile);
     return true;
 }
 
@@ -309,5 +310,5 @@ const std::vector<unsigned int>& MD2Model::returnVaos() const
 
 void MD2Model::setTexture() const
 { 
-    m_texture.Bind();
+    m_texture->Bind();
 }

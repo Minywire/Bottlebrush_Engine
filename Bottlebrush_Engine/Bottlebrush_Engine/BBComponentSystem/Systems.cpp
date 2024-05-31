@@ -131,7 +131,7 @@ void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEn
     }
 }
 
-void Systems::drawMD2Models(const ECS& ecs, const ShaderType& shaderType, RenderEngine& renderEngine, std::unordered_map<std::string, BBMD2> & MD2s, glm::mat4 projection, glm::mat4 view, float interpolation)
+void Systems::drawMD2Models(const ECS& ecs, const ShaderType& shaderType, RenderEngine& renderEngine, std::unordered_map<std::string, BBMD2> & MD2s, glm::mat4 projection, glm::mat4 view)
 {
     auto group = ecs.GetAllEntitiesWith<MD2Component, TransformComponent>();
 
@@ -142,7 +142,7 @@ void Systems::drawMD2Models(const ECS& ecs, const ShaderType& shaderType, Render
 
         auto& currentMD2 = MD2s.at(currentMD2Component.model_path);
         
-        int anim = currentMD2.getSpecificAnim("stand");
+        int anim = currentMD2.getSpecificAnim("run");
          
         glm::mat4 transform = {1};
         transform = glm::translate(transform, currentTransformComponent.position);
@@ -155,11 +155,11 @@ void Systems::drawMD2Models(const ECS& ecs, const ShaderType& shaderType, Render
         renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("projection", projection);
         renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("view", view);
         renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("model", transform);
-        renderEngine.GetShader(shaderType)->SetUniform1f("interpolation", interpolation);
+        renderEngine.GetShader(shaderType)->SetUniform1f("interpolation", currentMD2.getInterpolation());
         renderEngine.GetShader(shaderType)->SetUniform1i("texSampler1", 0);
 
         currentMD2.setTexture();
-        renderEngine.Draw(shaderType, currentMD2.getVecArrays().at(currentMD2.getAnimationCurrentFrame(anim, interpolation)), currentMD2.getModelSize());
+        renderEngine.Draw(shaderType, currentMD2.getVecArrays().at(currentMD2.getAnimationCurrentFrame(anim, currentMD2.getInterpolation())), currentMD2.getModelSize());
     }
 }
 

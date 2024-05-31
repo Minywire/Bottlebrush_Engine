@@ -32,6 +32,6 @@ void BBMD2::updateInterpolation(float deltaTime)
         interpolation = 0.f;
     } else
 	{
-        interpolation += deltaTime;
+        interpolation += deltaTime * animSpeed;
     }
 }

@@ -16,6 +16,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "MD2Texture.h"
+#include "GraphicsFactory.h"
 
 typedef struct
 {
@@ -148,7 +149,7 @@ public:
     std::map<int, std::pair<std::string, std::vector<vec3_md2>>> m_frameVerts;      // Vertex data per frame
 
     // OpenGL variables
-    MD2Texture m_texture;                                      // texture buffer
+    std::unique_ptr<Texture> m_texture;                     // texture buffer
     std::vector<float> m_vertices;                          // stream of vertex data to upload
 
     std::vector<unsigned int> m_vertexBuffer;               // vertex buffer

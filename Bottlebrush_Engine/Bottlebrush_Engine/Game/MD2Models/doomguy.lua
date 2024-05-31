@@ -18,6 +18,6 @@ Entity = {
     },
     MD2Model = {
         ModelPath = "Resources/MD2Models/Models/doomguy.md2",
-        TexturePath = "Resources/Models/Disabled_Pokemon_Go_-_Eevee___Zubat_0-3_screenshot.png"
+        TexturePath = "Resources/MD2Models/Textures/doomguy.png"
     }
 }
