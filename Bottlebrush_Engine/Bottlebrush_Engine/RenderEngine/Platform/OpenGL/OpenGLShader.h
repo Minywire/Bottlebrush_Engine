@@ -43,7 +43,10 @@ public:
 	/// E.g., "u_Color"
 	void SetUniform3f(const std::string& name, float v0, float v1, float v2) override;
 
-	/// @author Alan
+        void SetUniform3fv(const std::string& name,
+                           const glm::vec3& value) override;
+
+        /// @author Alan
 	/// @brief Sets uniforms found in shader files to values passed in
 	/// @param name is the uniform name within the Shader Program source file.
 	/// E.g., "u_Color"
