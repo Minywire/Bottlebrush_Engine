@@ -18,7 +18,7 @@ void Systems::generateTerrainFromComponent(const TerrainComponent & terrainComp,
 {
     if(!sceneTerrain.contains(terrainComp.terrain_path))
     {
-        sceneTerrain.emplace(std::pair<std::string, Terrain>(terrainComp.terrain_path, Terrain(terrainComp.terrain_path, terrainComp.terrain_texture, terrainTransform.scale)));
+        sceneTerrain.emplace(std::pair<std::string, Terrain>(terrainComp.terrain_path, Terrain(terrainComp.terrain_path, terrainComp.terrain_texture, terrainTransform.scale, terrainTransform.position)));
     }
 }
 
