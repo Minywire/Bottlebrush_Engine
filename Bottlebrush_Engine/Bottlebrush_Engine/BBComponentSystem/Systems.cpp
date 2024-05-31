@@ -47,17 +47,8 @@ void Systems::createTerrainComponents(ECS &ecs, std::unordered_map<std::string, 
     }
 }
 
-void Systems::ReadAIScripts(ECS& ecs, sol::state & lua_state) 
+void Systems::RegisterAIFunctions(ECS& ecs, sol::state & lua_state) 
 {
-    auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
-
-    for (auto entity : group)
-    {
-        auto& aic = group.get<AIControllerComponent>(entity);
-
-        if(aic.npc.GetFSM().GetStatePath().extension() != ".lua") { throw std::runtime_error("Lua file is no lua file"); }
-        lua_state.script_file(aic.npc.GetFSM().GetStatePath().string());
-    }
     AIScripts::registerScriptedFSM(lua_state);
     AIScripts::registerScriptedNPC(lua_state, ecs);
     AIScripts::registerScriptedGLM(lua_state);
@@ -221,6 +212,7 @@ void Systems::updateAI(ECS& ecs, sol::state& lua_state, float deltaTime) {
     for (auto entity : group)
     {
       auto& aic = group.get<AIControllerComponent>(entity);
+      lua_state.script_file(aic.npc.GetFSM().GetStatePath().string());
 
       aic.npc.Update(lua_state, deltaTime);
     }
