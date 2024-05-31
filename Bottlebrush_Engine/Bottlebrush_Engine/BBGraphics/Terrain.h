@@ -37,7 +37,7 @@ class Terrain {
   };
 
  public:
-  Terrain(const std::string &path, const std::string &texture,
+  Terrain(const std::string& path, const std::string& texture,
           glm::vec3 scale = {1.0f, 1.0f, 1.0f},
           glm::vec3 shift = {0.0f, 0.0f, 0.0f});
 
@@ -50,7 +50,7 @@ class Terrain {
   /// terrain central point.
   /// @returns A three-dimensional vector object that represents the terrain
   /// centre point.
-  [[nodiscard]] glm::vec3 GetCentre() const;
+  [[nodiscard]] const glm::vec3& GetCentre() const;
 
   /// @brief Gets the element index list that describes the vertex indices of
   /// the generated terrain.
@@ -62,7 +62,7 @@ class Terrain {
   /// positions describing the vertex positions for the generated terrain.
   /// @returns A vector container object that represents the terrain vertex
   /// indices.
-  [[nodiscard]] std::vector<unsigned int> GetElements() const;
+  [[nodiscard]] const std::vector<unsigned int>& GetElements() const;
 
   /// @brief Gets the height value at the given \a x and \a z co-ordinates.
   /// <p>
@@ -101,7 +101,7 @@ class Terrain {
   /// scale in each of the \a x, \a y, and \a z directional planes.
   /// @returns A three-dimensional vector object that represents the terrain
   /// scale.
-  [[nodiscard]] glm::vec3 GetScale() const;
+  [[nodiscard]] const glm::vec3& GetScale() const;
 
   /// @brief Gets the terrain shifting factors.
   /// <p>
@@ -112,7 +112,7 @@ class Terrain {
   /// shift in each of the \a x, \a y, and \a z directional planes.
   /// @returns A three-dimensional vector object that represents the terrain
   /// shift.
-  [[nodiscard]] glm::vec3 GetShift() const;
+  [[nodiscard]] const glm::vec3& GetShift() const;
 
   /// @brief Gets the total size of the terrain.
   /// <p>
@@ -132,7 +132,7 @@ class Terrain {
   /// The return value is a vector container object containing the \a x, \a y,
   /// and \a z vertex positions that compose the generated terrain mesh.
   /// @returns A vector container object that represents the terrain vertices.
-  [[nodiscard]] std::vector<float> GetVertices() const;
+  [[nodiscard]] const std::vector<float>& GetVertices() const;
 
   /// @brief Gets the width of the terrain.
   /// <p>
@@ -145,7 +145,7 @@ class Terrain {
 
   /// @author Alan
   /// @brief Gets the terrain mesh
-  [[nodiscard]] std::unique_ptr<Mesh> &GetMesh();
+  [[nodiscard]] std::unique_ptr<Mesh>& GetMesh();
 
   bool texture_stretch_ = true;
 
@@ -165,7 +165,7 @@ class Terrain {
 
   glm::vec3 centre_;
   int channels_;
-  unsigned char *data_;
+  unsigned char* data_;
   std::vector<Elem> elements_;
   std::vector<float> heights_;
   int depth_;

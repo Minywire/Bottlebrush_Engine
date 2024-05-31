@@ -58,9 +58,11 @@ Terrain::Terrain(const std::string &path, const std::string &texture,
   data_ = nullptr;
 }
 
-glm::vec3 Terrain::GetCentre() const { return centre_; }
+const glm::vec3 &Terrain::GetCentre() const { return centre_; }
 
-std::vector<unsigned int> Terrain::GetElements() const { return elem_buf_; }
+const std::vector<unsigned int> &Terrain::GetElements() const {
+  return elem_buf_;
+}
 
 float Terrain::GetHeight(float x, float z) const {
   float height = 0.0f;
@@ -116,13 +118,13 @@ float Terrain::GetMinHeight() const {
   return *std::min_element(heights_.begin(), heights_.end());
 }
 
-glm::vec3 Terrain::GetScale() const { return scale_; }
+const glm::vec3 &Terrain::GetScale() const { return scale_; }
 
-glm::vec3 Terrain::GetShift() const { return shift_; }
+const glm::vec3 &Terrain::GetShift() const { return shift_; }
 
 int Terrain::GetSize() const { return size_; }
 
-std::vector<float> Terrain::GetVertices() const { return vert_buf_; }
+const std::vector<float> &Terrain::GetVertices() const { return vert_buf_; }
 
 int Terrain::GetWidth() const { return width_; }
 
