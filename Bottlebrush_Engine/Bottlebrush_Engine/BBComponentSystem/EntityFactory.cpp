@@ -156,8 +156,8 @@ void EntityFactory::loadAIController(ECS& ecs, Entity& entity, const sol::table&
     // if NPC has waypoints add them
     if (ai["Waypoints"].valid()) {
         sol::table waypoints = ai["Waypoints"];
-        for (int i = 1; i <= waypoints.size(); ++i) {
-            aic.npc.AddWaypoint(waypoints[i]);
+        for (const auto& [name, waypoint] : waypoints) {
+            aic.npc.AddWaypoint(waypoint.as<glm::vec2>());
         }
     }
 
