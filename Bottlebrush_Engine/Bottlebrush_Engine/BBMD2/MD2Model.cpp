@@ -292,18 +292,6 @@ int MD2Model::GetAnimationCurrentFrame(int animIndex, float interpolation)
     return m_currentFrame;
 }
 
-void MD2Model::RenderFrame(int frame)
-{
-    m_texture.Bind();
-    glBindVertexArray(m_vertexArray[frame]);
-
-    glDrawArrays(GL_TRIANGLES, 0, m_header->numTriangles*3); // number of faces * 3 vertex
-
-    // Unbind VAO
-    glBindVertexArray(0);
-    
-}
-
 std::vector<std::string> MD2Model::AnimationNames()
 {
     std::vector<std::string> anims;
@@ -317,4 +305,9 @@ std::vector<std::string> MD2Model::AnimationNames()
 const std::vector<unsigned int>& MD2Model::returnVaos() const
 {
     return m_vertexArray;
+}
+
+void MD2Model::setTexture() const
+{ 
+    m_texture.Bind();
 }

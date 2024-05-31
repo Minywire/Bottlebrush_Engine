@@ -149,4 +149,6 @@ class Scene
     bool exitScreen = false;
 
     float last_frame = 0;
+
+    float interpolation = 0.f;
 };

@@ -11,11 +11,16 @@ public:
 	std::string getSpecificAnim(int animIndx);
 
 	int getAnimationCurrentFrame(int AnimIndx, float interpolation);
+	
+	void setTexture() const;
 
-	const MD2Model & returnMD2() const;
+	const std::vector<unsigned int>& getVecArrays() const { return m_model.returnVaos(); }
+      
+	const int getModelSize() const { return m_model.getNumTris(); }
 
-	const std::vector<unsigned int> & getVecArrays() const;
+	void updateInterpolation(float deltaTime);
 
  private:
 	MD2Model m_model;
+    float interpolation = 0.f;
 };	

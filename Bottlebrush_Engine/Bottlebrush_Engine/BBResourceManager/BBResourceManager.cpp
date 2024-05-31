@@ -23,3 +23,13 @@ std::unordered_map<std::string, Terrain> & BBResourceManager::getSceneTerrain()
 {
     return sceneTerrain;
 }
+
+const std::unordered_map<std::string, BBMD2> & BBResourceManager::getSceneMD2Models() const
+{
+    return sceneMD2Models;
+}
+
+std::unordered_map<std::string, BBMD2> & BBResourceManager::getSceneMD2Models()
+{
+    return sceneMD2Models;
+}

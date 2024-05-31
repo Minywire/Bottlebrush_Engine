@@ -34,6 +34,14 @@ public:
     /// @param indexCount is the total count of indices in that Vertex array
     virtual void Draw(ShaderType shaderType, const VertexArray& va, const unsigned int indexCount) = 0;
 
+    /// @author Marco
+    /// @brief Draws a model with a vao (no index buffer)
+    /// This needs to be called within the draw loop.
+    /// @param shaderType is the shader program to be used
+    /// @param va is the bound Vertex Array
+    /// @param size is the data size of the specified VAO
+    virtual void Draw(ShaderType shaderType, unsigned int va, unsigned int size) = 0;
+
     /// @author Alan
     /// @brief Draws using TriangleStrips.
     /// e.g, for Terrain

@@ -51,7 +51,7 @@ public:
 private:
     std::unordered_map<std::string, std::unique_ptr<Model>> sceneModels; ///The models stored in a scene
 
-    std::unordered_map <std::string, std::unique_ptr<BBMD2>> sceneMD2Models; //The MD2 models stored in a scene
+    std::unordered_map <std::string, BBMD2> sceneMD2Models; //The MD2 models stored in a scene
 
     std::unordered_map<std::string, Terrain> sceneTerrain; //The terrain stored in a scene
 };

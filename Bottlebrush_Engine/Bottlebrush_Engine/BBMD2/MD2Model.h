@@ -111,8 +111,6 @@ public:
 
     int GetAnimationCurrentFrame(int animIndex, float interpolation);
 
-    void RenderFrame(int frame);
-
     std::vector<std::string> AnimationNames();
     int getNumAnims() { return m_animation.size(); }
 
@@ -123,7 +121,10 @@ public:
 
     const std::vector<unsigned int> & returnVaos() const;
 
-private:
+    const int getNumTris() const { return m_header->numTriangles * 3; }
+
+    void setTexture() const;
+   private:
     bool LoadModel(std::string filename);
     bool LoadTexture(std::string texturefile);
     void InitBuffers();

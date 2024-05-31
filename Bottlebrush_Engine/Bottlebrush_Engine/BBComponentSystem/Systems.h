@@ -101,9 +101,15 @@ public:
      * data
      * @param projection The specified projection matrix used
      * @param view The specified view matrix used
+     * @param interpolation The MD2 animation 
      */
-    static void drawMD2Models(const ECS &ecs, const ShaderType & shaderType, RenderEngine & renderEngine, const std::unordered_map<std::string, BBMD2> & MD2s, glm::mat4 projection, glm::mat4 view);
+    static void drawMD2Models(const ECS &ecs, const ShaderType & shaderType, RenderEngine & renderEngine, std::unordered_map<std::string, BBMD2> & MD2s, glm::mat4 projection, glm::mat4 view, float interpolation);
     
+    /**
+    *
+    */
+    static void updateMD2Interpolation(const ECS &ecs, std::unordered_map<std::string, BBMD2> &MD2s, float deltaTime);
+
     /**
      *
      * @param ecs The registry containing all the entities from which to grab

@@ -131,8 +131,35 @@ void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEn
     }
 }
 
-void Systems::drawMD2Models(const ECS& ecs, const ShaderType& shaderType, RenderEngine& renderEngine, const std::unordered_map<std::string, BBMD2> & MD2s, glm::mat4 projection, glm::mat4 view)
+void Systems::drawMD2Models(const ECS& ecs, const ShaderType& shaderType, RenderEngine& renderEngine, std::unordered_map<std::string, BBMD2> & MD2s, glm::mat4 projection, glm::mat4 view, float interpolation)
 {
+    auto group = ecs.GetAllEntitiesWith<MD2Component, TransformComponent>();
+
+    for (auto entity : group)
+    {
+        auto& currentMD2Component = group.get<MD2Component>(entity);
+
+        auto& currentMD2 = MD2s.at(currentMD2Component.model_path);
+
+        int anim = currentMD2.getSpecificAnim("stand");
+
+        currentMD2.setTexture();
+        renderEngine.Draw(shaderType, currentMD2.getVecArrays().at(currentMD2.getAnimationCurrentFrame(anim, interpolation)), currentMD2.getModelSize());
+    }
+}
+
+void Systems::updateMD2Interpolation(const ECS& ecs, std::unordered_map<std::string, BBMD2>& MD2s, float deltaTime)
+{
+    auto group = ecs.GetAllEntitiesWith<MD2Component>();
+
+    for (auto entity : group)
+    {
+        auto& currentMD2Component = group.get<MD2Component>(entity);
+
+        auto& currentMD2 = MD2s.at(currentMD2Component.model_path);
+
+        currentMD2.updateInterpolation(deltaTime);
+    }
 
 }
 

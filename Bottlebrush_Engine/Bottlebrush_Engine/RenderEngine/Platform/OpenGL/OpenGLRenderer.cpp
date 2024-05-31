@@ -37,6 +37,16 @@ void OpenGLRenderer::Draw(ShaderType shaderType, const VertexArray& va, const un
     }
 }
 
+void OpenGLRenderer::Draw(ShaderType shaderType, unsigned int va, unsigned int size)
+{
+    glBindVertexArray(va);
+
+    glDrawArrays(GL_TRIANGLES, 0, size);  // number of faces * 3 vertex
+
+    // Unbind VAO
+    glBindVertexArray(0);
+}
+
 void OpenGLRenderer::DrawTriangleStrips(
     ShaderType shaderType,
     const VertexArray& va,

@@ -17,7 +17,7 @@ Entity = {
         }
     },
     MD2Model = {
-        ModelPath = "Resources/Models/Pine_Tree.obj",
-        MaterialPath = "Resources/Models/Pine_Tree.png"
+        ModelPath = "Resources/MD2Models/Models/doomguy.md2",
+        MaterialPath = "Resources/MD2Models/Models/doomguy.png"
     }
 }
