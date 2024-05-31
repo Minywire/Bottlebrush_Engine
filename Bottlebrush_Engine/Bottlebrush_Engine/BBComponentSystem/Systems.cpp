@@ -59,7 +59,8 @@ void Systems::ReadAIScripts(ECS& ecs, sol::state & lua_state)
         lua_state.script_file(aic.npc.GetFSM().GetStatePath().string());
     }
     AIScripts::registerScriptedFSM(lua_state);
-    AIScripts::registerScriptedNPC(lua_state);
+    AIScripts::registerScriptedNPC(lua_state, ecs);
+    AIScripts::registerScriptedGLM(lua_state);
 }
 
 void Systems::setLight(RenderEngine & renderEngine, const ShaderType & shaderType, glm::mat4 view)
@@ -166,13 +167,45 @@ void Systems::updateTransformComponent(ECS &ecs, const std::string& tag, glm::ve
 
 }
 
-void Systems::updateAI(ECS &ecs, sol::state & lua_state) 
+void Systems::updateAIMovements(ECS& ecs, float deltaTime)
 {
+    auto group = ecs.GetAllEntitiesWith<TransformComponent, AIControllerComponent>();
+
+    for (auto entity : group)
+    {
+        auto& aic = group.get<AIControllerComponent>(entity);
+        auto& transform = group.get<TransformComponent>(entity);
+        auto& npc = aic.npc;
+
+        // check if we need to decelerate
+        if (!npc.IsMoving()) {
+            // stopped moving, leave this entity
+            if (npc.GetCurrentSpeed() <= 0) continue;
+
+            npc.GetCurrentSpeed() -= npc.GetDecceleration();
+        } else { // accelerate to max speed
+            if (npc.GetCurrentSpeed() <= npc.GetMaxSpeed()) 
+                npc.GetCurrentSpeed() += npc.GetAcceleration();
+        }
+        
+        // @Debug Line
+        //std::cout << "speed: " << move.current_speed << std::endl;
+
+        // move in its current direction by its current speed
+        transform.position.x += npc.GetDirection().x * deltaTime * npc.GetCurrentSpeed();
+        transform.position.z += npc.GetDirection().y * deltaTime * npc.GetCurrentSpeed();
+        // rotate the character to face the direction, currently given in radians
+        transform.rotation.y = std::atan2(npc.GetDirection().y, npc.GetDirection().x);
+    }
+}
+
+void Systems::updateAI(ECS& ecs, sol::state& lua_state, float deltaTime) {
     auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
 
     for (auto entity : group)
     {
       auto& aic = group.get<AIControllerComponent>(entity);
-      aic.npc.Update(lua_state);
+
+      aic.npc.Update(lua_state, deltaTime);
     }
 }

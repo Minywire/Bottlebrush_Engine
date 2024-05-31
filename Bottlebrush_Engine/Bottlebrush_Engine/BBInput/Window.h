@@ -26,6 +26,8 @@ class Window {
   static const int kVersionMajor = 3;
   static const int kVersionMinor = 3;
 
+  Window() = default;
+
   Window(WindowMode window_mode, CursorMode cursor_mode,
          const std::string& window_name, int width, int height);
 
@@ -39,6 +41,7 @@ class Window {
   [[nodiscard]] std::tuple<int, int> GetSize() const;
   [[nodiscard]] WindowVideoMode GetVideoMode() const;
   [[nodiscard]] WindowMode GetWindowMode() const;
+  [[nodiscard]] const std::string& GetWindowName() const;
   void Remove();
   void Swap();
   void SetCursorMode(CursorMode cursor_mode);
@@ -46,6 +49,7 @@ class Window {
   void SetShouldClose(bool should_close);
   void SetSize(int width, int height);
   void SetWindowMode(WindowMode window_mode);
+  void SetWindowName(const std::string& wName);
   void Poll();
 
  private:
