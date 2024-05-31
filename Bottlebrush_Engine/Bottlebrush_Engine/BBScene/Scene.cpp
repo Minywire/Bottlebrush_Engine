@@ -94,7 +94,7 @@ void Scene::createEntityAndTransform(const std::string & lua_file, float xPos, f
 }
 
 Scene::Scene(const std::string& lua_master, float screenwidth, float screenheight)
-    : accumulatedFrameTime(0), UpdateAIInterval(2.f), screen_width(screenwidth), screen_height(screenheight)
+    : accumulatedFrameTime(0), UpdateAIInterval(0.2f), screen_width(screenwidth), screen_height(screenheight)
 {
     window = Window(Window::CURSOR, Window::CURSOR_DISABLED, "BOTTLE BRUSH", screen_width, screen_height);
 
@@ -220,10 +220,10 @@ void Scene::update()
         Systems::drawModels(bbECS, ShaderType::Default, *renderEngine,
                             resources.getSceneModels(), projectionMatrix,
                             viewMatrix);
-
+        Systems::updateAIMovements(bbECS, deltaTime);
         while (accumulatedFrameTime >= UpdateAIInterval) {
             std::cout << "update all AI call" << std::endl;
-            Systems::updateAI(bbECS, lua.getLuaState());
+            Systems::updateAI(bbECS, lua.getLuaState(), accumulatedFrameTime);
             accumulatedFrameTime -= UpdateAIInterval;
         }
 

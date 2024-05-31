@@ -9,6 +9,9 @@
 
 #include "NPC.h"
 
+/** forward decl to avoid circle linking */
+class Entity;
+
 /**
  * @brief Component that binds a lua function to an Entity
  * @author Marco Garzon Lara
@@ -49,26 +52,15 @@ struct TagComponent
 };
 
 /**
- * @brief Component that contains movement data for player
- * @author Marco Garzon Lara
- */
-struct PlayerControllerComponent
-{
-    float max_speed;
-    float current_speed;
-    float acceleration_rate;
-    float deceleration_rate;
-};
-
-/**
  * @brief Component that contains data for AI controlled NPCs
  */
 struct AIControllerComponent
 {
     NPC npc;
 
-    AIControllerComponent(const std::filesystem::path& statesPath, const std::string& initialState)
-        : npc(NPC(statesPath, initialState))
+    AIControllerComponent(const std::filesystem::path& statesPath, const std::string& initialState,
+                          Entity& entity)
+        : npc(NPC(statesPath, initialState, entity))
     {}
 };
 

@@ -96,7 +96,7 @@ class Scene
     void clearRenderEngine();
 
     /**
-     *
+     * @param deltaTime time difference between frames
      */
     void update();
 
