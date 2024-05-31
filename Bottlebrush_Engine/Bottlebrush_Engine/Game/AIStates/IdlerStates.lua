@@ -29,7 +29,7 @@ Idle = {
 
 	Update = function(NPC)
 		if Detection.SeePlayer(NPC) then
-			print ("Seen in lua")
+			FSM.ChangeState(NPC, "Chase");
 		end	
 	end,
 
@@ -54,5 +54,24 @@ Patrol = {
 
 	onExit = function(NPC)
 		print("Exiting Patrol state");
+	end
+}
+
+-------------------------------------------------------------------------------
+
+-- create the chase state
+
+-------------------------------------------------------------------------------
+Chase = {
+	onEnter = function(NPC)
+		print("Entered Chase state");
+	end,
+
+	Update = function(NPC)
+		Movement.ChasePlayer(NPC);
+	end,
+
+	onExit = function(NPC)
+		print("Exiting Chase state");
 	end
 }
