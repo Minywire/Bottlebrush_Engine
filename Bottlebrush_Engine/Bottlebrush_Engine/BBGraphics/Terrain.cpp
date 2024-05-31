@@ -33,6 +33,25 @@ Terrain::Terrain(const std::string &path, const std::string &texture,
   PopulateElements();
   CalculateNormals();
 
+  // Populate raw vert buffer
+  for (auto &v : vertices_) {
+    vert_buf_.push_back(v.pos.x);
+    vert_buf_.push_back(v.pos.y);
+    vert_buf_.push_back(v.pos.z);
+
+    vert_buf_.push_back(v.nrm.x);
+    vert_buf_.push_back(v.nrm.y);
+    vert_buf_.push_back(v.nrm.z);
+
+    vert_buf_.push_back(v.tex.x);
+    vert_buf_.push_back(v.tex.y);
+  }
+
+  // Populate raw elem buffer
+  for (auto &e : elements_) {
+    elem_buf_.push_back(e.idx);
+  }
+
   InitMesh();
 
   stbi_image_free(data_);
@@ -161,11 +180,6 @@ void Terrain::PopulateElements() {
       elements_.at(idx++).idx = d;
     }
   }
-
-  // Populate raw buffer
-  for (auto &e : elements_) {
-    elem_buf_.push_back(e.idx);
-  }
 }
 
 void Terrain::PopulateVertices() {
@@ -183,20 +197,6 @@ void Terrain::PopulateVertices() {
 
       vertices_.at(idx++).Init(x, y, z, w, d, scale_, shift_, texture_stretch_);
     }
-  }
-
-  // Populate raw buffer
-  for (auto &v : vertices_) {
-    vert_buf_.push_back(v.pos.x);
-    vert_buf_.push_back(v.pos.y);
-    vert_buf_.push_back(v.pos.z);
-
-    vert_buf_.push_back(v.tex.x);
-    vert_buf_.push_back(v.tex.y);
-
-    vert_buf_.push_back(v.nrm.x);
-    vert_buf_.push_back(v.nrm.y);
-    vert_buf_.push_back(v.nrm.z);
   }
 }
 
@@ -217,8 +217,8 @@ void Terrain::TransposeHeights() {
 void Terrain::InitMesh() {
   std::vector<unsigned int> layout;
   layout.push_back(3);  // 3 elements for position
-  layout.push_back(2);  // 2 elements for tex coords
   layout.push_back(3);  // 3 elements for normals
+  layout.push_back(2);  // 2 elements for tex coords
   mesh_ = GraphicsFactory<GraphicsAPI::OpenGL>::CreateMesh(vert_buf_, elem_buf_,
                                                            texture_, 0, layout);
 }

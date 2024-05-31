@@ -142,7 +142,7 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, Rende
         renderEngine.GetShader(terrainShader)->SetUniform1i("gTex", 0);
         renderEngine.GetShader(terrainShader)
             ->SetUniform3fv("gReversedLightDir",
-                            glm::normalize(-glm::vec3(0.0f, 1.0f, 0.5f)));
+                            glm::vec3(0.927f, 0.37139f, 0.05237f));
 
         //draw
         terrain.GetMesh()->SetTexture(0);

@@ -7,8 +7,8 @@ uniform float gMinHeight;
 uniform float gMaxHeight;
 
 layout (location = 0) in vec3 InPos;
-layout (location = 1) in vec2 InTex;
-layout (location = 2) in vec3 InNormal;
+layout (location = 1) in vec3 InNormal;
+layout (location = 2) in vec2 InTex;
 
 out vec4 TexCol;
 out vec2 Tex;
