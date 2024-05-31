@@ -223,7 +223,7 @@ void Scene::update()
         Systems::updateAIMovements(bbECS, deltaTime);
         while (accumulatedFrameTime >= UpdateAIInterval) {
             std::cout << "update all AI call" << std::endl;
-            Systems::updateAI(bbECS, lua.getLuaState());
+            Systems::updateAI(bbECS, lua.getLuaState(), accumulatedFrameTime);
             accumulatedFrameTime -= UpdateAIInterval;
         }
 
