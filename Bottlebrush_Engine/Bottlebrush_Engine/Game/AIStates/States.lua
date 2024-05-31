@@ -4,9 +4,17 @@
 
 -------------------------------------------------------------------------------
 Global = {
-	Update = function(player)
-		print("in global state")
+	onEnter = function(NPC)
+		print("Entered Global state");
+	end,
 
+	Update = function(NPC)
+		print("in global state");
+
+	end,
+
+	onExit = function(NPC)
+		print("Exiting Global state");
 	end
 }
 
@@ -16,9 +24,17 @@ Global = {
 
 -------------------------------------------------------------------------------
 Idle = {
-	Update = function(player)
-		print("in idle state")
+	onEnter = function(NPC)
+		print("Entered Idle state");
+	end,
 
+	Update = function(NPC)
+		print("in idle state");
+		FSM.ChangeState(NPC, "Patrol");
+	end,
+
+	onExit = function(NPC)
+		print("Exiting Idle state");
 	end
 }
 
@@ -28,8 +44,16 @@ Idle = {
 
 -------------------------------------------------------------------------------
 Patrol = {
-	Update = function(player)
-		print ("in patrol state")
+	onEnter = function(NPC)
+		print("Entered Patrol state");
+	end,
 
+	Update = function(NPC)
+		print ("in patrol state");
+		Movement.Patrol(NPC);
+	end,
+
+	onExit = function(NPC)
+		print("Exiting Patrol state");
 	end
 }

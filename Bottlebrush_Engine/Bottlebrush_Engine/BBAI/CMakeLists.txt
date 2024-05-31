@@ -7,8 +7,11 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(SOURCES  
 	FSM.h FSM.cpp
-	NPC.h NPC.cpp)
+	NPC.h NPC.cpp
+	Movement.h Movement.cpp)
 
 target_sources(BBAI PRIVATE ${SOURCES})
 
+target_link_libraries(BBAI PRIVATE BBComponentSystem)
 target_link_libraries(BBAI PRIVATE BBScript)
+target_link_libraries(BBAI PUBLIC glm sol2 EnTT)

@@ -4,12 +4,21 @@
 
 #include "Systems.h"
 #include "BBScript.h"
+#include "RegisterAIScripts.h"
 
 void Systems::generateModelFromComponent(const ModelComponent & modelComp, std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels)
 {
     if(sceneModels.find(modelComp.model_path) == sceneModels.end())
     {
         sceneModels.emplace(std::pair<std::string, std::unique_ptr<Model>>(modelComp.model_path, GraphicsFactory<GraphicsAPI::OpenGL>::CreateModel(modelComp.model_path, modelComp.material_path)));
+    }
+}
+
+void Systems::generateTerrainFromComponent(const TerrainComponent & terrainComp, const TransformComponent & terrainTransform, std::unordered_map<std::string, Terrain> & sceneTerrain) 
+{
+    if(!sceneTerrain.contains(terrainComp.terrain_path))
+    {
+        sceneTerrain.emplace(std::pair<std::string, Terrain>(terrainComp.terrain_path, Terrain(terrainComp.terrain_path, terrainComp.terrain_texture, terrainTransform.scale, terrainTransform.position)));
     }
 }
 
@@ -25,17 +34,24 @@ void Systems::createModelComponents(ECS &ecs, std::unordered_map<std::string, st
     }
 }
 
-void Systems::ReadAIScripts(ECS& ecs, sol::state & lua_state) 
+void Systems::createTerrainComponents(ECS &ecs, std::unordered_map<std::string, Terrain> & sceneTerrain)
 {
-    auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
+    auto group = ecs.GetAllEntitiesWith<TransformComponent, TerrainComponent>(); //the container with all the matching entities
 
-    for (auto entity : group)
+    for(auto entity : group)
     {
-        auto& aic = group.get<AIControllerComponent>(entity);
+        auto& currentTerrainComponent = group.get<TerrainComponent>(entity);
+        auto& currentTransform = group.get<TransformComponent>(entity);
 
-        if(aic.npc.GetFSM().GetStatePath().extension() != ".lua") { throw std::runtime_error("Lua file is no lua file"); }
-        lua_state.script_file(aic.npc.GetFSM().GetStatePath().string());
+        generateTerrainFromComponent(currentTerrainComponent, currentTransform, sceneTerrain);
     }
+}
+
+void Systems::RegisterAIFunctions(ECS& ecs, sol::state & lua_state) 
+{
+    AIScripts::registerScriptedFSM(lua_state);
+    AIScripts::registerScriptedNPC(lua_state, ecs);
+    AIScripts::registerScriptedGLM(lua_state);
 }
 
 void Systems::setLight(RenderEngine & renderEngine, const ShaderType & shaderType, glm::mat4 view)
@@ -70,6 +86,7 @@ void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEn
 
         if(sceneModels.count(currentModelComponent.model_path) != 0)
         {
+            //set uniforms for model
             renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("projection", projection);
             renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("view", view);
             renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("model", transform);
@@ -82,6 +99,46 @@ void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEn
                                    sceneModels.at(currentModelComponent.model_path)->GetSubMeshes()[i]->GetIndexCount());
             }
         }
+    }
+}
+
+void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, RenderEngine& renderEngine, std::unordered_map<std::string, Terrain> & sceneTerrain, bool grayscale, glm::mat4 projection, glm::mat4 view)
+{
+    auto group = ecs.GetAllEntitiesWith<TerrainComponent, TransformComponent>(); //the container with all the matching entities
+
+    for(auto entity : group)
+    {
+
+        auto& currentTerrainComponent = group.get<TerrainComponent>(entity);
+        auto& currentTransformComponent = group.get<TransformComponent>(entity);
+
+        auto& terrain = sceneTerrain.at(currentTerrainComponent.terrain_path);
+
+        glm::mat4 transform = {1};
+
+        // Vert Uniforms
+        renderEngine.GetShader(terrainShader)
+            ->SetUniformMatrix4fv("gModel", transform);
+        renderEngine.GetShader(terrainShader)
+            ->SetUniformMatrix4fv("gView", view);
+        renderEngine.GetShader(terrainShader)
+            ->SetUniformMatrix4fv("gProjection", projection);
+        renderEngine.GetShader(terrainShader)
+            ->SetUniform1f("gMinHeight", terrain.GetMinHeight());
+        renderEngine.GetShader(terrainShader)
+            ->SetUniform1f("gMaxHeight", terrain.GetMaxHeight());
+
+        // Frag Uniforms
+        renderEngine.GetShader(terrainShader)
+            ->SetUniform1i("gGrayscale", grayscale);
+        renderEngine.GetShader(terrainShader)->SetUniform1i("gTex", 0);
+        renderEngine.GetShader(terrainShader)
+            ->SetUniform3fv("gReversedLightDir", {-0.2f, 0.7f, -0.4f});
+
+        // draw
+        terrain.GetMesh()->SetTexture(0);
+        renderEngine.Draw(terrainShader, *terrain.GetMesh()->GetVertexArray(),
+                          terrain.GetElements().size());
     }
 }
 
@@ -101,13 +158,62 @@ void Systems::updateTransformComponent(ECS &ecs, const std::string& tag, glm::ve
 
 }
 
-void Systems::updateAI(ECS &ecs, sol::state & lua_state) 
+void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<std::string, Terrain> & sceneTerrain)
 {
+    auto group = ecs.GetAllEntitiesWith<TransformComponent, AIControllerComponent>();
+
+    for (auto entity : group)
+    {
+        auto& aic = group.get<AIControllerComponent>(entity);
+        auto& transform = group.get<TransformComponent>(entity);
+        auto& npc = aic.npc;
+
+        // check if we need to decelerate
+        if (!npc.IsMoving()) {
+            // stopped moving, leave this entity
+            if (npc.GetCurrentSpeed() <= 0) continue;
+
+            npc.GetCurrentSpeed() -= npc.GetDecceleration();
+        } else { // accelerate to max speed
+            if (npc.GetCurrentSpeed() <= npc.GetMaxSpeed()) 
+                npc.GetCurrentSpeed() += npc.GetAcceleration();
+        }
+        
+        // @Debug Line
+        //std::cout << "speed: " << move.current_speed << std::endl;
+
+        // move in its current direction by its current speed
+        transform.position.x += npc.GetDirection().x * deltaTime * npc.GetCurrentSpeed();
+        transform.position.z += npc.GetDirection().y * deltaTime * npc.GetCurrentSpeed();
+        // rotate the character to face the direction, currently given in radians
+        transform.rotation.y = std::atan2(npc.GetDirection().y, npc.GetDirection().x);
+
+        //change the NPC's y position to the terrain height
+        auto terrainGroup = ecs.GetAllEntitiesWith<TerrainComponent>();
+        for (auto terrainEnitity : terrainGroup)
+        {
+            auto& terrainComp = terrainGroup.get<TerrainComponent>(terrainEnitity);
+            auto& terrain = sceneTerrain.at(terrainComp.terrain_path);
+
+            // Optional returns if its out of bounds. 
+            // Avoids collision with other terrains, if there were more than 1.
+            auto heightOpt = terrain.GetHeight(transform.position.x, transform.position.z);
+            if (!heightOpt.has_value()) continue;
+
+            // set the new y position
+            transform.position.y = heightOpt.value() + 10; // plus an offset, should be taken out once other physics is implemented
+        }
+    }
+}
+
+void Systems::updateAI(ECS& ecs, sol::state& lua_state, float deltaTime) {
     auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
 
     for (auto entity : group)
     {
       auto& aic = group.get<AIControllerComponent>(entity);
-      aic.npc.Update(lua_state);
+      lua_state.script_file(aic.npc.GetFSM().GetStatePath().string());
+
+      aic.npc.Update(lua_state, deltaTime);
     }
 }

@@ -1,6 +1,10 @@
 --Load all game entities from scripts here!
 
+create_entity("Game/Terrain/MainTerrain.lua");
+
 create_entity("Game/Cube.lua");
+create_entityTR("Game/NPCs/Patroller1.lua", 500, 50, 450);
+create_entityTR("Game/NPCs/Patroller2.lua", 400, 40, 450);
 
 for start=0, 4000, 1000 do
     for start1=0, 4000, 1000 do

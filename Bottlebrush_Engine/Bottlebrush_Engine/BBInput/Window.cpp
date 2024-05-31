@@ -68,12 +68,15 @@ Window::WindowVideoMode Window::GetVideoMode() const { return video_mode_; }
 
 Window::WindowMode Window::GetWindowMode() const { return window_mode_; }
 
+const std::string& Window::GetWindowName() const { return window_name_; }
+
 void Window::Remove() { CeaseWindowContext(); }
 
 void Window::Swap() { ShiftWindowBuffers(); }
 
 void Window::SetCursorMode(CursorMode cursor_mode) {
   cursor_mode_ = cursor_mode;
+  glfwSetInputMode(window_context_, GLFW_CURSOR, cursor_mode);
 }
 
 void Window::SetFullscreen(bool fullscreen) {
@@ -97,6 +100,10 @@ void Window::SetWindowMode(WindowMode window_mode) {
   window_mode_ = window_mode;
   if (window_mode_ == CURSOR) SetCursorInputMode();
   if (window_mode_ == RAWMTN) SetRawMtnInputMode();
+}
+
+void Window::SetWindowName(const std::string& wName) { 
+    window_name_ = wName; 
 }
 
 void Window::Poll() { PollEventsListener(); }
