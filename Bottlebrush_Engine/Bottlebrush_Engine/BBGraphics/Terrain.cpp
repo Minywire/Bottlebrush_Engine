@@ -54,6 +54,9 @@ Terrain::Terrain(const std::string &path, const std::string &texture,
 
   InitMesh();
 
+  max_height_ = *std::max_element(heights_.begin(), heights_.end());
+  min_height_ = *std::min_element(heights_.begin(), heights_.end());
+
   stbi_image_free(data_);
   data_ = nullptr;
 }
@@ -110,13 +113,9 @@ float Terrain::GetHeight(float x, float z) const {
 
 int Terrain::GetDepth() const { return depth_; }
 
-float Terrain::GetMaxHeight() const {
-  return *std::max_element(heights_.begin(), heights_.end());
-}
+float Terrain::GetMaxHeight() const { return max_height_; }
 
-float Terrain::GetMinHeight() const {
-  return *std::min_element(heights_.begin(), heights_.end());
-}
+float Terrain::GetMinHeight() const { return min_height_; }
 
 const glm::vec3 &Terrain::GetScale() const { return scale_; }
 

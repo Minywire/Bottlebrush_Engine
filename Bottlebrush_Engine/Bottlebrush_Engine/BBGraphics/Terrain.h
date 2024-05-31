@@ -169,7 +169,9 @@ class Terrain {
   std::vector<Elem> elements_;
   std::vector<float> heights_;
   int depth_;
+  float max_height_;
   std::unique_ptr<Mesh> mesh_;
+  float min_height_;
   glm::vec3 scale_;
   glm::vec3 shift_;
   int size_;
