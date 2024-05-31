@@ -9,7 +9,6 @@ Global = {
 	end,
 
 	Update = function(NPC)
-		print("in global state");
 
 	end,
 
@@ -29,7 +28,6 @@ Idle = {
 	end,
 
 	Update = function(NPC)
-		print("in idle state");
 		FSM.ChangeState(NPC, "Patrol");
 	end,
 
@@ -49,8 +47,10 @@ Patrol = {
 	end,
 
 	Update = function(NPC)
-		print ("in patrol state");
 		Movement.Patrol(NPC);
+		if Detection.SeePlayer(NPC) then
+			print ("Seen in lua")
+		end	
 	end,
 
 	onExit = function(NPC)
