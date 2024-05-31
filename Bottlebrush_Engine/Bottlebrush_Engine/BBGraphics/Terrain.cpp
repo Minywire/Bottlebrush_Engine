@@ -67,7 +67,7 @@ const std::vector<unsigned int> &Terrain::GetElements() const {
     return elem_buf_;
 }
 
-float Terrain::GetHeight(float x, float z) const {
+std::optional<float> Terrain::GetHeight(float x, float z) const {
     float height = 0.0f;
 
     // Evaluate terrain mesh size and terrain grid size.
@@ -84,7 +84,7 @@ float Terrain::GetHeight(float x, float z) const {
     int z_g = std::floor(z_t / size_s);
 
     // Check within terrain bounds.
-    if (!InBounds(x_g, z_g)) return 0.0f;
+    if (!InBounds(x_g, z_g)) return std::nullopt;
 
     // Evaluate x and z co-ordinates inside grid square.
     float x_c = std::fmod(x_m, size_s) / size_s;

@@ -2,6 +2,7 @@
 #define BOTTLEBRUSH_ENGINE_TERRAIN_H
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -75,7 +76,7 @@ class Terrain {
     /// triangulated height value. <p> The return value is a real-valued number
     /// representing the terrain height at the given \a x and \a z co-ordinates.
     /// @returns A real-valued number that represents the terrain height.
-    [[nodiscard]] float GetHeight(float x, float z) const;
+    [[nodiscard]] std::optional<float> GetHeight(float x, float z) const;
 
     /// @brief Gets the depth of the terrain.
     /// <p>
