@@ -3,7 +3,9 @@
 //
 #pragma once
 
+#include <Skybox.h>
 #include <BBScript.h>
+#include <Window.h>
 #include <ECS.h>
 #include <Systems.h>
 #include <EntityFactory.h>
@@ -19,12 +21,14 @@
  */
 class Scene
 {
-public:
+ public:
+    void ProcessInput(float deltaTime);
+    
     /**
      *
      * @param lua_master
      */
-    explicit Scene(const std::string & lua_master);
+    explicit Scene(const std::string & lua_master, float screenwidth, float screenheight);
 
     /**
      *
@@ -39,6 +43,25 @@ public:
     void setViewMatrix(glm::mat4 viewMatrix);
 
     /**
+    * 
+    */
+    void setExitFlag(bool flag);
+
+    /**
+     *
+     */
+    void setFirstMouseFlag(bool flag);
+
+    /**
+    *
+    */
+    void setWireFrameFlag(bool flag);
+
+    void setLastX(float lX);
+
+    void setLastY(float lY);
+
+    /**
      *
      */
     void init();
@@ -48,6 +71,7 @@ public:
      * @param lua_file
      */
     void createEntity(const std::string & lua_file);
+
 
     /**
      *
@@ -74,8 +98,28 @@ public:
     /**
      * @param deltaTime time difference between frames
      */
-    void update(float deltaTime);
-private:
+    void update();
+
+    /**
+    * 
+    */
+    const Camera & getCamera() const;
+
+    Camera& getCamera();
+
+    bool getWireframeFlag() const;
+    
+    bool getExitScreenFlag() const;
+
+    bool getFirstMouseFlag() const;
+
+    float getLastX() const;
+
+    float getLastY() const;
+
+   private:
+    Window window;
+
     glm::mat4 projectionMatrix; ///The camera projection matrix (temporary hack until everything from EntryPoint is ported here).
     glm::mat4 viewMatrix; ///The camera projection matrix (temporary hack until everything from EntryPoint is ported here).
 
@@ -90,6 +134,19 @@ private:
     Systems bbSystems; ///The Systems of the ECS operating on entity data
     BBResourceManager resources; ///The resources stored in the scene (only model data for now)
 
-    float accumulatedFrameTime; // a time counter used to slow AI updates, so that it is not called everyframe
+    float accumulatedFrameTime = 0; // a time counter used to slow AI updates, so that it is not called everyframe
     const float UpdateAIInterval; // interval at which to update AI, a value of 1 roughly represents a second
+    
+    Skybox skybox;
+
+    Camera mainCamera; // main scene camera. Scene realistically only needs one camera for this project
+    unsigned int screen_width = 1920, screen_height = 1080;
+    bool wireframe = false;
+
+    float last_x = screen_width / 2.0f, last_y = screen_height / 2.0f, offset_y = 1.5f;
+    bool first_mouse_click = true;
+
+    bool exitScreen = false;
+
+    float last_frame = 0;
 };

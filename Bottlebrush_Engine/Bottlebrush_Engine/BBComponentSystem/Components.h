@@ -10,7 +10,6 @@
 #include "NPC.h"
 
 /** forward decl to avoid circle linking */
-class ECS;
 class Entity;
 
 /**
