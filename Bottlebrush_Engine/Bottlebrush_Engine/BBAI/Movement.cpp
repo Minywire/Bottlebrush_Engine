@@ -47,7 +47,7 @@ namespace Movement {
         // vector between current position and target position
 	    glm::vec2 toTarget = targetPos - curPos;
 	    // distance between current position and target position
-	    float dist = glm::length(toTarget);	  
+	    const float dist = glm::length(toTarget);	  
 	    if (dist > coneDistance) return false; // not within range
 
 	    // get heading to target
