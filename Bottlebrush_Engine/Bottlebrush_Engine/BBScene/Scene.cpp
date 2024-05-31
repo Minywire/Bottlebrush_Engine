@@ -110,6 +110,7 @@ Scene::Scene(const std::string& lua_master, float screenwidth, float screenheigh
     const ShaderType defaultShaderType = ShaderType::Default;
     const ShaderType terrainShaderType = ShaderType::Terrain;
     const ShaderType skyboxShaderType = ShaderType::Skybox;
+    const ShaderType waterShaderType = ShaderType::Water;
 
     setRendererShaderSource(defaultShaderType,
                         "Resources/Shaders/Vertex/BasicTex.vert",
@@ -122,6 +123,9 @@ Scene::Scene(const std::string& lua_master, float screenwidth, float screenheigh
     setRendererShaderSource(skyboxShaderType,
                         "Resources/Shaders/Vertex/Skybox.vert",
                         "Resources/Shaders/Fragment/Skybox.frag");
+    setRendererShaderSource(waterShaderType,
+                            "Resources/Shaders/Vertex/Water.vert",
+                            "Resources/Shaders/Fragment/Water.frag");
 
     const std::vector<std::filesystem::path> skyboxTextures {
         std::filesystem::path("Resources/Textures/Skybox/right.jpg"),
