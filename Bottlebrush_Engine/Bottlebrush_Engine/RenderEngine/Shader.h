@@ -61,7 +61,10 @@ public:
 	/// @param name is the uniform name within the Shader Program source file.
 	virtual void SetUniform3f(const std::string& name, float v0, float v1, float v2) = 0;
 
-	/// @author Alan
+        virtual void SetUniform3fv(const std::string& name,
+                                   const glm::vec3& value) = 0;
+
+        /// @author Alan
 	/// @brief Sets uniforms found in shader files to values passed in
 	/// @param name is the uniform name within the Shader Program source file.
 	virtual void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3) = 0;
