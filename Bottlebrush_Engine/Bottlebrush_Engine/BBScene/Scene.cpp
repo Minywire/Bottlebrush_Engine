@@ -170,6 +170,7 @@ void Scene::init()
     mainCamera.SetSpeed(100.0f);
     mainCamera.SetZoom(30.0f);
 
+    bbSystems.RegisterAIFunctions(bbECS, lua.getLuaState()); // register functions before running scripts
     if(!lua.getLuaState().do_file(masterLuaFile).valid())
     {
         std::cout << "Could not load master game script file\n";
@@ -178,7 +179,6 @@ void Scene::init()
 
     bbSystems.createTerrainComponents(bbECS, resources.getSceneTerrain());
     bbSystems.createModelComponents(bbECS, resources.getSceneModels());
-    bbSystems.ReadAIScripts(bbECS, lua.getLuaState());
     initBBGUI(window.GetContext());
 }
 
