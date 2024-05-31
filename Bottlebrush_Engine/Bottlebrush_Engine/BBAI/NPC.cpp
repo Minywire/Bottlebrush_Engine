@@ -57,6 +57,16 @@ void NPC::Patrol(ECS& ecs)
     }
 }
 
+bool NPC::SeePlayer(const glm::vec2& targetPos, ECS& ecs, float coneDistance, float fov)
+{
+    // get transform
+    auto& transform = m_Entity.GetComponent<TransformComponent>(ecs.getReg());
+    // get x and z position as vec2
+    glm::vec2 pos = {transform.position.x, transform.position.z};
+
+    return Movement::SeeTarget(pos, targetPos, m_direction, coneDistance, fov);
+}
+
 bool NPC::IsMoving()
 {
     return m_Moving;
