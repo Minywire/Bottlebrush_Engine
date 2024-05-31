@@ -42,7 +42,7 @@ public:
     /// @param ecs register to get entity and its components
     void Patrol(ECS& ecs);
 
-    bool SeePlayer(const glm::vec2& targetPos, ECS& ecs, float coneDistance = 100, float fov = 180);
+    bool SeePlayer(const glm::vec2& targetPos, ECS& ecs, float coneDistance = 300, float fov = 180);
 
     /// @author Alan
     /// @brief see if NPC has movement input

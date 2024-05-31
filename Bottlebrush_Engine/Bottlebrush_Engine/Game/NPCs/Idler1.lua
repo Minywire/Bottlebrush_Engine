@@ -1,9 +1,9 @@
 Entity = {
     Transform = {
         Position = {
-            x = 500,
-            y = 50,
-            z = 450
+            x = 600,
+            y = 40,
+            z = 500
         },
         Rotation = {
             x = 0,
@@ -21,8 +21,7 @@ Entity = {
         MaterialPath = "Resources/Models/Disabled_Pokemon_Go_-_Eevee___Zubat_0-3_screenshot.png"
     },
     AI = {
-        StatesPath = "Game/AIStates/PatrollerStates.lua",
-        InitialState = "Patrol",
-        Waypoints = {vec2(150, 150), vec2(450, 450)}
+        StatesPath = "Game/AIStates/IdlerStates.lua",
+        InitialState = "Idle"
     }
 }

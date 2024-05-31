@@ -14,8 +14,8 @@ NPC::NPC(const std::filesystem::path& statesPath,
     m_Entity(entity),
     m_CurrentWaypoint(0),
     m_WaitTimeElapsed(0),
-    m_PatrolWaitDuration(1)
-{
+    m_PatrolWaitDuration(1), 
+    m_Moving(false) {
 
 }
 
