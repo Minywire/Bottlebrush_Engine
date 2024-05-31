@@ -124,6 +124,10 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, Rende
 
         glm::mat4 transform = {1};
 
+        static float f = 0.0f;
+        f += 0.01;
+        glm::vec3 terrain_light_dir = {std::cos(f), -1.0f, std::sin(f)};
+
         // Vert Uniforms
         renderEngine.GetShader(terrainShader)
             ->SetUniformMatrix4fv("gModel", transform);
@@ -142,9 +146,9 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, Rende
         renderEngine.GetShader(terrainShader)->SetUniform1i("gTex", 0);
         renderEngine.GetShader(terrainShader)
             ->SetUniform3fv("gReversedLightDir",
-                            glm::vec3(0.927f, 0.37139f, 0.05237f));
+                            glm::normalize(-terrain_light_dir));
 
-        //draw
+        // draw
         terrain.GetMesh()->SetTexture(0);
         renderEngine.Draw(terrainShader, *terrain.GetMesh()->GetVertexArray(),
                           terrain.GetElements().size());
