@@ -7,10 +7,6 @@ Skybox::Skybox(std::filesystem::path model, std::vector<std::filesystem::path> t
 	InitMesh(model, texPaths);
 }
 
-Skybox::~Skybox() {
-
-}
-
 void Skybox::InitMesh(std::filesystem::path model,
                       std::vector<std::filesystem::path> texPaths) {
 
