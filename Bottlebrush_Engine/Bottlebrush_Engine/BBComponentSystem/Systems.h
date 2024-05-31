@@ -64,11 +64,11 @@ public:
 
     /**
      * @author Alan
-     * @brief Loads the AI scripts onto the lua_state in preparation for the update call
-     * @param ecs The registry to load all components with AIControllerComponent in it
+     * @brief Registers the appropriate AI functions to lua
+     * @param ecs The registry to pass into the lua registers to dependencyinject into NPC
      * @param lua_state to read in the AI scripts to the state
      */
-    void ReadAIScripts(ECS &ecs, sol::state &lua_state);
+    void RegisterAIFunctions(ECS &ecs, sol::state &lua_state);
 
     /**
      *
@@ -138,8 +138,10 @@ public:
      * @author Alan
      * @param ecs The registry for which to update components to
      * @param deltaTime to translate in accordance to FPS
+     * @param sceneTerrain a map containing all terrains
      */
-    static void updateAIMovements(ECS &ecs, float deltaTime);
+    static void updateAIMovements(ECS &ecs, float deltaTime, 
+        std::unordered_map<std::string, Terrain> & sceneTerrain);
 
     /**
      * @author Alan
