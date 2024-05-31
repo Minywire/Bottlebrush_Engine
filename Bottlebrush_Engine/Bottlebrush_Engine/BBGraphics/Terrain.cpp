@@ -66,23 +66,23 @@ float Terrain::GetHeight(float x, float z) const {
   float height = 0.0f;
 
   // Evaluate terrain mesh size and terrain grid size.
-  auto size_t = static_cast<float>(size_),
+  auto size_m = static_cast<float>(size_),
        size_g = static_cast<float>(heights_.size() - 1);
 
   // Evaluate current xz-position on terrain mesh.
-  float x_t = x / scale_.x;
+  float x_m = x / scale_.x;
   float z_t = z / scale_.z;
 
   // Evaluate grid square size and current grid location.
-  float size_s = size_t / size_g;
-  int x_g = std::floor(x_t / size_s);
+  float size_s = size_m / size_g;
+  int x_g = std::floor(x_m / size_s);
   int z_g = std::floor(z_t / size_s);
 
   // Check within terrain bounds.
   if (!InBounds(x_g, z_g)) return height;
 
   // Evaluate x and z co-ordinates inside grid square.
-  float x_c = std::fmod(x_t, size_s) / size_s;
+  float x_c = std::fmod(x_m, size_s) / size_s;
   float z_c = std::fmod(z_t, size_s) / size_s;
 
   // Triangulate position using the line x = 1 - z that defines the triangles
