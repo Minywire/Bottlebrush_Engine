@@ -196,16 +196,16 @@ void Scene::update()
                     ImGui::Text("Up: Spacebar");
                     ImGui::Text("Down: Left Control");
                     ImGui::Text("Zoom (speedy): Left Shift");
+                    ImGui::TreePop();
                 }
 
                 if(ImGui::TreeNode("Scene")) {
                     ImGui::Text("Toggle wireframe: C");
+                    ImGui::TreePop();
                 }
 
                 ImGui::Text("Exit: Escape");
-
             }
-
 
             if(ImGui::CollapsingHeader("Credits")) {
                 ImGui::Text("Alan Brunet");
