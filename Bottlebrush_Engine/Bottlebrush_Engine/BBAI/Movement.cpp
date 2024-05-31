@@ -51,16 +51,16 @@ namespace Movement {
 	    if (dist > coneDistance) return false; // not within range
 
 	    // get heading to target
-	    glm::normalize(toTarget);
+	    toTarget = glm::normalize(toTarget);
 	    glm::vec2 direction = curDirection;
 	    //get patrollers current heading
-        glm::normalize(direction);
+        direction = glm::normalize(direction);
 
 	    //compute angle between patroller and target
 	    double angle = glm::dot(direction, toTarget);
 	    //getting some precision problem ensure cos angle is in -1.0 to 1.0
-	    if (angle > 1.0) angle = 1.0;
-	    else if (angle < -1.0) angle = -1.0;
+	    //if (angle > 1.0) angle = 1.0;
+	    //else if (angle < -1.0) angle = -1.0;
         //get heading in degrees
         angle = glm::degrees(acos(angle));
 
