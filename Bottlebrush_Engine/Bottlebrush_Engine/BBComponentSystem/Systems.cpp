@@ -206,8 +206,9 @@ void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<st
 
             // as getHeight returns 0 if its out of bounds. Avoids collision
             // with other terrains, if there were more than 1.
-            if (!terrain.GetHeight(transform.position.x, transform.position.z).has_value()) continue;
-            float newY = terrain.GetHeight(transform.position.x, transform.position.z).value();
+            auto heightOpt = terrain.GetHeight(transform.position.x, transform.position.z);
+            if (!heightOpt.has_value()) continue;
+            float newY = heightOpt.value();
 
             // set the new y position
             transform.position.y = newY + 10; // plus an offset, should be taken out once other physics is implemented
