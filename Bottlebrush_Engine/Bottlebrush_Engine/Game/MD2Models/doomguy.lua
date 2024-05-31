@@ -2,7 +2,7 @@ Entity = {
     Transform = {
         Position = {
             x = 0,
-            y = 0,
+            y = 50,
             z = 0
         },
         Rotation = {
@@ -18,6 +18,6 @@ Entity = {
     },
     MD2Model = {
         ModelPath = "Resources/MD2Models/Models/doomguy.md2",
-        MaterialPath = "Resources/MD2Models/Models/doomguy.png"
+        TexturePath = "Resources/Models/Disabled_Pokemon_Go_-_Eevee___Zubat_0-3_screenshot.png"
     }
 }

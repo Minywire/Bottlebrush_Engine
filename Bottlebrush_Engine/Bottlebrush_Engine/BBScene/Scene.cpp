@@ -124,8 +124,8 @@ Scene::Scene(const std::string& lua_master, float screenwidth, float screenheigh
                         "Resources/Shaders/Fragment/Skybox.frag");
     
     setRendererShaderSource(ShaderType::MD2,
-                            "Resources\Shaders\Vertex\MD2Model.vert",
-                            "Resources\Shaders\Vertex\MD2Model.frag");
+                            "Resources/Shaders/Vertex/MD2Model.vert",
+                            "Resources/Shaders/Fragment/MD2Model.frag");
 
     const std::vector<std::filesystem::path> skyboxTextures {
         std::filesystem::path("Resources/Textures/Skybox/right.jpg"),
@@ -179,6 +179,7 @@ void Scene::init()
 
     bbSystems.createTerrainComponents(bbECS, resources.getSceneTerrain());
     bbSystems.createModelComponents(bbECS, resources.getSceneModels());
+    bbSystems.createMD2ModelComponents(bbECS, resources.getSceneMD2Models());
     bbSystems.ReadAIScripts(bbECS, lua.getLuaState());
 }
 

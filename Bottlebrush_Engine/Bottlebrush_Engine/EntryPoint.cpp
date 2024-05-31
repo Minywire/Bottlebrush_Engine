@@ -14,9 +14,10 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 int main() {
+
     Scene gameScene("Game/master_file.lua", 1920, 1080);
 
     gameScene.update();
-
+    
   return 0;
 }

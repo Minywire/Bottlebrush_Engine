@@ -138,10 +138,25 @@ void Systems::drawMD2Models(const ECS& ecs, const ShaderType& shaderType, Render
     for (auto entity : group)
     {
         auto& currentMD2Component = group.get<MD2Component>(entity);
+        auto& currentTransformComponent = group.get<TransformComponent>(entity);
 
         auto& currentMD2 = MD2s.at(currentMD2Component.model_path);
-
+        
         int anim = currentMD2.getSpecificAnim("stand");
+         
+        glm::mat4 transform = {1};
+        transform = glm::translate(transform, currentTransformComponent.position);
+        transform = glm::rotate(transform, glm::radians(-90.f), glm::vec3(1,0,0));
+        transform = glm::rotate(transform, glm::radians(currentTransformComponent.rotation.x), glm::vec3(1,0,0));
+        transform = glm::rotate(transform, glm::radians(currentTransformComponent.rotation.y), glm::vec3(0,1,0));
+        transform = glm::rotate(transform, glm::radians(currentTransformComponent.rotation.z), glm::vec3(0,0,1));
+        transform = glm::scale(transform, currentTransformComponent.scale);
+
+        renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("projection", projection);
+        renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("view", view);
+        renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("model", transform);
+        renderEngine.GetShader(shaderType)->SetUniform1f("interpolation", interpolation);
+        renderEngine.GetShader(shaderType)->SetUniform1i("texSampler1", 0);
 
         currentMD2.setTexture();
         renderEngine.Draw(shaderType, currentMD2.getVecArrays().at(currentMD2.getAnimationCurrentFrame(anim, interpolation)), currentMD2.getModelSize());
