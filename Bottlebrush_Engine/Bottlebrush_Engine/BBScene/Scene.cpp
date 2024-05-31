@@ -67,12 +67,6 @@ void Scene::ProcessInput(float deltaTime) {
         return;
     }
 
-//    if (glfwGetKey(window.GetContext(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
-//    {
-//        //toggleMenuActive();
-////        exitScreen = true;
-//    }
-
     if(menuActive) return;
 
     if (glfwGetKey(window.GetContext(), GLFW_KEY_W) == GLFW_PRESS)
