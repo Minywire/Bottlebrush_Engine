@@ -183,37 +183,40 @@ void Scene::init()
 void Scene::update()
 {
     while (!window.GetShouldClose()) {
-        updateBBGUIFrameStart();
-        if(ImGui::CollapsingHeader("Controls")) {
-            if(ImGui::TreeNode("Movement")) {
-                ImGui::Text("Forward: W");
-                ImGui::Text("Left: A");
-                ImGui::Text("Backwards: S");
-                ImGui::Text("Right: D");
-                ImGui::Text("Up: Spacebar");
-                ImGui::Text("Down: Left Control");
-                ImGui::Text("Zoom (speedy): Left Shift");
+        if(menuActive) {
+            updateBBGUIFrameStart();
+            if(ImGui::CollapsingHeader("Controls")) {
+                if(ImGui::TreeNode("Movement")) {
+                    ImGui::Text("Forward: W");
+                    ImGui::Text("Left: A");
+                    ImGui::Text("Backwards: S");
+                    ImGui::Text("Right: D");
+                    ImGui::Text("Up: Spacebar");
+                    ImGui::Text("Down: Left Control");
+                    ImGui::Text("Zoom (speedy): Left Shift");
+                }
+
+                if(ImGui::TreeNode("Scene")) {
+                    ImGui::Text("Toggle wireframe: C");
+                }
+
+                ImGui::Text("Exit: Escape");
+
             }
 
-            if(ImGui::TreeNode("Scene")) {
-                ImGui::Text("Toggle wireframe: C");
+
+            if(ImGui::CollapsingHeader("Credits")) {
+                ImGui::Text("Alan Brunet");
+                ImGui::Text("Jaiden di Lanzo");
+                ImGui::Text("Marco Garzon Lara");
+                ImGui::Text("Niamh Wilson");
             }
 
-            ImGui::Text("Exit: Escape");
-
+            if(ImGui::Button("Exit")) {
+                window.SetShouldClose(true);
+            }
         }
 
-
-        if(ImGui::CollapsingHeader("Credits")) {
-            ImGui::Text("Alan Brunet");
-            ImGui::Text("Jaiden di Lanzo");
-            ImGui::Text("Marco Garzon Lara");
-            ImGui::Text("Niamh Wilson");
-        }
-
-        if(ImGui::Button("Exit")) {
-            window.SetShouldClose(true);
-        }
         auto current_frame = static_cast<float>(glfwGetTime());
         float deltaTime = current_frame - last_frame;
         last_frame = current_frame;
@@ -295,7 +298,10 @@ void Scene::update()
 
         glDepthFunc(GL_LESS);  // set depth function back to default
 
-        updateBBGUIFrameEnd();
+        if(menuActive) {
+            updateBBGUIFrameEnd();
+        }
+
         window.Swap();
         window.Poll();
     }
