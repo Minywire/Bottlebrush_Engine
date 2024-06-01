@@ -36,4 +36,4 @@ void registerScriptedGLM(sol::state& lua_state) {
     );
 }
 
-} // namespace AIScripts
+}  // namespace AIScripts

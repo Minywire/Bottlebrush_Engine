@@ -65,6 +65,15 @@ struct AIControllerComponent
 };
 
 /**
+* @brief Component that contains data for the MD2 Model
+*/
+struct MD2Component
+{
+    std::string model_path;
+    std::string texture_path;
+};
+
+/**
 * @brief Component that contains Terrain data
 */
 struct TerrainComponent 
@@ -72,4 +81,3 @@ struct TerrainComponent
     std::string terrain_path;
     std::string terrain_texture;
 };
-

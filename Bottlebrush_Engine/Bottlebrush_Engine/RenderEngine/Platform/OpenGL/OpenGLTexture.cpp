@@ -15,9 +15,9 @@ OpenGLTexture::~OpenGLTexture()
     glDeleteTextures(1, &m_RendererID); 
 }
 
-void OpenGLTexture::CreateTexture(const std::filesystem::path& imageFilePath) {
+void OpenGLTexture::CreateTexture(const std::filesystem::path& imageFilePath, bool flip) {
     // loads one image at a time
-    Image textureImage(imageFilePath);
+    Image textureImage(imageFilePath, flip);
     glBindTexture(GL_TEXTURE_2D, m_RendererID);
 
     // OpenGL expects image to start at bottom left, instead of top left
