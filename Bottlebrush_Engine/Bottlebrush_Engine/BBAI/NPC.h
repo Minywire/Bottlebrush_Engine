@@ -10,6 +10,7 @@
 
 /** forward decl to avoid circle linking */
 class ECS;
+class Message;
 
 /// @author Alan
 /// @brief NPC class that holds an FSM to determine it's states and transitions
@@ -44,6 +45,8 @@ public:
 
     bool SeePlayer(const glm::vec2& targetPos, ECS& ecs, float coneDistance = 300, float fov = 180);
 
+    bool SendMessage(Message& msg);
+    
     /// @author Alan
     /// @brief see if NPC has movement input
     /// @return is NPC trying to move

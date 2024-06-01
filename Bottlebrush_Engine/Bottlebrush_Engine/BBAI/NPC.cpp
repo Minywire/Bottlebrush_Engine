@@ -6,6 +6,7 @@
 #include "Components.h"
 #include "ECS.h"
 #include "Entity.h"
+#include "Message.h"
 
 NPC::NPC(const std::filesystem::path& statesPath,
          const std::string& initialState, Entity& entity)
@@ -65,6 +66,12 @@ bool NPC::SeePlayer(const glm::vec2& targetPos, ECS& ecs, float coneDistance, fl
     const glm::vec2 pos = {transform.position.x, transform.position.z};
 
     return Movement::SeeTarget(pos, targetPos, m_direction, coneDistance, fov);
+}
+
+bool SendMessage(Message& msg)
+{
+    std::cout << "Message Sent" << std::endl;
+    return true;
 }
 
 bool NPC::IsMoving()
