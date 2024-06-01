@@ -43,6 +43,13 @@ public:
     /// @param ecs register to get entity and its components
     void Patrol(ECS& ecs);
 
+    /// @author Alan
+    /// @brief Determine if NPC can see the player by a cone projection
+    /// @param targetPos Player's position
+    /// @param ecs register to retrieve NPC transform
+    /// @param coneDistance the range distance of detection
+    /// @param fov the width range of detection
+    /// @return whether Player is standing within the cone
     bool SeePlayer(const glm::vec2& targetPos, ECS& ecs, float coneDistance = 300, float fov = 180);
 
     bool SendMessage(Message& msg);
@@ -51,6 +58,12 @@ public:
     /// @brief see if NPC has movement input
     /// @return is NPC trying to move
     bool IsMoving();
+
+    /// @author Alan
+    /// @brief gets transform component and returns in position in (x,z) format
+    /// @param ecs register to get transform component
+    /// @return floor position (x,z)
+    const glm::vec2 GetVec2Position(ECS& ecs);
 
     float& GetCurrentSpeed();
 
