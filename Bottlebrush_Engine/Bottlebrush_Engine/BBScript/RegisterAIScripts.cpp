@@ -16,7 +16,7 @@ void registerScriptedFSM(sol::state& lua_state) {
     };
 }
 
-void registerScriptedNPC(sol::state& lua_state, ECS& ecs) {
+void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) {
     lua_state.new_usertype<NPC>("NPC", 
         "AddWaypoint", &NPC::AddWaypoint
     );
@@ -24,6 +24,9 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs) {
     auto movementTable = lua_state["Movement"].get_or_create<sol::table>();
     movementTable["Patrol"] = [&ecs](NPC& npc) { npc.Patrol(ecs); };
     movementTable["MoveTo"] = [&ecs](NPC& npc, const glm::vec2& vec2) { npc.MoveTo(vec2, ecs); };
+
+    auto detectionTable = lua_state["Detection"].get_or_create<sol::table>();
+    detectionTable["SeePlayer"] = [&player, &ecs](NPC& npc) { return npc.SeePlayer(glm::vec2(player.GetPositionX(), player.GetPositionZ()), ecs); };
 }
 
 void registerScriptedGLM(sol::state& lua_state) {

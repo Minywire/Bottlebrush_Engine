@@ -3,8 +3,9 @@
 create_entity("Game/Terrain/MainTerrain.lua");
 
 create_entity("Game/Cube.lua");
-create_entityTR("Game/NPCs/Patroller1.lua", 500, 50, 450);
-create_entityTR("Game/NPCs/Patroller2.lua", 400, 40, 450);
+create_entity("Game/NPCs/Patroller1.lua");
+create_entity("Game/NPCs/Patroller2.lua");
+create_entity("Game/NPCs/Idler1.lua");
 
 create_entity("Game/MD2Models/doomguy.lua");
 

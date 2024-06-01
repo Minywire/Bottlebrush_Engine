@@ -6,14 +6,12 @@
 
 #include "BBScript.h"
 #include "ECS.h"
-
-/** forward declaration to avoid circle linking */
-//class ECS;
+#include "Camera.h"
 
 namespace AIScripts {
 
 void registerScriptedFSM(sol::state& lua_state);
-void registerScriptedNPC(sol::state& lua_state, ECS& ecs);
+void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player);
 void registerScriptedGLM(sol::state& lua_state);
 
 }

@@ -10,6 +10,7 @@
 #include <Terrain.h>
 #include <GraphicsFactory.h>
 #include "glm/gtc/matrix_transform.hpp"
+#include "Camera.h"
 #include <BBMD2.h>
 
 /**
@@ -68,7 +69,7 @@ public:
      * @param ecs The registry to pass into the lua registers to dependencyinject into NPC
      * @param lua_state to read in the AI scripts to the state
      */
-    void RegisterAIFunctions(ECS &ecs, sol::state &lua_state);
+    void RegisterAIFunctions(ECS &ecs, sol::state &lua_state, const Camera &player);
 
     /**
      *

@@ -67,10 +67,10 @@ void Systems::createTerrainComponents(ECS &ecs, std::unordered_map<std::string, 
     }
 }
 
-void Systems::RegisterAIFunctions(ECS& ecs, sol::state & lua_state) 
+void Systems::RegisterAIFunctions(ECS& ecs, sol::state & lua_state, const Camera& player) 
 {
     AIScripts::registerScriptedFSM(lua_state);
-    AIScripts::registerScriptedNPC(lua_state, ecs);
+    AIScripts::registerScriptedNPC(lua_state, ecs, player);
     AIScripts::registerScriptedGLM(lua_state);
 }
 
