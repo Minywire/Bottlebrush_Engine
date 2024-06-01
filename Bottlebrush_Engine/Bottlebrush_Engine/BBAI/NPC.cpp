@@ -15,14 +15,18 @@ NPC::NPC(const std::filesystem::path& statesPath,
     m_Entity(entity),
     m_CurrentWaypoint(0),
     m_WaitTimeElapsed(0),
-    m_PatrolWaitDuration(1), 
-    m_Moving(false) {
+    m_PatrolWaitDuration(1),
+    m_WaitTimerDuration(0),
+    m_Moving(false)
+{
 
 }
 
 void NPC::Update(sol::state& lua_state, float deltaTime) {
     m_DeltaTime = deltaTime;
 	m_FSM.update(lua_state);
+
+    if (IsWaiting()) m_WaitTimeElapsed += m_DeltaTime;
 }
 
 void NPC::MoveTo(const glm::vec2& targetPos, ECS& ecs, float offset)
@@ -45,12 +49,12 @@ void NPC::Patrol(ECS& ecs)
     MoveTo(m_Waypoints[m_CurrentWaypoint], ecs);
 
     if (m_Moving) return;
+    SetWaitDuration(m_PatrolWaitDuration);
 
-    m_WaitTimeElapsed += m_DeltaTime;
     // waits for a duration
-    if (m_WaitTimeElapsed > m_PatrolWaitDuration) {
+    if (!IsWaiting()) {
+        ClearWaitDuration();
         m_CurrentWaypoint++; // move to next waypoint
-        m_WaitTimeElapsed = 0;
     }
 }
 
@@ -70,6 +74,12 @@ bool NPC::IsMoving()
     return m_Moving;
 }
 
+void NPC::StopMoving()
+{
+    m_Moving = false;
+    ClearWaitDuration();
+}
+
 const glm::vec2 NPC::GetVec2Position(ECS& ecs) 
 {
     // get transform
@@ -79,6 +89,23 @@ const glm::vec2 NPC::GetVec2Position(ECS& ecs)
 
     return pos;
 }
+
+void NPC::SetWaitDuration(float wait)
+{
+    m_WaitTimerDuration = wait;
+}
+
+void NPC::ClearWaitDuration()
+{
+    m_WaitTimerDuration = 0;
+    m_WaitTimeElapsed = 0;
+}
+
+bool NPC::IsWaiting()
+{
+    return m_WaitTimeElapsed < m_WaitTimerDuration;
+}
+
 
 float& NPC::GetCurrentSpeed()
 {
