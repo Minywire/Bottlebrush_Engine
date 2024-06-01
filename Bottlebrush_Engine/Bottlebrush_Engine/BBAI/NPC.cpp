@@ -74,7 +74,7 @@ void NPC::StopMoving()
     ClearWaitDuration();
 }
 
-const glm::vec2 NPC::GetVec2Position(ECS& ecs) 
+glm::vec2 NPC::GetVec2Position(ECS& ecs) 
 {
     // get transform
     const auto& transform = m_Entity.GetComponent<TransformComponent>(ecs.getReg());
