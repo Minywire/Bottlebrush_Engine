@@ -63,13 +63,21 @@ public:
     const glm::vec2 GetVec2Position(ECS& ecs);
 
     /// @author Alan
-    /// @brief stops any movement input
+    /// @brief stops any movement input and clears wait timers
     void StopMoving();
 
+    /// @author Alan
+    /// @brief set a wait timer
+    /// @param wait duration in seconds
     void SetWaitDuration(float wait);
 
+    /// @author Alan
+    /// @brief clears wait timers
     void ClearWaitDuration();
 
+    /// @author Alan
+    /// @brief sees if there is a wait timer
+    /// @return wait time > wait timer
     bool IsWaiting();
 
     float& GetCurrentSpeed();
@@ -94,7 +102,7 @@ private:
     int m_CurrentWaypoint; // tracking what is the current waypoint
     float m_WaitTimeElapsed; // its accumulated waiting time
     float m_PatrolWaitDuration;  // patrol max waiting duration
-    float m_MiscWaitDuration; // wait timer for miscellanenous reasons
+    float m_WaitTimerDuration;   // wait timer for miscellanenous reasons
 
     //movement properties
     float m_max_speed = 100.f;

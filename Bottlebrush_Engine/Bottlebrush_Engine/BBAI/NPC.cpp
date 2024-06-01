@@ -15,7 +15,7 @@ NPC::NPC(const std::filesystem::path& statesPath,
     m_CurrentWaypoint(0),
     m_WaitTimeElapsed(0),
     m_PatrolWaitDuration(1),
-    m_MiscWaitDuration(0),
+    m_WaitTimerDuration(0),
     m_Moving(false)
 {
 
@@ -49,14 +49,11 @@ void NPC::Patrol(ECS& ecs)
 
     if (m_Moving) return;
     SetWaitDuration(m_PatrolWaitDuration);
-    std::cout << "waiting: " << m_WaitTimeElapsed << std::endl;
 
     // waits for a duration
     if (!IsWaiting()) {
-        std::cout << "not waiting: " << m_WaitTimeElapsed << std::endl;
         ClearWaitDuration();
         m_CurrentWaypoint++; // move to next waypoint
-        //SetWaitDuration(m_PatrolWaitDuration);
     }
 }
 
@@ -88,18 +85,18 @@ const glm::vec2 NPC::GetVec2Position(ECS& ecs)
 
 void NPC::SetWaitDuration(float wait)
 {
-    m_MiscWaitDuration = wait;
+    m_WaitTimerDuration = wait;
 }
 
 void NPC::ClearWaitDuration()
 {
-    m_MiscWaitDuration = 0;
+    m_WaitTimerDuration = 0;
     m_WaitTimeElapsed = 0;
 }
 
 bool NPC::IsWaiting()
 {
-    return m_WaitTimeElapsed < m_MiscWaitDuration;
+    return m_WaitTimeElapsed < m_WaitTimerDuration;
 }
 
 
