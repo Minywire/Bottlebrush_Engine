@@ -4,11 +4,12 @@
 
 #pragma once
 
-#include "Event.h"
 #include "NPC.h"
 
-/** forward declaration to avoid circle linking */
-//class NPC;
+enum class Event 
+{ 
+	PLAYERSPOTTED
+};
 
 /// @author Alan
 /// @brief Class used to relaying an event to all listeners
