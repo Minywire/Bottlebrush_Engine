@@ -51,6 +51,7 @@ Idle = {
 Patrol = {
 	onEnter = function(NPC)
 		print("Entered Patrol state");
+		NPC:SetWaitDuration(3.0);
 	end,
 
 	Update = function(NPC)
