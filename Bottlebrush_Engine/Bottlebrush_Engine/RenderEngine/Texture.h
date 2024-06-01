@@ -20,7 +20,7 @@ public:
     /// OpenGL expects image to start at bottom left, instead of top left. 
     /// May need to flip image data before passing.
     /// @param data is the image data
-    virtual void CreateTexture(const std::filesystem::path& imageFilePath) = 0;
+    virtual void CreateTexture(const std::filesystem::path& imageFilePath, bool flip = 0) = 0;
 
     /// @author Alan
     /// @brief Sets up the tex parameters for a cubemap.

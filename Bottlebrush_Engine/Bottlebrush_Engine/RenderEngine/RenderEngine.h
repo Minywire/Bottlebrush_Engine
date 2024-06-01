@@ -9,7 +9,7 @@
 
 /// @author Alan
 /// @brief enum to specify which shader is being used
-enum class ShaderType { Default, Pixelated, Water, Shadowmap, Skybox, Terrain };
+enum class ShaderType { Default, Pixelated, Water, Shadowmap, Skybox, Terrain, MD2 };
 
 /// @author Alan
 /// @brief Base class for rendering objects.
@@ -33,6 +33,14 @@ public:
     /// @param va is the Vertex Array to bind and use
     /// @param indexCount is the total count of indices in that Vertex array
     virtual void Draw(ShaderType shaderType, const VertexArray& va, const unsigned int indexCount) = 0;
+
+    /// @author Marco
+    /// @brief Draws a model with a vao (no index buffer)
+    /// This needs to be called within the draw loop.
+    /// @param shaderType is the shader program to be used
+    /// @param va is the bound Vertex Array
+    /// @param size is the data size of the specified VAO
+    virtual void Draw(ShaderType shaderType, unsigned int va, unsigned int vertexCount) = 0;
 
     /// @author Alan
     /// @brief Draws using TriangleStrips.

@@ -122,6 +122,10 @@ Scene::Scene(const std::string& lua_master, float screenwidth, float screenheigh
     setRendererShaderSource(skyboxShaderType,
                         "Resources/Shaders/Vertex/Skybox.vert",
                         "Resources/Shaders/Fragment/Skybox.frag");
+    
+    setRendererShaderSource(ShaderType::MD2,
+                            "Resources/Shaders/Vertex/MD2Model.vert",
+                            "Resources/Shaders/Fragment/MD2Model.frag");
 
     const std::vector<std::filesystem::path> skyboxTextures {
         std::filesystem::path("Resources/Textures/Skybox/right.jpg"),
@@ -176,6 +180,7 @@ void Scene::init()
 
     bbSystems.createTerrainComponents(bbECS, resources.getSceneTerrain());
     bbSystems.createModelComponents(bbECS, resources.getSceneModels());
+    bbSystems.createMD2ModelComponents(bbECS, resources.getSceneMD2Models());
     initBBGUI(window.GetContext());
 }
 
@@ -246,12 +251,22 @@ void Scene::update()
         // MY SCENE
         setProjectionMatrix(projection);
         setViewMatrix(view);
-
-        /* gameScene.update(delta);*/
+        
         bbSystems.setLight(*renderEngine, ShaderType::Default, viewMatrix);
+
+        Systems::drawMD2Models(bbECS, 
+                               ShaderType::MD2, 
+                               *renderEngine, 
+                                resources.getSceneMD2Models(), 
+                                projectionMatrix, viewMatrix);
+
+        Systems::updateMD2Interpolation(bbECS, resources.getSceneMD2Models(), deltaTime);
+
+
         Systems::drawTerrain(bbECS, ShaderType::Terrain, *renderEngine,
                              resources.getSceneTerrain(), false,
                              projectionMatrix, viewMatrix);
+
         Systems::drawModels(bbECS, ShaderType::Default, *renderEngine,
                             resources.getSceneModels(), projectionMatrix,
                             viewMatrix);

@@ -14,6 +14,14 @@ void Systems::generateModelFromComponent(const ModelComponent & modelComp, std::
     }
 }
 
+void Systems::generateMD2ModelFromComponent(const MD2Component & modelComp, std::unordered_map<std::string, BBMD2> & sceneMD2Models)
+{
+    if(!sceneMD2Models.contains(modelComp.model_path))
+    {
+        sceneMD2Models.emplace(std::pair<std::string, BBMD2>(modelComp.model_path, BBMD2(modelComp.model_path, modelComp.texture_path)));
+    }
+}
+
 void Systems::generateTerrainFromComponent(const TerrainComponent & terrainComp, const TransformComponent & terrainTransform, std::unordered_map<std::string, Terrain> & sceneTerrain) 
 {
     if(!sceneTerrain.contains(terrainComp.terrain_path))
@@ -31,6 +39,18 @@ void Systems::createModelComponents(ECS &ecs, std::unordered_map<std::string, st
         auto& currentModelComponent = group.get<ModelComponent>(entity);
 
         generateModelFromComponent(currentModelComponent, sceneModels);
+    }
+}
+
+void Systems::createMD2ModelComponents(ECS &ecs, std::unordered_map<std::string, BBMD2> & sceneMD2Models)
+{
+    auto group = ecs.GetAllEntitiesWith<MD2Component>(); //the container with all the matching entities
+
+    for(auto entity : group)
+    {
+        auto& currentModelComponent = group.get<MD2Component>(entity);
+
+        generateMD2ModelFromComponent(currentModelComponent, sceneMD2Models);
     }
 }
 
@@ -100,6 +120,53 @@ void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEn
             }
         }
     }
+}
+
+void Systems::drawMD2Models(const ECS& ecs, const ShaderType& shaderType, RenderEngine& renderEngine, std::unordered_map<std::string, BBMD2> & MD2s, glm::mat4 projection, glm::mat4 view)
+{
+    auto group = ecs.GetAllEntitiesWith<MD2Component, TransformComponent>();
+
+    for (auto entity : group)
+    {
+        auto& currentMD2Component = group.get<MD2Component>(entity);
+        auto& currentTransformComponent = group.get<TransformComponent>(entity);
+
+        auto& currentMD2 = MD2s.at(currentMD2Component.model_path);
+        
+        int anim = currentMD2.getSpecificAnim("run");
+         
+        glm::mat4 transform = {1};
+        transform = glm::translate(transform, currentTransformComponent.position);
+        transform = glm::rotate(transform, glm::radians(-90.f), glm::vec3(1,0,0));
+        transform = glm::rotate(transform, glm::radians(currentTransformComponent.rotation.x), glm::vec3(1,0,0));
+        transform = glm::rotate(transform, glm::radians(currentTransformComponent.rotation.y), glm::vec3(0,1,0));
+        transform = glm::rotate(transform, glm::radians(currentTransformComponent.rotation.z), glm::vec3(0,0,1));
+        transform = glm::scale(transform, currentTransformComponent.scale);
+
+        renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("projection", projection);
+        renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("view", view);
+        renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("model", transform);
+        renderEngine.GetShader(shaderType)->SetUniform1f("interpolation", currentMD2.getInterpolation());
+        renderEngine.GetShader(shaderType)->SetUniform1i("texSampler1", 0);
+
+        currentMD2.setTexture();
+        renderEngine.Draw(shaderType, currentMD2.getVecArrays().at(currentMD2.getAnimationCurrentFrame(anim, currentMD2.getInterpolation())), currentMD2.getModelSize());
+    }
+}
+
+void Systems::updateMD2Interpolation(const ECS& ecs, std::unordered_map<std::string, BBMD2>& MD2s, float deltaTime)
+{
+    auto group = ecs.GetAllEntitiesWith<MD2Component>();
+
+    for (auto entity : group)
+    {
+        auto& currentMD2Component = group.get<MD2Component>(entity);
+
+        auto& currentMD2 = MD2s.at(currentMD2Component.model_path);
+
+        currentMD2.updateInterpolation(deltaTime);
+    }
+
 }
 
 void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, RenderEngine& renderEngine, std::unordered_map<std::string, Terrain> & sceneTerrain, bool grayscale, glm::mat4 projection, glm::mat4 view)
