@@ -26,13 +26,9 @@ void NPC::Update(sol::state& lua_state, float deltaTime) {
 
 void NPC::MoveTo(const glm::vec2& targetPos, ECS& ecs, float offset)
 {
-    // get transform
-    const auto& transform = m_Entity.GetComponent<TransformComponent>(ecs.getReg());
-    // get x and z position as vec2
-    const glm::vec2 pos = {transform.position.x, transform.position.z};
-
     // call move to function
-    m_Moving = !Movement::MoveTo(pos, targetPos, m_current_speed, m_acceleration_rate, m_direction, m_DeltaTime, offset);
+    m_Moving = !Movement::MoveTo(GetVec2Position(ecs), targetPos, 
+        m_current_speed, m_acceleration_rate, m_direction, m_DeltaTime, offset);
 }
 
 void NPC::AddWaypoint(glm::vec2 point)
@@ -59,17 +55,22 @@ void NPC::Patrol(ECS& ecs)
 
 bool NPC::SeePlayer(const glm::vec2& targetPos, ECS& ecs, float coneDistance, float fov)
 {
-    // get transform
-    const auto& transform = m_Entity.GetComponent<TransformComponent>(ecs.getReg());
-    // get x and z position as vec2
-    const glm::vec2 pos = {transform.position.x, transform.position.z};
-
-    return Movement::SeeTarget(pos, targetPos, m_direction, coneDistance, fov);
+    return Movement::SeeTarget(GetVec2Position(ecs), targetPos, m_direction, coneDistance, fov);
 }
 
 bool NPC::IsMoving()
 {
     return m_Moving;
+}
+
+const glm::vec2 NPC::GetVec2Position(ECS& ecs) 
+{
+    // get transform
+    const auto& transform = m_Entity.GetComponent<TransformComponent>(ecs.getReg());
+    // get x and z position as vec2
+    const glm::vec2 pos = {transform.position.x, transform.position.z};
+
+    return pos;
 }
 
 float& NPC::GetCurrentSpeed()
