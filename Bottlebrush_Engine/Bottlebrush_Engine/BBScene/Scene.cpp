@@ -181,7 +181,6 @@ void Scene::init()
     bbSystems.createTerrainComponents(bbECS, resources.getSceneTerrain());
     bbSystems.createModelComponents(bbECS, resources.getSceneModels());
     bbSystems.createMD2ModelComponents(bbECS, resources.getSceneMD2Models());
-    bbSystems.ReadAIScripts(bbECS, lua.getLuaState());
     initBBGUI(window.GetContext());
 }
 
