@@ -185,7 +185,6 @@ void Scene::init()
 
 void Scene::update()
 {
-
     while (!window.GetShouldClose()) {
         auto current_frame = static_cast<float>(glfwGetTime());
         float deltaTime = current_frame - last_frame;
@@ -217,20 +216,22 @@ void Scene::update()
         // MY SCENE
         setProjectionMatrix(projection);
         setViewMatrix(view);
-
+        
         bbSystems.setLight(*renderEngine, ShaderType::Default, viewMatrix);
-        Systems::drawTerrain(bbECS, ShaderType::Terrain, *renderEngine, resources.getSceneTerrain(), false, projectionMatrix, viewMatrix);
-        Systems::drawModels(bbECS, ShaderType::Default, *renderEngine, resources.getSceneModels(), projectionMatrix, viewMatrix);
 
-        Systems::drawMD2Models(bbECS, ShaderType::MD2, *renderEngine, resources.getSceneMD2Models(), projectionMatrix, viewMatrix);
+        Systems::drawMD2Models(bbECS, 
+                               ShaderType::MD2, 
+                               *renderEngine, 
+                                resources.getSceneMD2Models(), 
+                                projectionMatrix, viewMatrix);
 
         Systems::updateMD2Interpolation(bbECS, resources.getSceneMD2Models(), deltaTime);
 
-        /* gameScene.update(delta);*/
-        bbSystems.setLight(*renderEngine, ShaderType::Default, viewMatrix);
+
         Systems::drawTerrain(bbECS, ShaderType::Terrain, *renderEngine,
                              resources.getSceneTerrain(), false,
                              projectionMatrix, viewMatrix);
+
         Systems::drawModels(bbECS, ShaderType::Default, *renderEngine,
                             resources.getSceneModels(), projectionMatrix,
                             viewMatrix);
