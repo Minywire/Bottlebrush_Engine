@@ -25,6 +25,8 @@ Global = {
 Idle = {
 	onEnter = function(NPC)
 		print("Entered Idle state");
+		NPC:StopMoving();
+		NPC:SetWaitDuration(5.0);
 	end,
 
 	Update = function(NPC)
@@ -40,25 +42,6 @@ Idle = {
 
 -------------------------------------------------------------------------------
 
--- create the patrol state
-
--------------------------------------------------------------------------------
-Patrol = {
-	onEnter = function(NPC)
-		print("Entered Patrol state");
-	end,
-
-	Update = function(NPC)
-		
-	end,
-
-	onExit = function(NPC)
-		print("Exiting Patrol state");
-	end
-}
-
--------------------------------------------------------------------------------
-
 -- create the chase state
 
 -------------------------------------------------------------------------------
@@ -69,6 +52,9 @@ Chase = {
 
 	Update = function(NPC)
 		Movement.ChasePlayer(NPC);
+		if not Detection.SeePlayer(NPC) then
+			FSM.ChangeState(NPC, "Idle");
+		end
 	end,
 
 	onExit = function(NPC)

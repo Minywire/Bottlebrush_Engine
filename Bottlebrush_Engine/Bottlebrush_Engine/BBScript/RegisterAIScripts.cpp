@@ -18,7 +18,10 @@ void registerScriptedFSM(sol::state& lua_state) {
 
 void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) {
     lua_state.new_usertype<NPC>("NPC", 
-        "AddWaypoint", &NPC::AddWaypoint
+        "AddWaypoint", &NPC::AddWaypoint,
+        "StopMoving", &NPC::StopMoving,
+        "SetWaitDuration", &NPC::SetWaitDuration,
+        "IsWaiting", &NPC::IsWaiting
     );
 
     auto movementTable = lua_state["Movement"].get_or_create<sol::table>();
