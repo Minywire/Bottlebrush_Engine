@@ -76,7 +76,6 @@ void Window::Swap() { ShiftWindowBuffers(); }
 
 void Window::SetCursorMode(CursorMode cursor_mode) {
   cursor_mode_ = cursor_mode;
-  glfwSetInputMode(window_context_, GLFW_CURSOR, cursor_mode);
 }
 
 void Window::SetFullscreen(bool fullscreen) {

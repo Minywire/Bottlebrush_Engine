@@ -30,6 +30,8 @@ Idle = {
 
 	Update = function(NPC)
 		print("in idle state");
+		NPC:AddWaypoint(vec2(150, 150));
+		NPC:AddWaypoint(vec2(450, 450));
 		FSM.ChangeState(NPC, "Patrol");
 	end,
 

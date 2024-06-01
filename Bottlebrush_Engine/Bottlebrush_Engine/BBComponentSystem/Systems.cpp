@@ -67,8 +67,17 @@ void Systems::createTerrainComponents(ECS &ecs, std::unordered_map<std::string, 
     }
 }
 
-void Systems::RegisterAIFunctions(ECS& ecs, sol::state & lua_state) 
+void Systems::ReadAIScripts(ECS& ecs, sol::state & lua_state) 
 {
+    auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
+
+    for (auto entity : group)
+    {
+        auto& aic = group.get<AIControllerComponent>(entity);
+
+        if(aic.npc.GetFSM().GetStatePath().extension() != ".lua") { throw std::runtime_error("Lua file is no lua file"); }
+        lua_state.script_file(aic.npc.GetFSM().GetStatePath().string());
+    }
     AIScripts::registerScriptedFSM(lua_state);
     AIScripts::registerScriptedNPC(lua_state, ecs);
     AIScripts::registerScriptedGLM(lua_state);
@@ -225,7 +234,7 @@ void Systems::updateTransformComponent(ECS &ecs, const std::string& tag, glm::ve
 
 }
 
-void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<std::string, Terrain> & sceneTerrain)
+void Systems::updateAIMovements(ECS& ecs, float deltaTime)
 {
     auto group = ecs.GetAllEntitiesWith<TransformComponent, AIControllerComponent>();
 
@@ -254,22 +263,6 @@ void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<st
         transform.position.z += npc.GetDirection().y * deltaTime * npc.GetCurrentSpeed();
         // rotate the character to face the direction, currently given in radians
         transform.rotation.y = std::atan2(npc.GetDirection().y, npc.GetDirection().x);
-
-        //change the NPC's y position to the terrain height
-        auto terrainGroup = ecs.GetAllEntitiesWith<TerrainComponent>();
-        for (auto terrainEnitity : terrainGroup)
-        {
-            auto& terrainComp = terrainGroup.get<TerrainComponent>(terrainEnitity);
-            auto& terrain = sceneTerrain.at(terrainComp.terrain_path);
-
-            // Optional returns if its out of bounds. 
-            // Avoids collision with other terrains, if there were more than 1.
-            auto heightOpt = terrain.GetHeight(transform.position.x, transform.position.z);
-            if (!heightOpt.has_value()) continue;
-
-            // set the new y position
-            transform.position.y = heightOpt.value() + 10; // plus an offset, should be taken out once other physics is implemented
-        }
     }
 }
 
@@ -279,7 +272,6 @@ void Systems::updateAI(ECS& ecs, sol::state& lua_state, float deltaTime) {
     for (auto entity : group)
     {
       auto& aic = group.get<AIControllerComponent>(entity);
-      lua_state.script_file(aic.npc.GetFSM().GetStatePath().string());
 
       aic.npc.Update(lua_state, deltaTime);
     }

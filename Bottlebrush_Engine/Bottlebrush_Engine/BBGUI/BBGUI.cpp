@@ -27,7 +27,7 @@ void updateBBGUIFrameStart()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-
+    ImGui::ShowDemoWindow(); // Show demo window
 }
 
 /*void BBGui::Text(const std::string_view str)
