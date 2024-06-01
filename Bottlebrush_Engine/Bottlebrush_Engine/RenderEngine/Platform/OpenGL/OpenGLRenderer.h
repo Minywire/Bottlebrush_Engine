@@ -42,7 +42,7 @@ private:
     /// @param shaderType is the shader program to be used
     /// @param va is the bound Vertex Array
     /// @param size is the data size of the specified VAO
-    void Draw(ShaderType shaderType, unsigned int va, unsigned int size) override;
+    void Draw(ShaderType shaderType, unsigned int va, unsigned int vertexCount) override;
 
     /// @author Alan
     /// @brief Draws using TriangleStrips.
