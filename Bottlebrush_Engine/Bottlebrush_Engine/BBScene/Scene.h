@@ -117,6 +117,9 @@ class Scene
 
     float getLastY() const;
 
+    bool getMenuActive() const;
+
+    void toggleMenuActive();
    private:
     Window window;
 
@@ -149,4 +152,7 @@ class Scene
     bool exitScreen = false;
 
     float last_frame = 0;
+
+    float interpolation = 0.f;
+    bool menuActive = false;
 };

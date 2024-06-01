@@ -3,6 +3,7 @@
 //
 
 #include "Scene.h"
+#include "BBGUI.h"
 
 void FramebufferSizeCallback(Window::WindowContext window, int width,  int height) 
 {
@@ -22,6 +23,8 @@ void KeyCallback(Window::WindowContext window, int key, int scancode, int action
       scene->getCamera().SetSpeed(scene->getCamera().GetSpeed() * 2.0f);
     if (action == GLFW_RELEASE && key == GLFW_KEY_LEFT_SHIFT)
       scene->getCamera().SetSpeed(scene->getCamera().GetSpeed() / 2.0f);
+    if(action == GLFW_PRESS && key == GLFW_KEY_ESCAPE)
+        scene->toggleMenuActive();
 }
 
 void MouseCallback(Window::WindowContext window, double pos_x, double pos_y) 
@@ -29,7 +32,7 @@ void MouseCallback(Window::WindowContext window, double pos_x, double pos_y)
     auto* data = glfwGetWindowUserPointer(window);
     auto* scene = reinterpret_cast<Scene*>(data);
 
-    if (scene->getExitScreenFlag()) return;
+    if (scene->getExitScreenFlag() || scene->getMenuActive()) return;
 
     if (scene->getFirstMouseFlag()) 
     {
@@ -51,7 +54,7 @@ void ScrollCallback(Window::WindowContext window, double x_offset, double y_offs
     auto* data = glfwGetWindowUserPointer(window);
     auto* scene = reinterpret_cast<Scene*>(data);
 
-    if (scene->getExitScreenFlag()) return;
+    if (scene->getExitScreenFlag() || scene->getMenuActive()) return;
     scene->getCamera().ProcessMouseScroll(static_cast<float>(y_offset));
 }
 
@@ -64,10 +67,7 @@ void Scene::ProcessInput(float deltaTime) {
         return;
     }
 
-    if (glfwGetKey(window.GetContext(), GLFW_KEY_ESCAPE) == GLFW_PRESS) 
-    {
-        exitScreen = true;
-    }
+    if(menuActive) return;
 
     if (glfwGetKey(window.GetContext(), GLFW_KEY_W) == GLFW_PRESS)
         mainCamera.ProcessKeyboard(FORWARD, deltaTime);
@@ -171,6 +171,7 @@ void Scene::init()
     mainCamera.SetSpeed(100.0f);
     mainCamera.SetZoom(30.0f);
 
+    bbSystems.RegisterAIFunctions(bbECS, lua.getLuaState()); // register functions before running scripts
     if(!lua.getLuaState().do_file(masterLuaFile).valid())
     {
         std::cout << "Could not load master game script file\n";
@@ -181,11 +182,46 @@ void Scene::init()
     bbSystems.createModelComponents(bbECS, resources.getSceneModels());
     bbSystems.createMD2ModelComponents(bbECS, resources.getSceneMD2Models());
     bbSystems.ReadAIScripts(bbECS, lua.getLuaState());
+    initBBGUI(window.GetContext());
 }
 
 void Scene::update()
 {
     while (!window.GetShouldClose()) {
+        if(menuActive) {
+            updateBBGUIFrameStart();
+            if(ImGui::CollapsingHeader("Controls")) {
+                if(ImGui::TreeNode("Movement")) {
+                    ImGui::Text("Forward: W");
+                    ImGui::Text("Left: A");
+                    ImGui::Text("Backwards: S");
+                    ImGui::Text("Right: D");
+                    ImGui::Text("Up: Spacebar");
+                    ImGui::Text("Down: Left Control");
+                    ImGui::Text("Zoom (speedy): Left Shift");
+                    ImGui::TreePop();
+                }
+
+                if(ImGui::TreeNode("Scene")) {
+                    ImGui::Text("Toggle wireframe: C");
+                    ImGui::TreePop();
+                }
+
+                ImGui::Text("Exit: Escape");
+            }
+
+            if(ImGui::CollapsingHeader("Credits")) {
+                ImGui::Text("Alan Brunet");
+                ImGui::Text("Jaiden di Lanzo");
+                ImGui::Text("Marco Garzon Lara");
+                ImGui::Text("Niamh Wilson");
+            }
+
+            if(ImGui::Button("Exit")) {
+                exitScreen = true;
+            }
+        }
+
         auto current_frame = static_cast<float>(glfwGetTime());
         float deltaTime = current_frame - last_frame;
         last_frame = current_frame;
@@ -235,7 +271,7 @@ void Scene::update()
         Systems::drawModels(bbECS, ShaderType::Default, *renderEngine,
                             resources.getSceneModels(), projectionMatrix,
                             viewMatrix);
-        Systems::updateAIMovements(bbECS, deltaTime);
+        Systems::updateAIMovements(bbECS, deltaTime, resources.getSceneTerrain());
         while (accumulatedFrameTime >= UpdateAIInterval) {
             std::cout << "update all AI call" << std::endl;
             Systems::updateAI(bbECS, lua.getLuaState(), accumulatedFrameTime);
@@ -277,10 +313,15 @@ void Scene::update()
 
         glDepthFunc(GL_LESS);  // set depth function back to default
 
+        if(menuActive) {
+            updateBBGUIFrameEnd();
+        }
+
         window.Swap();
         window.Poll();
     }
 
+    shutDownBBGUI();
     window.Remove();
 }
 
@@ -352,4 +393,18 @@ void Scene::setLastX(float lX)
 void Scene::setLastY(float lY)
 { 
     last_y = lY; 
+}
+
+void Scene::toggleMenuActive() {
+    this->menuActive = !this->menuActive;
+
+    if(menuActive) {
+        window.SetCursorMode(Window::CURSOR_NORMAL);
+    } else {
+        window.SetCursorMode(Window::CURSOR_DISABLED);
+    }
+}
+
+bool Scene::getMenuActive() const {
+    return menuActive;
 }
