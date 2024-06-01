@@ -47,12 +47,13 @@ void NPC::Patrol(ECS& ecs)
 
     MoveTo(m_Waypoints[m_CurrentWaypoint], ecs);
 
-    if (m_Moving) return;
+    if (m_Moving) return; // still moving towards waypoint
+    // set wait timer
     SetWaitDuration(m_PatrolWaitDuration);
 
-    // waits for a duration
+    // waits for the timer duration
     if (!IsWaiting()) {
-        ClearWaitDuration();
+        ClearWaitDuration(); // clear timer and reset time elapsed
         m_CurrentWaypoint++; // move to next waypoint
     }
 }
