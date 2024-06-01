@@ -90,4 +90,11 @@ private:
      * @param terrain the terrain table to compare against
     */
     void loadTerrain(ECS &ecs, Entity &entity, const sol::table &terrain);
+
+    /**
+     *  @param ecs the ecs registry to load model component from
+     * @param entity the entity to attach to
+     * @param MD2 the MD2 table to compare against
+     */
+    void loadMD2(ECS &ecs, Entity &entity, const sol::table &MD2);
 };

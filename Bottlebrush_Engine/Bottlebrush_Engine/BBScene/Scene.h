@@ -153,5 +153,6 @@ class Scene
 
     float last_frame = 0;
 
+    float interpolation = 0.f;
     bool menuActive = false;
 };
