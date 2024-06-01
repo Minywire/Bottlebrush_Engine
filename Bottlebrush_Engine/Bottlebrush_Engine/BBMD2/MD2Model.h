@@ -15,7 +15,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "MD2Texture.h"
 #include "GraphicsFactory.h"
 
 typedef struct
