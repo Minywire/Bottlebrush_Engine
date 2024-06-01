@@ -64,7 +64,7 @@ bool NPC::SeePlayer(const glm::vec2& targetPos, ECS& ecs, float coneDistance, fl
     return Movement::SeeTarget(GetVec2Position(ecs), targetPos, m_direction, coneDistance, fov);
 }
 
-bool NPC::SendMessage(ECS& ecs, const Message& msg)
+bool NPC::SendMessage(ECS& ecs, sol::state& lua_state, const Message& msg)
 {
     auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
     for (auto entity : group)
@@ -72,8 +72,11 @@ bool NPC::SendMessage(ECS& ecs, const Message& msg)
         auto& aic = group.get<AIControllerComponent>(entity);
         auto& npc = aic.npc;
 
+        // don't send a message to self
+        if (this == &npc) continue;
+
+        // send message to all NPCs through singleton EventDispatcher
         EVENTDISPATCHER.DispatchMessage(msg, this, &npc);
-        
     }
 
     return true;

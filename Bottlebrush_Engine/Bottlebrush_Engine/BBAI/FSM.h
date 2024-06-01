@@ -38,6 +38,8 @@ public:
 
     std::filesystem::path& GetStatePath();
 
+    bool HandleMessage(sol::state& lua_state, const Message& msg);
+
 private:
     NPC* m_npcReference; // reference to the NPC that owns this FSM
 

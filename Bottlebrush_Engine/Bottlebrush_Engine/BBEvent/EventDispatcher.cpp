@@ -16,5 +16,6 @@ void EventDispatcher::DispatchMessage(const Message& msg, NPC* sender, NPC* reci
 
 void EventDispatcher::Send(const Message& msg, NPC* receiver) 
 {
+    //receiver->GetFSM().HandleMessage(, msg);
     std::cout << "Message Sent" << std::endl;
 }
