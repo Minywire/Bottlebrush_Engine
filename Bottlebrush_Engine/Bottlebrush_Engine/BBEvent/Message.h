@@ -16,10 +16,8 @@ enum class Event
 class Message
 {
 public:
-    Message();
+    Message(Event event, NPC* sender);
 private:
     Event m_Event;
     NPC* m_Sender;
-    NPC* m_Receiver;
-    float m_DispatchTime;
 };

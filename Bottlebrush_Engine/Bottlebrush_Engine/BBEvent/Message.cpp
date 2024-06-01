@@ -4,8 +4,9 @@
 
 #include "Message.h"
 
-Message::Message() :
-	m_DispatchTime(0)
+Message::Message(Event event, NPC* sender) :
+	m_Sender(sender),
+	m_Event(event)
 {
-
+	
 }

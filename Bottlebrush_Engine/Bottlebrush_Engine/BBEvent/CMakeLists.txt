@@ -7,7 +7,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(SOURCES
 	Message.cpp Message.h
-	EventDispatcher.cpp EventDispatcher.h)
+	EventDispatcher.cpp EventDispatcher.h
+	Singleton.h)
 
 target_sources(BBEvent PRIVATE ${SOURCES})
 

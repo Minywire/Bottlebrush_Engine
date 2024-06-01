@@ -7,6 +7,7 @@
 #include "ECS.h"
 #include "Entity.h"
 #include "Message.h"
+#include "Singleton.h"
 
 NPC::NPC(const std::filesystem::path& statesPath,
          const std::string& initialState, Entity& entity)
@@ -63,9 +64,19 @@ bool NPC::SeePlayer(const glm::vec2& targetPos, ECS& ecs, float coneDistance, fl
     return Movement::SeeTarget(GetVec2Position(ecs), targetPos, m_direction, coneDistance, fov);
 }
 
-bool SendMessage(Message& msg)
+bool SendMessage(ECS& ecs, const Message& msg)
 {
-    std::cout << "Message Sent" << std::endl;
+    auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
+
+    for (auto entity : group)
+    {
+        auto& aic = group.get<AIControllerComponent>(entity);
+        auto& npc = aic.npc;
+        //NPC* thisNPC = this;
+        //EVENTDISPATCHER.DispatchMessage(msg,this,npc);
+        std::cout << "Message Sent" << std::endl;
+    }
+
     return true;
 }
 

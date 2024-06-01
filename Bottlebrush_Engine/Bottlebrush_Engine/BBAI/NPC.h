@@ -52,7 +52,7 @@ public:
     /// @return whether Player is standing within the cone
     bool SeePlayer(const glm::vec2& targetPos, ECS& ecs, float coneDistance = 300, float fov = 180);
 
-    bool SendMessage(Message& msg);
+    bool SendMessage(ECS& ecs, const Message& msg);
     
     /// @author Alan
     /// @brief see if NPC has movement input
