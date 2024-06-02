@@ -16,7 +16,7 @@ Global = {
 		print("Exiting Global state");
 	end,
 	
-	onMessage = function(NPC, MSG)
+	onMessage = function(NPC, Message)
 		print("Message Received");
 	end
 }
