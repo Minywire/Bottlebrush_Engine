@@ -40,3 +40,8 @@ void BBMD2::setAnimationSpeed(const float& speed)
 {
 	animSpeed = speed;
 }
+
+void BBMD2::setCurrentAnimation(const std::string& animName)
+{
+    currentAnimation = animName;
+}

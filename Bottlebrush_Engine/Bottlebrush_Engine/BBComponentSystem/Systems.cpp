@@ -133,7 +133,7 @@ void Systems::drawMD2Models(const ECS& ecs, const ShaderType& shaderType, Render
 
         auto& currentMD2 = MD2s.at(currentMD2Component.model_path);
         
-        int anim = currentMD2.getSpecificAnim("run");
+        int anim = currentMD2.getSpecificAnim(currentMD2.getCurrentAnimation());
          
         glm::mat4 transform = {1};
         transform = glm::translate(transform, currentTransformComponent.position);

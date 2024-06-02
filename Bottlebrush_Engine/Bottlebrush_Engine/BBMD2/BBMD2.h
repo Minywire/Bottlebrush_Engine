@@ -22,12 +22,17 @@ public:
 
 	void setAnimationSpeed(const float & speed);
 
+	void setCurrentAnimation(const std::string& animName);
+
 	float getInterpolation() const { return interpolation; }
 
 	float getAnimationSpeed() const { return animSpeed;  }
+
+	std::string getCurrentAnimation() const { return currentAnimation; }
 
  private:
 	MD2Model m_model;
     float interpolation = 0.f;
 	float animSpeed = 0.f;
+    std::string currentAnimation = "stand";
 };	
