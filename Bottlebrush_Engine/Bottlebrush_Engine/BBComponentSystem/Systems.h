@@ -152,4 +152,6 @@ public:
      * @param AIUpdateIntervalTime this is the time representing the time for the ai to be called
      */
     static void updateAI(ECS &ecs, sol::state &lua_state, float deltaTime);
+
+    static void updateCameraTerrainHeight(ECS& ecs, const std::unordered_map<std::string, Terrain> & terrains, Camera & camera, float offset_y);
 };

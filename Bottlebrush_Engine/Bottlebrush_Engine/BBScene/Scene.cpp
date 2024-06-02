@@ -19,6 +19,8 @@ void KeyCallback(Window::WindowContext window, int key, int scancode, int action
 
     if (key == GLFW_KEY_C && action == GLFW_PRESS) scene->setWireFrameFlag(!scene->getWireframeFlag());
 
+    if (key == GLFW_KEY_R && action == GLFW_PRESS) scene->setCameraRestriction(!scene->getCameraRestriction());
+
     if (action == GLFW_PRESS && key == GLFW_KEY_LEFT_SHIFT)
       scene->getCamera().SetSpeed(scene->getCamera().GetSpeed() * 2.0f);
     if (action == GLFW_RELEASE && key == GLFW_KEY_LEFT_SHIFT)
@@ -267,6 +269,11 @@ void Scene::update()
                              resources.getSceneTerrain(), false,
                              projectionMatrix, viewMatrix);
 
+        if (cameraRestriction)
+        {
+            Systems::updateCameraTerrainHeight(bbECS, resources.getSceneTerrain(), mainCamera, 5.0f);
+        }
+
         Systems::drawModels(bbECS, ShaderType::Default, *renderEngine,
                             resources.getSceneModels(), projectionMatrix,
                             viewMatrix);
@@ -405,4 +412,14 @@ void Scene::toggleMenuActive() {
 
 bool Scene::getMenuActive() const {
     return menuActive;
+}
+
+bool Scene::getCameraRestriction() const
+{
+    return cameraRestriction;
+}
+
+void Scene::setCameraRestriction(bool flag)
+{
+    cameraRestriction = flag;
 }

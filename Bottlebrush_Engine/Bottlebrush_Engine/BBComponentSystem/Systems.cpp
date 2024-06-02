@@ -284,3 +284,37 @@ void Systems::updateAI(ECS& ecs, sol::state& lua_state, float deltaTime) {
       aic.npc.Update(lua_state, deltaTime);
     }
 }
+
+void Systems::updateCameraTerrainHeight(ECS& ecs, const std::unordered_map<std::string, Terrain> & terrains, Camera & camera,  float offset_y)
+{
+    auto group = ecs.GetAllEntitiesWith<TerrainComponent, TransformComponent>();
+
+    for (auto entity : group)
+    {
+        auto& currentTerrainComp = group.get<TerrainComponent>(entity);
+        auto& terrainTransform = group.get<TransformComponent>(entity);
+        auto& currentTerrain = terrains.at(currentTerrainComp.terrain_path);
+
+        glm::mat4 model = {1};
+        model = glm::translate(model, terrainTransform.position);
+        model = glm::rotate(model, glm::radians(terrainTransform.rotation.x), glm::vec3(1,0,0));
+        model = glm::rotate(model, glm::radians(terrainTransform.rotation.y), glm::vec3(0,1,0));
+        model = glm::rotate(model, glm::radians(terrainTransform.rotation.z), glm::vec3(0,0,1));
+        model = glm::scale(model, terrainTransform.scale);
+
+        const glm::vec3 local_position =
+            glm::inverse(model) * glm::vec4(camera.GetPosition(), 1);
+
+        const std::optional<float> terrain_height =
+            currentTerrain.GetHeight(local_position.x, local_position.z);
+
+        if (terrain_height.has_value())
+        {
+            camera.SetPositionY(terrain_height.value() + offset_y);
+        } 
+        else
+        {
+            camera.SetPositionY(0);
+        }
+    }
+}
