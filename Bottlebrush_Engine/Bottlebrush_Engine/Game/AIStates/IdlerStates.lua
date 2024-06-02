@@ -17,6 +17,11 @@ Global = {
 	end,
 	
 	onMessage = function(NPC, Message)
+		--if NPC:WithinMessageRange(Message, 100.0) then
+		--	if Message.GetEvent == Event.PlayerSpotted then
+		--		FSM.ChangeState(NPC, "Chase");
+		--	end
+		--end
 		print("Message Received");
 	end
 }
