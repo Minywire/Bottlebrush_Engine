@@ -44,7 +44,7 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
     dispatchTable["SendMessage"] = [&ecs, &lua_state](std::string event, NPC& npc) 
     {
         Message msg(event, &npc);
-        msg.GetSender()->SendMessage(ecs, lua_state, msg);
+        npc.SendMessage(ecs, lua_state, msg);
     };
 }
 
