@@ -16,10 +16,10 @@ enum class Event
 class Message
 {
 public:
-    Message(Event event, NPC& sender);
+    Message(Event event, NPC* sender);
 
-    NPC& GetSender();
+    NPC* GetSender();
 private:
     Event m_Event;
-    NPC& m_Sender;
+    NPC* m_Sender;
 };

@@ -4,14 +4,14 @@
 
 #include "Message.h"
 
-Message::Message(Event event, NPC& sender) :
+Message::Message(Event event, NPC* sender) :
 	m_Sender(sender),
 	m_Event(event)
 {
 	
 }
 
-NPC& Message::GetSender()
+NPC* Message::GetSender()
 {
 	return m_Sender;
 }
