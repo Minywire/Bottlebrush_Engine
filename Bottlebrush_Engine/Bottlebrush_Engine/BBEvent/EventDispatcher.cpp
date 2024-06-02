@@ -11,6 +11,11 @@ EventDispatcher::EventDispatcher()
 
 void EventDispatcher::DispatchMessage(sol::state& lua_state, Message& msg, NPC* sender, NPC* reciever)
 {
+    if (!reciever) 
+    {
+        std::cout << "Receiver NPC is invalid" << std::endl;
+        return;
+    }
     Send(lua_state, msg, reciever);
 }
 
