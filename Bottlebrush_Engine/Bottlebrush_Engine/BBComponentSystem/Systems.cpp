@@ -72,6 +72,7 @@ void Systems::RegisterAIFunctions(ECS& ecs, sol::state & lua_state, const Camera
     AIScripts::registerScriptedFSM(lua_state);
     AIScripts::registerScriptedNPC(lua_state, ecs, player);
     AIScripts::registerScriptedGLM(lua_state);
+    AIScripts::registerScriptedMessage(lua_state);
 }
 
 void Systems::setLight(RenderEngine & renderEngine, const ShaderType & shaderType, glm::mat4 view)

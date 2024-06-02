@@ -42,9 +42,9 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
 
     // register EventDispatcher table functions that depend on lua_state
     auto dispatchTable = lua_state["Dispatch"].get_or_create<sol::table>();
-    dispatchTable["SendMessage"] = [&ecs, &lua_state](NPC& npc, const Message& msg)
+    dispatchTable["SendMessage"] = [&ecs, &lua_state](Message& msg)
     {
-        if (!npc.SendMessage(ecs, lua_state, msg))
+        if (!msg.GetSender().SendMessage(ecs, lua_state, msg))
         {
             std::cout << "Failed to send message" << std::endl;
         }
@@ -67,7 +67,7 @@ void registerScriptedMessage(sol::state& lua_state) {
     // register Message system
     lua_state.new_usertype<Message>("Message",
         sol::call_constructor,
-        sol::constructors<Message(Event, NPC*)>()
+        sol::constructors<Message(Event, NPC&)>()
     );
 }
 
