@@ -8,6 +8,8 @@
 #include <filesystem>
 #include <sol/sol.hpp>
 
+/** forward decl to avoid circle linking */
+class Message;
 class NPC;
 
 /// @author Alan

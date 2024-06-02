@@ -5,6 +5,7 @@
 #include "RegisterAIScripts.h"
 #include "FSM.h"
 #include "NPC.h"
+#include "Message.h"
 
 namespace AIScripts {
 
@@ -17,6 +18,7 @@ void registerScriptedFSM(sol::state& lua_state) {
 }
 
 void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) {
+    // register player functions
     lua_state.new_usertype<NPC>("NPC", 
         "AddWaypoint", &NPC::AddWaypoint,
         "StopMoving", &NPC::StopMoving,
@@ -24,6 +26,7 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
         "IsWaiting", &NPC::IsWaiting
     );
 
+    // register movement functions that depend on transform component
     auto movementTable = lua_state["Movement"].get_or_create<sol::table>();
     movementTable["Patrol"] = [&ecs](NPC& npc) { npc.Patrol(ecs); };
     movementTable["MoveTo"] = [&ecs](NPC& npc, const glm::vec2& vec2) { npc.MoveTo(vec2, ecs); };
@@ -33,14 +36,38 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
         npc.MoveTo(pos, ecs); 
     };
 
+    // register detection functions that depend on transform component
     auto detectionTable = lua_state["Detection"].get_or_create<sol::table>();
     detectionTable["SeePlayer"] = [&player, &ecs](NPC& npc) { return npc.SeePlayer(glm::vec2(player.GetPositionX(), player.GetPositionZ()), ecs); };
+
+    // register EventDispatcher table functions that depend on lua_state
+    auto dispatchTable = lua_state["Dispatch"].get_or_create<sol::table>();
+    dispatchTable["SendMessage"] = [&ecs, &lua_state](NPC& npc, const Message& msg)
+    {
+        if (!npc.SendMessage(ecs, lua_state, msg))
+        {
+            std::cout << "Failed to send message" << std::endl;
+        }
+    };
 }
 
 void registerScriptedGLM(sol::state& lua_state) {
     lua_state.new_usertype<glm::vec2>("vec2",
         sol::call_constructor,
         sol::constructors<glm::vec2(), glm::vec2(float, float)>()
+    );
+}
+
+void registerScriptedMessage(sol::state& lua_state) {
+    // register Event enum
+    lua_state.new_enum("Event",
+        "PlayerSpotted", Event::PLAYERSPOTTED
+    );
+
+    // register Message system
+    lua_state.new_usertype<Message>("Message",
+        sol::call_constructor,
+        sol::constructors<Message(Event, NPC*)>()
     );
 }
 

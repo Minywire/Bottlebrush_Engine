@@ -24,7 +24,7 @@ public:
         if (!_instance) {
             _instance = std::unique_ptr<T>(new T(std::forward<Args>(args)...));
         }
-        return _instance;
+        return *_instance;
     }
 
     // delete copy ctor

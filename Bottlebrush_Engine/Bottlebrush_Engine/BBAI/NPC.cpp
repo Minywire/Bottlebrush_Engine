@@ -76,7 +76,7 @@ bool NPC::SendMessage(ECS& ecs, sol::state& lua_state, const Message& msg)
         if (this == &npc) continue;
 
         // send message to all NPCs through singleton EventDispatcher
-        EVENTDISPATCHER.DispatchMessage(msg, this, &npc);
+        EVENTDISPATCHER.DispatchMessage(lua_state, msg, this, &npc);
     }
 
     return true;

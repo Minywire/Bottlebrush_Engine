@@ -9,13 +9,13 @@ EventDispatcher::EventDispatcher()
 
 }
 
-void EventDispatcher::DispatchMessage(const Message& msg, NPC* sender, NPC* reciever)
+void EventDispatcher::DispatchMessage(sol::state& lua_state,const Message& msg, NPC* sender, NPC* reciever)
 {
-    Send(msg, reciever);
+    Send(lua_state, msg, reciever);
 }
 
-void EventDispatcher::Send(const Message& msg, NPC* receiver) 
+void EventDispatcher::Send(sol::state& lua_state, const Message& msg, NPC* receiver) 
 {
-    //receiver->GetFSM().HandleMessage(, msg);
-    std::cout << "Message Sent" << std::endl;
+    receiver->GetFSM().HandleMessage(lua_state, msg);
+    std::cout << "EventDispatcher: Message Sent" << std::endl;
 }

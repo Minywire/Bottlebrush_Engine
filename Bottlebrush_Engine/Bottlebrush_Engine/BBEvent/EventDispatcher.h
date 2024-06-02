@@ -15,10 +15,10 @@ class EventDispatcher
 public:
     EventDispatcher();
 
-    void DispatchMessage(const Message& msg, NPC* sender, NPC* reciever);
+    void DispatchMessage(sol::state& lua_state, const Message& msg, NPC* sender, NPC* reciever);
 
 private:
     std::set<Message> m_MessageQue;
 
-    void Send(const Message& msg, NPC* receiver);
+    void Send(sol::state& lua_state, const Message& msg, NPC* receiver);
 };

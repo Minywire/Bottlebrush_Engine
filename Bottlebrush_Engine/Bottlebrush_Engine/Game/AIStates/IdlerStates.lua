@@ -31,6 +31,7 @@ Idle = {
 
 	Update = function(NPC)
 		if Detection.SeePlayer(NPC) then
+			Dispatch.SendMessage(NPC, Message(PlayerSpotted, NPC));
 			FSM.ChangeState(NPC, "Chase");
 		end	
 	end,
