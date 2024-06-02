@@ -272,7 +272,8 @@ void Scene::update()
         Systems::updateCameraTerrainHeight(bbECS, 
                                            resources.getSceneTerrain(), 
                                            mainCamera,  
-                                           restrictCamera);
+                                           restrictCamera,
+                                           5.0f);
 
         Systems::drawModels(bbECS, ShaderType::Default, *renderEngine,
                             resources.getSceneModels(), projectionMatrix,
@@ -287,7 +288,7 @@ void Scene::update()
             glm::vec3 position = {-4825, 0, -5000}, front = {-5000, 0, 0},
                     up = {0, 1, 0};
             mainCamera.SetSpeed(0);
-            mainCamera.SetZoom(45);
+            mainCamera.SetZoom(55);
             mainCamera.SetViewMatrix(position, front, up);
         }
 
