@@ -294,7 +294,7 @@ void Systems::updateCameraTerrainHeight(ECS& ecs, const std::unordered_map<std::
                 glm::inverse(model) * glm::vec4(camera.GetPosition(), 1);
 
             std::optional<float> terrain_height =
-                currentTerrain.GetHeight(local_position.x, local_position.z); //std::optional because the terrain spec was allegedly changed to suit AI interfaces.
+                currentTerrain.GetHeight(local_position.x, local_position.z);
 
             if (terrain_height.has_value())
             {
