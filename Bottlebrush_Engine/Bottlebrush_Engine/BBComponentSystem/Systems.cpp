@@ -299,7 +299,6 @@ void Systems::updateCameraTerrainHeight(ECS& ecs, const std::unordered_map<std::
 
         glm::mat4 model = {1};
         model = glm::translate(model, terrainTransform.position);
-        model = glm::rotate(model, glm::radians(-90.f), glm::vec3(1,0,0));
         model = glm::rotate(model, glm::radians(terrainTransform.rotation.x), glm::vec3(1,0,0));
         model = glm::rotate(model, glm::radians(terrainTransform.rotation.y), glm::vec3(0,1,0));
         model = glm::rotate(model, glm::radians(terrainTransform.rotation.z), glm::vec3(0,0,1));
@@ -313,7 +312,14 @@ void Systems::updateCameraTerrainHeight(ECS& ecs, const std::unordered_map<std::
             std::optional<float> terrain_height =
                 currentTerrain.GetHeight(local_position.x, local_position.z); //std::optional because the terrain spec was allegedly changed to suit AI interfaces.
 
-            camera.SetPositionY(terrain_height.value() + offset_y);
+            if (terrain_height.has_value())
+            {
+                camera.SetPositionY(terrain_height.value() + offset_y);
+            } 
+            else
+            {
+                camera.SetPositionY(0);
+            }
         }
     }
 }
