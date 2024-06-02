@@ -254,7 +254,7 @@ void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<st
         transform.position.x += npc.GetDirection().x * deltaTime * npc.GetCurrentSpeed();
         transform.position.z += npc.GetDirection().y * deltaTime * npc.GetCurrentSpeed();
         // rotate the character to face the direction, currently given in radians
-        transform.rotation.y = std::atan2(npc.GetDirection().y, npc.GetDirection().x);
+        transform.rotation.y = std::atan2(npc.GetDirection().x, npc.GetDirection().y);
 
         //change the NPC's y position to the terrain height
         auto terrainGroup = ecs.GetAllEntitiesWith<TerrainComponent>();
