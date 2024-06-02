@@ -15,3 +15,8 @@ NPC* Message::GetSender()
 {
 	return m_Sender;
 }
+
+Event Message::GetEvent()
+{
+	return m_Event;
+}
