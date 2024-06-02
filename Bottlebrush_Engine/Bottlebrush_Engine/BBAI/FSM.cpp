@@ -64,17 +64,17 @@ std::filesystem::path& FSM::GetStatePath()
     return m_statePath; 
 }
 
-bool FSM::HandleMessage(sol::state& lua_state, const Message& msg)
+bool FSM::HandleMessage(sol::state& lua_state, Message& msg)
 {
     // first see if the current state is valid and that it can handle
     // the message
-    if (lua_state[m_currentState].valid()) {
+    if (lua_state[m_currentState]["onMessage"].valid()) {
         lua_state[m_currentState]["onMessage"](*m_npcReference, msg);
         return true;
     }
     // if not, and if a global state has been implemented, send
     // the message to the global state
-    if (lua_state[m_globalState].valid()) {
+    if (lua_state[m_globalState]["onMessage"].valid()) {
         lua_state[m_globalState]["onMessage"](*m_npcReference, msg);
         return true;
     }
