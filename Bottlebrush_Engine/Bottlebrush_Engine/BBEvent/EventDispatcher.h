@@ -13,7 +13,7 @@
 class EventDispatcher 
 {
 public:
-    void DispatchMessage(sol::state& lua_state, Message& msg, NPC* sender, NPC* reciever);
+    void DispatchMessage(sol::state& lua_state, Message& msg, NPC* sender, NPC* receiver);
 
 private:
     void Send(sol::state& lua_state, Message& msg, NPC* receiver);
