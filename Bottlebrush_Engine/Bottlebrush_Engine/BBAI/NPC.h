@@ -70,6 +70,12 @@ public:
     void StopMoving();
 
     /// @author Alan
+    /// @brief gets transform component and returns in position in (x,z) format
+    /// @param ecs register to get transform component
+    /// @return floor position (x,z)
+    glm::vec2 GetVec2Position(ECS& ecs);
+
+    /// @author Alan
     /// @brief set a wait timer
     /// @param wait duration in seconds
     void SetWaitDuration(float wait);
@@ -82,6 +88,10 @@ public:
     /// @brief sees if there is a wait timer
     /// @return wait time > wait timer
     bool IsWaiting();
+
+    void SetLastPlayerLoc(glm::vec2 loc);
+
+    glm::vec2& GetLastPlayerLoc();
 
     float& GetCurrentSpeed();
 
@@ -114,9 +124,7 @@ private:
     float m_deceleration_rate = 0.1f;
     glm::vec2 m_direction = {1, 1}; // direction that the NPC is facing
 
-    /// @author Alan
-    /// @brief gets transform component and returns in position in (x,z) format
-    /// @param ecs register to get transform component
-    /// @return floor position (x,z)
-    glm::vec2 GetVec2Position(ECS& ecs);
+    glm::vec2 m_LastPlayerLoc = {0, 0}; // last known player location
+
+    
 };

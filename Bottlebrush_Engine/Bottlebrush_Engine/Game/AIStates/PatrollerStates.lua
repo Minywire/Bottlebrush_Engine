@@ -17,7 +17,14 @@ Global = {
 	end,
 
 	onMessage = function(NPC, Message)
-		print("Message Received");
+		if Detection.InMessageRange(NPC, Message, 500.0) then
+			print("Lua: Message Received");
+			if Message:GetEvent() == Event.PlayerSpotted then
+				FSM.ChangeState(NPC, "Chase");
+			else
+				print("Lua: hasnt been spotted")
+			end
+		end
 	end
 }
 
@@ -68,6 +75,7 @@ Patrol = {
 
 	onExit = function(NPC)
 		print("Exiting Patrol state");
+		NPC:ClearWaitDuration();
 	end
 }
 
@@ -79,11 +87,15 @@ Patrol = {
 Chase = {
 	onEnter = function(NPC)
 		print("Entered Chase state");
+		Movement.ChasePlayer(NPC);
 	end,
 
 	Update = function(NPC)
-		Movement.ChasePlayer(NPC);
-		if not Detection.SeePlayer(NPC) then
+		Movement.MoveTo(NPC, NPC:GetLastPlayerLocation());
+		if Detection.SeePlayer(NPC) then
+			Movement.ChasePlayer(NPC);
+			Dispatch.SendMessage(Message(Event.PlayerSpotted, NPC));
+		elseif not Detection.SeePlayer(NPC) and not NPC:IsMoving() then
 			FSM.ChangeState(NPC, "Idle");
 		end
 	end,

@@ -101,6 +101,16 @@ glm::vec2 NPC::GetVec2Position(ECS& ecs)
     return pos;
 }
 
+void NPC::SetLastPlayerLoc(glm::vec2 loc)
+{ 
+    m_LastPlayerLoc = loc;
+}
+
+glm::vec2& NPC::GetLastPlayerLoc()
+{
+    return m_LastPlayerLoc;
+}
+
 void NPC::SetWaitDuration(float wait)
 {
     m_WaitTimerDuration = wait;

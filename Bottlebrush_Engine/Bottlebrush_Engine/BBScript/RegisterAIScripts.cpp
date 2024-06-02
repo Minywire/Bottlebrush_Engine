@@ -23,22 +23,35 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
         "AddWaypoint", &NPC::AddWaypoint,
         "StopMoving", &NPC::StopMoving,
         "SetWaitDuration", &NPC::SetWaitDuration,
-        "IsWaiting", &NPC::IsWaiting
+        "IsWaiting", &NPC::IsWaiting,
+        "ClearWaitDuration", &NPC::ClearWaitDuration,
+        "GetPosition", &NPC::GetVec2Position,
+        "GetLastPlayerLocation", &NPC::GetLastPlayerLoc,
+        "IsMoving", &NPC::IsMoving
     );
 
     // register movement functions that depend on transform component
     auto movementTable = lua_state["Movement"].get_or_create<sol::table>();
     movementTable["Patrol"] = [&ecs](NPC& npc) { npc.Patrol(ecs); };
-    movementTable["MoveTo"] = [&ecs](NPC& npc, const glm::vec2& vec2) { npc.MoveTo(vec2, ecs); };
+    movementTable["MoveTo"] = [&ecs](NPC& npc, glm::vec2& vec2) { npc.MoveTo(vec2, ecs); };
     movementTable["ChasePlayer"] = [&ecs, &player](NPC& npc) 
     { 
         glm::vec2 pos = {player.GetPositionX(), player.GetPositionZ()};
+        npc.SetLastPlayerLoc(pos);
         npc.MoveTo(pos, ecs); 
+        return npc.IsMoving();
     };
 
     // register detection functions that depend on transform component
     auto detectionTable = lua_state["Detection"].get_or_create<sol::table>();
     detectionTable["SeePlayer"] = [&player, &ecs](NPC& npc) { return npc.SeePlayer(glm::vec2(player.GetPositionX(), player.GetPositionZ()), ecs); };
+    detectionTable["InMessageRange"] = [&ecs](NPC& npc, Message& msg, float range)
+    {
+        glm::vec2 curPos = npc.GetVec2Position(ecs);
+        glm::vec2 theirPos = msg.GetSender()->GetVec2Position(ecs);
+        float distance = glm::length(theirPos - curPos);
+        return distance < range;
+    };
 
     // register EventDispatcher table functions that depend on lua_state
     auto dispatchTable = lua_state["Dispatch"].get_or_create<sol::table>();
@@ -67,7 +80,9 @@ void registerScriptedMessage(sol::state& lua_state) {
     // register Message system
     lua_state.new_usertype<Message>("Message",
         sol::call_constructor,
-        sol::constructors<Message(Event, NPC*)>()
+        sol::constructors<Message(Event, NPC*)>(),
+        "GetEvent", &Message::GetEvent,
+        "GetSender", &Message::GetSender
     );
 }
 
