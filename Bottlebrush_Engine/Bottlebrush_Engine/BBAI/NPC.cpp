@@ -14,25 +14,25 @@ NPC::NPC(const std::filesystem::path& statesPath,
     m_Entity(entity),
     m_CurrentWaypoint(0),
     m_WaitTimeElapsed(0),
-    m_PatrolWaitDuration(1), 
-    m_Moving(false) {
+    m_PatrolWaitDuration(1),
+    m_WaitTimerDuration(0),
+    m_Moving(false)
+{
 
 }
 
 void NPC::Update(sol::state& lua_state, float deltaTime) {
     m_DeltaTime = deltaTime;
 	m_FSM.update(lua_state);
+
+    if (IsWaiting() && !m_Moving) m_WaitTimeElapsed += m_DeltaTime;
 }
 
 void NPC::MoveTo(const glm::vec2& targetPos, ECS& ecs, float offset)
 {
-    // get transform
-    const auto& transform = m_Entity.GetComponent<TransformComponent>(ecs.getReg());
-    // get x and z position as vec2
-    const glm::vec2 pos = {transform.position.x, transform.position.z};
-
-    // call move to function
-    m_Moving = !Movement::MoveTo(pos, targetPos, m_current_speed, m_acceleration_rate, m_direction, m_DeltaTime, offset);
+    // MoveTo returns true if it has reached that destination
+    m_Moving = !Movement::MoveTo(GetVec2Position(ecs), targetPos, 
+        m_current_speed, m_acceleration_rate, m_direction, m_DeltaTime, offset);
 }
 
 void NPC::AddWaypoint(glm::vec2 point)
@@ -47,30 +47,56 @@ void NPC::Patrol(ECS& ecs)
 
     MoveTo(m_Waypoints[m_CurrentWaypoint], ecs);
 
-    if (m_Moving) return;
-
-    m_WaitTimeElapsed += m_DeltaTime;
-    // waits for a duration
-    if (m_WaitTimeElapsed > m_PatrolWaitDuration) {
+    // waits for the timer duration and not moving
+    if (!IsWaiting() && !m_Moving) 
+    {
+        m_WaitTimeElapsed = 0; // reset time elapsed
         m_CurrentWaypoint++; // move to next waypoint
-        m_WaitTimeElapsed = 0;
     }
 }
 
 bool NPC::SeePlayer(const glm::vec2& targetPos, ECS& ecs, float coneDistance, float fov)
 {
-    // get transform
-    const auto& transform = m_Entity.GetComponent<TransformComponent>(ecs.getReg());
-    // get x and z position as vec2
-    const glm::vec2 pos = {transform.position.x, transform.position.z};
-
-    return Movement::SeeTarget(pos, targetPos, m_direction, coneDistance, fov);
+    return Movement::SeeTarget(GetVec2Position(ecs), targetPos, m_direction, coneDistance, fov);
 }
 
 bool NPC::IsMoving()
 {
     return m_Moving;
 }
+
+void NPC::StopMoving()
+{
+    m_Moving = false;
+    ClearWaitDuration();
+}
+
+glm::vec2 NPC::GetVec2Position(ECS& ecs) 
+{
+    // get transform
+    const auto& transform = m_Entity.GetComponent<TransformComponent>(ecs.getReg());
+    // get x and z position as vec2
+    const glm::vec2 pos = {transform.position.x, transform.position.z};
+
+    return pos;
+}
+
+void NPC::SetWaitDuration(float wait)
+{
+    m_WaitTimerDuration = wait;
+}
+
+void NPC::ClearWaitDuration()
+{
+    m_WaitTimerDuration = 0;
+    m_WaitTimeElapsed = 0;
+}
+
+bool NPC::IsWaiting()
+{
+    return m_WaitTimeElapsed < m_WaitTimerDuration;
+}
+
 
 float& NPC::GetCurrentSpeed()
 {

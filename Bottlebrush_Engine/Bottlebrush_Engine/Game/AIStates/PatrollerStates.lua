@@ -25,10 +25,17 @@ Global = {
 Idle = {
 	onEnter = function(NPC)
 		print("Entered Idle state");
+		NPC:StopMoving();
+		NPC:SetWaitDuration(5.0);
 	end,
 
 	Update = function(NPC)
-		FSM.ChangeState(NPC, "Patrol");
+		if not NPC:IsWaiting() then 
+			FSM.ChangeState(NPC, "Patrol");
+		end
+		if Detection.SeePlayer(NPC) then
+			FSM.ChangeState(NPC, "Chase");
+		end	
 	end,
 
 	onExit = function(NPC)
@@ -44,16 +51,39 @@ Idle = {
 Patrol = {
 	onEnter = function(NPC)
 		print("Entered Patrol state");
+		NPC:SetWaitDuration(3.0);
 	end,
 
 	Update = function(NPC)
 		Movement.Patrol(NPC);
 		if Detection.SeePlayer(NPC) then
-			print ("Seen in lua")
+			FSM.ChangeState(NPC, "Chase");
 		end	
 	end,
 
 	onExit = function(NPC)
 		print("Exiting Patrol state");
+	end
+}
+
+-------------------------------------------------------------------------------
+
+-- create the chase state
+
+-------------------------------------------------------------------------------
+Chase = {
+	onEnter = function(NPC)
+		print("Entered Chase state");
+	end,
+
+	Update = function(NPC)
+		Movement.ChasePlayer(NPC);
+		if not Detection.SeePlayer(NPC) then
+			FSM.ChangeState(NPC, "Idle");
+		end
+	end,
+
+	onExit = function(NPC)
+		print("Exiting Chase state");
 	end
 }
