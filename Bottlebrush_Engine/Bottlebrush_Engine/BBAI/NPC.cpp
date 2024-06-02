@@ -27,12 +27,12 @@ void NPC::Update(sol::state& lua_state, float deltaTime) {
     m_DeltaTime = deltaTime;
 	m_FSM.update(lua_state);
 
-    if (IsWaiting()) m_WaitTimeElapsed += m_DeltaTime;
+    if (IsWaiting() && !m_Moving) m_WaitTimeElapsed += m_DeltaTime;
 }
 
 void NPC::MoveTo(const glm::vec2& targetPos, ECS& ecs, float offset)
 {
-    // call move to function
+    // MoveTo returns true if it has reached that destination
     m_Moving = !Movement::MoveTo(GetVec2Position(ecs), targetPos, 
         m_current_speed, m_acceleration_rate, m_direction, m_DeltaTime, offset);
 }
@@ -49,12 +49,10 @@ void NPC::Patrol(ECS& ecs)
 
     MoveTo(m_Waypoints[m_CurrentWaypoint], ecs);
 
-    if (m_Moving) return;
-    SetWaitDuration(m_PatrolWaitDuration);
-
-    // waits for a duration
-    if (!IsWaiting()) {
-        ClearWaitDuration();
+    // waits for the timer duration and not moving
+    if (!IsWaiting() && !m_Moving) 
+    {
+        m_WaitTimeElapsed = 0; // reset time elapsed
         m_CurrentWaypoint++; // move to next waypoint
     }
 }
@@ -93,7 +91,7 @@ void NPC::StopMoving()
     ClearWaitDuration();
 }
 
-const glm::vec2 NPC::GetVec2Position(ECS& ecs) 
+glm::vec2 NPC::GetVec2Position(ECS& ecs) 
 {
     // get transform
     const auto& transform = m_Entity.GetComponent<TransformComponent>(ecs.getReg());

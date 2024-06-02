@@ -66,12 +66,6 @@ public:
     bool IsMoving();
 
     /// @author Alan
-    /// @brief gets transform component and returns in position in (x,z) format
-    /// @param ecs register to get transform component
-    /// @return floor position (x,z)
-    const glm::vec2 GetVec2Position(ECS& ecs);
-
-    /// @author Alan
     /// @brief stops any movement input and clears wait timers
     void StopMoving();
 
@@ -119,4 +113,10 @@ private:
     float m_acceleration_rate = 0.1f;
     float m_deceleration_rate = 0.1f;
     glm::vec2 m_direction = {1, 1}; // direction that the NPC is facing
+
+    /// @author Alan
+    /// @brief gets transform component and returns in position in (x,z) format
+    /// @param ecs register to get transform component
+    /// @return floor position (x,z)
+    glm::vec2 GetVec2Position(ECS& ecs);
 };
