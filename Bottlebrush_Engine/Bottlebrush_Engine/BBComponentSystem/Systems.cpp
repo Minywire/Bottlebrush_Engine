@@ -200,32 +200,32 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, Rende
             ->SetUniform1i("gGrayscale", grayscale);
         renderEngine.GetShader(terrainShader)->SetUniform1i("gTex", 0);
         renderEngine.GetShader(terrainShader)
-            ->SetUniform3fv("gReversedLightDir", {-0.2f, 0.7f, -0.4f});
+            ->SetUniform3fv("gReversedLightDir", { -0.2f, 0.7f, -0.4f });
 
         // draw
         terrain.GetMesh()->SetTexture(0);
         renderEngine.Draw(terrainShader, *terrain.GetMesh()->GetVertexArray(),
-                          terrain.GetElements().size());
+            terrain.GetElements().size());
     }
 }
 
-void Systems::updateTransformComponent(ECS &ecs, const std::string& tag, glm::vec3 trans, glm::vec3 rot)
+void Systems::updateTransformComponent(ECS& ecs, const std::string& tag, glm::vec3 trans, glm::vec3 rot)
 {
     auto group = ecs.GetAllEntitiesWith<TransformComponent, TagComponent>();
 
-    for(auto entity : group)
+    for (auto entity : group)
     {
-        auto& currentEntityComponent =  group.get<TransformComponent>(entity);
-        if(group.get<TagComponent>(entity).tag == tag)
+        auto& currentEntityComponent = group.get<TransformComponent>(entity);
+        if (group.get<TagComponent>(entity).tag == tag)
         {
-//            currentEntityComponent.position = trans; //can't do this since the component passed in is a const reference so im currently trying to find a proper way to do it.
-//            currentEntityComponent.rotation = rot;
+            //            currentEntityComponent.position = trans; //can't do this since the component passed in is a const reference so im currently trying to find a proper way to do it.
+            //            currentEntityComponent.rotation = rot;
         }
     }
 
 }
 
-void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<std::string, Terrain> & sceneTerrain)
+void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<std::string, Terrain>& sceneTerrain)
 {
     auto group = ecs.GetAllEntitiesWith<TransformComponent, AIControllerComponent>();
 
@@ -241,11 +241,12 @@ void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<st
             if (npc.GetCurrentSpeed() <= 0) continue;
 
             npc.GetCurrentSpeed() -= npc.GetDecceleration();
-        } else { // accelerate to max speed
-            if (npc.GetCurrentSpeed() <= npc.GetMaxSpeed()) 
+        }
+        else { // accelerate to max speed
+            if (npc.GetCurrentSpeed() <= npc.GetMaxSpeed())
                 npc.GetCurrentSpeed() += npc.GetAcceleration();
         }
-        
+
         // @Debug Line
         //std::cout << "speed: " << move.current_speed << std::endl;
 
@@ -278,9 +279,41 @@ void Systems::updateAI(ECS& ecs, sol::state& lua_state, float deltaTime) {
 
     for (auto entity : group)
     {
-      auto& aic = group.get<AIControllerComponent>(entity);
-      lua_state.script_file(aic.npc.GetFSM().GetStatePath().string());
+        auto& aic = group.get<AIControllerComponent>(entity);
+        lua_state.script_file(aic.npc.GetFSM().GetStatePath().string());
 
-      aic.npc.Update(lua_state, deltaTime);
+        aic.npc.Update(lua_state, deltaTime);
+    }
+}
+
+void Systems::updateCameraTerrainHeight(ECS& ecs, const std::unordered_map<std::string, Terrain> & terrains, Camera & camera, float offset_y, bool restrict_camera)
+{
+    auto group = ecs.GetAllEntitiesWith<TerrainComponent, TransformComponent>();
+
+
+    for (auto entity : group)
+    {
+        auto& currentTerrainComp = group.get<TerrainComponent>(entity);
+        auto& terrainTransform = group.get<TransformComponent>(entity);
+        auto& currentTerrain = terrains.at(currentTerrainComp.terrain_path);
+
+        glm::mat4 model = {1};
+        model = glm::translate(model, terrainTransform.position);
+        model = glm::rotate(model, glm::radians(-90.f), glm::vec3(1,0,0));
+        model = glm::rotate(model, glm::radians(terrainTransform.rotation.x), glm::vec3(1,0,0));
+        model = glm::rotate(model, glm::radians(terrainTransform.rotation.y), glm::vec3(0,1,0));
+        model = glm::rotate(model, glm::radians(terrainTransform.rotation.z), glm::vec3(0,0,1));
+        model = glm::scale(model, terrainTransform.scale);
+
+        if (restrict_camera) 
+        {
+            glm::vec3 local_position =
+                glm::inverse(model) * glm::vec4(camera.GetPosition(), 1);
+
+            std::optional<float> terrain_height =
+                currentTerrain.GetHeight(local_position.x, local_position.z); //std::optional because the terrain spec was allegedly changed to suit AI interfaces.
+
+            camera.SetPositionY(terrain_height.value() + offset_y);
+        }
     }
 }
