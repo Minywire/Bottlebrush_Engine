@@ -127,15 +127,6 @@ public:
     static void drawTerrain(const ECS& ecs, const ShaderType& terrainShader, RenderEngine& renderEngine, std::unordered_map<std::string, Terrain> & sceneTerrain, bool grayscale, glm::mat4 projection, glm::mat4 view);
 
     /**
-     *
-     * @param ecs The registry for which to update the transform components to
-     * @param tag The tag component used for entity comparison
-     * @param trans The translate to be applied
-     * @param rot The rotation to be applied
-     */
-    void updateTransformComponent(ECS &ecs, const std::string& tag, glm::vec3 trans, glm::vec3 rot);
-
-    /**
      * @author Alan
      * @param ecs The registry for which to update components to
      * @param deltaTime to translate in accordance to FPS
@@ -153,5 +144,5 @@ public:
      */
     static void updateAI(ECS &ecs, sol::state &lua_state, float deltaTime);
 
-    static void updateCameraTerrainHeight(ECS& ecs, const std::unordered_map<std::string, Terrain> & terrains, Camera & camera, float offset_y);
+    static void updateCameraTerrainHeight(const ECS& ecs, const std::unordered_map<std::string, Terrain> & terrains, Camera & camera, float offset_y);
 };

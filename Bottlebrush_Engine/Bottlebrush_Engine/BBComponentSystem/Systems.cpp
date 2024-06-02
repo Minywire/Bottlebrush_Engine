@@ -209,22 +209,6 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, Rende
     }
 }
 
-void Systems::updateTransformComponent(ECS &ecs, const std::string& tag, glm::vec3 trans, glm::vec3 rot)
-{
-    auto group = ecs.GetAllEntitiesWith<TransformComponent, TagComponent>();
-
-    for(auto entity : group)
-    {
-        auto& currentEntityComponent =  group.get<TransformComponent>(entity);
-        if(group.get<TagComponent>(entity).tag == tag)
-        {
-//            currentEntityComponent.position = trans; //can't do this since the component passed in is a const reference so im currently trying to find a proper way to do it.
-//            currentEntityComponent.rotation = rot;
-        }
-    }
-
-}
-
 void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<std::string, Terrain> & sceneTerrain)
 {
     auto group = ecs.GetAllEntitiesWith<TransformComponent, AIControllerComponent>();
@@ -285,7 +269,7 @@ void Systems::updateAI(ECS& ecs, sol::state& lua_state, float deltaTime) {
     }
 }
 
-void Systems::updateCameraTerrainHeight(ECS& ecs, const std::unordered_map<std::string, Terrain> & terrains, Camera & camera,  float offset_y)
+void Systems::updateCameraTerrainHeight(const ECS& ecs, const std::unordered_map<std::string, Terrain> & terrains, Camera & camera,  float offset_y)
 {
     auto group = ecs.GetAllEntitiesWith<TerrainComponent, TransformComponent>();
 
