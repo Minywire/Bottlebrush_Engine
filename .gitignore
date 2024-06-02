@@ -50,6 +50,7 @@
 
 # CMake
 cmake-build-*/
+Bottlebrush_Engine/Bottlebrush_Engine/CMakeSettings.json
 
 # Mongo Explorer plugin
 .idea/**/mongoSettings.xml
