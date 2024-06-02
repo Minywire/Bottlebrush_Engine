@@ -275,9 +275,9 @@ void Systems::updateCameraTerrainHeight(const ECS& ecs, const std::unordered_map
 
     for (auto entity : group)
     {
-        auto& currentTerrainComp = group.get<TerrainComponent>(entity);
-        auto& terrainTransform = group.get<TransformComponent>(entity);
-        auto& currentTerrain = terrains.at(currentTerrainComp.terrain_path);
+        const auto& currentTerrainComp = group.get<TerrainComponent>(entity);
+        const auto& terrainTransform = group.get<TransformComponent>(entity);
+        const auto& currentTerrain = terrains.at(currentTerrainComp.terrain_path);
 
         glm::mat4 model = {1};
         model = glm::translate(model, terrainTransform.position);
