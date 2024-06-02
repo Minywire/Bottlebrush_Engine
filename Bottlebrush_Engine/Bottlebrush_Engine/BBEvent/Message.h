@@ -4,22 +4,20 @@
 
 #pragma once
 
-#include "NPC.h"
+#include <string>
 
-enum class Event 
-{ 
-	PLAYERSPOTTED
-};
+class NPC;
 
 /// @author Alan
-/// @brief Class used to relaying an event to all listeners
-class Message
+/// @brief Struct used to relaying an event to all listeners
+struct Message
 {
 public:
-    Message(Event event, NPC* sender);
+    Message(std::string event, NPC* sender)
+        : m_Sender(sender), m_Event(event) {}
 
-    NPC* GetSender();
+    NPC* GetSender() { return m_Sender; }
 private:
-    Event m_Event;
+    std::string m_Event;
     NPC* m_Sender;
 };

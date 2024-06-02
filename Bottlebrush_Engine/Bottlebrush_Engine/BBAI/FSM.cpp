@@ -4,7 +4,6 @@
 
 #include "FSM.h"
 #include "NPC.h"
-#include "Message.h"
 
 FSM::FSM(NPC* FSMOwner, const std::filesystem::path& statesPath, const std::string& initialState) : 
     m_npcReference(FSMOwner),
@@ -64,19 +63,17 @@ std::filesystem::path& FSM::GetStatePath()
     return m_statePath; 
 }
 
-bool FSM::HandleMessage(sol::state& lua_state, Message& msg)
+void FSM::HandleMessage(sol::state& lua_state, Message& msg)
 {
     // first see if the current state is valid and that it can handle
     // the message
     if (lua_state[m_currentState]["onMessage"].valid()) {
         lua_state[m_currentState]["onMessage"](*m_npcReference, msg);
-        return true;
+        return; // don't worry about the global if there is one
     }
     // if not, and if a global state has been implemented, send
     // the message to the global state
     if (lua_state[m_globalState]["onMessage"].valid()) {
         lua_state[m_globalState]["onMessage"](*m_npcReference, msg);
-        return true;
     }
-    return false;
 }

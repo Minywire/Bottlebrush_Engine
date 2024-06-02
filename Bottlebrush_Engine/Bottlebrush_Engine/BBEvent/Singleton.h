@@ -6,8 +6,6 @@
 
 #include <memory>
 
-#include "EventDispatcher.h"
-
 /// @author Alan
 /// @brief singleton pattern provider
 /// @tparam T any object type
@@ -43,7 +41,3 @@ private:
 // Definition and initialization of the static member
 template <typename T>
 std::unique_ptr<T> Singleton<T>::_instance = nullptr;
-
-typedef Singleton<EventDispatcher> _EventDispatcher;
-
-#define EVENTDISPATCHER _EventDispatcher::Instance()
