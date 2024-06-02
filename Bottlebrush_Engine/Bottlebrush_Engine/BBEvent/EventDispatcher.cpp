@@ -4,19 +4,14 @@
 
 #include "EventDispatcher.h"
 
-EventDispatcher::EventDispatcher() 
+void EventDispatcher::DispatchMessage(sol::state& lua_state, Message& msg, NPC* sender, NPC* receiver)
 {
-
-}
-
-void EventDispatcher::DispatchMessage(sol::state& lua_state, Message& msg, NPC* sender, NPC* reciever)
-{
-    if (!reciever) 
+    if (!receiver) 
     {
         std::cout << "Receiver NPC is invalid" << std::endl;
         return;
     }
-    Send(lua_state, msg, reciever);
+    Send(lua_state, msg, receiver);
 }
 
 void EventDispatcher::Send(sol::state& lua_state, Message& msg, NPC* receiver) 
