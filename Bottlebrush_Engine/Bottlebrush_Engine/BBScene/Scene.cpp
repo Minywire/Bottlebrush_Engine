@@ -271,8 +271,7 @@ void Scene::update()
 
         Systems::updateCameraTerrainHeight(bbECS, 
                                            resources.getSceneTerrain(), 
-                                           mainCamera, 
-                                           10.0f, 
+                                           mainCamera,  
                                            restrictCamera);
 
         Systems::drawModels(bbECS, ShaderType::Default, *renderEngine,

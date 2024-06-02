@@ -156,5 +156,5 @@ public:
     /**
     * 
     */
-    static void updateCameraTerrainHeight(ECS& ecs, const std::unordered_map<std::string, Terrain> & terrains, Camera & camera, float offset_y, bool restrict_camera);
+    static void updateCameraTerrainHeight(ECS& ecs, const std::unordered_map<std::string, Terrain> & terrains, Camera & camera, bool restrict_camera, float offset_y = 10.0f);
 };

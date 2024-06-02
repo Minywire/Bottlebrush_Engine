@@ -286,7 +286,7 @@ void Systems::updateAI(ECS& ecs, sol::state& lua_state, float deltaTime) {
     }
 }
 
-void Systems::updateCameraTerrainHeight(ECS& ecs, const std::unordered_map<std::string, Terrain> & terrains, Camera & camera, float offset_y, bool restrict_camera)
+void Systems::updateCameraTerrainHeight(ECS& ecs, const std::unordered_map<std::string, Terrain> & terrains, Camera & camera, bool restrict_camera,  float offset_y)
 {
     auto group = ecs.GetAllEntitiesWith<TerrainComponent, TransformComponent>();
 
