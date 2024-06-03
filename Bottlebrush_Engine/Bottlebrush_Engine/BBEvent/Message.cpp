@@ -9,9 +9,9 @@ Message::Message(std::string event, NPC* sender) : m_Sender(sender), m_Event(eve
 
 }
 
-NPC* Message::GetSender() 
+NPC& Message::GetSender() 
 { 
-	return m_Sender; 
+	return *m_Sender; 
 }
 
 std::string& Message::GetEvent()
