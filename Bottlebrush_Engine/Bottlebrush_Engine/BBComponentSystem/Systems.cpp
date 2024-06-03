@@ -268,7 +268,7 @@ void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<st
             if (!heightOpt.has_value()) continue;
 
             // set the new y position
-            transform.position.y = heightOpt.value() + 10; // plus an offset, should be taken out once other physics is implemented
+            transform.position.y = heightOpt.value() + 10 * transform.scale.y; // plus an offset, should be taken out once other physics is implemented
         }
     }
 }
