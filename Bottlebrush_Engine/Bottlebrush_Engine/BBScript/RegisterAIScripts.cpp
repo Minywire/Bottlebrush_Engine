@@ -25,7 +25,7 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
         "IsWaiting", &NPC::IsWaiting,
         "ClearWaitDuration", &NPC::ClearWaitDuration,
         "GetPosition", &NPC::GetVec2Position,
-        "GetLastPlayerLocation", &NPC::GetLastPlayerLoc,
+        "GetLastMoveTo", &NPC::GetLastMoveTo,
         "IsMoving", &NPC::IsMoving
     );
 
@@ -36,7 +36,6 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
     movementTable["ChasePlayer"] = [&ecs, &player](NPC& npc) 
     { 
         glm::vec2 pos = {player.GetPositionX(), player.GetPositionZ()};
-        npc.SetLastPlayerLoc(pos);
         npc.MoveTo(pos, ecs); 
         return npc.IsMoving();
     };
@@ -47,7 +46,7 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
     detectionTable["InMessageRange"] = [&ecs](NPC& npc, Message& msg, float range)
     {
         glm::vec2 curPos = npc.GetVec2Position(ecs);
-        glm::vec2 theirPos = msg.GetSender()->GetVec2Position(ecs);
+        glm::vec2 theirPos = msg.GetSender().GetLastMoveTo();
         float distance = glm::length(theirPos - curPos);
         return distance < range;
     };

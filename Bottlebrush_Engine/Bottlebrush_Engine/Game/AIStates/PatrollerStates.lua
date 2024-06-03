@@ -92,7 +92,7 @@ Chase = {
 	end,
 
 	Update = function(NPC)
-		Movement.MoveTo(NPC, NPC:GetLastPlayerLocation());
+		Movement.MoveTo(NPC, NPC:GetLastMoveTo());
 		if Detection.SeePlayer(NPC) then
 			Movement.ChasePlayer(NPC);
 			Dispatch.SendMessage("PlayerSpotted", NPC);

@@ -88,9 +88,10 @@ public:
     /// @return wait time > wait timer
     bool IsWaiting();
 
-    void SetLastPlayerLoc(glm::vec2 loc);
-
-    glm::vec2& GetLastPlayerLoc();
+    /// @author Alan
+    /// @brief gets the last movement command position
+    /// @return a world coord
+    glm::vec2& GetLastMoveTo();
 
     float& GetCurrentSpeed();
 
@@ -117,13 +118,13 @@ private:
     float m_WaitTimerDuration;   // wait timer for miscellanenous reasons
 
     //movement properties
-    float m_max_speed = 100.f;
-    float m_current_speed = 0.f;
-    float m_acceleration_rate = 0.1f;
-    float m_deceleration_rate = 0.1f;
-    glm::vec2 m_direction = {1, 1}; // direction that the NPC is facing
+    float m_max_speed;
+    float m_current_speed;
+    float m_acceleration_rate;
+    float m_deceleration_rate;
+    glm::vec2 m_direction; // direction that the NPC is facing
 
-    glm::vec2 m_LastPlayerLoc = {0, 0}; // last known player location
+    glm::vec2 m_LastMoveTo; // last movement command
 
     
 };

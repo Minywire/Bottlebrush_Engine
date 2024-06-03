@@ -18,7 +18,13 @@ NPC::NPC(const std::filesystem::path& statesPath,
     m_WaitTimeElapsed(0),
     m_PatrolWaitDuration(1),
     m_WaitTimerDuration(0),
-    m_Moving(false)
+    m_Moving(false),
+    m_max_speed(100.f),
+    m_current_speed(0.f),
+    m_acceleration_rate(0.1f),
+    m_deceleration_rate(0.1f),
+    m_direction(1, 1),
+    m_LastMoveTo(0.0f, 0.0f)
 {
 
 }
@@ -35,6 +41,9 @@ void NPC::MoveTo(const glm::vec2& targetPos, ECS& ecs, float offset)
     // MoveTo returns true if it has reached that destination
     m_Moving = !Movement::MoveTo(GetVec2Position(ecs), targetPos, 
         m_current_speed, m_acceleration_rate, m_direction, m_DeltaTime, offset);
+
+    // track last target pos
+    m_LastMoveTo = targetPos;
 }
 
 void NPC::AddWaypoint(glm::vec2 point)
@@ -99,14 +108,10 @@ glm::vec2 NPC::GetVec2Position(ECS& ecs)
     return pos;
 }
 
-void NPC::SetLastPlayerLoc(glm::vec2 loc)
-{ 
-    m_LastPlayerLoc = loc;
-}
 
-glm::vec2& NPC::GetLastPlayerLoc()
+glm::vec2& NPC::GetLastMoveTo()
 {
-    return m_LastPlayerLoc;
+    return m_LastMoveTo;
 }
 
 void NPC::SetWaitDuration(float wait)
