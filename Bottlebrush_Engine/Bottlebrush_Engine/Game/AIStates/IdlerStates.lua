@@ -14,6 +14,10 @@ Global = {
 
 	onExit = function(NPC)
 		print("Exiting Global state");
+	end,
+	
+	onMessage = function(NPC, Message)
+		print("Message Received");
 	end
 }
 
@@ -31,6 +35,7 @@ Idle = {
 
 	Update = function(NPC)
 		if Detection.SeePlayer(NPC) then
+			Dispatch.SendMessage("PlayerSpotted", NPC);
 			FSM.ChangeState(NPC, "Chase");
 		end	
 	end,

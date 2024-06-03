@@ -99,6 +99,7 @@ include_directories(BBScript)
 include_directories(RenderEngine)
 include_directories(BBResourceManager)
 include_directories(BBAI)
+include_directories(BBEvent)
 include_directories(BBMD2)
 
 # Add source to this project's executable.
@@ -113,6 +114,7 @@ add_subdirectory(BBScript)
 add_subdirectory(RenderEngine)
 add_subdirectory(BBResourceManager)
 add_subdirectory(BBAI)
+add_subdirectory(BBEvent)
 add_subdirectory(BBMD2)
 
 add_custom_command(
@@ -144,6 +146,7 @@ target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBScript)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE RenderEngine)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBResourceManager)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBAI)
+target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBEvent)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBMD2)
 
 if (CMAKE_VERSION VERSION_GREATER 3.13)
