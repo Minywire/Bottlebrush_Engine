@@ -32,6 +32,7 @@ Window::Window(WindowMode window_mode, CursorMode cursor_mode,
   glfwWindowHint(GLFW_SCALE_TO_MONITOR, GLFW_TRUE);
   glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
   glfwWindowHint(GLFW_SAMPLES, kMultiSamples);
+  glfwWindowHint(GLFW_DEPTH_BITS, 32);
 }
 
 void Window::Create() {
