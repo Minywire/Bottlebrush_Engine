@@ -7,6 +7,7 @@
 #include "FSM.h"
 #include "Movement.h"
 #include "Entity.h"
+#include "Message.h"
 
 /** forward decl to avoid circle linking */
 class ECS;
@@ -51,6 +52,13 @@ public:
     /// @return whether Player is standing within the cone
     bool SeePlayer(const glm::vec2& targetPos, ECS& ecs, float coneDistance = 300, float fov = 180);
 
+    /// @author Alan
+    /// @brief uses the EventDispatcher, and sends a message to all NPCs
+    /// @param ecs register used to send a message to all NPCs
+    /// @param lua_state passed onto FSM::HandleMessage()
+    /// @param msg event message
+    void SendMessage(ECS& ecs, sol::state& lua_state, Message& msg);
+    
     /// @author Alan
     /// @brief see if NPC has movement input
     /// @return is NPC trying to move

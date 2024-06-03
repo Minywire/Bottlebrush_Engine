@@ -7,6 +7,7 @@
 #include "BBScript.h"
 #include "ECS.h"
 #include "Camera.h"
+#include "Message.h"
 
 namespace AIScripts {
 
