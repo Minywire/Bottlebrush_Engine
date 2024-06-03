@@ -17,13 +17,12 @@ Global = {
 	end,
 
 	onMessage = function(NPC, Message)
-		print("Messaged")
-		--if Dispatch.InMessageRange(NPC, Message, 1000.0) then
+		if Dispatch.InMessageRange(NPC, Message, 1000.0) then
 			if Message:GetEvent() == "PlayerSpotted" then
 				Movement.MoveTo(NPC, Dispatch.GetSenderLocation(Message))
 				FSM.ChangeState(NPC, "Investigate");
 			end
-		--end
+		end
 	end
 }
 
@@ -66,7 +65,7 @@ Patrol = {
 	Update = function(NPC)
 		Movement.Patrol(NPC);
 		if Detection.SeePlayer(NPC) then
-			Dispatch.SendMessage("PlayerSpotted", NPC);
+			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
 			FSM.ChangeState(NPC, "Chase");
 		end	
 	end,
@@ -83,7 +82,6 @@ Patrol = {
 -------------------------------------------------------------------------------
 Chase = {
 	onEnter = function(NPC)
-		print("Chasing")
 		Movement.ChasePlayer(NPC);
 	end,
 
@@ -91,7 +89,7 @@ Chase = {
 		Movement.MoveTo(NPC, NPC:GetLastMoveTo());
 		if Detection.SeePlayer(NPC) then
 			Movement.ChasePlayer(NPC);
-			Dispatch.SendMessage("PlayerSpotted", NPC);
+			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
 		elseif not Detection.SeePlayer(NPC) and not NPC:IsMoving() then
 			FSM.ChangeState(NPC, "Idle");
 		end
@@ -109,14 +107,14 @@ Chase = {
 -------------------------------------------------------------------------------
 Investigate = {
 	onEnter = function(NPC)
-		print("Investigate")
+
 	end,
 
 	Update = function(NPC)
 		Movement.MoveTo(NPC, NPC:GetLastMoveTo());
 		if Detection.SeePlayer(NPC) then
 			Movement.ChasePlayer(NPC);
-			Dispatch.SendMessage("PlayerSpotted", NPC);
+			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
 		elseif not Detection.SeePlayer(NPC) and not NPC:IsMoving() then
 			FSM.ChangeState(NPC, "Idle");
 		end

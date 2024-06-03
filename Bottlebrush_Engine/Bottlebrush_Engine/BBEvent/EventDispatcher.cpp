@@ -6,13 +6,11 @@
 
 void EventDispatcher::DispatchMessage(sol::state& lua_state, Message& msg, NPC& receiver)
 {
-    if (msg.GetDelayTime() == 0) {
-        std::cout << "Instant Message" << std::endl;
-        Send(lua_state, msg, receiver);
-    } else {
-        std::cout << "Store Message" << std::endl;
-        m_MessageQue.insert(std::make_pair(msg, receiver));
-    }
+    // if no delay, send the message instantly
+    if (msg.GetDelayTime() == 0) Send(lua_state, msg, receiver);
+    // else store the message
+    else m_MessageQue.insert(std::make_pair(msg, receiver));
+    
 }
 
 void EventDispatcher::DispatchDelayedMessages(sol::state& lua_state, float deltaTime) 
@@ -28,14 +26,14 @@ void EventDispatcher::DispatchDelayedMessages(sol::state& lua_state, float delta
         m_TimeElapsed += deltaTime;
     }
 
+    // send all messages that the timer has elapsed, delete as we move to next message
     while (!m_MessageQue.empty() && m_MessageQue.begin()->first.GetDelayTime() <
            m_TimeElapsed) 
     {
         auto msg = m_MessageQue.begin()->first;
         auto& receiver = m_MessageQue.begin()->second;
-        std::cout << "Sending Stored Message" << std::endl;
         Send(lua_state, msg, receiver);
-        m_MessageQue.erase(m_MessageQue.begin());
+        m_MessageQue.erase(m_MessageQue.begin()); // erase current message after sending
     }
 }
 
