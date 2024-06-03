@@ -279,26 +279,12 @@ void Systems::updateCameraTerrainHeight(const ECS& ecs, const std::unordered_map
         const auto& terrainTransform = group.get<TransformComponent>(entity);
         const auto& currentTerrain = terrains.at(currentTerrainComp.terrain_path);
 
-        glm::mat4 model = {1};
-        model = glm::translate(model, terrainTransform.position);
-        model = glm::rotate(model, glm::radians(terrainTransform.rotation.x), glm::vec3(1,0,0));
-        model = glm::rotate(model, glm::radians(terrainTransform.rotation.y), glm::vec3(0,1,0));
-        model = glm::rotate(model, glm::radians(terrainTransform.rotation.z), glm::vec3(0,0,1));
-        model = glm::scale(model, terrainTransform.scale);
-
-        const glm::vec3 local_position =
-            glm::inverse(model) * glm::vec4(camera.GetPosition(), 1);
-
         const std::optional<float> terrain_height =
-            currentTerrain.GetHeight(local_position.x, local_position.z);
+            currentTerrain.GetHeight(camera.GetPosition().x, camera.GetPosition().z);
 
         if (terrain_height.has_value())
         {
             camera.SetPositionY(terrain_height.value() + offset_y);
         } 
-        else
-        {
-            camera.SetPositionY(0);
-        }
     }
 }

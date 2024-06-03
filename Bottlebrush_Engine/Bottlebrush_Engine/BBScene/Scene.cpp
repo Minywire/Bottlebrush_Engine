@@ -159,6 +159,7 @@ void Scene::init()
     glfwSetKeyCallback(window.GetContext(), KeyCallback);
     glfwSetCursorPosCallback(window.GetContext(), MouseCallback);
     glfwSetScrollCallback(window.GetContext(), ScrollCallback);
+    glfwWindowHint(GLFW_DEPTH_BITS, 32);  // Request a 32-bit depth buffer
 
    
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -167,7 +168,9 @@ void Scene::init()
     }
 
     glEnable(GL_DEPTH_TEST);
-
+    glEnable(GL_POLYGON_OFFSET_FILL);
+    glPolygonOffset(1.0, 1.0);
+    
     mainCamera.SetPosition(1000.0f, 100.0f, 1000.0f);
     mainCamera.SetSensitivity(0.05f);
     mainCamera.SetSpeed(100.0f);
@@ -271,7 +274,7 @@ void Scene::update()
 
         if (cameraRestriction)
         {
-            Systems::updateCameraTerrainHeight(bbECS, resources.getSceneTerrain(), mainCamera, 5.0f);
+            Systems::updateCameraTerrainHeight(bbECS, resources.getSceneTerrain(), mainCamera, 20.0f);
         }
 
         Systems::drawModels(bbECS, ShaderType::Default, *renderEngine,
