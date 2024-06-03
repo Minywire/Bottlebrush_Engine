@@ -69,6 +69,12 @@ public:
     void StopMoving();
 
     /// @author Alan
+    /// @brief gets transform component and returns in position in (x,z) format
+    /// @param ecs register to get transform component
+    /// @return floor position (x,z)
+    glm::vec2 GetVec2Position(ECS& ecs);
+
+    /// @author Alan
     /// @brief set a wait timer
     /// @param wait duration in seconds
     void SetWaitDuration(float wait);
@@ -117,12 +123,6 @@ private:
     float m_acceleration_rate;
     float m_deceleration_rate;
     glm::vec2 m_direction; // direction that the NPC is facing
-
-    /// @author Alan
-    /// @brief gets transform component and returns in position in (x,z) format
-    /// @param ecs register to get transform component
-    /// @return floor position (x,z)
-    glm::vec2 GetVec2Position(ECS& ecs);
 
     glm::vec2 m_LastMoveTo; // last movement command
 
