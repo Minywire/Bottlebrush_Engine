@@ -1,19 +1,33 @@
 -------------------------------------------------------------------------------
 
+-- create some useful animation functions just in Lua
+
+-------------------------------------------------------------------------------
+
+function setMovingAnimation(NPC)
+	if NPC:IsMoving() then
+		Animation.SetAnimation(NPC, "run");
+	elseif not NPC:IsMoving() then
+		Animation.SetAnimation(NPC, "stand");
+	end
+end
+
+-------------------------------------------------------------------------------
+
 -- create the global state
 
 -------------------------------------------------------------------------------
 Global = {
 	onEnter = function(NPC)
-		print("Entered Global state");
+		
 	end,
 
 	Update = function(NPC)
-
+		setMovingAnimation(NPC);
 	end,
 
 	onExit = function(NPC)
-		print("Exiting Global state");
+		
 	end,
 	
 	onMessage = function(NPC, Message)
@@ -34,11 +48,6 @@ Idle = {
 	end,
 
 	Update = function(NPC)
-		if NPC:IsMoving() then
-			Animation.SetAnimation(NPC, "run");
-		elseif not NPC:IsMoving() then
-			Animation.SetAnimation(NPC, "stand");
-		end
 		if Detection.SeePlayer(NPC) then
 			Dispatch.SendMessage("PlayerSpotted", NPC);
 			FSM.ChangeState(NPC, "Chase");
@@ -58,16 +67,10 @@ Idle = {
 Chase = {
 	onEnter = function(NPC)
 		print("Entered Chase state");
-		Animation.SetAnimation(NPC, "run");
 	end,
 
 	Update = function(NPC)
-		Movement.ChasePlayer(NPC) 
-		if NPC:IsMoving() then
-			Animation.SetAnimation(NPC, "run");
-		elseif not NPC:IsMoving() then
-			Animation.SetAnimation(NPC, "stand");
-		end
+		Movement.ChasePlayer(NPC)
 		if not Detection.SeePlayer(NPC) then
 			FSM.ChangeState(NPC, "Idle");
 		end
