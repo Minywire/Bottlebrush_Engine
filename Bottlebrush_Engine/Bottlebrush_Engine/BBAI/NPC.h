@@ -92,6 +92,8 @@ public:
 
     glm::vec2& GetDirection();
 
+    Entity& GetEntity();
+
     FSM& GetFSM();
 
 private:

@@ -57,9 +57,9 @@ void registerScriptedGLM(sol::state& lua_state) {
     );
 }
 
-void registerScriptedAnimation(sol::state& lua_state, ECS& ecs, std::unordered_map<std::string, BBMD2>& sceneMD2Models) {
+void registerScriptedAnimation(sol::state& lua_state, ECS& ecs) {
     auto animationTable = lua_state["Animation"].get_or_create<sol::table>();
-    animationTable["SetAnimation"] = [&ecs, &sceneMD2Models](NPC& npc, std::string animName) 
+    animationTable["SetAnimation"] = [&ecs](NPC& npc, std::string animName) 
     {
         auto& md2Comp = npc.GetEntity().GetComponent<MD2Component>(ecs.getReg());
 

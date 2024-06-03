@@ -101,7 +101,6 @@ struct MD2Header {
 
 class MD2Model {
 public:
-    MD2Model() = default;
     MD2Model(std::string filename, std::string texturefile);
     
     void displayModelDetails();
@@ -109,10 +108,9 @@ public:
     int GetSpecificAnim(std::string animName);
     std::string GetSpecificAnim(int animIndex);
 
-    int GetAnimationCurrentFrame(int animIndex, float interpolation);
-
     std::vector<std::string> AnimationNames();
     int getNumAnims() { return m_animation.size(); }
+    std::map<std::string, anim_md2>& getAnimations() { return m_animation; }
 
     Transform getTransform() { return m_transform; }
     glm::vec3 getPosition() { return m_transform.position; }

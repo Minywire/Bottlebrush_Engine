@@ -51,6 +51,8 @@ void Systems::createMD2ModelComponents(ECS &ecs, std::unordered_map<std::string,
         auto& currentModelComponent = group.get<MD2Component>(entity);
 
         generateMD2ModelFromComponent(currentModelComponent, sceneMD2Models);
+
+        currentModelComponent.animation = sceneMD2Models.at(currentModelComponent.model_path).getAnimations();
     }
 }
 
@@ -72,6 +74,7 @@ void Systems::RegisterAIFunctions(ECS& ecs, sol::state & lua_state, const Camera
     AIScripts::registerScriptedFSM(lua_state);
     AIScripts::registerScriptedNPC(lua_state, ecs, player);
     AIScripts::registerScriptedGLM(lua_state);
+    AIScripts::registerScriptedAnimation(lua_state, ecs);
 }
 
 void Systems::setLight(RenderEngine & renderEngine, const ShaderType & shaderType, glm::mat4 view)
@@ -131,9 +134,9 @@ void Systems::drawMD2Models(const ECS& ecs, const ShaderType& shaderType, Render
         auto& currentMD2Component = group.get<MD2Component>(entity);
         auto& currentTransformComponent = group.get<TransformComponent>(entity);
 
-        auto& currentMD2 = MD2s.at(currentMD2Component.model_path);
+        auto& MD2Model = MD2s.at(currentMD2Component.model_path);
         
-        int anim = currentMD2.getSpecificAnim(currentMD2.getCurrentAnimation());
+        int anim = MD2Model.getSpecificAnim(currentMD2Component.current_animation);
          
         glm::mat4 transform = {1};
         transform = glm::translate(transform, currentTransformComponent.position);
@@ -147,25 +150,35 @@ void Systems::drawMD2Models(const ECS& ecs, const ShaderType& shaderType, Render
         renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("projection", projection);
         renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("view", view);
         renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("model", transform);
-        renderEngine.GetShader(shaderType)->SetUniform1f("interpolation", currentMD2.getInterpolation());
+        renderEngine.GetShader(shaderType)->SetUniform1f("interpolation", currentMD2Component.interpolation);
         renderEngine.GetShader(shaderType)->SetUniform1i("texSampler1", 0);
 
-        currentMD2.setTexture();
-        renderEngine.Draw(shaderType, currentMD2.getVecArrays().at(currentMD2.getAnimationCurrentFrame(anim, currentMD2.getInterpolation())), currentMD2.getModelSize());
+        MD2Model.setTexture();
+        renderEngine.Draw(shaderType, MD2Model.getVecArrays().at(currentMD2Component.current_frame), MD2Model.getModelSize());
     }
 }
 
-void Systems::updateMD2Interpolation(const ECS& ecs, std::unordered_map<std::string, BBMD2>& MD2s, float deltaTime)
+void Systems::updateMD2Interpolation(ECS& ecs, std::unordered_map<std::string, BBMD2>& MD2s, float deltaTime)
 {
     auto group = ecs.GetAllEntitiesWith<MD2Component>();
 
     for (auto entity : group)
     {
         auto& currentMD2Component = group.get<MD2Component>(entity);
+        auto& interp = currentMD2Component.interpolation;
+        auto& currentFrame = currentMD2Component.current_frame;
+        auto& anim = currentMD2Component.animation;
+        auto& animName = currentMD2Component.current_animation;
 
-        auto& currentMD2 = MD2s.at(currentMD2Component.model_path);
+        if (currentFrame > anim[animName].endIndex || currentFrame < anim[animName].startIndex)
+            currentFrame = anim[animName].startIndex;
 
-        currentMD2.updateInterpolation(deltaTime);
+        if (interp >= 1.0f) {
+            interp = 0.f;
+            if (currentFrame <= anim[animName].endIndex) currentFrame++;
+        } else {
+            interp += deltaTime * currentMD2Component.anim_speed;
+        }
     }
 
 }

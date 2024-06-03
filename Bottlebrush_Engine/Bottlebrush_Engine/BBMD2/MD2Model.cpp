@@ -280,19 +280,6 @@ void MD2Model::InitBuffers()
     
 }
 
-int MD2Model::GetAnimationCurrentFrame(int animIndex, float interpolation)
-{
-    std::string animName = GetSpecificAnim(animIndex);
-    
-    if (m_currentFrame > m_animation[animName].endIndex || m_currentFrame < m_animation[animName].startIndex)
-        m_currentFrame = m_animation[animName].startIndex;
-
-    if (interpolation >= 1.0f && m_currentFrame <= m_animation[animName].endIndex)
-        m_currentFrame++;
-
-    return m_currentFrame;
-}
-
 std::vector<std::string> MD2Model::AnimationNames()
 {
     std::vector<std::string> anims;

@@ -141,6 +141,11 @@ glm::vec2& NPC::GetDirection()
     return m_direction;
 }
 
+Entity& NPC::GetEntity()
+{
+    return m_Entity;
+}
+
 FSM& NPC::GetFSM() 
 { 
 	return m_FSM; 
