@@ -19,7 +19,6 @@ Global = {
 	onMessage = function(NPC, Message)
 		if Dispatch.InMessageRange(NPC, Message, 1000.0) then
 			if Message.Event == "PlayerSpotted" then
-				print("read")
 				Movement.MoveTo(NPC, Dispatch.GetSenderLocation(Message))
 				FSM.ChangeState(NPC, "Investigate");
 			end
