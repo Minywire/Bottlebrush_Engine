@@ -1,10 +1,22 @@
 #version 330 core
 
-out vec4 frag_col;
+uniform bool gGrayscale;
+uniform sampler2D gTex;
+uniform vec3 gReversedLightDir;
 
-in float height;
+layout (location = 0) out vec4 FragCol;
+
+in vec4 TexCol;
+in vec2 Tex;
+in vec3 WorldPos;
+in vec3 Normal;
 
 void main() {
-    float shift = (height + 16.0f) / 32.0f;
-    frag_col = vec4(shift, shift, shift, 1.0f);
+    vec4 Colour = texture(gTex, Tex);
+    vec3 Normal = normalize(Normal);
+    float Diffuse = max(0.0, dot(Normal, gReversedLightDir));
+    Diffuse = max(0.3, Diffuse);
+
+    if (gGrayscale) FragCol = TexCol;
+    else FragCol = TexCol * Colour * Diffuse;
 }

@@ -1,17 +1,19 @@
 //
 // Created by Marco Garzon Lara on 27/11/2023.
-// Edited by Alan Brunet on 16/03/24
+// Edited by Alan on 16/03/24
 //
 #pragma once
 
 #include "VertexArray.h"
 #include "Shader.h"
 
-enum class ShaderType { Default, Pixelated, Water, Shadowmap, Skybox, Terrain };
+/// @author Alan
+/// @brief enum to specify which shader is being used
+enum class ShaderType { Default, Pixelated, Water, Shadowmap, Skybox, Terrain, MD2 };
 
-/// @author Alan Brunet
-/// @brief Base class for rendering objects. It contains member pointers to a Vertex Array,
-/// Vertex Buffer, Index Buffer, and a Shader
+/// @author Alan
+/// @brief Base class for rendering objects.
+/// It contains member pointers to a Shader.
 class RenderEngine
 {
 protected:
@@ -20,28 +22,49 @@ public:
     RenderEngine(){};
     virtual ~RenderEngine() = default;
 
-    /// @author Alan Brunet
+    /// @author Alan
     /// @brief glClearColor()
     virtual void Clear() const = 0;
 
-    /// @author Alan Brunet
-    /// @brief This needs to be called within the draw loop. Uses member pointers to bind a Vertex Array (which has a Vertex Buffer, its layout and Index Buffer bound)
-    /// and index count of how many indices there is
+    /// @author Alan
+    /// @brief Draws a model with triangle polygons
+    /// This needs to be called within the draw loop. 
+    /// @param shaderType is the shader program to be used
+    /// @param va is the Vertex Array to bind and use
+    /// @param indexCount is the total count of indices in that Vertex array
     virtual void Draw(ShaderType shaderType, const VertexArray& va, const unsigned int indexCount) = 0;
 
+    /// @author Marco
+    /// @brief Draws a model with a vao (no index buffer)
+    /// This needs to be called within the draw loop.
+    /// @param shaderType is the shader program to be used
+    /// @param va is the bound Vertex Array
+    /// @param size is the data size of the specified VAO
+    virtual void Draw(ShaderType shaderType, unsigned int va, unsigned int vertexCount) = 0;
+
+    /// @author Alan
+    /// @brief Draws using TriangleStrips.
+    /// e.g, for Terrain
+    /// @param shaderType the shader program to be used
+    /// @param va is the Vertex Array to bind and use
+    /// @param numStrips is the number of strips that needs to be drawn
+    /// @param numTriangles is the number of triangles that will be drawn
     virtual void DrawTriangleStrips(
         ShaderType shaderType,
         const VertexArray& va,
         const int numStrips,
         const int numTriangles) = 0;
 
-    /// @author Alan Brunet
-    /// @brief This just display current graphics API - version, vendor, and
-    /// renderer
+    /// @author Alan
+    /// @brief This just display current graphics API 
+    /// - version, vendor, and renderer
     virtual void DisplayGPUInfo() const = 0;
 
-    /// @author Alan Brunet
-    /// @brief Called fourth, Initialise the Shader and creates a shader program from each shader source. Each param does not need an entry if we are not using them.
+    /// @author Alan
+    /// @brief Initialise the Shader and creates a shader program from each shader source. 
+    /// Each param besides shaderType does not need an entry if we are not using them.
+    /// @param shaderType is the unordered map to manage the amount of different Shaders
+    /// Each param does not need an entry if we are not using them.
     /// @param vertexsource filename for a Vertex Shader Program. The file path is not required
     /// @param fragmentsource filename for a Fragment Shader Program. The file path is not required
     /// @param computesource filename for a Compute Shader Program. The file path is not required
@@ -53,11 +76,11 @@ public:
         std::filesystem::path computesource = std::filesystem::path(),
         std::filesystem::path geometrysource = std::filesystem::path()) = 0;
 
-    /// @author Alan Brunet
+    /// @author Alan
     /// @brief Must be called last to unbind all data. So it does not flow data into the next buffers.
     virtual void UnbindShader(ShaderType shaderType) = 0;
 
-    /// @author Alan Brunet
+    /// @author Alan
     /// @brief Manually set the colour of an object with "u_Color" variable within a basic.frag file.
     ///	all elements must be normalised. i.e., between 0.0f and 1.0f
     /// @param r Red channel

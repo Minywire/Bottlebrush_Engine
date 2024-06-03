@@ -1,5 +1,5 @@
 //
-//  Created by Alan Brunet 22/03/2024
+//  Created by Alan 22/03/2024
 //
 #pragma once
 
@@ -13,13 +13,13 @@
 #include "Platform/OpenGL/OpenGLModel.h"
 #include "Platform/OpenGL/OpenGLMesh.h"
 
-/// @author Alan Brunet
+/// @author Alan
 /// @brief Enum class to define which Graphics API to be used
 enum class GraphicsAPI {
 	OpenGL, Vulkan
 };
 
-/// @author Alan Brunet, Niamh Wilson
+/// @author Alan, Niamh Wilson
 /// @brief Factory class to determine which Rendering API to be point to. 
 /// Each Create function will return a unique pointer to the specified Graphics API component
 template <GraphicsAPI>

@@ -3,10 +3,31 @@
 //
 
 #include "Systems.h"
+#include "BBScript.h"
+#include "RegisterAIScripts.h"
 
 void Systems::generateModelFromComponent(const ModelComponent & modelComp, std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels)
 {
-    sceneModels.emplace(std::pair<std::string, std::unique_ptr<Model>>(modelComp.model_path, GraphicsFactory<GraphicsAPI::OpenGL>::CreateModel(modelComp.model_path, modelComp.material_path)));
+    if(sceneModels.find(modelComp.model_path) == sceneModels.end())
+    {
+        sceneModels.emplace(std::pair<std::string, std::unique_ptr<Model>>(modelComp.model_path, GraphicsFactory<GraphicsAPI::OpenGL>::CreateModel(modelComp.model_path, modelComp.material_path)));
+    }
+}
+
+void Systems::generateMD2ModelFromComponent(const MD2Component & modelComp, std::unordered_map<std::string, BBMD2> & sceneMD2Models)
+{
+    if(!sceneMD2Models.contains(modelComp.model_path))
+    {
+        sceneMD2Models.emplace(std::pair<std::string, BBMD2>(modelComp.model_path, BBMD2(modelComp.model_path, modelComp.texture_path)));
+    }
+}
+
+void Systems::generateTerrainFromComponent(const TerrainComponent & terrainComp, const TransformComponent & terrainTransform, std::unordered_map<std::string, Terrain> & sceneTerrain) 
+{
+    if(!sceneTerrain.contains(terrainComp.terrain_path))
+    {
+        sceneTerrain.emplace(std::pair<std::string, Terrain>(terrainComp.terrain_path, Terrain(terrainComp.terrain_path, terrainComp.terrain_texture, terrainTransform.scale, terrainTransform.position)));
+    }
 }
 
 void Systems::createModelComponents(ECS &ecs, std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels)
@@ -19,6 +40,53 @@ void Systems::createModelComponents(ECS &ecs, std::unordered_map<std::string, st
 
         generateModelFromComponent(currentModelComponent, sceneModels);
     }
+}
+
+void Systems::createMD2ModelComponents(ECS &ecs, std::unordered_map<std::string, BBMD2> & sceneMD2Models)
+{
+    auto group = ecs.GetAllEntitiesWith<MD2Component>(); //the container with all the matching entities
+
+    for(auto entity : group)
+    {
+        auto& currentModelComponent = group.get<MD2Component>(entity);
+
+        generateMD2ModelFromComponent(currentModelComponent, sceneMD2Models);
+    }
+}
+
+void Systems::createTerrainComponents(ECS &ecs, std::unordered_map<std::string, Terrain> & sceneTerrain)
+{
+    auto group = ecs.GetAllEntitiesWith<TransformComponent, TerrainComponent>(); //the container with all the matching entities
+
+    for(auto entity : group)
+    {
+        auto& currentTerrainComponent = group.get<TerrainComponent>(entity);
+        auto& currentTransform = group.get<TransformComponent>(entity);
+
+        generateTerrainFromComponent(currentTerrainComponent, currentTransform, sceneTerrain);
+    }
+}
+
+void Systems::RegisterAIFunctions(ECS& ecs, sol::state & lua_state, const Camera& player) 
+{
+    AIScripts::registerScriptedFSM(lua_state);
+    AIScripts::registerScriptedNPC(lua_state, ecs, player);
+    AIScripts::registerScriptedGLM(lua_state);
+    AIScripts::registerScriptedMessage(lua_state);
+}
+
+void Systems::setLight(RenderEngine & renderEngine, const ShaderType & shaderType, glm::mat4 view)
+{
+    // we can ignore this given we're handling a direction instead of a pos - nvm its needed for specular
+    // Inverse of the view matrix gives the world-to-camera transformation
+    glm::mat4 inverseViewMatrix = glm::inverse(view);
+
+    // The camera's position is the translation part of the inverse view matrix
+    glm::vec3 cameraPosition = glm::vec3(inverseViewMatrix[3]);
+
+    renderEngine.GetShader(shaderType)->SetUniform3f("lightColour", 1.0f, 1.0f, 1.0f);
+    renderEngine.GetShader(shaderType)->SetUniform3f("direction", 0.2f, -0.7f, 0.4f);
+    renderEngine.GetShader(shaderType)->SetUniform3f("viewPos", cameraPosition.x, cameraPosition.y, cameraPosition.z);
 }
 
 void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEngine & renderEngine, const std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels, glm::mat4 projection, glm::mat4 view)
@@ -39,6 +107,7 @@ void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEn
 
         if(sceneModels.count(currentModelComponent.model_path) != 0)
         {
+            //set uniforms for model
             renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("projection", projection);
             renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("view", view);
             renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("model", transform);
@@ -54,18 +123,166 @@ void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEn
     }
 }
 
-void Systems::updateTransformComponent(ECS &ecs, const std::string& tag, glm::vec3 trans, glm::vec3 rot)
+void Systems::drawMD2Models(const ECS& ecs, const ShaderType& shaderType, RenderEngine& renderEngine, std::unordered_map<std::string, BBMD2> & MD2s, glm::mat4 projection, glm::mat4 view)
 {
-    auto group = ecs.GetAllEntitiesWith<TransformComponent, TagComponent>();
+    auto group = ecs.GetAllEntitiesWith<MD2Component, TransformComponent>();
+
+    for (auto entity : group)
+    {
+        auto& currentMD2Component = group.get<MD2Component>(entity);
+        auto& currentTransformComponent = group.get<TransformComponent>(entity);
+
+        auto& currentMD2 = MD2s.at(currentMD2Component.model_path);
+        
+        int anim = currentMD2.getSpecificAnim("run");
+         
+        glm::mat4 transform = {1};
+        transform = glm::translate(transform, currentTransformComponent.position);
+        transform = glm::rotate(transform, glm::radians(-90.f), glm::vec3(1,0,0));
+        transform = glm::rotate(transform, glm::radians(currentTransformComponent.rotation.x), glm::vec3(1,0,0));
+        transform = glm::rotate(transform, glm::radians(currentTransformComponent.rotation.y), glm::vec3(0,1,0));
+        transform = glm::rotate(transform, glm::radians(currentTransformComponent.rotation.z), glm::vec3(0,0,1));
+        transform = glm::scale(transform, currentTransformComponent.scale);
+
+        renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("projection", projection);
+        renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("view", view);
+        renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("model", transform);
+        renderEngine.GetShader(shaderType)->SetUniform1f("interpolation", currentMD2.getInterpolation());
+        renderEngine.GetShader(shaderType)->SetUniform1i("texSampler1", 0);
+
+        currentMD2.setTexture();
+        renderEngine.Draw(shaderType, currentMD2.getVecArrays().at(currentMD2.getAnimationCurrentFrame(anim, currentMD2.getInterpolation())), currentMD2.getModelSize());
+    }
+}
+
+void Systems::updateMD2Interpolation(const ECS& ecs, std::unordered_map<std::string, BBMD2>& MD2s, float deltaTime)
+{
+    auto group = ecs.GetAllEntitiesWith<MD2Component>();
+
+    for (auto entity : group)
+    {
+        auto& currentMD2Component = group.get<MD2Component>(entity);
+
+        auto& currentMD2 = MD2s.at(currentMD2Component.model_path);
+
+        currentMD2.updateInterpolation(deltaTime);
+    }
+
+}
+
+void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, RenderEngine& renderEngine, std::unordered_map<std::string, Terrain> & sceneTerrain, bool grayscale, glm::mat4 projection, glm::mat4 view)
+{
+    auto group = ecs.GetAllEntitiesWith<TerrainComponent, TransformComponent>(); //the container with all the matching entities
 
     for(auto entity : group)
     {
-        auto& currentEntityComponent =  group.get<TransformComponent>(entity);
-        if(group.get<TagComponent>(entity).tag == tag)
+
+        auto& currentTerrainComponent = group.get<TerrainComponent>(entity);
+        auto& currentTransformComponent = group.get<TransformComponent>(entity);
+
+        auto& terrain = sceneTerrain.at(currentTerrainComponent.terrain_path);
+
+        glm::mat4 transform = {1};
+
+        // Vert Uniforms
+        renderEngine.GetShader(terrainShader)
+            ->SetUniformMatrix4fv("gModel", transform);
+        renderEngine.GetShader(terrainShader)
+            ->SetUniformMatrix4fv("gView", view);
+        renderEngine.GetShader(terrainShader)
+            ->SetUniformMatrix4fv("gProjection", projection);
+        renderEngine.GetShader(terrainShader)
+            ->SetUniform1f("gMinHeight", terrain.GetMinHeight());
+        renderEngine.GetShader(terrainShader)
+            ->SetUniform1f("gMaxHeight", terrain.GetMaxHeight());
+
+        // Frag Uniforms
+        renderEngine.GetShader(terrainShader)
+            ->SetUniform1i("gGrayscale", grayscale);
+        renderEngine.GetShader(terrainShader)->SetUniform1i("gTex", 0);
+        renderEngine.GetShader(terrainShader)
+            ->SetUniform3fv("gReversedLightDir", {-0.2f, 0.7f, -0.4f});
+
+        // draw
+        terrain.GetMesh()->SetTexture(0);
+        renderEngine.Draw(terrainShader, *terrain.GetMesh()->GetVertexArray(),
+                          terrain.GetElements().size());
+    }
+}
+
+void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<std::string, Terrain> & sceneTerrain)
+{
+    auto group = ecs.GetAllEntitiesWith<TransformComponent, AIControllerComponent>();
+
+    for (auto entity : group)
+    {
+        auto& aic = group.get<AIControllerComponent>(entity);
+        auto& transform = group.get<TransformComponent>(entity);
+        auto& npc = aic.npc;
+
+        // check if we need to decelerate
+        if (!npc.IsMoving()) {
+            // stopped moving, leave this entity
+            if (npc.GetCurrentSpeed() <= 0) continue;
+
+            npc.GetCurrentSpeed() -= npc.GetDecceleration();
+        } else { // accelerate to max speed
+            if (npc.GetCurrentSpeed() <= npc.GetMaxSpeed()) 
+                npc.GetCurrentSpeed() += npc.GetAcceleration();
+        }
+
+        // move in its current direction by its current speed
+        transform.position.x += npc.GetDirection().x * deltaTime * npc.GetCurrentSpeed();
+        transform.position.z += npc.GetDirection().y * deltaTime * npc.GetCurrentSpeed();
+        // rotate the character to face the direction, currently given in radians
+        transform.rotation.y = std::atan2(npc.GetDirection().x, npc.GetDirection().y);
+
+        //change the NPC's y position to the terrain height
+        auto terrainGroup = ecs.GetAllEntitiesWith<TerrainComponent>();
+        for (auto terrainEnitity : terrainGroup)
         {
-//            currentEntityComponent.position = trans; //can't do this since the component passed in is a const reference so im currently trying to find a proper way to do it.
-//            currentEntityComponent.rotation = rot;
+            auto& terrainComp = terrainGroup.get<TerrainComponent>(terrainEnitity);
+            auto& terrain = sceneTerrain.at(terrainComp.terrain_path);
+
+            // Optional returns if its out of bounds. 
+            // Avoids collision with other terrains, if there were more than 1.
+            auto heightOpt = terrain.GetHeight(transform.position.x, transform.position.z);
+            if (!heightOpt.has_value()) continue;
+
+            // set the new y position
+            transform.position.y = heightOpt.value() + 10; // plus an offset, should be taken out once other physics is implemented
         }
     }
+}
 
+void Systems::updateAI(ECS& ecs, sol::state& lua_state, float deltaTime) {
+    auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
+
+    for (auto entity : group)
+    {
+      auto& aic = group.get<AIControllerComponent>(entity);
+      lua_state.script_file(aic.npc.GetFSM().GetStatePath().string());
+
+      aic.npc.Update(lua_state, deltaTime);
+    }
+}
+
+void Systems::updateCameraTerrainHeight(const ECS& ecs, const std::unordered_map<std::string, Terrain> & terrains, Camera & camera,  float offset_y)
+{
+    auto group = ecs.GetAllEntitiesWith<TerrainComponent, TransformComponent>();
+
+    for (auto entity : group)
+    {
+        const auto& currentTerrainComp = group.get<TerrainComponent>(entity);
+        const auto& terrainTransform = group.get<TransformComponent>(entity);
+        const auto& currentTerrain = terrains.at(currentTerrainComp.terrain_path);
+
+        const std::optional<float> terrain_height =
+            currentTerrain.GetHeight(camera.GetPosition().x, camera.GetPosition().z);
+
+        if (terrain_height.has_value())
+        {
+            camera.SetPositionY(terrain_height.value() + offset_y);
+        } 
+    }
 }

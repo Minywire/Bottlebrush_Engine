@@ -1,6 +1,6 @@
 //
 // Created by niamh on 26/12/2023.
-// Edited by Alan Brunet on 16/03/24 
+// Edited by Alan on 16/03/24 
 //
 
 #ifndef BOTTLEBRUSH_ENGINE_SHADER_H
@@ -16,9 +16,9 @@
 
 #include "glm/glm.hpp"
 
-/// @author Alan Brunet
-/// @brief Contains the filenames of each shader type.
-/// These only need to specify the filename and not the full directory path.
+/// @author Alan
+/// @brief Contains the filepaths of each shader type.
+/// Requires relative directory to .exe
 /// They also do not need to be all initialised
 struct ShaderSourceFiles
 {
@@ -28,46 +28,51 @@ struct ShaderSourceFiles
 	std::filesystem::path GeometrySource;
 };
 
-/// @author Alan Brunet
+/// @author Alan
 /// @brief Creates a program for the GPU from shader program source files.
-/// Needs Shader source files to construct as it loads files within Shader/ directory.
+/// Needs Shader source files to construct as it loads files within Resources/Shader/ directory.
 class Shader {
 public:
 	Shader(){};
 	/// Deconstructor
 	virtual ~Shader() = default;
 
-	/// @author Alan Brunet
+	/// @author Alan
 	/// @brief Binds the Shader to use / add
 	virtual void Bind() const = 0;
 
-	/// @author Alan Brunet
+	/// @author Alan
 	/// @brief Unbinds the Shader
 	virtual void Unbind() const = 0;
 
-	/// @author Alan Brunet
+	/// @author Alan
 	/// @brief Sets uniforms found in shader files to values passed in
-	/// @param name is the uniform name within the Shader Program source file. E.g., "u_Color"
+	/// @param name is the uniform name within the Shader Program source file.
+	/// e.g., "skybox" in the skybox shader files .vert/.frag
 	virtual void SetUniform1i(const std::string& name, int value) = 0;
 
-	/// @author Alan Brunet
+	/// @author Alan
 	/// @brief Sets uniforms found in shader files to values passed in
 	/// @param name is the uniform name within the Shader Program source file.
-	/// E.g., "u_Color"
 	virtual void SetUniform1f(const std::string& name, float value) = 0;
 
-	/// @author Alan Brunet
+	/// @author Alan
 	/// @brief Sets uniforms found in shader files to values passed in
 	/// @param name is the uniform name within the Shader Program source file.
-	/// E.g., "u_Color"
 	virtual void SetUniform3f(const std::string& name, float v0, float v1, float v2) = 0;
 
-	/// @author Alan Brunet
+        virtual void SetUniform3fv(const std::string& name,
+                                   const glm::vec3& value) = 0;
+
+        /// @author Alan
 	/// @brief Sets uniforms found in shader files to values passed in
 	/// @param name is the uniform name within the Shader Program source file.
-	/// E.g., "u_Color"
 	virtual void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3) = 0;
 
+	/// @author Jaiden
+	/// @brief Sets uniforms found in shader files to values passed in
+	/// @param name is the uniform name within the Shader Program source file.
+	/// E.g., "model", "view", "projection"
 	virtual void SetUniformMatrix4fv(const std::string& name,
 									 const glm::mat4& mat) = 0;
 
@@ -77,14 +82,14 @@ public:
 
 protected:
 
-	/// @author Alan Brunet
+	/// @author Alan
 	/// @brief Used to find which shader type failed compiling
 	/// @param type takes in a Graphic API shader type
 	/// @see CompileShader()
 	/// @return the string of what Shader type has failed
 	virtual std::string ShaderTypeToString(unsigned int type) = 0;
 
-	/// @author Alan Brunet
+	/// @author Alan
 	/// @brief Compiles a Shader, using a source shader file
 	/// @param type Shader Type (vert, frag, comp, geo)
 	/// @see DetermineShaderType()
@@ -93,26 +98,26 @@ protected:
 	/// @return a compiled Shader ready to be attached
 	virtual unsigned int CompileShader(unsigned int type, const std::string& source) = 0;
 
-	/// @author Alan Brunet
+	/// @author Alan
 	/// @brief Determines what Graphic API type the filename is from the extension
 	/// @param filename Is the Shader Program source filename
 	/// @return a Shader Type in Graphic API format
 	virtual unsigned int DetermineShaderType(const std::filesystem::path& filename) = 0;
 
-	/// @author Alan Brunet
+	/// @author Alan
 	/// @brief Takes in a filepath that will be loaded
 	/// @param full filepath of the shader program source
 	/// @see GenFilePath()
 	/// @return a string containing all within a Shader file
 	virtual std::string LoadShaderType(const std::filesystem::path& filepath) = 0;
 
-	/// @author Alan Brunet
+	/// @author Alan
 	/// @brief Links a shader, performs a check after link process
 	/// @param program is what will be linked to the shader
 	/// @see https://docs.gl/gl4/glLinkProgram
 	virtual void LinkShader(unsigned int& program) = 0;
 
-	/// @author Alan Brunet
+	/// @author Alan
 	/// @brief Attaches shader to a program object
 	/// @param shadersource is the full string from a shader program file
 	/// @see LoadShaderType()
@@ -120,13 +125,13 @@ protected:
 	virtual void AttachShader(const std::filesystem::path& shadersource, 
 		unsigned int& program) = 0;
 
-	/// @author Alan Brunet
+	/// @author Alan
 	/// @brief using member struct ShaderSourceFiles, it checks their validity, 
 	/// then attached the shader to a program object
 	/// @return a fully loaded Shader Program
 	virtual unsigned int CreateShader() = 0;
 
-	/// @author Alan Brunet
+	/// @author Alan
 	/// @brief Finds the declared Uniform name within the shader files. E.g., "u_Color"
 	/// @return the position of the uniform
 	virtual int GetUniformLocation(const std::string& name) = 0;

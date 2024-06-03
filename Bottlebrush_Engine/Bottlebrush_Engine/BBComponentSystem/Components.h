@@ -7,6 +7,11 @@
 #include <glm/glm.hpp>
 #include <sol/sol.hpp>
 
+#include "NPC.h"
+
+/** forward decl to avoid circle linking */
+class Entity;
+
 /**
  * @brief Component that binds a lua function to an Entity
  * @author Marco Garzon Lara
@@ -47,13 +52,32 @@ struct TagComponent
 };
 
 /**
- * @brief Component that contains movement data for player
- * @author Marco Garzon Lara
+ * @brief Component that contains data for AI controlled NPCs
  */
-struct PlayerControllerComponent
+struct AIControllerComponent
 {
-    float max_speed;
-    float current_speed;
-    float acceleration_rate;
-    float deceleration_rate;
+    NPC npc;
+
+    AIControllerComponent(const std::filesystem::path& statesPath, const std::string& initialState,
+                          Entity& entity)
+        : npc(NPC(statesPath, initialState, entity))
+    {}
+};
+
+/**
+* @brief Component that contains data for the MD2 Model
+*/
+struct MD2Component
+{
+    std::string model_path;
+    std::string texture_path;
+};
+
+/**
+* @brief Component that contains Terrain data
+*/
+struct TerrainComponent 
+{
+    std::string terrain_path;
+    std::string terrain_texture;
 };
