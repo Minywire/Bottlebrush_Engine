@@ -78,8 +78,7 @@ void registerScriptedGLM(sol::state& lua_state) {
 void registerScriptedMessage(sol::state& lua_state) {
     // register Message system
     lua_state.new_usertype<Message>("Message",
-        "Event", &Message::m_Event,
-        "Sender", &Message::m_Sender
+        "Event", &Message::m_Event
     );
 }
 
