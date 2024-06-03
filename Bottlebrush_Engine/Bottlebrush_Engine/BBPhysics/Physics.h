@@ -4,18 +4,24 @@
 #include "reactphysics3d/reactphysics3d.h"
 
 class Physics {
- public:
-  static void Create();
-  static void Delete();
-  static void Update(float delta);
-  static rp3d::PhysicsCommon& GetCommon();
-  static rp3d::PhysicsWorld* GetWorld();
-  static bool IsWorldCreated();
+   public:
+    using PhysicsCommon = rp3d::PhysicsCommon;
+    using PhysicsWorld = rp3d::PhysicsWorld*;
 
- private:
-  static bool created_;
-  static rp3d::PhysicsCommon common_;
-  static rp3d::PhysicsWorld* world_;
+    ~Physics();
+
+    static Physics& GetInstance();
+
+    void Update(float delta);
+
+   private:
+    Physics();
+
+    void CreateWorld();
+    void DeleteWorld();
+
+    PhysicsCommon common_;
+    PhysicsWorld world_;
 };
 
 #endif  // BOTTLEBRUSH_ENGINE_PHYSICS_H

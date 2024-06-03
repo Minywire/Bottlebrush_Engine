@@ -1,28 +1,16 @@
 #include "Physics.h"
 
-bool Physics::created_ = false;
-rp3d::PhysicsCommon Physics::common_;
-rp3d::PhysicsWorld* Physics::world_ = nullptr;
+Physics::~Physics() { DeleteWorld(); }
 
-void Physics::Create() {
-  if (created_) return;
-  world_ = common_.createPhysicsWorld();
-  created_ = true;
+Physics& Physics::GetInstance() {
+    static Physics instance_;
+    return instance_;
 }
 
-void Physics::Delete() {
-  if (!created_) return;
-  common_.destroyPhysicsWorld(world_);
-  created_ = false;
-}
+void Physics::Update(float delta) { world_->update(delta); }
 
-void Physics::Update(float delta) {
-  if (!created_) return;
-  world_->update(delta);
-}
+Physics::Physics() { CreateWorld(); }
 
-rp3d::PhysicsCommon& Physics::GetCommon() { return common_; }
+void Physics::CreateWorld() { world_ = common_.createPhysicsWorld(); }
 
-rp3d::PhysicsWorld* Physics::GetWorld() { return world_; }
-
-bool Physics::IsWorldCreated() { return created_; }
+void Physics::DeleteWorld() { common_.destroyPhysicsWorld(world_); }
