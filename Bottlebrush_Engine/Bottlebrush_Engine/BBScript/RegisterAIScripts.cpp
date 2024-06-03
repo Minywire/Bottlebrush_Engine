@@ -43,13 +43,6 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
     // register detection functions that depend on transform component
     auto detectionTable = lua_state["Detection"].get_or_create<sol::table>();
     detectionTable["SeePlayer"] = [&player, &ecs](NPC& npc) { return npc.SeePlayer(glm::vec2(player.GetPositionX(), player.GetPositionZ()), ecs); };
-    detectionTable["InMessageRange"] = [&ecs](NPC& npc, Message& msg, float range)
-    {
-        glm::vec2 curPos = npc.GetVec2Position(ecs);
-        glm::vec2 theirPos = msg.GetSender().GetLastMoveTo();
-        float distance = glm::length(theirPos - curPos);
-        return distance < range;
-    };
 
     // register EventDispatcher table functions that depend on lua_state
     auto dispatchTable = lua_state["Dispatch"].get_or_create<sol::table>();
@@ -57,6 +50,13 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
     {
         Message msg(event, &npc);
         npc.SendMessage(ecs, lua_state, msg);
+    };
+    dispatchTable["InMessageRange"] = [&ecs](NPC& npc, Message& msg,
+                                              float range) {
+        glm::vec2 curPos = npc.GetVec2Position(ecs);
+        glm::vec2 theirPos = msg.GetSender().GetLastMoveTo();
+        float distance = glm::length(theirPos - curPos);
+        return distance < range;
     };
 }
 
