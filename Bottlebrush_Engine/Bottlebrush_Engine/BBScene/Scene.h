@@ -57,6 +57,8 @@ class Scene
     */
     void setWireFrameFlag(bool flag);
 
+    void setCameraRestriction(bool flag);
+
     void setLastX(float lX);
 
     void setLastY(float lY);
@@ -120,6 +122,8 @@ class Scene
     bool getMenuActive() const;
 
     void toggleMenuActive();
+
+    bool getCameraRestriction() const;
    private:
     Window window;
 
@@ -155,4 +159,6 @@ class Scene
 
     float interpolation = 0.f;
     bool menuActive = false;
+
+    bool cameraRestriction = true;
 };

@@ -75,6 +75,7 @@ void Systems::RegisterAIFunctions(ECS& ecs, sol::state & lua_state, const Camera
     AIScripts::registerScriptedNPC(lua_state, ecs, player);
     AIScripts::registerScriptedGLM(lua_state);
     AIScripts::registerScriptedAnimation(lua_state, ecs);
+    AIScripts::registerScriptedMessage(lua_state);
 }
 
 void Systems::setLight(RenderEngine & renderEngine, const ShaderType & shaderType, glm::mat4 view)
@@ -223,22 +224,6 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, Rende
     }
 }
 
-void Systems::updateTransformComponent(ECS &ecs, const std::string& tag, glm::vec3 trans, glm::vec3 rot)
-{
-    auto group = ecs.GetAllEntitiesWith<TransformComponent, TagComponent>();
-
-    for(auto entity : group)
-    {
-        auto& currentEntityComponent =  group.get<TransformComponent>(entity);
-        if(group.get<TagComponent>(entity).tag == tag)
-        {
-//            currentEntityComponent.position = trans; //can't do this since the component passed in is a const reference so im currently trying to find a proper way to do it.
-//            currentEntityComponent.rotation = rot;
-        }
-    }
-
-}
-
 void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<std::string, Terrain> & sceneTerrain)
 {
     auto group = ecs.GetAllEntitiesWith<TransformComponent, AIControllerComponent>();
@@ -259,9 +244,6 @@ void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<st
             if (npc.GetCurrentSpeed() <= npc.GetMaxSpeed()) 
                 npc.GetCurrentSpeed() += npc.GetAcceleration();
         }
-        
-        // @Debug Line
-        //std::cout << "speed: " << move.current_speed << std::endl;
 
         // move in its current direction by its current speed
         transform.position.x += npc.GetDirection().x * deltaTime * npc.GetCurrentSpeed();
@@ -296,5 +278,25 @@ void Systems::updateAI(ECS& ecs, sol::state& lua_state, float deltaTime) {
       lua_state.script_file(aic.npc.GetFSM().GetStatePath().string());
 
       aic.npc.Update(lua_state, deltaTime);
+    }
+}
+
+void Systems::updateCameraTerrainHeight(const ECS& ecs, const std::unordered_map<std::string, Terrain> & terrains, Camera & camera,  float offset_y)
+{
+    auto group = ecs.GetAllEntitiesWith<TerrainComponent, TransformComponent>();
+
+    for (auto entity : group)
+    {
+        const auto& currentTerrainComp = group.get<TerrainComponent>(entity);
+        const auto& terrainTransform = group.get<TransformComponent>(entity);
+        const auto& currentTerrain = terrains.at(currentTerrainComp.terrain_path);
+
+        const std::optional<float> terrain_height =
+            currentTerrain.GetHeight(camera.GetPosition().x, camera.GetPosition().z);
+
+        if (terrain_height.has_value())
+        {
+            camera.SetPositionY(terrain_height.value() + offset_y);
+        } 
     }
 }

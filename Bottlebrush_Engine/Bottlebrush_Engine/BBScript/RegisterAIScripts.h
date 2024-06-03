@@ -16,5 +16,6 @@ void registerScriptedFSM(sol::state& lua_state);
 void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player);
 void registerScriptedGLM(sol::state& lua_state);
 void registerScriptedAnimation(sol::state& lua_state, ECS& ecs);
+void registerScriptedMessage(sol::state& lua_state);
 
 }
