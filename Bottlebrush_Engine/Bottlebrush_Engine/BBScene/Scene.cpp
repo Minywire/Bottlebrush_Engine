@@ -19,6 +19,8 @@ void KeyCallback(Window::WindowContext window, int key, int scancode, int action
 
     if (key == GLFW_KEY_C && action == GLFW_PRESS) scene->setWireFrameFlag(!scene->getWireframeFlag());
 
+    if (key == GLFW_KEY_R && action == GLFW_PRESS) scene->setCameraRestriction(!scene->getCameraRestriction());
+
     if (action == GLFW_PRESS && key == GLFW_KEY_LEFT_SHIFT)
       scene->getCamera().SetSpeed(scene->getCamera().GetSpeed() * 2.0f);
     if (action == GLFW_RELEASE && key == GLFW_KEY_LEFT_SHIFT)
@@ -157,7 +159,6 @@ void Scene::init()
     glfwSetKeyCallback(window.GetContext(), KeyCallback);
     glfwSetCursorPosCallback(window.GetContext(), MouseCallback);
     glfwSetScrollCallback(window.GetContext(), ScrollCallback);
-
    
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
       std::cerr << "ERROR: Failed to initialize GLAD!" << std::endl;
@@ -165,10 +166,10 @@ void Scene::init()
     }
 
     glEnable(GL_DEPTH_TEST);
-
+    
     mainCamera.SetPosition(1000.0f, 100.0f, 1000.0f);
     mainCamera.SetSensitivity(0.05f);
-    mainCamera.SetSpeed(100.0f);
+    mainCamera.SetSpeed(1000.0f);
     mainCamera.SetZoom(30.0f);
 
     bbSystems.RegisterAIFunctions(bbECS, lua.getLuaState(), mainCamera); // register functions before running scripts
@@ -266,6 +267,11 @@ void Scene::update()
         Systems::drawTerrain(bbECS, ShaderType::Terrain, *renderEngine,
                              resources.getSceneTerrain(), false,
                              projectionMatrix, viewMatrix);
+
+        if (cameraRestriction)
+        {
+            Systems::updateCameraTerrainHeight(bbECS, resources.getSceneTerrain(), mainCamera, 20.0f);
+        }
 
         Systems::drawModels(bbECS, ShaderType::Default, *renderEngine,
                             resources.getSceneModels(), projectionMatrix,
@@ -405,4 +411,14 @@ void Scene::toggleMenuActive() {
 
 bool Scene::getMenuActive() const {
     return menuActive;
+}
+
+bool Scene::getCameraRestriction() const
+{
+    return cameraRestriction;
+}
+
+void Scene::setCameraRestriction(bool flag)
+{
+    cameraRestriction = flag;
 }
