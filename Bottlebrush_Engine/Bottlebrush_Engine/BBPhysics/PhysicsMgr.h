@@ -4,10 +4,10 @@
 #include "reactphysics3d/reactphysics3d.h"
 
 class PhysicsMgr {
-   public:
     using PhysicsCommon = rp3d::PhysicsCommon;
     using PhysicsWorld = rp3d::PhysicsWorld*;
 
+   public:
     ~PhysicsMgr();
 
     static PhysicsMgr& GetInstance();
