@@ -24,7 +24,6 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
         "SetWaitDuration", &NPC::SetWaitDuration,
         "IsWaiting", &NPC::IsWaiting,
         "ClearWaitDuration", &NPC::ClearWaitDuration,
-        "GetPosition", &NPC::GetVec2Position,
         "GetLastMoveTo", &NPC::GetLastMoveTo,
         "IsMoving", &NPC::IsMoving
     );
