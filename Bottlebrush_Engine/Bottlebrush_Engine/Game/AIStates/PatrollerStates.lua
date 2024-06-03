@@ -68,7 +68,7 @@ Patrol = {
 	Update = function(NPC)
 		Movement.Patrol(NPC);
 		if Detection.SeePlayer(NPC) then
-			Dispatch.SendMessage(Message(Event.PlayerSpotted, NPC));
+			Dispatch.SendMessage("PlayerSpotted", NPC);
 			FSM.ChangeState(NPC, "Chase");
 		end	
 	end,

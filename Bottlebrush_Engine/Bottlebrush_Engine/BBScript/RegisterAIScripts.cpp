@@ -5,7 +5,6 @@
 #include "RegisterAIScripts.h"
 #include "FSM.h"
 #include "NPC.h"
-#include "Message.h"
 
 namespace AIScripts {
 
@@ -55,12 +54,10 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
 
     // register EventDispatcher table functions that depend on lua_state
     auto dispatchTable = lua_state["Dispatch"].get_or_create<sol::table>();
-    dispatchTable["SendMessage"] = [&ecs, &lua_state](Message& msg)
+    dispatchTable["SendMessage"] = [&ecs, &lua_state](std::string event, NPC& npc) 
     {
-        if (!msg.GetSender()->SendMessage(ecs, lua_state, msg))
-        {
-            std::cout << "Failed to send message" << std::endl;
-        }
+        Message msg(event, &npc);
+        npc.SendMessage(ecs, lua_state, msg);
     };
 }
 

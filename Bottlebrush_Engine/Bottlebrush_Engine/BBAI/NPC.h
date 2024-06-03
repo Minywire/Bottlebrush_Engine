@@ -7,10 +7,10 @@
 #include "FSM.h"
 #include "Movement.h"
 #include "Entity.h"
+#include "Message.h"
 
 /** forward decl to avoid circle linking */
 class ECS;
-class Message;
 
 /// @author Alan
 /// @brief NPC class that holds an FSM to determine it's states and transitions
@@ -57,8 +57,7 @@ public:
     /// @param ecs register used to send a message to all NPCs
     /// @param lua_state passed onto FSM::HandleMessage()
     /// @param msg event message
-    /// @return whether the message was able to send correctly
-    bool SendMessage(ECS& ecs, sol::state& lua_state, Message& msg);
+    void SendMessage(ECS& ecs, sol::state& lua_state, Message& msg);
     
     /// @author Alan
     /// @brief see if NPC has movement input

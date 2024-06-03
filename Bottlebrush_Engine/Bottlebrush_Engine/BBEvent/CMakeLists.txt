@@ -13,3 +13,4 @@ set(SOURCES
 target_sources(BBEvent PRIVATE ${SOURCES})
 
 target_link_libraries(BBEvent PRIVATE BBAI)
+target_link_libraries(BBEvent PUBLIC sol2)

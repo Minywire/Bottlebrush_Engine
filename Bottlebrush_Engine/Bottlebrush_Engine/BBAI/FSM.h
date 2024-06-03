@@ -7,9 +7,9 @@
 #include <string>
 #include <filesystem>
 #include <sol/sol.hpp>
+#include "Message.h"
 
 /** forward decl to avoid circle linking */
-class Message;
 class NPC;
 
 /// @author Alan
@@ -44,8 +44,7 @@ public:
     /// @brief sends message to appropriate state's "onMessage" function if there is one
     /// @param lua_state used to reference to the next section of the script to run
     /// @param msg event message
-    /// @return if message is handled or not
-    bool HandleMessage(sol::state& lua_state, Message& msg);
+    void HandleMessage(sol::state& lua_state, Message& msg);
 
 private:
     NPC* m_npcReference; // reference to the NPC that owns this FSM

@@ -6,7 +6,7 @@
 #include "Components.h"
 #include "ECS.h"
 #include "Entity.h"
-#include "Message.h"
+#include "EventDispatcher.h"
 #include "Singleton.h"
 
 NPC::NPC(const std::filesystem::path& statesPath,
@@ -62,7 +62,7 @@ bool NPC::SeePlayer(const glm::vec2& targetPos, ECS& ecs, float coneDistance, fl
     return Movement::SeeTarget(GetVec2Position(ecs), targetPos, m_direction, coneDistance, fov);
 }
 
-bool NPC::SendMessage(ECS& ecs, sol::state& lua_state, Message& msg)
+void NPC::SendMessage(ECS& ecs, sol::state& lua_state, Message& msg)
 {
     auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
     for (auto entity : group)
@@ -71,13 +71,11 @@ bool NPC::SendMessage(ECS& ecs, sol::state& lua_state, Message& msg)
         auto& npc = aic.npc;
 
         // don't send a message to self
-        if (this == &npc) continue;
+        if (entt::entity(m_Entity) == entity) continue;
 
         // send message to all NPCs through singleton EventDispatcher
-        EVENTDISPATCHER.DispatchMessage(lua_state, msg, this, &npc);
+        Singleton<EventDispatcher>::Instance().DispatchMessage(lua_state, msg, npc);
     }
-
-    return true;
 }
 
 bool NPC::IsMoving()
