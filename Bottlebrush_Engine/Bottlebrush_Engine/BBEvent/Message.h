@@ -10,13 +10,12 @@ class NPC;
 
 /// @author Alan
 /// @brief Struct used to relaying an event to all listeners
-struct Message
+class Message
 {
 public:
-    Message(std::string event, NPC* sender)
-        : m_Sender(sender), m_Event(event) {}
+    Message(std::string event, NPC* sender);
 
-    NPC* GetSender() { return m_Sender; }
+    NPC* GetSender();
 private:
     std::string m_Event;
     NPC* m_Sender;

@@ -31,8 +31,8 @@ public:
 
 protected:
     // hide ctor, dtor
-    Singleton(){};
-    ~Singleton(){};
+    Singleton() = default;
+    ~Singleton() = default;
 
 private:
     static std::unique_ptr<T> _instance;
