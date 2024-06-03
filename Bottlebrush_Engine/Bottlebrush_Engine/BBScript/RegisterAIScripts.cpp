@@ -50,10 +50,10 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
         Message msg(event, &npc);
         npc.SendMessage(ecs, lua_state, msg);
     };
-    dispatchTable["InMessageRange"] = [&ecs](NPC& npc, Message& msg,
-                                              float range) {
+    dispatchTable["InMessageRange"] = [&ecs](NPC& npc, Message& msg, float range) 
+    {
         glm::vec2 curPos = npc.GetVec2Position(ecs);
-        glm::vec2 theirPos = msg.GetSender().GetLastMoveTo();
+        glm::vec2 theirPos = msg.GetSender().GetVec2Position(ecs);
         float distance = glm::length(theirPos - curPos);
         return distance < range;
     };

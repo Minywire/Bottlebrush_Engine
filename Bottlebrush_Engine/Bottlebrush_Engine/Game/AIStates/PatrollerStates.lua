@@ -18,7 +18,7 @@ Global = {
 
 	onMessage = function(NPC, Message)
 		if Dispatch.InMessageRange(NPC, Message, 500.0) then
-			if Message:GetEvent() == Event.PlayerSpotted then
+			if Message:GetEvent() == "PlayerSpotted" then
 				FSM.ChangeState(NPC, "Chase");
 			end
 		end
