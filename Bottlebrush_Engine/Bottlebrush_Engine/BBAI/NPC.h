@@ -118,13 +118,13 @@ private:
     float m_WaitTimerDuration;   // wait timer for miscellanenous reasons
 
     //movement properties
-    float m_max_speed;
-    float m_current_speed;
-    float m_acceleration_rate;
-    float m_deceleration_rate;
-    glm::vec2 m_direction; // direction that the NPC is facing
+    float m_max_speed = 100.0f;
+    float m_current_speed = 0.f;
+    float m_acceleration_rate = 0.1f;
+    float m_deceleration_rate = 0.1f;
+    glm::vec2 m_direction = {1.0f, 1.0f};  // direction that the NPC is facing
 
-    glm::vec2 m_LastMoveTo; // last movement command
+    glm::vec2 m_LastMoveTo = {0.0f, 0.0f};  // last move to location
 
     
 };
