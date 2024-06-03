@@ -69,15 +69,8 @@ void registerScriptedGLM(sol::state& lua_state) {
 }
 
 void registerScriptedMessage(sol::state& lua_state) {
-    // register Event enum
-    lua_state.new_enum("Event",
-        "PlayerSpotted", Event::PLAYERSPOTTED
-    );
-
     // register Message system
     lua_state.new_usertype<Message>("Message",
-        sol::call_constructor,
-        sol::constructors<Message(Event, NPC*)>(),
         "GetEvent", &Message::GetEvent,
         "GetSender", &Message::GetSender
     );

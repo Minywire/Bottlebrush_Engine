@@ -14,7 +14,7 @@ NPC* Message::GetSender()
 	return m_Sender; 
 }
 
-Event Message::GetEvent()
+std::string& Message::GetEvent()
 {
 	return m_Event;
 }

@@ -16,7 +16,7 @@ public:
     Message(std::string event, NPC* sender);
 
     NPC* GetSender();
-    Event GetEvent();
+    std::string& GetEvent();
 private:
     std::string m_Event;
     NPC* m_Sender;

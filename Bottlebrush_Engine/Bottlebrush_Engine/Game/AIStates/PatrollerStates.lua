@@ -45,6 +45,7 @@ Idle = {
 			FSM.ChangeState(NPC, "Patrol");
 		end
 		if Detection.SeePlayer(NPC) then
+			Dispatch.SendMessage("PlayerSpotted", NPC);
 			FSM.ChangeState(NPC, "Chase");
 		end	
 	end,
@@ -94,7 +95,7 @@ Chase = {
 		Movement.MoveTo(NPC, NPC:GetLastPlayerLocation());
 		if Detection.SeePlayer(NPC) then
 			Movement.ChasePlayer(NPC);
-			Dispatch.SendMessage(Message(Event.PlayerSpotted, NPC));
+			Dispatch.SendMessage("PlayerSpotted", NPC);
 		elseif not Detection.SeePlayer(NPC) and not NPC:IsMoving() then
 			FSM.ChangeState(NPC, "Idle");
 		end
