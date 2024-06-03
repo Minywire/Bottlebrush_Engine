@@ -31,10 +31,14 @@ Idle = {
 		print("Entered Idle state");
 		NPC:StopMoving();
 		NPC:SetWaitDuration(5.0);
-		Animation.SetAnimation(NPC,"stand");
 	end,
 
 	Update = function(NPC)
+		if NPC:IsMoving() then
+			Animation.SetAnimation(NPC, "run");
+		elseif not NPC:IsMoving() then
+			Animation.SetAnimation(NPC, "stand");
+		end
 		if not NPC:IsWaiting() then 
 			FSM.ChangeState(NPC, "Patrol");
 		end
