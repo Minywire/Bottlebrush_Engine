@@ -42,7 +42,7 @@ Idle = {
 			FSM.ChangeState(NPC, "Patrol");
 		end
 		if Detection.SeePlayer(NPC) then
-			Dispatch.SendMessage("PlayerSpotted", NPC);
+			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
 			FSM.ChangeState(NPC, "Chase");
 		end	
 	end,
