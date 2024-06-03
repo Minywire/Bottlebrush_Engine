@@ -137,10 +137,11 @@ void Systems::drawMD2Models(const ECS& ecs, const ShaderType& shaderType, Render
          
         glm::mat4 transform = {1};
         transform = glm::translate(transform, currentTransformComponent.position);
-        transform = glm::rotate(transform, glm::radians(-90.f), glm::vec3(1,0,0));
         transform = glm::rotate(transform, glm::radians(currentTransformComponent.rotation.x), glm::vec3(1,0,0));
         transform = glm::rotate(transform, glm::radians(currentTransformComponent.rotation.y), glm::vec3(0,1,0));
         transform = glm::rotate(transform, glm::radians(currentTransformComponent.rotation.z), glm::vec3(0,0,1));
+        transform = glm::rotate(transform, glm::radians(-90.f), glm::vec3(0,1,0));
+        transform = glm::rotate(transform, glm::radians(-90.f), glm::vec3(1,0,0));
         transform = glm::scale(transform, currentTransformComponent.scale);
 
         renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("projection", projection);
@@ -253,7 +254,7 @@ void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<st
         transform.position.x += npc.GetDirection().x * deltaTime * npc.GetCurrentSpeed();
         transform.position.z += npc.GetDirection().y * deltaTime * npc.GetCurrentSpeed();
         // rotate the character to face the direction, currently given in radians
-        transform.rotation.y = std::atan2(npc.GetDirection().x, npc.GetDirection().y);
+        transform.rotation.y = glm::degrees(std::atan2(npc.GetDirection().x, npc.GetDirection().y));
 
         //change the NPC's y position to the terrain height
         auto terrainGroup = ecs.GetAllEntitiesWith<TerrainComponent>();
@@ -268,7 +269,7 @@ void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<st
             if (!heightOpt.has_value()) continue;
 
             // set the new y position
-            transform.position.y = heightOpt.value() + 10 * transform.scale.y; // plus an offset, should be taken out once other physics is implemented
+            transform.position.y = heightOpt.value() + 20 * transform.scale.y; // plus an offset, should be taken out once other physics is implemented
         }
     }
 }

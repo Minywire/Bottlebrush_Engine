@@ -11,9 +11,9 @@ Entity = {
             z = 0
         },
         Scale = {
-            x = 1,
-            y = 1,
-            z = 1
+            x = 0.3,
+            y = 0.3,
+            z = 0.3
         }
     },
     MD2Model = {
