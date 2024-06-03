@@ -1,21 +1,21 @@
-#ifndef BOTTLEBRUSH_ENGINE_PHYSICS_H
-#define BOTTLEBRUSH_ENGINE_PHYSICS_H
+#ifndef BOTTLEBRUSH_ENGINE_PHYSICSMGR_H
+#define BOTTLEBRUSH_ENGINE_PHYSICSMGR_H
 
 #include "reactphysics3d/reactphysics3d.h"
 
-class Physics {
+class PhysicsMgr {
    public:
     using PhysicsCommon = rp3d::PhysicsCommon;
     using PhysicsWorld = rp3d::PhysicsWorld*;
 
-    ~Physics();
+    ~PhysicsMgr();
 
-    static Physics& GetInstance();
+    static PhysicsMgr& GetInstance();
 
     void Update(float delta);
 
    private:
-    Physics();
+    PhysicsMgr();
 
     void CreateWorld();
     void DeleteWorld();
@@ -24,4 +24,4 @@ class Physics {
     PhysicsWorld world_;
 };
 
-#endif  // BOTTLEBRUSH_ENGINE_PHYSICS_H
+#endif  // BOTTLEBRUSH_ENGINE_PHYSICSMGR_H
