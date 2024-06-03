@@ -18,13 +18,7 @@ NPC::NPC(const std::filesystem::path& statesPath,
     m_WaitTimeElapsed(0),
     m_PatrolWaitDuration(1),
     m_WaitTimerDuration(0),
-    m_Moving(false),
-    m_max_speed(100.f),
-    m_current_speed(0.f),
-    m_acceleration_rate(0.1f),
-    m_deceleration_rate(0.1f),
-    m_direction(1, 1),
-    m_LastMoveTo(0.0f, 0.0f)
+    m_Moving(false)
 {
 
 }

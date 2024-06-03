@@ -47,7 +47,12 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
     auto dispatchTable = lua_state["Dispatch"].get_or_create<sol::table>();
     dispatchTable["SendMessage"] = [&ecs, &lua_state](std::string event, NPC& npc, float delayTime = 0) 
     {
-        Message msg(event, &npc, delayTime);
+        auto msg = Message{
+            .m_Event = event,
+            .m_Sender = &npc,
+            .m_DelayTime = delayTime,
+        };
+
         npc.SendMessage(ecs, lua_state, msg);
     };
     dispatchTable["InMessageRange"] = [&ecs](NPC& npc, Message& msg, float range) 
@@ -73,8 +78,8 @@ void registerScriptedGLM(sol::state& lua_state) {
 void registerScriptedMessage(sol::state& lua_state) {
     // register Message system
     lua_state.new_usertype<Message>("Message",
-        "GetEvent", &Message::m_Event,
-        "GetSender", &Message::m_Sender
+        "Event", &Message::m_Event,
+        "Sender", &Message::m_Sender
     );
 }
 
