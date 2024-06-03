@@ -45,17 +45,21 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
 
     // register EventDispatcher table functions that depend on lua_state
     auto dispatchTable = lua_state["Dispatch"].get_or_create<sol::table>();
-    dispatchTable["SendMessage"] = [&ecs, &lua_state](std::string event, NPC& npc) 
+    dispatchTable["SendMessage"] = [&ecs, &lua_state](std::string event, NPC& npc, float delayTime = 0) 
     {
-        Message msg(event, &npc);
+        Message msg(event, &npc, delayTime);
         npc.SendMessage(ecs, lua_state, msg);
     };
-    dispatchTable["InMessageRange"] = [&ecs](NPC& npc, Message& msg,
-                                              float range) {
+    dispatchTable["InMessageRange"] = [&ecs](NPC& npc, Message& msg, float range) 
+    {
         glm::vec2 curPos = npc.GetVec2Position(ecs);
-        glm::vec2 theirPos = msg.GetSender().GetLastMoveTo();
+        glm::vec2 theirPos = msg.GetSender().GetVec2Position(ecs);
         float distance = glm::length(theirPos - curPos);
         return distance < range;
+    };
+    dispatchTable["GetSenderLocation"] = [&ecs](Message& msg)
+    {
+        return msg.GetSender().GetVec2Position(ecs);
     };
 }
 
