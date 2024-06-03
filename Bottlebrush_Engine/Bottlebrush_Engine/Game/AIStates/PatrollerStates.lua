@@ -31,6 +31,7 @@ Idle = {
 		print("Entered Idle state");
 		NPC:StopMoving();
 		NPC:SetWaitDuration(5.0);
+		Animation.SetAnimation(NPC,"stand");
 	end,
 
 	Update = function(NPC)
@@ -59,7 +60,12 @@ Patrol = {
 	end,
 
 	Update = function(NPC)
-		Movement.Patrol(NPC);
+		Movement.Patrol(NPC) 
+		if NPC:IsMoving() then
+			Animation.SetAnimation(NPC, "run");
+		elseif not NPC:IsMoving() then
+			Animation.SetAnimation(NPC, "stand");
+		end
 		if Detection.SeePlayer(NPC) then
 			Dispatch.SendMessage("PlayerSpotted", NPC);
 			FSM.ChangeState(NPC, "Chase");
@@ -79,10 +85,16 @@ Patrol = {
 Chase = {
 	onEnter = function(NPC)
 		print("Entered Chase state");
+		Animation.SetAnimation(NPC, "run");
 	end,
 
 	Update = function(NPC)
-		Movement.ChasePlayer(NPC);
+		Movement.ChasePlayer(NPC) 
+		if NPC:IsMoving() then
+			Animation.SetAnimation(NPC, "run");
+		elseif not NPC:IsMoving() then
+			Animation.SetAnimation(NPC, "stand");
+		end
 		if not Detection.SeePlayer(NPC) then
 			FSM.ChangeState(NPC, "Idle");
 		end

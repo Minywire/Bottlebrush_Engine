@@ -22,7 +22,8 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
         "AddWaypoint", &NPC::AddWaypoint,
         "StopMoving", &NPC::StopMoving,
         "SetWaitDuration", &NPC::SetWaitDuration,
-        "IsWaiting", &NPC::IsWaiting
+        "IsWaiting", &NPC::IsWaiting,
+        "IsMoving", &NPC::IsMoving
     );
 
     // register movement functions that depend on transform component
@@ -33,6 +34,7 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
     { 
         glm::vec2 pos = {player.GetPositionX(), player.GetPositionZ()};
         npc.MoveTo(pos, ecs); 
+        return npc.IsMoving();
     };
 
     // register detection functions that depend on transform component
@@ -53,6 +55,16 @@ void registerScriptedGLM(sol::state& lua_state) {
         sol::call_constructor,
         sol::constructors<glm::vec2(), glm::vec2(float, float)>()
     );
+}
+
+void registerScriptedAnimation(sol::state& lua_state, ECS& ecs, std::unordered_map<std::string, BBMD2>& sceneMD2Models) {
+    auto animationTable = lua_state["Animation"].get_or_create<sol::table>();
+    animationTable["SetAnimation"] = [&ecs, &sceneMD2Models](NPC& npc, std::string animName) 
+    {
+        auto& md2Comp = npc.GetEntity().GetComponent<MD2Component>(ecs.getReg());
+
+        md2Comp.current_animation = animName;
+    };
 }
 
 }  // namespace AIScripts
