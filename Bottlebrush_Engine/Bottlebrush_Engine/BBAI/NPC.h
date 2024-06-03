@@ -69,6 +69,12 @@ public:
     void StopMoving();
 
     /// @author Alan
+    /// @brief gets transform component and returns in position in (x,z) format
+    /// @param ecs register to get transform component
+    /// @return floor position (x,z)
+    glm::vec2 GetVec2Position(ECS& ecs);
+
+    /// @author Alan
     /// @brief set a wait timer
     /// @param wait duration in seconds
     void SetWaitDuration(float wait);
@@ -81,6 +87,11 @@ public:
     /// @brief sees if there is a wait timer
     /// @return wait time > wait timer
     bool IsWaiting();
+
+    /// @author Alan
+    /// @brief gets the last movement command position
+    /// @return a world coord
+    glm::vec2& GetLastMoveTo();
 
     float& GetCurrentSpeed();
 
@@ -107,15 +118,13 @@ private:
     float m_WaitTimerDuration;   // wait timer for miscellanenous reasons
 
     //movement properties
-    float m_max_speed = 100.f;
+    float m_max_speed = 100.0f;
     float m_current_speed = 0.f;
     float m_acceleration_rate = 0.1f;
     float m_deceleration_rate = 0.1f;
-    glm::vec2 m_direction = {1, 1}; // direction that the NPC is facing
+    glm::vec2 m_direction = {1.0f, 1.0f};  // direction that the NPC is facing
 
-    /// @author Alan
-    /// @brief gets transform component and returns in position in (x,z) format
-    /// @param ecs register to get transform component
-    /// @return floor position (x,z)
-    glm::vec2 GetVec2Position(ECS& ecs);
+    glm::vec2 m_LastMoveTo = {0.0f, 0.0f};  // last move to location
+
+    
 };

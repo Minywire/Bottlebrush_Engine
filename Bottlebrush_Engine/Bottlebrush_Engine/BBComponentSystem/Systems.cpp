@@ -72,6 +72,7 @@ void Systems::RegisterAIFunctions(ECS& ecs, sol::state & lua_state, const Camera
     AIScripts::registerScriptedFSM(lua_state);
     AIScripts::registerScriptedNPC(lua_state, ecs, player);
     AIScripts::registerScriptedGLM(lua_state);
+    AIScripts::registerScriptedMessage(lua_state);
 }
 
 void Systems::setLight(RenderEngine & renderEngine, const ShaderType & shaderType, glm::mat4 view)
@@ -229,9 +230,6 @@ void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<st
             if (npc.GetCurrentSpeed() <= npc.GetMaxSpeed()) 
                 npc.GetCurrentSpeed() += npc.GetAcceleration();
         }
-        
-        // @Debug Line
-        //std::cout << "speed: " << move.current_speed << std::endl;
 
         // move in its current direction by its current speed
         transform.position.x += npc.GetDirection().x * deltaTime * npc.GetCurrentSpeed();

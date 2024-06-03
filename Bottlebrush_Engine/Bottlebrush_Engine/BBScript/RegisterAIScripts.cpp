@@ -22,7 +22,10 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
         "AddWaypoint", &NPC::AddWaypoint,
         "StopMoving", &NPC::StopMoving,
         "SetWaitDuration", &NPC::SetWaitDuration,
-        "IsWaiting", &NPC::IsWaiting
+        "IsWaiting", &NPC::IsWaiting,
+        "ClearWaitDuration", &NPC::ClearWaitDuration,
+        "GetLastMoveTo", &NPC::GetLastMoveTo,
+        "IsMoving", &NPC::IsMoving
     );
 
     // register movement functions that depend on transform component
@@ -33,6 +36,7 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
     { 
         glm::vec2 pos = {player.GetPositionX(), player.GetPositionZ()};
         npc.MoveTo(pos, ecs); 
+        return npc.IsMoving();
     };
 
     // register detection functions that depend on transform component
@@ -46,12 +50,27 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
         Message msg(event, &npc);
         npc.SendMessage(ecs, lua_state, msg);
     };
+    dispatchTable["InMessageRange"] = [&ecs](NPC& npc, Message& msg, float range) 
+    {
+        glm::vec2 curPos = npc.GetVec2Position(ecs);
+        glm::vec2 theirPos = msg.m_Sender->GetVec2Position(ecs);
+        float distance = glm::length(theirPos - curPos);
+        return distance < range;
+    };
 }
 
 void registerScriptedGLM(sol::state& lua_state) {
     lua_state.new_usertype<glm::vec2>("vec2",
         sol::call_constructor,
         sol::constructors<glm::vec2(), glm::vec2(float, float)>()
+    );
+}
+
+void registerScriptedMessage(sol::state& lua_state) {
+    // register Message system
+    lua_state.new_usertype<Message>("Message",
+        "GetEvent", &Message::m_Event,
+        "GetSender", &Message::m_Sender
     );
 }
 

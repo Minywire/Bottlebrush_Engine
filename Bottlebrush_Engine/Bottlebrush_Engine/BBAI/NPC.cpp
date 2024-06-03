@@ -35,6 +35,9 @@ void NPC::MoveTo(const glm::vec2& targetPos, ECS& ecs, float offset)
     // MoveTo returns true if it has reached that destination
     m_Moving = !Movement::MoveTo(GetVec2Position(ecs), targetPos, 
         m_current_speed, m_acceleration_rate, m_direction, m_DeltaTime, offset);
+
+    // track last target pos
+    m_LastMoveTo = targetPos;
 }
 
 void NPC::AddWaypoint(glm::vec2 point)
@@ -97,6 +100,12 @@ glm::vec2 NPC::GetVec2Position(ECS& ecs)
     const glm::vec2 pos = {transform.position.x, transform.position.z};
 
     return pos;
+}
+
+
+glm::vec2& NPC::GetLastMoveTo()
+{
+    return m_LastMoveTo;
 }
 
 void NPC::SetWaitDuration(float wait)

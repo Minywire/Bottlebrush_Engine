@@ -6,7 +6,7 @@ add_library(BBEvent STATIC)
 set(CMAKE_CXX_STANDARD 20)
 
 set(SOURCES
-	Message.cpp Message.h
+	Message.h
 	EventDispatcher.cpp EventDispatcher.h
 	Singleton.h)
 

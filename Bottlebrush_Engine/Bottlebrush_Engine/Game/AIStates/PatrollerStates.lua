@@ -17,7 +17,11 @@ Global = {
 	end,
 
 	onMessage = function(NPC, Message)
-		print("Message Received");
+		if Dispatch.InMessageRange(NPC, Message, 500.0) then
+			if Message:GetEvent() == "PlayerSpotted" then
+				FSM.ChangeState(NPC, "Chase");
+			end
+		end
 	end
 }
 
@@ -28,7 +32,6 @@ Global = {
 -------------------------------------------------------------------------------
 Idle = {
 	onEnter = function(NPC)
-		print("Entered Idle state");
 		NPC:StopMoving();
 		NPC:SetWaitDuration(5.0);
 	end,
@@ -38,12 +41,13 @@ Idle = {
 			FSM.ChangeState(NPC, "Patrol");
 		end
 		if Detection.SeePlayer(NPC) then
+			Dispatch.SendMessage("PlayerSpotted", NPC);
 			FSM.ChangeState(NPC, "Chase");
 		end	
 	end,
 
 	onExit = function(NPC)
-		print("Exiting Idle state");
+
 	end
 }
 
@@ -54,7 +58,6 @@ Idle = {
 -------------------------------------------------------------------------------
 Patrol = {
 	onEnter = function(NPC)
-		print("Entered Patrol state");
 		NPC:SetWaitDuration(3.0);
 	end,
 
@@ -67,7 +70,7 @@ Patrol = {
 	end,
 
 	onExit = function(NPC)
-		print("Exiting Patrol state");
+		NPC:ClearWaitDuration();
 	end
 }
 
@@ -78,17 +81,20 @@ Patrol = {
 -------------------------------------------------------------------------------
 Chase = {
 	onEnter = function(NPC)
-		print("Entered Chase state");
+		Movement.ChasePlayer(NPC);
 	end,
 
 	Update = function(NPC)
-		Movement.ChasePlayer(NPC);
-		if not Detection.SeePlayer(NPC) then
+		Movement.MoveTo(NPC, NPC:GetLastMoveTo());
+		if Detection.SeePlayer(NPC) then
+			Movement.ChasePlayer(NPC);
+			Dispatch.SendMessage("PlayerSpotted", NPC);
+		elseif not Detection.SeePlayer(NPC) and not NPC:IsMoving() then
 			FSM.ChangeState(NPC, "Idle");
 		end
 	end,
 
 	onExit = function(NPC)
-		print("Exiting Chase state");
+
 	end
 }
