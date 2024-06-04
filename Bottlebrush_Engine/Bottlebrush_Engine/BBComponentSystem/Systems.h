@@ -66,7 +66,7 @@ public:
     /**
     *
     */
-    static void updateMD2Interpolation(const ECS &ecs, std::unordered_map<std::string, BBMD2> &MD2s, float deltaTime);
+    static void updateMD2Interpolation(ECS &ecs, std::unordered_map<std::string, BBMD2> &MD2s, float deltaTime);
 
     /**
      *
