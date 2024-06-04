@@ -142,8 +142,9 @@ Scene::Scene(const std::string& lua_master, float screenwidth, float screenheigh
         std::filesystem::path("Resources/Textures/Skybox/back.jpg"),
     };
 
+
     skybox = Skybox("Resources/Models/Skybox.obj", skyboxTextures);
-    water = GraphicsFactory<GraphicsAPI::OpenGL>::CreateModel("Resources/Models/plane_better.obj", "Rock_2.png");
+    water = GraphicsFactory<GraphicsAPI::OpenGL>::CreateModel("Resources/Models/please.obj", "Resources/Models/water.png");
 }
 
 void Scene::setProjectionMatrix(glm::mat4 projMatrix)
@@ -171,7 +172,8 @@ void Scene::init()
     }
 
     glEnable(GL_DEPTH_TEST);
-
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     mainCamera.SetPosition(1000.0f, 100.0f, 1000.0f);
     mainCamera.SetSensitivity(0.05f);
     mainCamera.SetSpeed(1000.0f);
@@ -295,14 +297,22 @@ void Scene::update()
             mainCamera.SetViewMatrix(position, front, up);
         }
 
+        glm::vec3 waterTransformOffset;
+        waterTransformOffset.x = sin(current_frame) * 25;
+        waterTransformOffset.y = sin(current_frame) * 50;
+        waterTransformOffset.z = sin(current_frame) * 100;
+
         glm::mat4 waterModel = {1};
-        waterModel = glm::scale(waterModel, glm::vec3(500, 1, 500));
-        waterModel = glm::translate(waterModel, glm::vec3(100, 1500, 100));
+        waterModel = glm::translate(waterModel, glm::vec3(100 + waterTransformOffset.x, 1500 + waterTransformOffset.y, 100 + waterTransformOffset.z));
+        waterModel = glm::scale(waterModel, glm::vec3(5000, 1, 5000));
+
+
 
         // Draw the water
         renderEngine->GetShader(ShaderType::Water)->SetUniformMatrix4fv("view", view);
         renderEngine->GetShader(ShaderType::Water)->SetUniformMatrix4fv("projection", projection);
         renderEngine->GetShader(ShaderType::Water)->SetUniformMatrix4fv("model", waterModel);
+        water->GetSubMeshes()[0]->SetTexture(0);
         renderEngine->Draw(ShaderType::Water, *water->GetSubMeshes()[0]->GetVertexArray(),
                            water->GetSubMeshes()[0]->GetIndexCount());
         // SKYBOX
@@ -310,6 +320,7 @@ void Scene::update()
         //  values are equal to depth buffer's content
         glDepthFunc(GL_LEQUAL);
         // draw skybox as last
+
         // draw skybox as last
         view =
             glm::mat4(glm::mat3(view));  // remove translation from the view matrix

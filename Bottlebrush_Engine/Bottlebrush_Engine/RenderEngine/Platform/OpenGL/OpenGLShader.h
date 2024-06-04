@@ -59,6 +59,14 @@ public:
 	void SetUniformMatrix4fv(const std::string& name,
 								const glm::mat4& mat) override;
 
+    /**
+     * @author Niamh
+     * @brief Sets uniforms found in shader files to values passed in
+     * @param name The uniform name within the Shader Program source file. E.g. "model", "view", "projection".
+     * @param arrayLength The number of elements in the array.
+     * @param array The array values.
+     */
+    void SetUniformArray1fv(const std::string& name, int arrayLength, float array[]) override;
 private:
 	/// Struct for carrying file locations
 	ShaderSourceFiles m_SSF;

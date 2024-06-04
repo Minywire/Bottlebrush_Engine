@@ -1,21 +1,14 @@
 #version 330 core
 
-in vec3 vertexColour;
-out vec4 fragColour;
+in vec2 tex_coord;
+in vec3 normal;
+in vec3 fragPos;
+
+out vec4 color;
+
+uniform sampler2D u_Texture;
 
 void main() {
-    fragColour = vec4(vertexColour, 1.0);
+    vec3 tex = vec3(texture(u_Texture, tex_coord));
+    color = vec4(tex, 0.3f);
 }
-
-
-//varying vec3 position;
-//varying vec3 worldNormal;
-//varying vec3 eyeNormal;
-//uniform vec3 eyePos;
-//uniform samplerCube envMap;
-
-//vec3 eye = normalize(eyePos - position);
-//vec3 r = reflect(eye, worldNormal);
-//vec4 color = textureCube(envMap, r);
-//color.a = 0.5;
-//gl_FragColor = color;
