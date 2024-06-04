@@ -44,9 +44,9 @@ Idle = {
 	end,
 
 	onMessage = function(NPC, Message)
-		if Dispatch.InMessageRange(NPC, Message, 1000.0) then
+		if Dispatch.InMessageRange(NPC, Message, 2000.0) then
 			if Message.Event == "PlayerSpotted" then
-				Movement.MoveTo(NPC, Dispatch.GetSenderLocation(Message))
+				Movement.MoveTo(NPC, Dispatch.GetVec2SenderLocation(Message))
 				FSM.ChangeState(NPC, "Investigate");
 			end
 		end
@@ -103,9 +103,9 @@ Investigate = {
 	end,
 
 	onMessage = function(NPC, Message)
-		if Dispatch.InMessageRange(NPC, Message, 1000.0) then
+		if Dispatch.InMessageRange(NPC, Message, 2000.0) then
 			if Message.Event == "PlayerSpotted" then
-				Movement.MoveTo(NPC, Dispatch.GetSenderLocation(Message))
+				Movement.MoveTo(NPC, Dispatch.GetVec2SenderLocation(Message))
 			end
 		end
 	end

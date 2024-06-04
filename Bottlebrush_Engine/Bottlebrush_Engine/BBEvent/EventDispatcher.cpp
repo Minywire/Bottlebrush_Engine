@@ -21,18 +21,17 @@ void EventDispatcher::DispatchDelayedMessages(sol::state& lua_state, float delta
         m_TimeElapsed = 0;
         return;
     } 
-    else // else increment by deltaTime
-    { 
-        m_TimeElapsed += deltaTime;
-    }
 
+    // increment time elapsed
+    m_TimeElapsed += deltaTime;
+    
     // send all messages that the timer has elapsed, delete as we move to next message
     while (!m_MessageQue.empty() && m_MessageQue.begin()->first.m_DelayTime <
            m_TimeElapsed) 
     {
-        auto msg = m_MessageQue.begin()->first;
-        auto& receiver = m_MessageQue.begin()->second;
-        Send(lua_state, msg, receiver);
+        auto msg = m_MessageQue.begin()->first; // grab the message
+        auto& receiver = m_MessageQue.begin()->second; // grab the receiver
+        Send(lua_state, msg, receiver); // send the message to the receiver
         m_MessageQue.erase(m_MessageQue.begin()); // erase current message after sending
     }
 }
