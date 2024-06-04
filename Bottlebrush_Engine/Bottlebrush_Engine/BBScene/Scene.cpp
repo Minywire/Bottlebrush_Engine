@@ -362,8 +362,6 @@ void Scene::update()
         window.Swap();
         window.Poll();
     }
-    
-    physics_mgr.DeleteWorld();
 
     shutDownBBGUI();
     window.Remove();
