@@ -1,19 +1,37 @@
 -------------------------------------------------------------------------------
 
+-- create some useful animation functions just in Lua
+
+-------------------------------------------------------------------------------
+
+function setMovingAnimation(NPC)
+	if NPC:IsMoving() then
+		if Animation.GetAnimation(NPC) ~= "run" then
+			Animation.SetAnimation(NPC, "run");
+		end
+	elseif not NPC:IsMoving() then
+		if Animation.GetAnimation(NPC) ~= "stand" then
+			Animation.SetAnimation(NPC, "stand");
+		end
+	end
+end
+
+-------------------------------------------------------------------------------
+
 -- create the global state
 
 -------------------------------------------------------------------------------
 Global = {
 	onEnter = function(NPC)
-		print("Entered Global state");
+		
 	end,
 
 	Update = function(NPC)
-
+		setMovingAnimation(NPC);
 	end,
 
 	onExit = function(NPC)
-		print("Exiting Global state");
+		
 	end,
 	
 	onMessage = function(NPC, Message)

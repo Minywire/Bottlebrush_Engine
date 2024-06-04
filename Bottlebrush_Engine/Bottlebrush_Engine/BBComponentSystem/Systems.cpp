@@ -74,6 +74,7 @@ void Systems::RegisterAIFunctions(ECS& ecs, sol::state & lua_state, const Camera
     AIScripts::registerScriptedFSM(lua_state);
     AIScripts::registerScriptedNPC(lua_state, ecs, player);
     AIScripts::registerScriptedGLM(lua_state);
+    AIScripts::registerScriptedAnimation(lua_state, ecs);
     AIScripts::registerScriptedMessage(lua_state);
 }
 
@@ -134,30 +135,32 @@ void Systems::drawMD2Models(const ECS& ecs, const ShaderType& shaderType, Render
         auto& currentMD2Component = group.get<MD2Component>(entity);
         auto& currentTransformComponent = group.get<TransformComponent>(entity);
 
-        auto& currentMD2 = MD2s.at(currentMD2Component.model_path);
+        auto& MD2Model = MD2s.at(currentMD2Component.model_path);
         
-        int anim = currentMD2.getSpecificAnim("run");
+        int anim = MD2Model.getSpecificAnim(currentMD2Component.current_animation);
          
         glm::mat4 transform = {1};
         transform = glm::translate(transform, currentTransformComponent.position);
-        transform = glm::rotate(transform, glm::radians(-90.f), glm::vec3(1,0,0));
         transform = glm::rotate(transform, glm::radians(currentTransformComponent.rotation.x), glm::vec3(1,0,0));
         transform = glm::rotate(transform, glm::radians(currentTransformComponent.rotation.y), glm::vec3(0,1,0));
         transform = glm::rotate(transform, glm::radians(currentTransformComponent.rotation.z), glm::vec3(0,0,1));
+        //MD2 standard rotations last
+        transform = glm::rotate(transform, glm::radians(-90.f), glm::vec3(0,1,0));
+        transform = glm::rotate(transform, glm::radians(-90.f), glm::vec3(1,0,0));
         transform = glm::scale(transform, currentTransformComponent.scale);
 
         renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("projection", projection);
         renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("view", view);
         renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("model", transform);
-        renderEngine.GetShader(shaderType)->SetUniform1f("interpolation", currentMD2.getInterpolation());
+        renderEngine.GetShader(shaderType)->SetUniform1f("interpolation", currentMD2Component.interpolation);
         renderEngine.GetShader(shaderType)->SetUniform1i("texSampler1", 0);
 
-        currentMD2.setTexture();
-        renderEngine.Draw(shaderType, currentMD2.getVecArrays().at(currentMD2.getAnimationCurrentFrame(anim, currentMD2.getInterpolation())), currentMD2.getModelSize());
+        MD2Model.setTexture();
+        renderEngine.Draw(shaderType, MD2Model.getVecArrays().at(currentMD2Component.current_frame), MD2Model.getModelSize());
     }
 }
 
-void Systems::updateMD2Interpolation(const ECS& ecs, std::unordered_map<std::string, BBMD2>& MD2s, float deltaTime)
+void Systems::updateMD2Interpolation(ECS& ecs, std::unordered_map<std::string, BBMD2>& MD2s, float deltaTime)
 {
     auto group = ecs.GetAllEntitiesWith<MD2Component>();
 
@@ -165,9 +168,21 @@ void Systems::updateMD2Interpolation(const ECS& ecs, std::unordered_map<std::str
     {
         auto& currentMD2Component = group.get<MD2Component>(entity);
 
-        auto& currentMD2 = MD2s.at(currentMD2Component.model_path);
+        auto& anim = MD2s.at(currentMD2Component.model_path).getAnimations();
 
-        currentMD2.updateInterpolation(deltaTime);
+        auto& interp = currentMD2Component.interpolation;
+        auto& currentFrame = currentMD2Component.current_frame;
+        auto& animName = currentMD2Component.current_animation;
+
+        if (currentFrame > anim[animName].endIndex || currentFrame < anim[animName].startIndex)
+            currentFrame = anim[animName].startIndex;
+
+        if (interp >= 1.0f) {
+            interp = 0.f;
+            if (currentFrame <= anim[animName].endIndex) currentFrame++;
+        } else {
+            interp += deltaTime * currentMD2Component.anim_speed;
+        }
     }
 
 }
@@ -237,7 +252,7 @@ void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<st
         transform.position.x += npc.GetDirection().x * deltaTime * npc.GetCurrentSpeed();
         transform.position.z += npc.GetDirection().y * deltaTime * npc.GetCurrentSpeed();
         // rotate the character to face the direction, currently given in radians
-        transform.rotation.y = std::atan2(npc.GetDirection().x, npc.GetDirection().y);
+        transform.rotation.y = glm::degrees(std::atan2(npc.GetDirection().x, npc.GetDirection().y));
 
         //change the NPC's y position to the terrain height
         auto terrainGroup = ecs.GetAllEntitiesWith<TerrainComponent>();
@@ -252,7 +267,7 @@ void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<st
             if (!heightOpt.has_value()) continue;
 
             // set the new y position
-            transform.position.y = heightOpt.value() + 10; // plus an offset, should be taken out once other physics is implemented
+            transform.position.y = heightOpt.value() + 20 * transform.scale.y; // plus an offset, should be taken out once other physics is implemented
         }
     }
 }

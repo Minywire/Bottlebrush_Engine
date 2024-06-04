@@ -103,6 +103,8 @@ public:
 
     glm::vec2& GetDirection();
 
+    Entity& GetEntity();
+
     FSM& GetFSM();
 
 private:
@@ -118,7 +120,7 @@ private:
     float m_WaitTimerDuration;   // wait timer for miscellanenous reasons
 
     //movement properties
-    float m_max_speed = 100.0f;
+    float m_max_speed = 50.f;
     float m_current_speed = 0.f;
     float m_acceleration_rate = 0.1f;
     float m_deceleration_rate = 0.1f;

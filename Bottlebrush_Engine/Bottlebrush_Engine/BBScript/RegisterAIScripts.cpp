@@ -75,6 +75,19 @@ void registerScriptedGLM(sol::state& lua_state) {
     );
 }
 
+void registerScriptedAnimation(sol::state& lua_state, ECS& ecs) {
+    auto animationTable = lua_state["Animation"].get_or_create<sol::table>();
+    animationTable["SetAnimation"] = [&ecs](NPC& npc, std::string animName) 
+    {
+        auto& md2Comp = npc.GetEntity().GetComponent<MD2Component>(ecs.getReg());
+
+        md2Comp.current_animation = animName;
+    };
+    animationTable["GetAnimation"] = [&ecs](NPC& npc)
+    {
+        return npc.GetEntity().GetComponent<MD2Component>(ecs.getReg()).current_animation;
+    };
+}
 void registerScriptedMessage(sol::state& lua_state) {
     // register Message system
     lua_state.new_usertype<Message>("Message",
