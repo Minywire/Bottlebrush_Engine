@@ -15,17 +15,15 @@ int main() {
     }
 
     for (auto& i : indices) {
-        auto pbody = physics_mgr.ObtainBody(i);
+        physics_mgr.CreateBoxCollider(i, {0.5f, 0.5f, 0.5f});
 
-        pbody.SetPosition({1.0f, 1.0f, 1.0f});
-        pbody.SetRotation({3.14f, 3.14f, 3.14f});
-        pbody.SetScale({2.0f, 2.0f, 2.0f});
-        pbody.SetType(PhysicsBody::PhysicsBodyType::kKinematic);
+        auto pbody = physics_mgr.ObtainBody(i);
 
         auto position = pbody.GetPosition();
         auto rotation = pbody.GetRotation();
         auto scale = pbody.GetScale();
         auto type = pbody.GetType();
+        auto collider = pbody.GetCollider();
 
         printf("Index:\n\tMgr: %d\n\tInt: %d\n", i,
                pbody.GetRigidBody()->getEntity().getIndex());
@@ -42,6 +40,14 @@ int main() {
                pbody.GetRigidBody()->getTransform().getOrientation().y,
                pbody.GetRigidBody()->getTransform().getOrientation().z);
         printf("Scale: %f, %f, %f\n", scale.x, scale.y, scale.z);
+        printf("Collider:\n\tMgr: %s\n\tInt: %s\n",
+               collider->getCollisionShape()->to_string().c_str(),
+               physics_mgr.GetWorld()
+                   ->getRigidBody(i)
+                   ->getCollider(0)
+                   ->getCollisionShape()
+                   ->to_string()
+                   .c_str());
         printf("Address:\n\tMgr: %p\n\tInt: %p\n\n", pbody.GetRigidBody(),
                physics_mgr.GetWorld()->getRigidBody(i));
     }
