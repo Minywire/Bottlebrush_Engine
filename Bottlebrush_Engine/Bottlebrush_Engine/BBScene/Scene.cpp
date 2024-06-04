@@ -175,7 +175,7 @@ void Scene::init()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     mainCamera.SetPosition(1000.0f, 100.0f, 1000.0f);
     mainCamera.SetSensitivity(0.05f);
-    mainCamera.SetSpeed(1000.0f);
+    mainCamera.SetSpeed(100.0f);
     mainCamera.SetZoom(30.0f);
 
     bbSystems.RegisterAIFunctions(bbECS, lua.getLuaState(), mainCamera); // register functions before running scripts

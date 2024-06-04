@@ -1,27 +1,41 @@
 -------------------------------------------------------------------------------
 
+-- create some useful animation functions just in Lua
+
+-------------------------------------------------------------------------------
+
+function setMovingAnimation(NPC)
+	if NPC:IsMoving() then
+		if Animation.GetAnimation(NPC) ~= "run" then
+			Animation.SetAnimation(NPC, "run");
+		end
+	elseif not NPC:IsMoving() then
+		if Animation.GetAnimation(NPC) ~= "stand" then
+			Animation.SetAnimation(NPC, "stand");
+		end
+	end
+end
+
+-------------------------------------------------------------------------------
+
 -- create the global state
 
 -------------------------------------------------------------------------------
 Global = {
 	onEnter = function(NPC)
-		print("Entered Global state");
+		
 	end,
 
 	Update = function(NPC)
-
+		setMovingAnimation(NPC);
 	end,
 
 	onExit = function(NPC)
-		print("Exiting Global state");
+		
 	end,
 
 	onMessage = function(NPC, Message)
-		if Dispatch.InMessageRange(NPC, Message, 500.0) then
-			if Message:GetEvent() == "PlayerSpotted" then
-				FSM.ChangeState(NPC, "Chase");
-			end
-		end
+		
 	end
 }
 
@@ -41,13 +55,22 @@ Idle = {
 			FSM.ChangeState(NPC, "Patrol");
 		end
 		if Detection.SeePlayer(NPC) then
-			Dispatch.SendMessage("PlayerSpotted", NPC);
+			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
 			FSM.ChangeState(NPC, "Chase");
 		end	
 	end,
 
 	onExit = function(NPC)
+		NPC:ClearWaitDuration();
+	end,
 
+	onMessage = function(NPC, Message)
+		if Dispatch.InMessageRange(NPC, Message, 2000.0) then
+			if Message.Event == "PlayerSpotted" then
+				Movement.MoveTo(NPC, Dispatch.GetVec2SenderLocation(Message))
+				FSM.ChangeState(NPC, "Investigate");
+			end
+		end
 	end
 }
 
@@ -62,15 +85,24 @@ Patrol = {
 	end,
 
 	Update = function(NPC)
-		Movement.Patrol(NPC);
+		Movement.Patrol(NPC)
 		if Detection.SeePlayer(NPC) then
-			Dispatch.SendMessage("PlayerSpotted", NPC);
+			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
 			FSM.ChangeState(NPC, "Chase");
 		end	
 	end,
 
 	onExit = function(NPC)
 		NPC:ClearWaitDuration();
+	end,
+
+	onMessage = function(NPC, Message)
+		if Dispatch.InMessageRange(NPC, Message, 2000.0) then
+			if Message.Event == "PlayerSpotted" then
+				Movement.MoveTo(NPC, Dispatch.GetVec2SenderLocation(Message))
+				FSM.ChangeState(NPC, "Investigate");
+			end
+		end
 	end
 }
 
@@ -88,7 +120,7 @@ Chase = {
 		Movement.MoveTo(NPC, NPC:GetLastMoveTo());
 		if Detection.SeePlayer(NPC) then
 			Movement.ChasePlayer(NPC);
-			Dispatch.SendMessage("PlayerSpotted", NPC);
+			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
 		elseif not Detection.SeePlayer(NPC) and not NPC:IsMoving() then
 			FSM.ChangeState(NPC, "Idle");
 		end
@@ -96,5 +128,38 @@ Chase = {
 
 	onExit = function(NPC)
 
+	end
+}
+
+-------------------------------------------------------------------------------
+
+-- create the investigate state
+
+-------------------------------------------------------------------------------
+Investigate = {
+	onEnter = function(NPC)
+
+	end,
+
+	Update = function(NPC)
+		Movement.MoveTo(NPC, NPC:GetLastMoveTo());
+		if Detection.SeePlayer(NPC) then
+			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
+			FSM.ChangeState(NPC, "Chase");
+		elseif not Detection.SeePlayer(NPC) and not NPC:IsMoving() then
+			FSM.ChangeState(NPC, "Idle");
+		end
+	end,
+
+	onExit = function(NPC)
+
+	end,
+
+	onMessage = function(NPC, Message)
+		if Dispatch.InMessageRange(NPC, Message, 2000.0) then
+			if Message.Event == "PlayerSpotted" then
+				Movement.MoveTo(NPC, Dispatch.GetVec2SenderLocation(Message))
+			end
+		end
 	end
 }
