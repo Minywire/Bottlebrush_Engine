@@ -43,7 +43,16 @@ public:
     /// @param ecs register to get entity and its components
     void Patrol(ECS& ecs);
 
+    /// @author Alan
+    /// @brief Sets the wandering variables
+    /// @param wanderRadius size of circle used to grab a random point
+    /// @param wanderDistance distance at which to project the circle
+    /// @param wanderJitter used to slightly move the target point around the circle
     void SetWander(float wanderRadius = 100.0f, float wanderDistance = 300.0f, float wanderJitter = 10.0f); 
+
+    /// @author Alan
+    /// @brief This is the movement function called by the AI scripts
+    /// @param ecs register to retrieve NPC transform
     void Wander(ECS& ecs);
 
     /// @author Alan
