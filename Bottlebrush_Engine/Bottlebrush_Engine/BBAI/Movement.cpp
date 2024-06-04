@@ -39,4 +39,30 @@ namespace Movement {
         float dp = glm::dot(toRealTarget, toTarget);
         return dp < 0.0f;
     }
+
+    bool SeeTarget(const glm::vec2& curPos, const glm::vec2& targetPos,
+        const glm::vec2& curDirection, float coneDistance,
+        float fov)
+    {
+        // vector between current position and target position
+	    glm::vec2 toTarget = targetPos - curPos;
+	    // distance between current position and target position
+	    const float dist = glm::length(toTarget);	  
+	    if (dist > coneDistance) return false; // not within range
+
+	    // get heading to target
+	    toTarget = glm::normalize(toTarget);
+	    glm::vec2 direction = curDirection;
+	    //get patrollers current heading
+        direction = glm::normalize(direction);
+
+	    //compute angle between patroller and target
+	    double angle = glm::dot(direction, toTarget);
+
+        //get heading in degrees
+        angle = glm::degrees(acos(angle));
+
+	    //determine if target is in fov
+        return angle <= (fov / 2);
+    }
 }

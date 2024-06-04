@@ -19,6 +19,8 @@ void KeyCallback(Window::WindowContext window, int key, int scancode, int action
 
     if (key == GLFW_KEY_C && action == GLFW_PRESS) scene->setWireFrameFlag(!scene->getWireframeFlag());
 
+    if (key == GLFW_KEY_R && action == GLFW_PRESS) scene->setCameraRestriction(!scene->getCameraRestriction());
+
     if (action == GLFW_PRESS && key == GLFW_KEY_LEFT_SHIFT)
       scene->getCamera().SetSpeed(scene->getCamera().GetSpeed() * 2.0f);
     if (action == GLFW_RELEASE && key == GLFW_KEY_LEFT_SHIFT)
@@ -123,6 +125,10 @@ Scene::Scene(const std::string& lua_master, float screenwidth, float screenheigh
     setRendererShaderSource(skyboxShaderType,
                         "Resources/Shaders/Vertex/Skybox.vert",
                         "Resources/Shaders/Fragment/Skybox.frag");
+
+    setRendererShaderSource(ShaderType::MD2,
+                            "Resources/Shaders/Vertex/MD2Model.vert",
+                            "Resources/Shaders/Fragment/MD2Model.frag");
     setRendererShaderSource(waterShaderType,
                             "Resources/Shaders/Vertex/Water.vert",
                             "Resources/Shaders/Fragment/Water.frag");
@@ -157,7 +163,6 @@ void Scene::init()
     glfwSetKeyCallback(window.GetContext(), KeyCallback);
     glfwSetCursorPosCallback(window.GetContext(), MouseCallback);
     glfwSetScrollCallback(window.GetContext(), ScrollCallback);
-
    
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
       std::cerr << "ERROR: Failed to initialize GLAD!" << std::endl;
@@ -168,10 +173,10 @@ void Scene::init()
 
     mainCamera.SetPosition(1000.0f, 100.0f, 1000.0f);
     mainCamera.SetSensitivity(0.05f);
-    mainCamera.SetSpeed(100.0f);
+    mainCamera.SetSpeed(1000.0f);
     mainCamera.SetZoom(30.0f);
 
-    bbSystems.RegisterAIFunctions(bbECS, lua.getLuaState()); // register functions before running scripts
+    bbSystems.RegisterAIFunctions(bbECS, lua.getLuaState(), mainCamera); // register functions before running scripts
     if(!lua.getLuaState().do_file(masterLuaFile).valid())
     {
         std::cout << "Could not load master game script file\n";
@@ -180,6 +185,7 @@ void Scene::init()
 
     bbSystems.createTerrainComponents(bbECS, resources.getSceneTerrain());
     bbSystems.createModelComponents(bbECS, resources.getSceneModels());
+    bbSystems.createMD2ModelComponents(bbECS, resources.getSceneMD2Models());
     initBBGUI(window.GetContext());
 }
 
@@ -251,17 +257,31 @@ void Scene::update()
         setProjectionMatrix(projection);
         setViewMatrix(view);
 
-        /* gameScene.update(delta);*/
         bbSystems.setLight(*renderEngine, ShaderType::Default, viewMatrix);
+
+        Systems::drawMD2Models(bbECS,
+                               ShaderType::MD2,
+                               *renderEngine,
+                                resources.getSceneMD2Models(),
+                                projectionMatrix, viewMatrix);
+
+        Systems::updateMD2Interpolation(bbECS, resources.getSceneMD2Models(), deltaTime);
+
+
         Systems::drawTerrain(bbECS, ShaderType::Terrain, *renderEngine,
                              resources.getSceneTerrain(), false,
                              projectionMatrix, viewMatrix);
+
+        if (cameraRestriction)
+        {
+            Systems::updateCameraTerrainHeight(bbECS, resources.getSceneTerrain(), mainCamera, 20.0f);
+        }
+
         Systems::drawModels(bbECS, ShaderType::Default, *renderEngine,
                             resources.getSceneModels(), projectionMatrix,
                             viewMatrix);
         Systems::updateAIMovements(bbECS, deltaTime, resources.getSceneTerrain());
         while (accumulatedFrameTime >= UpdateAIInterval) {
-            std::cout << "update all AI call" << std::endl;
             Systems::updateAI(bbECS, lua.getLuaState(), accumulatedFrameTime);
             accumulatedFrameTime -= UpdateAIInterval;
         }
@@ -395,4 +415,14 @@ void Scene::toggleMenuActive() {
 
 bool Scene::getMenuActive() const {
     return menuActive;
+}
+
+bool Scene::getCameraRestriction() const
+{
+    return cameraRestriction;
+}
+
+void Scene::setCameraRestriction(bool flag)
+{
+    cameraRestriction = flag;
 }

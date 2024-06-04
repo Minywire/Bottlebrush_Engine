@@ -7,6 +7,7 @@
 #include "FSM.h"
 #include "Movement.h"
 #include "Entity.h"
+#include "Message.h"
 
 /** forward decl to avoid circle linking */
 class ECS;
@@ -43,9 +44,54 @@ public:
     void Patrol(ECS& ecs);
 
     /// @author Alan
+    /// @brief Determine if NPC can see the player by a cone projection
+    /// @param targetPos Player's position
+    /// @param ecs register to retrieve NPC transform
+    /// @param coneDistance the range distance of detection
+    /// @param fov the width range of detection
+    /// @return whether Player is standing within the cone
+    bool SeePlayer(const glm::vec2& targetPos, ECS& ecs, float coneDistance = 300, float fov = 180);
+
+    /// @author Alan
+    /// @brief uses the EventDispatcher, and sends a message to all NPCs
+    /// @param ecs register used to send a message to all NPCs
+    /// @param lua_state passed onto FSM::HandleMessage()
+    /// @param msg event message
+    void SendMessage(ECS& ecs, sol::state& lua_state, Message& msg);
+    
+    /// @author Alan
     /// @brief see if NPC has movement input
     /// @return is NPC trying to move
     bool IsMoving();
+
+    /// @author Alan
+    /// @brief stops any movement input and clears wait timers
+    void StopMoving();
+
+    /// @author Alan
+    /// @brief gets transform component and returns in position in (x,z) format
+    /// @param ecs register to get transform component
+    /// @return floor position (x,z)
+    glm::vec2 GetVec2Position(ECS& ecs);
+
+    /// @author Alan
+    /// @brief set a wait timer
+    /// @param wait duration in seconds
+    void SetWaitDuration(float wait);
+
+    /// @author Alan
+    /// @brief clears wait timers
+    void ClearWaitDuration();
+
+    /// @author Alan
+    /// @brief sees if there is a wait timer
+    /// @return wait time > wait timer
+    bool IsWaiting();
+
+    /// @author Alan
+    /// @brief gets the last movement command position
+    /// @return a world coord
+    glm::vec2& GetLastMoveTo();
 
     float& GetCurrentSpeed();
 
@@ -69,11 +115,16 @@ private:
     int m_CurrentWaypoint; // tracking what is the current waypoint
     float m_WaitTimeElapsed; // its accumulated waiting time
     float m_PatrolWaitDuration;  // patrol max waiting duration
+    float m_WaitTimerDuration;   // wait timer for miscellanenous reasons
 
     //movement properties
-    float m_max_speed = 100.f;
+    float m_max_speed = 100.0f;
     float m_current_speed = 0.f;
     float m_acceleration_rate = 0.1f;
     float m_deceleration_rate = 0.1f;
-    glm::vec2 m_direction = {1, 1}; // direction that the NPC is facing
+    glm::vec2 m_direction = {1.0f, 1.0f};  // direction that the NPC is facing
+
+    glm::vec2 m_LastMoveTo = {0.0f, 0.0f};  // last move to location
+
+    
 };
