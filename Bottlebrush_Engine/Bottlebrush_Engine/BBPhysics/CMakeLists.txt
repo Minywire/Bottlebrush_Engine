@@ -12,3 +12,10 @@ target_link_libraries(BBPhysics
         PRIVATE glm
         PRIVATE reactphysics3d
 )
+
+add_executable(physics-test physics_test.cpp)
+target_link_libraries(physics-test
+        PRIVATE glm
+        PRIVATE reactphysics3d
+        PRIVATE BBPhysics
+)
