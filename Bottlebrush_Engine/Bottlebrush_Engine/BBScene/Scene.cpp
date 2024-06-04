@@ -144,7 +144,7 @@ Scene::Scene(const std::string& lua_master, float screenwidth, float screenheigh
 
 
     skybox = Skybox("Resources/Models/Skybox.obj", skyboxTextures);
-    water = GraphicsFactory<GraphicsAPI::OpenGL>::CreateModel("Resources/Models/please.obj", "Resources/Models/water.png");
+    water = GraphicsFactory<GraphicsAPI::OpenGL>::CreateModel("Resources/Models/nooooooe_cleooooooee.obj", "Resources/Models/water.png");
 }
 
 void Scene::setProjectionMatrix(glm::mat4 projMatrix)
@@ -303,9 +303,11 @@ void Scene::update()
         waterTransformOffset.z = sin(current_frame) * 100;
 
         glm::mat4 waterModel = {1};
-        waterModel = glm::translate(waterModel, glm::vec3(100 + waterTransformOffset.x, 1500 + waterTransformOffset.y, 100 + waterTransformOffset.z));
-        waterModel = glm::scale(waterModel, glm::vec3(5000, 1, 5000));
 
+        waterModel = glm::translate(waterModel, waterTransformOffset);
+        waterModel = glm::scale(waterModel, glm::vec3(500000, 1, 500000));
+        waterModel = glm::translate(waterModel, glm::vec3(0.5, 1500, 0.5));
+//        waterModel = glm::translate(waterModel, glm::vec3(25 + waterTransformOffset.x, 15 + waterTransformOffset.y, 25 + waterTransformOffset.z));
 
 
         // Draw the water
