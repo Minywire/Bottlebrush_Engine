@@ -64,7 +64,7 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
         float distance = glm::length(theirPos - curPos);
         return distance < range;
     };
-    dispatchTable["GetSenderLocation"] = [&ecs](Message& msg)
+    dispatchTable["GetVec2SenderLocation"] = [&ecs](Message& msg)
     {
         return msg.m_Sender->GetVec2Position(ecs);
     };
