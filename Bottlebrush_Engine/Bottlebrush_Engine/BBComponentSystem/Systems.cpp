@@ -53,8 +53,6 @@ void Systems::createMD2ModelComponents(ECS &ecs, std::unordered_map<std::string,
         auto& currentModelComponent = group.get<MD2Component>(entity);
 
         generateMD2ModelFromComponent(currentModelComponent, sceneMD2Models);
-
-        currentModelComponent.animation = sceneMD2Models.at(currentModelComponent.model_path).getAnimations();
     }
 }
 
