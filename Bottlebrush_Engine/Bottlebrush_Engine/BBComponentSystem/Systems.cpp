@@ -286,3 +286,15 @@ void Systems::updateCameraTerrainHeight(const ECS& ecs, const std::unordered_map
         } 
     }
 }
+
+void Systems::initPhysicsBodies(const ECS& ecs, PhysicsMgr& physicsManager)
+{
+    auto group = ecs.GetAllEntitiesWith<PhysicsBodyComponent>();
+
+    for (auto entity : group)
+    {
+        const auto& currentPhysBod = group.get<PhysicsBodyComponent>(entity);
+
+        physicsManager.CreateBody(currentPhysBod.physics_body);
+    }
+}

@@ -145,4 +145,6 @@ public:
     static void updateAI(ECS &ecs, sol::state &lua_state, float deltaTime);
 
     static void updateCameraTerrainHeight(const ECS& ecs, const std::unordered_map<std::string, Terrain> & terrains, Camera & camera, float offset_y = 10.0f);
+
+    static void initPhysicsBodies(const ECS &ecs, PhysicsMgr &physicsManager);
 };

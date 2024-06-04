@@ -69,6 +69,10 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     {
         loadMD2(ecs, entity, table["MD2Model"]);
     }
+    if (table["PhysicsBody"].valid())
+    {
+        loadPhysicsBody(ecs, entity, table["PhysicsBody"]);
+    }
 }
 
 void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& table, float xPos, float yPos, float zPos)
@@ -92,6 +96,10 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     if (table["MD2Model"].valid()) 
     {
       loadMD2(ecs, entity, table["MD2Model"]);
+    }
+    if (table["PhysicsBody"].valid())
+    {
+        loadPhysicsBody(ecs, entity, table["PhysicsBody"]);
     }
 }
 
@@ -186,4 +194,19 @@ void EntityFactory::loadMD2(ECS & ecs, Entity & entity, const sol::table & MD2)
     const std::string MD2TexPath = MD2["TexturePath"];
 
     entity.AddComponent<MD2Component>(ecs.getReg(), MD2Path, MD2TexPath);
+}
+
+void EntityFactory::loadPhysicsBody(ECS & ecs, Entity & entity, const sol::table & PhysBody)
+{
+    const PhysicsBody::PhysicsBodyType type = PhysBody["BodyType"];
+
+    entity.AddComponent<PhysicsBodyComponent>(ecs.getReg());
+
+    const auto & transform = entity.GetComponent<TransformComponent>(ecs.getReg());
+    auto & currentPhysBody = entity.GetComponent<PhysicsBody>(ecs.getReg());
+
+    currentPhysBody.SetType(type);
+    currentPhysBody.SetPosition(transform.position);
+    currentPhysBody.SetRotation(transform.rotation);
+    currentPhysBody.SetScale(transform.scale);
 }

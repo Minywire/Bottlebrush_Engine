@@ -184,6 +184,9 @@ void Scene::init()
     bbSystems.createTerrainComponents(bbECS, resources.getSceneTerrain());
     bbSystems.createModelComponents(bbECS, resources.getSceneModels());
     bbSystems.createMD2ModelComponents(bbECS, resources.getSceneMD2Models());
+
+    Systems::initPhysicsBodies(bbECS, physics_mgr);
+
     initBBGUI(window.GetContext());
 }
 
@@ -270,6 +273,8 @@ void Scene::update()
                              resources.getSceneTerrain(), false,
                              projectionMatrix, viewMatrix);
 
+        physics_mgr.Update(deltaTime);
+
         if (cameraRestriction)
         {
             Systems::updateCameraTerrainHeight(bbECS, resources.getSceneTerrain(), mainCamera, 20.0f);
@@ -326,6 +331,8 @@ void Scene::update()
         window.Swap();
         window.Poll();
     }
+    
+    physics_mgr.DeleteWorld();
 
     shutDownBBGUI();
     window.Remove();

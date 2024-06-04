@@ -97,4 +97,9 @@ private:
      * @param MD2 the MD2 table to compare against
      */
     void loadMD2(ECS &ecs, Entity &entity, const sol::table &MD2);
+
+    /**
+    *
+    */
+    void loadPhysicsBody(ECS &ecs, Entity &entity, const sol::table &PhysBody);
 };

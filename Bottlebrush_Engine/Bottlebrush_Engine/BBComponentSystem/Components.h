@@ -84,5 +84,6 @@ struct TerrainComponent
 };
 
 struct PhysicsBodyComponent {
+    PhysicsBody::PhysicsBodyType type;
     PhysicsBody physics_body;
 };
