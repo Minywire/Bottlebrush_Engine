@@ -1,10 +1,5 @@
 #include "PhysicsMgr.h"
 
-PhysicsMgr& PhysicsMgr::GetInstance() {
-    static PhysicsMgr instance_;
-    return instance_;
-}
-
 void PhysicsMgr::CreateWorld() { world_ = common_.createPhysicsWorld(); }
 
 void PhysicsMgr::DeleteWorld() { common_.destroyPhysicsWorld(world_); }

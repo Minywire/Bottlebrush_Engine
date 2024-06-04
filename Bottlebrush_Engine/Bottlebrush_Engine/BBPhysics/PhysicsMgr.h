@@ -22,12 +22,7 @@ class PhysicsMgr {
         PhysicsBody::PhysicsBodyType::kStatic;
 
    public:
-    PhysicsMgr(PhysicsMgr&) = delete;
-    PhysicsMgr& operator=(PhysicsMgr&) = delete;
-    PhysicsMgr(PhysicsMgr&&) = delete;
-    PhysicsMgr& operator=(PhysicsMgr&&) = delete;
-
-    static PhysicsMgr& GetInstance();
+    PhysicsMgr() = default;
 
     void CreateWorld();
     void DeleteWorld();
@@ -48,8 +43,6 @@ class PhysicsMgr {
     void Update(float delta);
 
    private:
-    PhysicsMgr() = default;
-
     PhysicsCommn common_;
     std::unordered_map<uint32_t, PhysicsBody> physics_bodies_;
     PhysicsWorld world_ = nullptr;
