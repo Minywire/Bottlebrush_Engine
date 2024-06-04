@@ -87,12 +87,12 @@ void Scene::ProcessInput(float deltaTime) {
 
 void Scene::createEntity(const std::string & lua_file) //provides a user-friendly function that you only need to specify the script entity to.
 {
-    entityFactory.create_from_file(bbECS, lua.getLuaState(), lua_file, resources);
+    entityFactory.create_from_file(bbECS, lua.getLuaState(), lua_file, resources, physicsManager);
 }
 
 void Scene::createEntityAndTransform(const std::string & lua_file, float xPos, float yPos, float zPos)
 {
-    entityFactory.create_from_file(bbECS, lua.getLuaState(),lua_file, resources, xPos, yPos, zPos);
+    entityFactory.create_from_file(bbECS, lua.getLuaState(),lua_file, resources, physicsManager, xPos, yPos, zPos);
 }
 
 const float Scene::getTerrainHeight(float x, float z)

@@ -20,7 +20,7 @@ public:
      * @param lua_file The specified Lua file to create the entity from
      * @return created entity
      */
-    Entity create_from_file(ECS &ecs, sol::state &lua_state, const std::filesystem::path &lua_file, BBResourceManager & resources);
+    Entity create_from_file(ECS &ecs, sol::state &lua_state, const std::filesystem::path &lua_file, BBResourceManager & resources, PhysicsMgr & physMgr);
 
     /**
      *
@@ -32,7 +32,7 @@ public:
      * @param zPos z translate
      * @return created entity
      */
-    Entity create_from_file(ECS &ecs, sol::state &lua_state, const std::filesystem::path &lua_file, BBResourceManager & resources, float xPos, float yPos, float zPos);
+    Entity create_from_file(ECS &ecs, sol::state &lua_state, const std::filesystem::path &lua_file, BBResourceManager & resources, PhysicsMgr & physMgr, float xPos, float yPos, float zPos);
 
 private:
     /**
@@ -41,7 +41,7 @@ private:
      * @param entity entity to add components to
      * @param table tables
      */
-    void load_components(ECS &ecs, Entity &entity, const sol::table &table, BBResourceManager & resources);
+    void load_components(ECS &ecs, Entity &entity, const sol::table &table, BBResourceManager & resources, PhysicsMgr & physMgr);
 
     /**
      * @param ecs  The ecs to load components from
@@ -51,7 +51,7 @@ private:
      * @param yPos y translate
      * @param zPos z translate
      */
-    void load_components(ECS &ecs, Entity &entity, const sol::table &table, BBResourceManager & resources, float xPos, float yPos, float zPos);
+    void load_components(ECS &ecs, Entity &entity, const sol::table &table, BBResourceManager & resources, PhysicsMgr & physMgr, float xPos, float yPos, float zPos);
 
     /**
      *

@@ -5,7 +5,7 @@
 #include "EntityFactory.h"
 
 
-Entity EntityFactory::create_from_file(ECS & ecs, sol::state & lua_state, const std::filesystem::path & lua_file, BBResourceManager & resources)
+Entity EntityFactory::create_from_file(ECS & ecs, sol::state & lua_state, const std::filesystem::path & lua_file, BBResourceManager & resources, PhysicsMgr & physMgr)
 {
 
     if(lua_file.extension() != ".lua") { throw std::runtime_error("Lua file is no lua file"); }
@@ -19,14 +19,14 @@ Entity EntityFactory::create_from_file(ECS & ecs, sol::state & lua_state, const 
     if(entityTable.valid())
     {
         namedEntity = ecs.CreateEntity();
-        load_components(ecs, namedEntity, entityTable,  resources);
+        load_components(ecs, namedEntity, entityTable,  resources, physMgr);
 
         return namedEntity;
     }
     return namedEntity;
 }
 
-Entity EntityFactory::create_from_file(ECS & ecs, sol::state & lua_state,  const std::filesystem::path & lua_file, BBResourceManager & resources, float xPos, float yPos, float zPos)
+Entity EntityFactory::create_from_file(ECS & ecs, sol::state & lua_state,  const std::filesystem::path & lua_file, BBResourceManager & resources, PhysicsMgr & physMgr, float xPos, float yPos, float zPos)
 {
 
     if(lua_file.extension() != ".lua") { throw std::runtime_error("Lua file is no lua file"); }
@@ -40,14 +40,14 @@ Entity EntityFactory::create_from_file(ECS & ecs, sol::state & lua_state,  const
     if(entityTable.valid())
     {
         namedEntity = ecs.CreateEntity();
-        load_components(ecs, namedEntity, entityTable, resources, xPos, yPos, zPos);
+        load_components(ecs, namedEntity, entityTable, resources, physMgr, xPos, yPos, zPos);
 
         return namedEntity;
     }
     return namedEntity;
 }
 
-void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& table, BBResourceManager & resources)
+void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& table, BBResourceManager & resources, PhysicsMgr & physMgr)
 {
     if(table["Transform"].valid())
     {
@@ -69,9 +69,13 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     {
         loadMD2(ecs, entity, table["MD2Model"], resources);
     }
+    if (table["PhysicsBody"].valid())
+    {
+        loadPhysicsBody(ecs, entity, table["PhysicsBody"], physMgr);
+    }
 }
 
-void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& table, BBResourceManager & resources, float xPos, float yPos, float zPos)
+void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& table, BBResourceManager & resources, PhysicsMgr & physmgr, float xPos, float yPos, float zPos)
 {
     if(table["Transform"].valid())
     {
@@ -92,6 +96,10 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     if (table["MD2Model"].valid()) 
     {
       loadMD2(ecs, entity, table["MD2Model"], resources);
+    }
+    if (table["PhysicsBody"].valid()) 
+    {
+        loadPhysicsBody(ecs, entity, table["PhysicsBody"], physmgr);
     }
 }
 
