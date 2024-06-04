@@ -2,11 +2,7 @@
 
 PhysicsBody::PhysicsBody(PhysicsBodyType type, glm::vec3 position,
                          glm::vec3 rotation, glm::vec3 scale)
-    : body_(nullptr),
-      position_(position),
-      rotation_(rotation),
-      scale_(scale),
-      type_(type) {}
+    : position_(position), rotation_(rotation), scale_(scale), type_(type) {}
 
 const glm::vec3& PhysicsBody::GetPosition() const { return position_; }
 
@@ -45,9 +41,9 @@ void PhysicsBody::SetType(PhysicsBodyType type) {
 }
 
 void PhysicsBody::SetRigidBodyTrns() {
-    auto p = rp3d::Vector3(position_.x, position_.y, position_.z);
-    auto o = rp3d::Quaternion(rotation_.x, rotation_.y, rotation_.z, 1.0f);
-    auto t = rp3d::Transform(p, o);
+    auto p = Vec3(position_.x, position_.y, position_.z);
+    auto o = Quat(rotation_.x, rotation_.y, rotation_.z, 1.0f);
+    auto t = Transform(p, o);
     body_->setTransform(t);
 }
 

@@ -5,6 +5,10 @@
 #include "reactphysics3d/reactphysics3d.h"
 
 class PhysicsBody {
+    using Vec3 = rp3d::Vector3;
+    using Quat = rp3d::Quaternion;
+    using Transform = rp3d::Transform;
+
     inline static glm::vec3 kDefaultPosition = {0.0f, 0.0f, 0.0f};
     inline static glm::vec3 kDefaultRotation = {0.0f, 0.0f, 0.0f};
     inline static glm::vec3 kDefaultScale = {1.0f, 1.0f, 1.0f};
@@ -34,7 +38,7 @@ class PhysicsBody {
     void SetRigidBodyTrns();
     void SetRigidBodyType();
 
-    RigidBody body_;
+    RigidBody body_ = nullptr;
     glm::vec3 position_;
     glm::vec3 rotation_;
     glm::vec3 scale_;
