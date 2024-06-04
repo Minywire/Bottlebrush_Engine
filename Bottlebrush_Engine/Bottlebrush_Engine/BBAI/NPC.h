@@ -43,6 +43,9 @@ public:
     /// @param ecs register to get entity and its components
     void Patrol(ECS& ecs);
 
+    void SetWander(float wanderRadius = 100.0f, float wanderDistance = 300.0f, float wanderJitter = 10.0f); 
+    void Wander(ECS& ecs);
+
     /// @author Alan
     /// @brief Determine if NPC can see the player by a cone projection
     /// @param targetPos Player's position
@@ -128,5 +131,8 @@ private:
 
     glm::vec2 m_LastMoveTo = {0.0f, 0.0f};  // last move to location
 
-    
+    glm::vec2 m_WanderTarget = {0.0f, 0.0f};
+    float m_WanderRadius = 100.0f;
+    float m_WanderDistance = 300.0f;
+    float m_WanderJitter = 10.f;
 };
