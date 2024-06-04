@@ -221,12 +221,12 @@ void EntityFactory::loadPhysicsBody(ECS & ecs, Entity & entity, const sol::table
     entity.AddComponent<PhysicsBodyComponent>(ecs.getReg());
 
     const auto & transform = entity.GetComponent<TransformComponent>(ecs.getReg());
-    auto & currentPhysBody = entity.GetComponent<PhysicsBody>(ecs.getReg());
+    auto & currentPhysBody = entity.GetComponent<PhysicsBodyComponent>(ecs.getReg());
 
-    currentPhysBody.SetType(type);
-    currentPhysBody.SetPosition(transform.position);
-    currentPhysBody.SetRotation(transform.rotation);
-    currentPhysBody.SetScale(transform.scale);
+    physicsManager.CreateBody(currentPhysBody.physics_body);
 
-    physicsManager.CreateBody(currentPhysBody);
+    currentPhysBody.physics_body.SetType(type);
+    currentPhysBody.physics_body.SetPosition(transform.position);
+    currentPhysBody.physics_body.SetRotation(transform.rotation);
+    currentPhysBody.physics_body.SetScale(transform.scale);
 }

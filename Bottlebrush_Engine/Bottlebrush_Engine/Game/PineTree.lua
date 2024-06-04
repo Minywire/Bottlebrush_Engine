@@ -19,5 +19,8 @@ Entity = {
     Model = {
         ModelPath = "Resources/Models/Pine_Tree.obj",
         MaterialPath = "Resources/Models/Pine_Tree.png"
+    },
+    PhysicsBody = {
+        BodyType = BodyType.kStatic
     }
 }

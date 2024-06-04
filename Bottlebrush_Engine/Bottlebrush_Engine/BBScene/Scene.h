@@ -14,6 +14,7 @@
 #include <BBResourceManager.hpp>
 #include <Camera.h>
 #include <Model.h>
+#include <RegisterPhysics.h>
 
 #include<PhysicsMgr.h>
 

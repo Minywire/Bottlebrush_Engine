@@ -113,6 +113,8 @@ Scene::Scene(const std::string& lua_master, float screenwidth, float screenheigh
     lua.getLuaState().set_function("create_entityTR", &Scene::createEntityAndTransform, this);
     lua.getLuaState().set_function("getTerrainHeight", &Scene::getTerrainHeight, this); //alows the user to fetch terrain height script-side for easy object placement
 
+    physicsManager.CreateWorld();
+
     init();
 
     const ShaderType defaultShaderType = ShaderType::Default;
@@ -184,7 +186,9 @@ void Scene::init()
   
     mainCamera.SetSpeed(1000.0f);
     mainCamera.SetZoom(45.0f);
-
+    
+    PhysicsScripts::registerPhysicsType(lua.getLuaState());
+    
     bbSystems.RegisterAIFunctions(bbECS, lua.getLuaState(), mainCamera); // register functions before running scripts
     if(!lua.getLuaState().do_file(masterLuaFile).valid())
     {
@@ -277,6 +281,8 @@ void Scene::update()
         Systems::drawTerrain(bbECS, ShaderType::Terrain, *renderEngine,
                              resources.getSceneTerrain(), false,
                              projectionMatrix, viewMatrix);
+
+        physicsManager.Update(deltaTime);
 
         if (cameraRestriction)
         {
