@@ -7,6 +7,10 @@ PhysicsMgr& PhysicsMgr::GetInstance() {
     return instance_;
 }
 
+const PhysicsBody& PhysicsMgr::GetPhysicsBody(uint32_t index) const {
+    return physics_bodies_.at(index);
+}
+
 void PhysicsMgr::CreatePhysicsBody(PhysicsBody::PhysicsBodyType type,
                                    glm::vec3 position, glm::vec3 rotation,
                                    glm::vec3 scale) {
