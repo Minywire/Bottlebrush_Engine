@@ -149,7 +149,7 @@ Scene::Scene(const std::string& lua_master, float screenwidth, float screenheigh
     };
 
     skybox = Skybox("Resources/Models/Skybox.obj", skyboxTextures);
-    water = GraphicsFactory<GraphicsAPI::OpenGL>::CreateModel("Resources/Models/nooooooe_cleooooooee.obj", "Resources/Models/water.png");
+    water = GraphicsFactory<GraphicsAPI::OpenGL>::CreateModel("Resources/Models/water_plane.obj", "Resources/Models/water.png");
 }
 
 void Scene::setProjectionMatrix(glm::mat4 projMatrix)
