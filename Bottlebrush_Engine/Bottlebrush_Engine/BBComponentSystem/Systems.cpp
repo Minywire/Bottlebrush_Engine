@@ -138,7 +138,8 @@ void Systems::drawMD2Models(const ECS& ecs, const ShaderType& shaderType, Render
         auto& MD2Model = MD2s.at(currentMD2Component.model_path);
         
         int anim = MD2Model.getSpecificAnim(currentMD2Component.current_animation);
-         
+
+
         glm::mat4 transform = {1};
         transform = glm::translate(transform, currentTransformComponent.position);
         transform = glm::rotate(transform, glm::radians(currentTransformComponent.rotation.x), glm::vec3(1,0,0));
