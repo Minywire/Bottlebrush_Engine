@@ -15,7 +15,7 @@ void KeyCallback(Window::WindowContext window, int key, int scancode, int action
     auto* data = glfwGetWindowUserPointer(window);
     auto* scene = reinterpret_cast<Scene*>(data);
 
-    if (scene->getExitScreenFlag()) return;
+    if (scene->getExitScreenFlag() || scene->getGameOverFlag()) return;
 
     if (key == GLFW_KEY_C && action == GLFW_PRESS) scene->setWireFrameFlag(!scene->getWireframeFlag());
 
@@ -34,7 +34,7 @@ void MouseCallback(Window::WindowContext window, double pos_x, double pos_y)
     auto* data = glfwGetWindowUserPointer(window);
     auto* scene = reinterpret_cast<Scene*>(data);
 
-    if (scene->getExitScreenFlag() || scene->getMenuActive()) return;
+    if (scene->getExitScreenFlag() || scene->getMenuActive() || scene->getGameOverFlag()) return;
 
     if (scene->getFirstMouseFlag()) 
     {
@@ -56,7 +56,7 @@ void ScrollCallback(Window::WindowContext window, double x_offset, double y_offs
     auto* data = glfwGetWindowUserPointer(window);
     auto* scene = reinterpret_cast<Scene*>(data);
 
-    if (scene->getExitScreenFlag() || scene->getMenuActive()) return;
+    if (scene->getExitScreenFlag() || scene->getMenuActive() || scene->getGameOverFlag()) return;
     scene->getCamera().ProcessMouseScroll(static_cast<float>(y_offset));
 }
 
@@ -69,7 +69,7 @@ void Scene::ProcessInput(float deltaTime) {
         return;
     }
 
-    if(menuActive) return;
+    if(menuActive || gameOver) return;
 
     if (glfwGetKey(window.GetContext(), GLFW_KEY_W) == GLFW_PRESS)
         mainCamera.ProcessKeyboard(FORWARD, deltaTime);
@@ -172,7 +172,7 @@ void Scene::init()
     mainCamera.SetSpeed(100.0f);
     mainCamera.SetZoom(30.0f);
 
-    bbSystems.RegisterAIFunctions(bbECS, lua.getLuaState(), mainCamera, exitScreen); // register functions before running scripts
+    bbSystems.RegisterAIFunctions(bbECS, lua.getLuaState(), mainCamera, this->aiEndGame); // register functions before running scripts
     if(!lua.getLuaState().do_file(masterLuaFile).valid())
     {
         std::cout << "Could not load master game script file\n";
@@ -218,6 +218,13 @@ void Scene::update()
             }
 
             if(ImGui::Button("Exit")) {
+                exitScreen = true;
+            }
+        }
+        if(gameOver) {
+            updateBBGUIFrameStart();
+            ImGui::Text("GAME OVER!");
+            if(ImGui::Button("Exit Program")) {
                 exitScreen = true;
             }
         }
@@ -317,8 +324,13 @@ void Scene::update()
 
         glDepthFunc(GL_LESS);  // set depth function back to default
 
-        if(menuActive) {
+        if(menuActive || gameOver) {
             updateBBGUIFrameEnd();
+        }
+
+        if (aiEndGame && !gameOver) {
+            window.SetCursorMode(Window::CURSOR_NORMAL);
+            gameOver = true;
         }
 
         window.Swap();
@@ -377,6 +389,11 @@ bool Scene::getFirstMouseFlag() const
 void Scene::setFirstMouseFlag(bool flag)
 { 
     first_mouse_click = flag; 
+}
+
+bool Scene::getGameOverFlag() const
+{
+    return gameOver;
 }
 
 float Scene::getLastX() const
