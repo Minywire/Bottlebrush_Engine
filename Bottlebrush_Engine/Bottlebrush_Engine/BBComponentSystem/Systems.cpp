@@ -8,67 +8,6 @@
 #include "EventDispatcher.h"
 #include "Singleton.h"
 
-void Systems::generateModelFromComponent(const ModelComponent & modelComp, std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels)
-{
-    if(sceneModels.find(modelComp.model_path) == sceneModels.end())
-    {
-        sceneModels.emplace(std::pair<std::string, std::unique_ptr<Model>>(modelComp.model_path, GraphicsFactory<GraphicsAPI::OpenGL>::CreateModel(modelComp.model_path, modelComp.material_path)));
-    }
-}
-
-void Systems::generateMD2ModelFromComponent(const MD2Component & modelComp, std::unordered_map<std::string, BBMD2> & sceneMD2Models)
-{
-    if(!sceneMD2Models.contains(modelComp.model_path))
-    {
-        sceneMD2Models.emplace(std::pair<std::string, BBMD2>(modelComp.model_path, BBMD2(modelComp.model_path, modelComp.texture_path)));
-    }
-}
-
-void Systems::generateTerrainFromComponent(const TerrainComponent & terrainComp, const TransformComponent & terrainTransform, std::unordered_map<std::string, Terrain> & sceneTerrain) 
-{
-    if(!sceneTerrain.contains(terrainComp.terrain_path))
-    {
-        sceneTerrain.emplace(std::pair<std::string, Terrain>(terrainComp.terrain_path, Terrain(terrainComp.terrain_path, terrainComp.terrain_texture, terrainTransform.scale, terrainTransform.position)));
-    }
-}
-
-void Systems::createModelComponents(ECS &ecs, std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels)
-{
-    auto group = ecs.GetAllEntitiesWith<ModelComponent>(); //the container with all the matching entities
-
-    for(auto entity : group)
-    {
-        auto& currentModelComponent = group.get<ModelComponent>(entity);
-
-        generateModelFromComponent(currentModelComponent, sceneModels);
-    }
-}
-
-void Systems::createMD2ModelComponents(ECS &ecs, std::unordered_map<std::string, BBMD2> & sceneMD2Models)
-{
-    auto group = ecs.GetAllEntitiesWith<MD2Component>(); //the container with all the matching entities
-
-    for(auto entity : group)
-    {
-        auto& currentModelComponent = group.get<MD2Component>(entity);
-
-        generateMD2ModelFromComponent(currentModelComponent, sceneMD2Models);
-    }
-}
-
-void Systems::createTerrainComponents(ECS &ecs, std::unordered_map<std::string, Terrain> & sceneTerrain)
-{
-    auto group = ecs.GetAllEntitiesWith<TransformComponent, TerrainComponent>(); //the container with all the matching entities
-
-    for(auto entity : group)
-    {
-        auto& currentTerrainComponent = group.get<TerrainComponent>(entity);
-        auto& currentTransform = group.get<TransformComponent>(entity);
-
-        generateTerrainFromComponent(currentTerrainComponent, currentTransform, sceneTerrain);
-    }
-}
-
 void Systems::RegisterAIFunctions(ECS& ecs, sol::state & lua_state, const Camera& player) 
 {
     AIScripts::registerScriptedFSM(lua_state);
@@ -138,8 +77,7 @@ void Systems::drawMD2Models(const ECS& ecs, const ShaderType& shaderType, Render
         auto& MD2Model = MD2s.at(currentMD2Component.model_path);
         
         int anim = MD2Model.getSpecificAnim(currentMD2Component.current_animation);
-
-
+         
         glm::mat4 transform = {1};
         transform = glm::translate(transform, currentTransformComponent.position);
         transform = glm::rotate(transform, glm::radians(currentTransformComponent.rotation.x), glm::vec3(1,0,0));
@@ -307,3 +245,22 @@ void Systems::updateCameraTerrainHeight(const ECS& ecs, const std::unordered_map
         } 
     }
 }
+
+const std::optional<float> Systems::getTerrainHeight(const ECS& ecs, const std::unordered_map<std::string, Terrain>& terrains, float x, float z)
+{
+    auto group = ecs.GetAllEntitiesWith<TerrainComponent>();
+
+    for (auto entity : group) 
+    {
+        const auto& currentTerrainComp = group.get<TerrainComponent>(entity);
+        const auto& currentTerrain = terrains.at(currentTerrainComp.terrain_path);
+
+        const std::optional<float> terrain_height = currentTerrain.GetHeight(x, z);
+
+        if (terrain_height.has_value()) 
+        {
+            return terrain_height;
+        }
+    }
+    return std::nullopt;
+}   

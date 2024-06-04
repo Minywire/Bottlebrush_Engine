@@ -21,49 +21,6 @@
 class Systems {
 public:
     /**
-     * Generates a model from an existing component into a map structure holding model render data
-     * @param modelComp The model component to generate the model from
-     * @param sceneModels The scene structure holding all of the model data
-     */
-    static void generateModelFromComponent(const ModelComponent & modelComp, std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels);
-
-    /**
-     * Generates an MD2 model from an existing component into a map structure holding MD2 model render data
-     * @param modelComp The model component to generate the model from
-     * @param sceneMD2Models The scene structure holding all of the MD2 model data
-     */
-    void generateMD2ModelFromComponent(const MD2Component & modelComp, std::unordered_map<std::string, BBMD2> & sceneMD2Models);
-
-    /**
-     * Generates a terrain mesh from an existing component into a map structure holding
-     * terrain render data
-     * @param modelComp The model component to generate the model from
-     * @param sceneModels The scene structure holding all of the model data
-     */
-    void generateTerrainFromComponent(const TerrainComponent & terrainComp, const TransformComponent & terrainTransform, std::unordered_map<std::string, Terrain> & sceneTerrain); 
-
-    /**
-     *
-     * @param ecs The registry for which to create the model components onto the entity
-     * @param sceneModels The structure containing the models in a scene
-     */
-    void createModelComponents(ECS &ecs, std::unordered_map<std::string, std::unique_ptr<Model>>& sceneModels);
-
-     /**
-     *
-     * @param ecs The registry for which to create the model components onto the
-     * entity
-     * @param sceneModels The structure containing the models in a scene
-     */
-    void createTerrainComponents(ECS &ecs, std::unordered_map<std::string, Terrain> &sceneTerrain);
-
-    /**
-     * @param ecs The registry for which to create the model components onto the entity
-     * @param sceneMD2Models The structure containing the MD2 models in a scene
-     */
-    void createMD2ModelComponents(ECS &ecs, std::unordered_map<std::string, BBMD2> & sceneMD2Models);
-
-    /**
      * @author Alan
      * @brief Registers the appropriate AI functions to lua
      * @param ecs The registry to pass into the lua registers to dependencyinject into NPC
@@ -145,4 +102,6 @@ public:
     static void updateAI(ECS &ecs, sol::state &lua_state, float deltaTime);
 
     static void updateCameraTerrainHeight(const ECS& ecs, const std::unordered_map<std::string, Terrain> & terrains, Camera & camera, float offset_y = 10.0f);
+    
+    static const std::optional<float> getTerrainHeight(const ECS& ecs, const std::unordered_map<std::string, Terrain> & terrains, float x, float z);
 };
