@@ -15,6 +15,8 @@
 #include <Camera.h>
 #include <Model.h>
 
+#include<PhysicsMgr.h>
+
 /**
  * @class Scene
  * @brief The scene 'graph' for a game instance created in Bottlebrush Engine

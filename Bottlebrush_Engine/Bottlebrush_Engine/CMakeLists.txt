@@ -101,6 +101,7 @@ include_directories(BBResourceManager)
 include_directories(BBAI)
 include_directories(BBEvent)
 include_directories(BBMD2)
+include_directories(BBPhysics)
 
 # Add source to this project's executable.
 add_executable(${CMAKE_TARGET_NAME} "EntryPoint.cpp" ${VENDORS_SOURCES})
@@ -116,6 +117,7 @@ add_subdirectory(BBResourceManager)
 add_subdirectory(BBAI)
 add_subdirectory(BBEvent)
 add_subdirectory(BBMD2)
+add_subdirectory(BBPhysics)
 
 add_custom_command(
         TARGET ${CMAKE_TARGET_NAME} POST_BUILD
@@ -148,6 +150,7 @@ target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBResourceManager)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBAI)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBEvent)
 target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBMD2)
+target_link_libraries(${CMAKE_TARGET_NAME} PRIVATE BBPhysics)
 
 if (CMAKE_VERSION VERSION_GREATER 3.13)
     set_property(TARGET ${CMAKE_TARGET_NAME} PROPERTY CXX_STANDARD 20)
