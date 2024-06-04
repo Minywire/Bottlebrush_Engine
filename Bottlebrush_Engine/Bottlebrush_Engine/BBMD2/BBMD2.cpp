@@ -6,12 +6,12 @@ BBMD2::BBMD2(const std::string& model_path, const std::string& texture_path)
 
 }
 
-const int & BBMD2::getSpecificAnim(const std::string & animName)
+int BBMD2::getSpecificAnim(const std::string & animName)
 {
 	return m_model.GetSpecificAnim(animName);
 }
 
-const std::string & BBMD2::getSpecificAnim(int animIndx)
+std::string BBMD2::getSpecificAnim(int animIndx)
 {
 	return m_model.GetSpecificAnim(animIndx);
 }

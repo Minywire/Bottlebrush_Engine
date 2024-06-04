@@ -8,6 +8,7 @@
 #include <string>
 #include <sol/sol.hpp>
 #include <ECS.h>
+#include <BBResourceManager.hpp>
 
 class EntityFactory {
 public:
@@ -17,7 +18,7 @@ public:
      * @param lua_file The specified Lua file to create the entity from
      * @return created entity
      */
-    Entity create_from_file(ECS &ecs, sol::state &lua_state, const std::filesystem::path &lua_file);
+    Entity create_from_file(ECS &ecs, sol::state &lua_state, const std::filesystem::path &lua_file, BBResourceManager & resources);
 
     /**
      *
@@ -29,7 +30,7 @@ public:
      * @param zPos z translate
      * @return created entity
      */
-    Entity create_from_file(ECS &ecs, sol::state &lua_state, const std::filesystem::path &lua_file, float xPos, float yPos, float zPos);
+    Entity create_from_file(ECS &ecs, sol::state &lua_state, const std::filesystem::path &lua_file, BBResourceManager & resources, float xPos, float yPos, float zPos);
 
 private:
     /**
@@ -38,7 +39,7 @@ private:
      * @param entity entity to add components to
      * @param table tables
      */
-    void load_components(ECS &ecs, Entity &entity, const sol::table &table);
+    void load_components(ECS &ecs, Entity &entity, const sol::table &table, BBResourceManager & resources);
 
     /**
      * @param ecs  The ecs to load components from
@@ -48,7 +49,7 @@ private:
      * @param yPos y translate
      * @param zPos z translate
      */
-    void load_components(ECS &ecs, Entity &entity, const sol::table &table, float xPos, float yPos, float zPos);
+    void load_components(ECS &ecs, Entity &entity, const sol::table &table, BBResourceManager & resources, float xPos, float yPos, float zPos);
 
     /**
      *
@@ -74,7 +75,7 @@ private:
      * @param entity the entity to attach to
      * @param model the model table to compare against
      */
-    void loadModel(ECS& ecs, Entity &entity, const sol::table &model);
+    void loadModel(ECS& ecs, Entity &entity, const sol::table &model, BBResourceManager & resources);
 
     /**
      *
@@ -89,12 +90,12 @@ private:
      * @param entity the entity to attach to
      * @param terrain the terrain table to compare against
     */
-    void loadTerrain(ECS &ecs, Entity &entity, const sol::table &terrain);
+    void loadTerrain(ECS &ecs, Entity &entity, const sol::table &terrain, BBResourceManager & resources);
 
     /**
      *  @param ecs the ecs registry to load model component from
      * @param entity the entity to attach to
      * @param MD2 the MD2 table to compare against
      */
-    void loadMD2(ECS &ecs, Entity &entity, const sol::table &MD2);
+    void loadMD2(ECS &ecs, Entity &entity, const sol::table &MD2, BBResourceManager & resources);
 };

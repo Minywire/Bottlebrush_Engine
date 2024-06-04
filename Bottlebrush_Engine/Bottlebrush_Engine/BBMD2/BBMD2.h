@@ -7,8 +7,8 @@ class BBMD2
 public:
 	BBMD2(const std::string & model_path, const std::string & texture_path);
 
-	const int & getSpecificAnim(const std::string & animName);
-	const std::string & getSpecificAnim(int animIndx);
+	int getSpecificAnim(const std::string & animName);
+	std::string getSpecificAnim(int animIndx);
 	
 	void setTexture() const;
 

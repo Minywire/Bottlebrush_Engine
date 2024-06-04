@@ -113,7 +113,8 @@ bool MD2Model::LoadModel(std::string filename)
         }
     }
 
-    file.close();
+    //file.close();
+    return true;
 }
 
 bool MD2Model::LoadTexture(std::string texturefile)
@@ -160,6 +161,7 @@ int MD2Model::GetSpecificAnim(std::string animName)
     }
     return count;
 }
+
 
 std::string MD2Model::GetSpecificAnim(int animIndex)
 {

@@ -5,7 +5,7 @@
 #include "EntityFactory.h"
 
 
-Entity EntityFactory::create_from_file(ECS & ecs, sol::state & lua_state, const std::filesystem::path & lua_file)
+Entity EntityFactory::create_from_file(ECS & ecs, sol::state & lua_state, const std::filesystem::path & lua_file, BBResourceManager & resources)
 {
 
     if(lua_file.extension() != ".lua") { throw std::runtime_error("Lua file is no lua file"); }
@@ -19,14 +19,14 @@ Entity EntityFactory::create_from_file(ECS & ecs, sol::state & lua_state, const 
     if(entityTable.valid())
     {
         namedEntity = ecs.CreateEntity();
-        load_components(ecs, namedEntity, entityTable);
+        load_components(ecs, namedEntity, entityTable,  resources);
 
         return namedEntity;
     }
     return namedEntity;
 }
 
-Entity EntityFactory::create_from_file(ECS & ecs, sol::state & lua_state, const std::filesystem::path & lua_file, float xPos, float yPos, float zPos)
+Entity EntityFactory::create_from_file(ECS & ecs, sol::state & lua_state,  const std::filesystem::path & lua_file, BBResourceManager & resources, float xPos, float yPos, float zPos)
 {
 
     if(lua_file.extension() != ".lua") { throw std::runtime_error("Lua file is no lua file"); }
@@ -40,14 +40,14 @@ Entity EntityFactory::create_from_file(ECS & ecs, sol::state & lua_state, const 
     if(entityTable.valid())
     {
         namedEntity = ecs.CreateEntity();
-        load_components(ecs, namedEntity, entityTable, xPos, yPos, zPos);
+        load_components(ecs, namedEntity, entityTable, resources, xPos, yPos, zPos);
 
         return namedEntity;
     }
     return namedEntity;
 }
 
-void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& table)
+void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& table, BBResourceManager & resources)
 {
     if(table["Transform"].valid())
     {
@@ -55,7 +55,7 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     }
     if(table["Model"].valid())
     {
-        loadModel(ecs, entity, table["Model"]);
+        loadModel(ecs, entity, table["Model"], resources);
     }
     if(table["AI"].valid())
     {
@@ -63,15 +63,15 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     }
     if (table["Terrain"].valid()) 
     {
-        loadTerrain(ecs, entity, table["Terrain"]);
+        loadTerrain(ecs, entity, table["Terrain"], resources);
     }
     if (table["MD2Model"].valid())
     {
-        loadMD2(ecs, entity, table["MD2Model"]);
+        loadMD2(ecs, entity, table["MD2Model"], resources);
     }
 }
 
-void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& table, float xPos, float yPos, float zPos)
+void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& table, BBResourceManager & resources, float xPos, float yPos, float zPos)
 {
     if(table["Transform"].valid())
     {
@@ -79,7 +79,7 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     }
     if(table["Model"].valid())
     {
-        loadModel(ecs, entity, table["Model"]);
+        loadModel(ecs, entity, table["Model"], resources);
     }
     if(table["AI"].valid())
     {
@@ -87,11 +87,11 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     }
     if (table["Terrain"].valid()) 
     {
-        loadTerrain(ecs, entity, table["Terrain"]);
+        loadTerrain(ecs, entity, table["Terrain"], resources);
     }
     if (table["MD2Model"].valid()) 
     {
-      loadMD2(ecs, entity, table["MD2Model"]);
+      loadMD2(ecs, entity, table["MD2Model"], resources);
     }
 }
 
@@ -140,15 +140,19 @@ void EntityFactory::loadTransform(ECS& ecs, Entity& entity, const sol::table & t
     transformComponent.scale = scale;
 }
 
-void EntityFactory::loadModel(ECS &ecs, Entity &entity, const sol::table &model)
+void EntityFactory::loadModel(ECS &ecs, Entity &entity, const sol::table &model, BBResourceManager & resources)
 {
     std::string model_location = model["ModelPath"];
     std::string material_location = model["MaterialPath"];
 
-    ModelComponent& modelComponent = entity.AddComponent<ModelComponent>(ecs.getReg()); //add model component to entity.
+    auto & modelMap = resources.getSceneModels();
 
-    modelComponent.model_path = model_location;
-    modelComponent.material_path = material_location;
+    ModelComponent& modelComponent = entity.AddComponent<ModelComponent>(ecs.getReg(), model_location, material_location); //add model component to entity.
+
+    if(!modelMap.contains(model_location))
+    {
+        modelMap.emplace(std::pair<std::string, std::unique_ptr<Model>>(model_location, GraphicsFactory<GraphicsAPI::OpenGL>::CreateModel(model_location, material_location)));
+    }
 }
 
 void EntityFactory::loadAIController(ECS& ecs, Entity& entity, const sol::table& ai)
@@ -172,18 +176,32 @@ void EntityFactory::loadAIController(ECS& ecs, Entity& entity, const sol::table&
     std::cout << "Loaded AI component" << std::endl; //@Debug Line, to be removed
 }
 
-void EntityFactory::loadTerrain(ECS& ecs, Entity& entity, const sol::table& terrain)
+void EntityFactory::loadTerrain(ECS& ecs, Entity& entity, const sol::table& terrain, BBResourceManager & resources)
 {
     const std::string terrainPath = terrain["TerrainPath"];
     const std::string terrainTexturePath = terrain["TerrainTexturePath"];
+    auto & terrainMap = resources.getSceneTerrain();
 
     entity.AddComponent<TerrainComponent>(ecs.getReg(), terrainPath, terrainTexturePath); //add terrain component to entity.
+
+    const auto& terrainTransform = entity.GetComponent<TransformComponent>(ecs.getReg());
+
+    if (!terrainMap.contains(terrainPath))
+    {
+        terrainMap.emplace(std::pair<std::string, Terrain>(terrainPath, Terrain(terrainPath, terrainTexturePath, terrainTransform.scale, terrainTransform.position)));
+    }
 }
 
-void EntityFactory::loadMD2(ECS & ecs, Entity & entity, const sol::table & MD2)
+void EntityFactory::loadMD2(ECS & ecs, Entity & entity, const sol::table & MD2, BBResourceManager & resources)
 {
     const std::string MD2Path = MD2["ModelPath"];
     const std::string MD2TexPath = MD2["TexturePath"];
+    auto& MD2map = resources.getSceneMD2Models();
 
     entity.AddComponent<MD2Component>(ecs.getReg(), MD2Path, MD2TexPath);
+
+    if (!MD2map.contains(MD2Path))
+    {
+        MD2map.emplace(std::pair<std::string, BBMD2>(MD2Path, BBMD2(MD2Path, MD2TexPath)));
+    }
 }
