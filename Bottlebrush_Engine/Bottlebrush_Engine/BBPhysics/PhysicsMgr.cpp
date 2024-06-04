@@ -25,6 +25,27 @@ uint32_t PhysicsMgr::CreateBody(PhysicsBody::PhysicsBodyType type,
     return index;
 }
 
+uint32_t PhysicsMgr::CreateBody(const PhysicsBody& body) {
+    auto position = body.GetPosition();
+    auto rotation = body.GetRotation();
+    auto p = rp3d::Vector3(position.x, position.y, position.z);
+    auto o = rp3d::Quaternion(rotation.x, rotation.y, rotation.z, 1.0f);
+    auto t = rp3d::Transform(p, o);
+    PhysicsBody::RigidBody rigid_body = world_->createRigidBody(t);
+
+    // Create a physics body and set its rigid body so that the physics body can
+    // manage its own data
+    PhysicsBody physics_body(body);
+    physics_body.SetRigidBody(rigid_body);
+
+    // Put the physics body in the map using its physics world / entity index as
+    // a key so that the manager can reference it and manage it
+    uint32_t index = rigid_body->getEntity().getIndex();
+    physics_bodies_.insert(std::make_pair(index, physics_body));
+
+    return index;
+}
+
 const PhysicsBody& PhysicsMgr::ObtainBody(uint32_t index) const {
     return physics_bodies_.at(index);
 }
