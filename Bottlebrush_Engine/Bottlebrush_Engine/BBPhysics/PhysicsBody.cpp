@@ -20,9 +20,9 @@ const glm::vec3& PhysicsBody::GetScale() const { return scale_; }
 
 PhysicsBody::PhysicsBodyType PhysicsBody::GetType() const { return type_; }
 
-void PhysicsBody::SetCollider(const Collider& collider) {
-    auto t = Transform::identity();
-    collider_ = body_->addCollider(collider->getCollisionShape(), t);
+void PhysicsBody::SetCollider(const CollisionShape& shape,
+                              const Transform& transform) {
+    collider_ = body_->addCollider(shape, transform);
 }
 
 void PhysicsBody::SetPosition(const glm::vec3& position) {

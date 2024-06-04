@@ -5,6 +5,10 @@ PhysicsMgr& PhysicsMgr::GetInstance() {
     return instance_;
 }
 
+void PhysicsMgr::CreateWorld() { world_ = common_.createPhysicsWorld(); }
+
+void PhysicsMgr::DeleteWorld() { common_.destroyPhysicsWorld(world_); }
+
 uint32_t PhysicsMgr::CreateBody(PhysicsBody::PhysicsBodyType type,
                                 glm::vec3 position, glm::vec3 rotation,
                                 glm::vec3 scale) {
@@ -26,10 +30,6 @@ uint32_t PhysicsMgr::CreateBody(PhysicsBody::PhysicsBodyType type,
     return index;
 }
 
-void PhysicsMgr::CreateWorld() { world_ = common_.createPhysicsWorld(); }
-
-void PhysicsMgr::DeleteWorld() { common_.destroyPhysicsWorld(world_); }
-
 const PhysicsBody& PhysicsMgr::ObtainBody(uint32_t index) const {
     return physics_bodies_.at(index);
 }
@@ -39,6 +39,37 @@ uint32_t PhysicsMgr::RemoveBody(uint32_t index) {
     // map to ensure we are cleaning up after ourselves nice and proper
     world_->destroyRigidBody(physics_bodies_.at(index).GetRigidBody());
     return physics_bodies_.erase(index);
+}
+
+void PhysicsMgr::CreateBoxCollider(uint32_t index,
+                                   const glm::vec3& half_extents) {
+    auto e = Vec3(half_extents.x, half_extents.y, half_extents.z);
+    auto t = Transform::identity();
+
+    // Add the shape to the RP3D physics common so that its memory may be
+    // managed and set the collider on the rigid body so that it is attached
+    PhysicsBody::BoxShape shape = common_.createBoxShape(e);
+    physics_bodies_.at(index).SetCollider(shape, t);
+}
+
+void PhysicsMgr::CreateCapsuleCollider(uint32_t index, float radius,
+                                       float height) {
+    auto t = Transform::identity();
+
+    // Add the shape to the RP3D physics common so that its memory may be
+    // managed and set the collider on the rigid body so that it is attached
+    PhysicsBody::CapsuleShape shape =
+        common_.createCapsuleShape(radius, height);
+    physics_bodies_.at(index).SetCollider(shape, t);
+}
+
+void PhysicsMgr::CreateSphereCollider(uint32_t index, float radius) {
+    auto t = Transform::identity();
+
+    // Add the shape to the RP3D physics common so that its memory may be
+    // managed and set the collider on the rigid body so that it is attached
+    PhysicsBody::SphereShape shape = common_.createSphereShape(radius);
+    physics_bodies_.at(index).SetCollider(shape, t);
 }
 
 void PhysicsMgr::Update(float delta) { world_->update(delta); }
