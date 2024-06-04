@@ -47,9 +47,6 @@ class PhysicsMgr {
 
     void Update(float delta);
 
-    // TODO: DELETE THIS, IT IS FOR TESTING
-    rp3d::PhysicsWorld* GetWorld() { return world_; }
-
    private:
     PhysicsMgr() = default;
 
