@@ -83,8 +83,16 @@ public:
     void SetWaitDuration(float wait);
 
     /// @author Alan
-    /// @brief clears wait timers
+    /// @brief clears wait duration
     void ClearWaitDuration();
+
+    /// @author Alan
+    /// @brief clears wait time elapsed
+    void ClearWaitTimeElapsed();
+
+    /// @author Alan
+    /// @brief clears both wait time elapsed and the wait duration timer
+    void ClearAllTimers();
 
     /// @author Alan
     /// @brief sees if there is a wait timer

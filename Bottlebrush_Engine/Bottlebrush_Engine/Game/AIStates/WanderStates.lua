@@ -57,7 +57,7 @@ Idle = {
 	end,
 
 	onExit = function(NPC)
-		NPC:ClearWaitDuration();
+		NPC:ClearAllTimers();
 	end,
 
 	onMessage = function(NPC, Message)
@@ -77,16 +77,17 @@ Idle = {
 -------------------------------------------------------------------------------
 Wander = {
 	onEnter = function(NPC)
-		NPC:SetWander();
+		NPC:SetWander(100.0, 300.0, 10.0);
 		Movement.Wander(NPC);
+		NPC:SetWaitDuration(3.0);
 	end,
 
 	Update = function(NPC)
-		Movement.Wander(NPC);
-		--Movement.MoveTo(NPC, NPC:GetLastMoveTo());
-		--if not NPC:IsMoving() then
-		--	Movement.Wander(NPC);
-		--end
+		Movement.MoveTo(NPC, NPC:GetLastMoveTo());
+		if not NPC:IsWaiting() and not NPC:IsMoving() then
+			NPC:ClearWaitTimeElapsed();
+			Movement.Wander(NPC);
+		end
 		if Detection.SeePlayer(NPC) then
 			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
 			FSM.ChangeState(NPC, "Chase");
@@ -94,7 +95,7 @@ Wander = {
 	end,
 
 	onExit = function(NPC)
-		
+		NPC:ClearAllTimers();
 	end,
 
 	onMessage = function(NPC, Message)

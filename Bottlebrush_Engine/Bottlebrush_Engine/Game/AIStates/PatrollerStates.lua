@@ -57,7 +57,7 @@ Idle = {
 	end,
 
 	onExit = function(NPC)
-		NPC:ClearWaitDuration();
+		NPC:ClearAllTimers();
 	end,
 
 	onMessage = function(NPC, Message)
@@ -89,7 +89,7 @@ Patrol = {
 	end,
 
 	onExit = function(NPC)
-		NPC:ClearWaitDuration();
+		NPC:ClearAllTimers();
 	end,
 
 	onMessage = function(NPC, Message)
@@ -123,7 +123,7 @@ Chase = {
 	end,
 
 	onExit = function(NPC)
-
+		
 	end
 }
 

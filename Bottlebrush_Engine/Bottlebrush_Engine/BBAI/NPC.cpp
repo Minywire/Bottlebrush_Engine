@@ -90,10 +90,8 @@ void NPC::Wander(ECS& ecs)
 
     // project the wanderTarget to the enlarged wander circle in the world
     glm::vec2 targetWorld = wanderCircleWorldCentre + (m_WanderTarget * m_WanderRadius);
-    std::cout << "Target x: " << targetWorld.x << " y: " << targetWorld.y << std::endl;
-
     // move to the new target position.
-    MoveTo(targetWorld, ecs, 0);
+    MoveTo(targetWorld, ecs);
 }
 
 bool NPC::SeePlayer(const glm::vec2& targetPos, ECS& ecs, float coneDistance, float fov)
@@ -150,6 +148,16 @@ void NPC::SetWaitDuration(float wait)
 }
 
 void NPC::ClearWaitDuration()
+{
+    m_WaitTimerDuration = 0;
+}
+
+void NPC::ClearWaitTimeElapsed() 
+{
+    m_WaitTimeElapsed = 0;
+}
+
+void NPC::ClearAllTimers()
 {
     m_WaitTimerDuration = 0;
     m_WaitTimeElapsed = 0;

@@ -24,6 +24,8 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
         "SetWaitDuration", &NPC::SetWaitDuration,
         "IsWaiting", &NPC::IsWaiting,
         "ClearWaitDuration", &NPC::ClearWaitDuration,
+        "ClearWaitTimeElapsed", &NPC::ClearWaitTimeElapsed,
+        "ClearAllTimers", &NPC::ClearAllTimers,
         "GetLastMoveTo", &NPC::GetLastMoveTo,
         "IsMoving", &NPC::IsMoving,
         "SetWander", &NPC::SetWander
@@ -36,7 +38,7 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
     movementTable["ChasePlayer"] = [&ecs, &player](NPC& npc) 
     { 
         glm::vec2 pos = {player.GetPositionX(), player.GetPositionZ()};
-        npc.MoveTo(pos, ecs); 
+        npc.MoveTo(pos, ecs);
         return npc.IsMoving();
     };
     movementTable["Wander"] = [&ecs](NPC& npc) { npc.Wander(ecs); };
