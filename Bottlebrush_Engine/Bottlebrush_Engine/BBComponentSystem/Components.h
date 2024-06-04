@@ -10,6 +10,8 @@
 #include "NPC.h"
 #include "BBMD2.h"
 
+#include <PhysicsBody.h>
+
 /** forward decl to avoid circle linking */
 class Entity;
 
@@ -85,4 +87,9 @@ struct TerrainComponent
 {
     std::string terrain_path;
     std::string terrain_texture;
+};
+
+struct PhysicsBodyComponent {
+    PhysicsBody::PhysicsBodyType type;
+    PhysicsBody physics_body;
 };

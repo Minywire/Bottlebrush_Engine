@@ -149,6 +149,7 @@ class Scene
     ECS bbECS; ///The ECS object containing the enTT registry.
     Systems bbSystems; ///The Systems of the ECS operating on entity data
     BBResourceManager resources; ///The resources stored in the scene (only model data for now)
+    PhysicsMgr physicsManager;
 
     float accumulatedFrameTime = 0; // a time counter used to slow AI updates, so that it is not called everyframe
     const float UpdateAIInterval; // interval at which to update AI, a value of 1 roughly represents a second
