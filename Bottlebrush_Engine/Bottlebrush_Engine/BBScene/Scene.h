@@ -13,6 +13,7 @@
 #include <sol/sol.hpp>
 #include <BBResourceManager.hpp>
 #include <Camera.h>
+#include <Model.h>
 
 /**
  * @class Scene
@@ -29,7 +30,6 @@ class Scene
      * @param lua_master
      */
     explicit Scene(const std::string & lua_master, float screenwidth, float screenheight);
-
     /**
      *
      * @param projMatrix
@@ -83,6 +83,13 @@ class Scene
      * @param zPos
      */
     void createEntityAndTransform(const std::string & lua_file, float xPos, float yPos, float zPos);
+
+    /**
+    * Gets the terrain height at a specified x and z value (used in scripts)
+    * @param x X position of specified item
+    * @param z Z position of specified item
+    */
+    const float getTerrainHeight(float x, float z);
 
     /**
      *
@@ -145,7 +152,7 @@ class Scene
     const float UpdateAIInterval; // interval at which to update AI, a value of 1 roughly represents a second
     
     Skybox skybox;
-
+    std::unique_ptr<Model> water;
     Camera mainCamera; // main scene camera. Scene realistically only needs one camera for this project
     unsigned int screen_width = 1920, screen_height = 1080;
     bool wireframe = false;

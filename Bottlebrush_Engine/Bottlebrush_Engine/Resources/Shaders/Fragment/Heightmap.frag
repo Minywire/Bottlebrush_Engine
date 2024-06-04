@@ -19,4 +19,5 @@ void main() {
 
     if (gGrayscale) FragCol = TexCol;
     else FragCol = TexCol * Colour * Diffuse;
+    FragCol = vec4(FragCol.xyz, 1.0f);
 }
