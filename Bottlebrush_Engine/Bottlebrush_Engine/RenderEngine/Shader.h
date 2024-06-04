@@ -76,15 +76,6 @@ public:
 	virtual void SetUniformMatrix4fv(const std::string& name,
 									 const glm::mat4& mat) = 0;
 
-    /**
-     * @author Niamh
-     * @brief Sets uniforms found in shader files to values passed in
-     * @param name The uniform name within the Shader Program source file. E.g. "model", "view", "projection".
-     * @param arrayLength The number of elements in the array.
-     * @param array The array values.
-     */
-    virtual void SetUniformArray1fv(const std::string& name, int arrayLength, float array[]) = 0;
-
 	// Disable Copying and Assignment
 	Shader(Shader const &) = delete;
 	Shader & operator=(Shader const &) = delete;

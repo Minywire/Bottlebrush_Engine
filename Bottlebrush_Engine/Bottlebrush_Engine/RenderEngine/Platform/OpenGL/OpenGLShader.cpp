@@ -204,8 +204,3 @@ int OpenGLShader::GetUniformLocation(const std::string& name)
          
     return location;
 }
-
-void OpenGLShader::SetUniformArray1fv(const std::string &name, int arrayLength, float *array) {
-    Bind();
-    glUniform1fv(GetUniformLocation(name), arrayLength, array);
-}
