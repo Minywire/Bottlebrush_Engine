@@ -29,14 +29,14 @@ void EventDispatcher::DispatchDelayedMessages(sol::state& lua_state, float delta
     while (!m_MessageQue.empty() && m_MessageQue.begin()->first.m_DelayTime <
            m_TimeElapsed) 
     {
-        auto msg = m_MessageQue.begin()->first; // grab the message
-        auto& receiver = m_MessageQue.begin()->second; // grab the receiver
-        Send(lua_state, msg, receiver); // send the message to the receiver
+        // grab the message and receiver
+        auto& [message, receiver] = *m_MessageQue.begin();
+        Send(lua_state, message, receiver);  // send the message to the receiver
         m_MessageQue.erase(m_MessageQue.begin()); // erase current message after sending
     }
 }
 
-void EventDispatcher::Send(sol::state& lua_state, Message& msg, NPC& receiver) 
+void EventDispatcher::Send(sol::state& lua_state, const Message& msg, NPC& receiver) 
 {
     receiver.GetFSM().HandleMessage(lua_state, msg);
 }
