@@ -77,7 +77,7 @@ Idle = {
 -------------------------------------------------------------------------------
 Wander = {
 	onEnter = function(NPC)
-		NPC:SetWander(100.0, 300.0, 10.0);
+		NPC:SetWander(200.0, 300.0, 50.0);
 		Movement.Wander(NPC);
 		NPC:SetWaitDuration(3.0);
 	end,

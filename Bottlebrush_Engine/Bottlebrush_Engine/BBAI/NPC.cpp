@@ -2,7 +2,7 @@
 // Created by Alan 17/05/2024
 //
 
-#define PI 3.14159265358979323846
+#include <numbers>
 
 #include "NPC.h"
 #include "Components.h"
@@ -68,7 +68,7 @@ void NPC::SetWander(float wanderRadius, float wanderDistance, float wanderJitter
     m_WanderRadius = wanderRadius;
     m_WanderDistance = wanderDistance;
     m_WanderJitter = wanderJitter;
-    float theta = ((rand()) / (RAND_MAX + 1.0)) * (2 * PI);
+    float theta = ((rand()) / (RAND_MAX + 1.0)) * (2 * std::numbers::pi);
     m_WanderTarget = glm::vec2(wanderRadius * cos(theta), wanderRadius * sin(theta));
 }
 
