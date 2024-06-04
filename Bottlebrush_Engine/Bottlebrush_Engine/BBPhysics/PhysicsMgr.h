@@ -22,6 +22,11 @@ class PhysicsMgr {
         PhysicsBody::PhysicsBodyType::kStatic;
 
    public:
+    PhysicsMgr(PhysicsMgr&) = delete;
+    PhysicsMgr& operator=(PhysicsMgr&) = delete;
+    PhysicsMgr(PhysicsMgr&&) = delete;
+    PhysicsMgr& operator=(PhysicsMgr&&) = delete;
+
     static PhysicsMgr& GetInstance();
 
     void CreateWorld();
