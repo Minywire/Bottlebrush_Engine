@@ -5,7 +5,9 @@
 -------------------------------------------------------------------------------
 
 function setMovingAnimation(NPC)
-	if NPC:IsMoving() then
+	if Animation.GetAnimation(NPC) == "attak" then
+		
+	elseif NPC:IsMoving() then
 		if Animation.GetAnimation(NPC) ~= "run" then
 			Animation.SetAnimation(NPC, "run");
 		end
@@ -84,8 +86,10 @@ Chase = {
 	Update = function(NPC)
 		Movement.MoveTo(NPC, NPC:GetLastMoveTo());
 		if Detection.SeePlayer(NPC) then
-			Movement.ChasePlayer(NPC);
 			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
+			if not Movement.ChasePlayer(NPC) then
+				FSM.ChangeState(NPC, "Attack")
+			end
 		elseif not Detection.SeePlayer(NPC) and not NPC:IsMoving() then
 			FSM.ChangeState(NPC, "Idle");
 		end
@@ -127,4 +131,24 @@ Investigate = {
 			end
 		end
 	end
+}
+
+-------------------------------------------------------------------------------
+
+-- create the attack state
+
+-------------------------------------------------------------------------------
+Attack = {
+	onEnter = function(NPC)
+		print("Enter Attack")
+		Animation.SetAnimation(NPC, "attak")
+	end,
+
+	Update = function(NPC)
+		Game.GameOver();
+	end,
+
+	onExit = function(NPC)
+
+	end,
 }
