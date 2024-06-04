@@ -143,6 +143,7 @@ Scene::Scene(const std::string& lua_master, float screenwidth, float screenheigh
     };
 
     skybox = Skybox("Resources/Models/Skybox.obj", skyboxTextures);
+    water = GraphicsFactory<GraphicsAPI::OpenGL>::CreateModel("Resources/Models/plane.obj", "Rock_2.png");
 }
 
 void Scene::setProjectionMatrix(glm::mat4 projMatrix)
@@ -294,6 +295,15 @@ void Scene::update()
             mainCamera.SetViewMatrix(position, front, up);
         }
 
+        glm::mat4 waterModel = {1};
+        waterModel = glm::scale(waterModel, glm::vec3(100, 1, 100));
+
+        // Draw the water
+        renderEngine->GetShader(ShaderType::Water)->SetUniformMatrix4fv("view", view);
+        renderEngine->GetShader(ShaderType::Water)->SetUniformMatrix4fv("projection", projection);
+        renderEngine->GetShader(ShaderType::Water)->SetUniformMatrix4fv("model", waterModel);
+        renderEngine->Draw(ShaderType::Water, *water->GetSubMeshes()[0]->GetVertexArray(),
+                           water->GetSubMeshes()[0]->GetIndexCount());
         // SKYBOX
         //  change depth function so depth test passes when
         //  values are equal to depth buffer's content
@@ -311,6 +321,10 @@ void Scene::update()
 
         // Draw the Skybox
         skybox.ActiveTexture();
+
+
+
+        // Draw the meshes
         for (unsigned int i = 0; i < skybox.getModel()->GetSubMeshes().size();
                 i++) {
             renderEngine->Draw(
