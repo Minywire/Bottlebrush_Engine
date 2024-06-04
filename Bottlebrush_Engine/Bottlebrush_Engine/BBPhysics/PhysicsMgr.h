@@ -15,12 +15,13 @@ class PhysicsMgr {
 
     static PhysicsMgr& GetInstance();
 
-    const PhysicsBody& GetPhysicsBody(uint32_t index) const;
-    void SetPhysicsBody(PhysicsBody::PhysicsBodyType type =
-                            PhysicsBody::PhysicsBodyType::kStatic,
-                        glm::vec3 position = {0.0f, 0.0f, 0.0f},
-                        glm::vec3 rotation = {0.0f, 0.0f, 0.0f},
-                        glm::vec3 scale = {1.0f, 1.0f, 1.0f});
+    uint32_t CreatePhysicsBody(PhysicsBody::PhysicsBodyType type =
+                                   PhysicsBody::PhysicsBodyType::kStatic,
+                               glm::vec3 position = {0.0f, 0.0f, 0.0f},
+                               glm::vec3 rotation = {0.0f, 0.0f, 0.0f},
+                               glm::vec3 scale = {1.0f, 1.0f, 1.0f});
+    const PhysicsBody& ObtainPhysicsBody(uint32_t index) const;
+    void RemovePhysicsBody(uint32_t index);
 
     void Update(float delta);
 
