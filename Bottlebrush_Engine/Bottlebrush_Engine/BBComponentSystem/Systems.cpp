@@ -53,8 +53,6 @@ void Systems::createMD2ModelComponents(ECS &ecs, std::unordered_map<std::string,
         auto& currentModelComponent = group.get<MD2Component>(entity);
 
         generateMD2ModelFromComponent(currentModelComponent, sceneMD2Models);
-
-        currentModelComponent.animation = sceneMD2Models.at(currentModelComponent.model_path).getAnimations();
     }
 }
 
@@ -169,9 +167,11 @@ void Systems::updateMD2Interpolation(ECS& ecs, std::unordered_map<std::string, B
     for (auto entity : group)
     {
         auto& currentMD2Component = group.get<MD2Component>(entity);
+
+        auto& anim = MD2s.at(currentMD2Component.model_path).getAnimations();
+
         auto& interp = currentMD2Component.interpolation;
         auto& currentFrame = currentMD2Component.current_frame;
-        auto& anim = currentMD2Component.animation;
         auto& animName = currentMD2Component.current_animation;
 
         if (currentFrame > anim[animName].endIndex || currentFrame < anim[animName].startIndex)

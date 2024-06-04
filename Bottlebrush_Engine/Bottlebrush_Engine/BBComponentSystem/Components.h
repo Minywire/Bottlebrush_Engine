@@ -73,7 +73,6 @@ struct MD2Component
     std::string model_path;
     std::string texture_path;
     std::string current_animation = "stand";
-    std::map<std::string, anim_md2> animation;
     int current_frame = 0;
     float interpolation = 0.0f;
     float anim_speed = 5.0f;
