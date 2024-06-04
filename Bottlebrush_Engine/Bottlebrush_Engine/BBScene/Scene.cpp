@@ -142,7 +142,6 @@ Scene::Scene(const std::string& lua_master, float screenwidth, float screenheigh
         std::filesystem::path("Resources/Textures/Skybox/back.jpg"),
     };
 
-
     skybox = Skybox("Resources/Models/Skybox.obj", skyboxTextures);
     water = GraphicsFactory<GraphicsAPI::OpenGL>::CreateModel("Resources/Models/nooooooe_cleooooooee.obj", "Resources/Models/water.png");
 }
