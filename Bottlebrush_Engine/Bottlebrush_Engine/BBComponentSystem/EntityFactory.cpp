@@ -205,3 +205,20 @@ void EntityFactory::loadMD2(ECS & ecs, Entity & entity, const sol::table & MD2, 
         MD2map.emplace(std::pair<std::string, BBMD2>(MD2Path, BBMD2(MD2Path, MD2TexPath)));
     }
 }
+
+void EntityFactory::loadPhysicsBody(ECS & ecs, Entity & entity, const sol::table & PhysBody, PhysicsMgr & physicsManager)
+{
+    const PhysicsBody::PhysicsBodyType type = PhysBody["BodyType"];
+
+    entity.AddComponent<PhysicsBodyComponent>(ecs.getReg());
+
+    const auto & transform = entity.GetComponent<TransformComponent>(ecs.getReg());
+    auto & currentPhysBody = entity.GetComponent<PhysicsBody>(ecs.getReg());
+
+    currentPhysBody.SetType(type);
+    currentPhysBody.SetPosition(transform.position);
+    currentPhysBody.SetRotation(transform.rotation);
+    currentPhysBody.SetScale(transform.scale);
+
+    physicsManager.CreateBody(currentPhysBody);
+}

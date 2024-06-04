@@ -10,6 +10,8 @@
 #include <ECS.h>
 #include <BBResourceManager.hpp>
 
+#include<PhysicsMgr.h>
+
 class EntityFactory {
 public:
     /**
@@ -91,6 +93,8 @@ private:
      * @param terrain the terrain table to compare against
     */
     void loadTerrain(ECS &ecs, Entity &entity, const sol::table &terrain, BBResourceManager & resources);
+
+    void loadPhysicsBody(ECS & ecs, Entity & entity, const sol::table & PhysBody, PhysicsMgr & physicsManager);
 
     /**
      *  @param ecs the ecs registry to load model component from
