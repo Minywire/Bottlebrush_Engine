@@ -118,6 +118,7 @@ Scene::Scene(const std::string& lua_master, float screenwidth, float screenheigh
     const ShaderType defaultShaderType = ShaderType::Default;
     const ShaderType terrainShaderType = ShaderType::Terrain;
     const ShaderType skyboxShaderType = ShaderType::Skybox;
+    const ShaderType waterShaderType = ShaderType::Water;
 
     setRendererShaderSource(defaultShaderType,
                         "Resources/Shaders/Vertex/BasicTex.vert",
@@ -130,10 +131,13 @@ Scene::Scene(const std::string& lua_master, float screenwidth, float screenheigh
     setRendererShaderSource(skyboxShaderType,
                         "Resources/Shaders/Vertex/Skybox.vert",
                         "Resources/Shaders/Fragment/Skybox.frag");
-    
+
     setRendererShaderSource(ShaderType::MD2,
                             "Resources/Shaders/Vertex/MD2Model.vert",
                             "Resources/Shaders/Fragment/MD2Model.frag");
+    setRendererShaderSource(waterShaderType,
+                            "Resources/Shaders/Vertex/Water.vert",
+                            "Resources/Shaders/Fragment/Water.frag");
 
     const std::vector<std::filesystem::path> skyboxTextures {
         std::filesystem::path("Resources/Textures/Skybox/right.jpg"),
@@ -145,6 +149,7 @@ Scene::Scene(const std::string& lua_master, float screenwidth, float screenheigh
     };
 
     skybox = Skybox("Resources/Models/Skybox.obj", skyboxTextures);
+    water = GraphicsFactory<GraphicsAPI::OpenGL>::CreateModel("Resources/Models/water_plane.obj", "Resources/Models/water.png");
 }
 
 void Scene::setProjectionMatrix(glm::mat4 projMatrix)
@@ -172,7 +177,8 @@ void Scene::init()
     }
 
     glEnable(GL_DEPTH_TEST);
-    
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     mainCamera.SetPosition(1000.0f, 100.0f, 1000.0f);
     mainCamera.SetSensitivity(0.05f);
   
@@ -256,13 +262,13 @@ void Scene::update()
         // MY SCENE
         setProjectionMatrix(projection);
         setViewMatrix(view);
-        
+
         bbSystems.setLight(*renderEngine, ShaderType::Default, viewMatrix);
 
-        Systems::drawMD2Models(bbECS, 
-                               ShaderType::MD2, 
-                               *renderEngine, 
-                                resources.getSceneMD2Models(), 
+        Systems::drawMD2Models(bbECS,
+                               ShaderType::MD2,
+                               *renderEngine,
+                                resources.getSceneMD2Models(),
                                 projectionMatrix, viewMatrix);
 
         Systems::updateMD2Interpolation(bbECS, resources.getSceneMD2Models(), deltaTime);
@@ -294,11 +300,29 @@ void Scene::update()
             mainCamera.SetViewMatrix(position, front, up);
         }
 
+        glm::vec3 waterTransformOffset;
+        waterTransformOffset.x = sin(current_frame) * 25;
+        waterTransformOffset.y = sin(current_frame) * 50;
+        waterTransformOffset.z = sin(current_frame) * 100;
+
+        glm::mat4 waterModel = {1};
+
+        waterModel = glm::translate(waterModel, waterTransformOffset);
+        waterModel = glm::scale(waterModel, glm::vec3(500000, 1, 500000));
+        waterModel = glm::translate(waterModel, glm::vec3(0.5, 1500, 0.5));
+
+
+        // Draw the water
+        renderEngine->GetShader(ShaderType::Water)->SetUniformMatrix4fv("view", view);
+        renderEngine->GetShader(ShaderType::Water)->SetUniformMatrix4fv("projection", projection);
+        renderEngine->GetShader(ShaderType::Water)->SetUniformMatrix4fv("model", waterModel);
+        water->GetSubMeshes()[0]->SetTexture(0);
+        renderEngine->Draw(ShaderType::Water, *water->GetSubMeshes()[0]->GetVertexArray(),
+                           water->GetSubMeshes()[0]->GetIndexCount());
         // SKYBOX
         //  change depth function so depth test passes when
         //  values are equal to depth buffer's content
         glDepthFunc(GL_LEQUAL);
-        // draw skybox as last
         // draw skybox as last
         view =
             glm::mat4(glm::mat3(view));  // remove translation from the view matrix
@@ -311,6 +335,10 @@ void Scene::update()
 
         // Draw the Skybox
         skybox.ActiveTexture();
+
+
+
+        // Draw the meshes
         for (unsigned int i = 0; i < skybox.getModel()->GetSubMeshes().size();
                 i++) {
             renderEngine->Draw(

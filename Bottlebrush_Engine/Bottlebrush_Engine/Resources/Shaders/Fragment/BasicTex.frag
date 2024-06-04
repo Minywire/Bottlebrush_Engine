@@ -6,14 +6,6 @@ in vec3 fragPos;
 
 out vec4 color;
 
-struct Material {
-	vec3 ambient;
-	vec3 diffuse;
-	vec3 specular;
-	float shininess;
-};
-
-
 uniform vec3 lightColour;
 uniform sampler2D u_Texture;
 uniform vec3 direction;
