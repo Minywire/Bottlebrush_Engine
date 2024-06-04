@@ -16,7 +16,7 @@ void registerScriptedFSM(sol::state& lua_state) {
     };
 }
 
-void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) {
+void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player, bool& endGame) {
     // register player functions
     lua_state.new_usertype<NPC>("NPC", 
         "AddWaypoint", &NPC::AddWaypoint,
@@ -66,6 +66,10 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
     {
         return msg.m_Sender->GetVec2Position(ecs);
     };
+
+    // register game mechanics table functions
+    auto gameTable = lua_state["Game"].get_or_create<sol::table>();
+    gameTable["GameOver"] = [&endGame]() { endGame = true; };
 }
 
 void registerScriptedGLM(sol::state& lua_state) {

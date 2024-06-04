@@ -172,7 +172,7 @@ void Scene::init()
     mainCamera.SetSpeed(100.0f);
     mainCamera.SetZoom(30.0f);
 
-    bbSystems.RegisterAIFunctions(bbECS, lua.getLuaState(), mainCamera); // register functions before running scripts
+    bbSystems.RegisterAIFunctions(bbECS, lua.getLuaState(), mainCamera, exitScreen); // register functions before running scripts
     if(!lua.getLuaState().do_file(masterLuaFile).valid())
     {
         std::cout << "Could not load master game script file\n";
