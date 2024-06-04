@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 
-MD2Model::MD2Model(std::string filename, std::string texturefile)
+MD2Model::MD2Model(const std::string& filename, const std::string& texturefile)
 {
     if (!LoadModel(filename))
     {

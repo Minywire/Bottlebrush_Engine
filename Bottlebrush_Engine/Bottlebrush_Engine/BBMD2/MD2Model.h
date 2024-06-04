@@ -94,7 +94,7 @@ struct MD2Header {
 
 class MD2Model {
 public:
-    MD2Model(std::string filename, std::string texturefile);
+    MD2Model(const std::string& filename, const std::string& texturefile);
     
     void displayModelDetails();
     void displayAnimNames();

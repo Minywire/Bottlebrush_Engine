@@ -87,6 +87,10 @@ void registerScriptedAnimation(sol::state& lua_state, ECS& ecs) {
 
         md2Comp.current_animation = animName;
     };
+    animationTable["GetAnimation"] = [&ecs](NPC& npc)
+    {
+        return npc.GetEntity().GetComponent<MD2Component>(ecs.getReg()).current_animation;
+    };
 }
 void registerScriptedMessage(sol::state& lua_state) {
     // register Message system
