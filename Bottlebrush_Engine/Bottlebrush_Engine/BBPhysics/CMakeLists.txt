@@ -5,7 +5,6 @@ target_include_directories(BBPhysics
         PRIVATE BBPhysics
 )
 target_sources(BBPhysics
-        PRIVATE Collider.cpp
         PRIVATE PhysicsBody.cpp
         PRIVATE PhysicsMgr.cpp
 )
