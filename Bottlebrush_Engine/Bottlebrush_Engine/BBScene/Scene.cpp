@@ -310,7 +310,6 @@ void Scene::update()
         waterModel = glm::translate(waterModel, waterTransformOffset);
         waterModel = glm::scale(waterModel, glm::vec3(500000, 1, 500000));
         waterModel = glm::translate(waterModel, glm::vec3(0.5, 1500, 0.5));
-//        waterModel = glm::translate(waterModel, glm::vec3(25 + waterTransformOffset.x, 15 + waterTransformOffset.y, 25 + waterTransformOffset.z));
 
 
         // Draw the water
@@ -324,8 +323,6 @@ void Scene::update()
         //  change depth function so depth test passes when
         //  values are equal to depth buffer's content
         glDepthFunc(GL_LEQUAL);
-        // draw skybox as last
-
         // draw skybox as last
         view =
             glm::mat4(glm::mat3(view));  // remove translation from the view matrix
