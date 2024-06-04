@@ -5,7 +5,7 @@ target_include_directories(BBGraphics
         PRIVATE BBGraphics
 )
 target_sources(BBGraphics
-        PRIVATE Camera.cpp Image.cpp Skybox.cpp Terrain.cpp Light.cpp WaterTile.cpp
+        PRIVATE Camera.cpp Image.cpp Skybox.cpp Terrain.cpp Light.cpp
 )
 target_link_libraries(BBGraphics
         PRIVATE assimp
