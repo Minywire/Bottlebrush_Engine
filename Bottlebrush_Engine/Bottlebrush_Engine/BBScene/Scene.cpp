@@ -51,7 +51,7 @@ void MouseCallback(Window::WindowContext window, double pos_x, double pos_y)
     scene->getCamera().ProcessMouseMovement(x_offset, y_offset);
 }
 
-void ScrollCallback(Window::WindowContext window, double x_offset, double y_offset) \
+void ScrollCallback(Window::WindowContext window, double x_offset, double y_offset)
 {
     auto* data = glfwGetWindowUserPointer(window);
     auto* scene = reinterpret_cast<Scene*>(data);
@@ -87,12 +87,17 @@ void Scene::ProcessInput(float deltaTime) {
 
 void Scene::createEntity(const std::string & lua_file) //provides a user-friendly function that you only need to specify the script entity to.
 {
-    entityFactory.create_from_file(bbECS, lua.getLuaState(), lua_file);
+    entityFactory.create_from_file(bbECS, lua.getLuaState(), lua_file, resources);
 }
 
 void Scene::createEntityAndTransform(const std::string & lua_file, float xPos, float yPos, float zPos)
 {
-    entityFactory.create_from_file(bbECS, lua.getLuaState(), lua_file, xPos, yPos, zPos);
+    entityFactory.create_from_file(bbECS, lua.getLuaState(),lua_file, resources, xPos, yPos, zPos);
+}
+
+const float Scene::getTerrainHeight(float x, float z)
+{
+    return Systems::getTerrainHeight(bbECS, resources.getSceneTerrain(), x, z).value();
 }
 
 Scene::Scene(const std::string& lua_master, float screenwidth, float screenheight)
@@ -106,6 +111,7 @@ Scene::Scene(const std::string& lua_master, float screenwidth, float screenheigh
     masterLuaFile = lua_master;
     lua.getLuaState().set_function("create_entity", &Scene::createEntity, this); //register create entity function into lua state of this instance
     lua.getLuaState().set_function("create_entityTR", &Scene::createEntityAndTransform, this);
+    lua.getLuaState().set_function("getTerrainHeight", &Scene::getTerrainHeight, this); //alows the user to fetch terrain height script-side for easy object placement
 
     init();
 
@@ -169,8 +175,9 @@ void Scene::init()
     
     mainCamera.SetPosition(1000.0f, 100.0f, 1000.0f);
     mainCamera.SetSensitivity(0.05f);
-    mainCamera.SetSpeed(100.0f);
-    mainCamera.SetZoom(30.0f);
+  
+    mainCamera.SetSpeed(1000.0f);
+    mainCamera.SetZoom(45.0f);
 
     bbSystems.RegisterAIFunctions(bbECS, lua.getLuaState(), mainCamera); // register functions before running scripts
     if(!lua.getLuaState().do_file(masterLuaFile).valid())
@@ -179,9 +186,6 @@ void Scene::init()
         return;
     }//load the master lua scene script containing all entities
 
-    bbSystems.createTerrainComponents(bbECS, resources.getSceneTerrain());
-    bbSystems.createModelComponents(bbECS, resources.getSceneModels());
-    bbSystems.createMD2ModelComponents(bbECS, resources.getSceneMD2Models());
     initBBGUI(window.GetContext());
 }
 
