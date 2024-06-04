@@ -8,6 +8,7 @@
 #include <sol/sol.hpp>
 
 #include "NPC.h"
+#include "PhysicsMgr.h"
 
 /** forward decl to avoid circle linking */
 class Entity;
@@ -80,4 +81,8 @@ struct TerrainComponent
 {
     std::string terrain_path;
     std::string terrain_texture;
+};
+
+struct PhysicsBodyComponent {
+    PhysicsBody physics_body;
 };

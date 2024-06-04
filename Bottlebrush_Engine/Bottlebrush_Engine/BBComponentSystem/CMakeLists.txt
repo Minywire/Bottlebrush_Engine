@@ -9,4 +9,4 @@ set(SOURCES Entity.cpp Entity.h Components.h ECS.cpp ECS.h EntityFactory.cpp Ent
 
 target_sources(BBComponentSystem PRIVATE ${SOURCES})
 
-target_link_libraries(BBComponentSystem PUBLIC EnTT BBScene glm LUA sol2 BBAI BBGraphics BBMD2 BBScript BBEvent)
+target_link_libraries(BBComponentSystem PUBLIC EnTT BBScene glm LUA sol2 BBAI BBGraphics BBMD2 BBScript BBEvent BBPhysics reactphysics3d)
