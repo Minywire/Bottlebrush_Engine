@@ -146,6 +146,7 @@ void Systems::drawMD2Models(const ECS& ecs, const ShaderType& shaderType, Render
         transform = glm::rotate(transform, glm::radians(currentTransformComponent.rotation.x), glm::vec3(1,0,0));
         transform = glm::rotate(transform, glm::radians(currentTransformComponent.rotation.y), glm::vec3(0,1,0));
         transform = glm::rotate(transform, glm::radians(currentTransformComponent.rotation.z), glm::vec3(0,0,1));
+        //MD2 standard rotations last
         transform = glm::rotate(transform, glm::radians(-90.f), glm::vec3(0,1,0));
         transform = glm::rotate(transform, glm::radians(-90.f), glm::vec3(1,0,0));
         transform = glm::scale(transform, currentTransformComponent.scale);

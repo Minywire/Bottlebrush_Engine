@@ -69,13 +69,6 @@ typedef struct
     unsigned int endIndex;
 } anim_md2;
 
-typedef struct
-{
-    glm::vec3 position;
-    glm::vec3 rotation;
-    glm::vec3 scale;
-} Transform;
-
 struct MD2Header {
     int ID;                 // Magic number ("IDP2") - Identifies the file as an MD2 model
     int version;            // Version number (8) - MD2 file format version
@@ -112,9 +105,6 @@ public:
     int getNumAnims() { return m_animation.size(); }
     std::map<std::string, anim_md2>& getAnimations() { return m_animation; }
 
-    Transform getTransform() { return m_transform; }
-    glm::vec3 getPosition() { return m_transform.position; }
-
     std::unique_ptr<MD2Header>& GetHeader() { return m_header; }
 
     const std::vector<unsigned int> & returnVaos() const;
@@ -130,17 +120,11 @@ public:
     template<typename T>
     static std::vector<T> ReadDataFromFile(std::ifstream& file, int dataSize, int offset);
 
-    //in world coords
-    Transform m_transform;
-
     // MD2 file contents
     std::unique_ptr<MD2Header> m_header;                    // header file with details about the mesh
     std::vector<skin_md2> m_skins;                          // Skin names
     std::vector<texCoord_md2> m_texCoords;                  // TexCoords
     std::vector<triangle_md2> m_triIndex;                   // triangle indices
-
-    //Animations
-    int m_currentFrame;                                     // Current frame for animation playback
 
     std::map<std::string, anim_md2> m_animation;            // map for animation start and end
     std::map<int, std::pair<std::string, std::vector<vec3_md2>>> m_frameVerts;      // Vertex data per frame
@@ -149,6 +133,5 @@ public:
     std::unique_ptr<Texture> m_texture;                     // texture buffer
     std::vector<float> m_vertices;                          // stream of vertex data to upload
 
-    std::vector<unsigned int> m_vertexBuffer;               // vertex buffer
     std::vector<unsigned int> m_vertexArray;                // vertex array object
 };

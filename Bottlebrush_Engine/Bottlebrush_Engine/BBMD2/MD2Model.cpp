@@ -4,8 +4,7 @@
 #include <iostream>
 #include <fstream>
 
-MD2Model::MD2Model(std::string filename, std::string texturefile) 
-    : m_currentFrame(0)
+MD2Model::MD2Model(std::string filename, std::string texturefile)
 {
     if (!LoadModel(filename))
     {
@@ -266,7 +265,6 @@ void MD2Model::InitBuffers()
         glEnableVertexAttribArray(2);
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), reinterpret_cast<void*>(6 * sizeof(float))); // tex coords
 
-        //m_vertexBuffer.emplace_back(vbo);
         m_vertexArray.emplace_back(vao);
 
         //unbind vbo

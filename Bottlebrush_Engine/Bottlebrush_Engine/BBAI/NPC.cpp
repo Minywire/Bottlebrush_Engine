@@ -130,7 +130,7 @@ float& NPC::GetCurrentSpeed()
     return m_current_speed;
 }
 
-float& NPC::GetMaxSpeed() 
+float& NPC::GetMaxSpeed()
 {
     return m_max_speed;
 }
