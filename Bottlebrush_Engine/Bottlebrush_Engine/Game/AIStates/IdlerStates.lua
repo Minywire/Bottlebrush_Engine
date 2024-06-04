@@ -53,7 +53,7 @@ Idle = {
 	end,
 
 	Update = function(NPC)
-		if Detection.SeePlayer(NPC) then
+		if Detection.SeePlayer(NPC, 1000.0, 160.0) then
 			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
 			FSM.ChangeState(NPC, "Chase");
 		end	
@@ -85,12 +85,12 @@ Chase = {
 
 	Update = function(NPC)
 		Movement.MoveTo(NPC, NPC:GetLastMoveTo());
-		if Detection.SeePlayer(NPC) then
+		if Detection.SeePlayer(NPC, 1000.0, 160.0) then
 			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
 			if not Movement.ChasePlayer(NPC) then
 				FSM.ChangeState(NPC, "Attack");
 			end
-		elseif not Detection.SeePlayer(NPC) and not NPC:IsMoving() then
+		elseif not Detection.SeePlayer(NPC, 1000.0, 160.0) and not NPC:IsMoving() then
 			FSM.ChangeState(NPC, "Idle");
 		end
 	end,
@@ -112,10 +112,10 @@ Investigate = {
 
 	Update = function(NPC)
 		Movement.MoveTo(NPC, NPC:GetLastMoveTo());
-		if Detection.SeePlayer(NPC) then
+		if Detection.SeePlayer(NPC, 1000.0, 160.0) then
 			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
 			FSM.ChangeState(NPC, "Chase");
-		elseif not Detection.SeePlayer(NPC) and not NPC:IsMoving() then
+		elseif not Detection.SeePlayer(NPC, 1000.0, 160.0) and not NPC:IsMoving() then
 			FSM.ChangeState(NPC, "Idle");
 		end
 	end,

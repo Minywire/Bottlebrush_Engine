@@ -50,7 +50,7 @@ public:
     /// @param coneDistance the range distance of detection
     /// @param fov the width range of detection
     /// @return whether Player is standing within the cone
-    bool SeePlayer(const glm::vec2& targetPos, ECS& ecs, float coneDistance = 300, float fov = 180);
+    bool SeePlayer(const glm::vec2& targetPos, ECS& ecs, float coneDistance, float fov);
 
     /// @author Alan
     /// @brief uses the EventDispatcher, and sends a message to all NPCs
