@@ -43,5 +43,5 @@ private:
     /// @param lua_state to pass to the FSM to read sol_state 
     /// @param msg the Message with an event string and sender reference 
     /// @param receiver the NPC that will receive the message
-    void Send(sol::state& lua_state, Message& msg, NPC& receiver);
+    void Send(sol::state& lua_state, const Message& msg, NPC& receiver);
 };

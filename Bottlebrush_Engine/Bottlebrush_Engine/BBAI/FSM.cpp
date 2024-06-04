@@ -63,7 +63,7 @@ std::filesystem::path& FSM::GetStatePath()
     return m_statePath; 
 }
 
-void FSM::HandleMessage(sol::state& lua_state, Message& msg)
+void FSM::HandleMessage(sol::state& lua_state, const Message& msg)
 {
     // first see if the current state is valid and that it can handle
     // the message
