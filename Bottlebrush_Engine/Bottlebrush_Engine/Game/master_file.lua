@@ -7,7 +7,7 @@ create_entity("Game/NPCs/Patroller1.lua");
 create_entity("Game/NPCs/Patroller2.lua");
 create_entity("Game/NPCs/Idler1.lua");
 
-create_entity("Game/MD2Models/doomguy.lua");
+--create_entity("Game/MD2Models/doomguy.lua");
 
 for start=0, 400, 100 do
     for start1=0, 400, 100 do
