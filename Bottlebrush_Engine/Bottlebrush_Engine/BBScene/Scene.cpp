@@ -99,8 +99,10 @@ Scene::Scene(const std::string& lua_master, float screenwidth, float screenheigh
     : accumulatedFrameTime(0), UpdateAIInterval(0.2f), screen_width(screenwidth), screen_height(screenheight)
 {
     window = Window(Window::CURSOR, Window::CURSOR_DISABLED, "BOTTLE BRUSH", screen_width, screen_height);
-
     window.Create();
+
+    // Create a physics world through the physics manager
+    physics_mgr.CreateWorld();
 
     renderEngine = GraphicsFactory<GraphicsAPI::OpenGL>::CreateRenderer();
     masterLuaFile = lua_master;
