@@ -9,6 +9,7 @@
 
 #include "NPC.h"
 #include "PhysicsMgr.h"
+#include "BBMD2.h"
 
 /** forward decl to avoid circle linking */
 class Entity;
@@ -72,6 +73,10 @@ struct MD2Component
 {
     std::string model_path;
     std::string texture_path;
+    std::string current_animation = "stand";
+    int current_frame = 0;
+    float interpolation = 0.0f;
+    float anim_speed = 5.0f;
 };
 
 /**

@@ -27,8 +27,8 @@ void OpenGLTexture::CreateTexture(const std::filesystem::path& imageFilePath, bo
     // how the texture will be resampled up if it needs to be rendered larger
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // clamp the wrap modes, S & T is like x and y
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
 
     int channels = textureImage.getChannels();
     GLenum format = GL_RGBA;

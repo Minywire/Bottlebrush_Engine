@@ -4,8 +4,7 @@
 #include <iostream>
 #include <fstream>
 
-MD2Model::MD2Model(std::string filename, std::string texturefile) 
-    : m_currentFrame(0)
+MD2Model::MD2Model(const std::string& filename, const std::string& texturefile)
 {
     if (!LoadModel(filename))
     {
@@ -114,7 +113,8 @@ bool MD2Model::LoadModel(std::string filename)
         }
     }
 
-    file.close();
+    //file.close();
+    return true;
 }
 
 bool MD2Model::LoadTexture(std::string texturefile)
@@ -161,6 +161,7 @@ int MD2Model::GetSpecificAnim(std::string animName)
     }
     return count;
 }
+
 
 std::string MD2Model::GetSpecificAnim(int animIndex)
 {
@@ -266,7 +267,6 @@ void MD2Model::InitBuffers()
         glEnableVertexAttribArray(2);
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), reinterpret_cast<void*>(6 * sizeof(float))); // tex coords
 
-        //m_vertexBuffer.emplace_back(vbo);
         m_vertexArray.emplace_back(vao);
 
         //unbind vbo
@@ -278,19 +278,6 @@ void MD2Model::InitBuffers()
     //unbind vao
     glBindVertexArray(0);
     
-}
-
-int MD2Model::GetAnimationCurrentFrame(int animIndex, float interpolation)
-{
-    std::string animName = GetSpecificAnim(animIndex);
-    
-    if (m_currentFrame > m_animation[animName].endIndex || m_currentFrame < m_animation[animName].startIndex)
-        m_currentFrame = m_animation[animName].startIndex;
-
-    if (interpolation >= 1.0f && m_currentFrame <= m_animation[animName].endIndex)
-        m_currentFrame++;
-
-    return m_currentFrame;
 }
 
 std::vector<std::string> MD2Model::AnimationNames()

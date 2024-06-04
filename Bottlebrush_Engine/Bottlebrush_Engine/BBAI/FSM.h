@@ -44,7 +44,7 @@ public:
     /// @brief sends message to appropriate state's "onMessage" function if there is one
     /// @param lua_state used to reference to the next section of the script to run
     /// @param msg event message
-    void HandleMessage(sol::state& lua_state, Message& msg);
+    void HandleMessage(sol::state& lua_state, const Message& msg);
 
 private:
     NPC* m_npcReference; // reference to the NPC that owns this FSM
