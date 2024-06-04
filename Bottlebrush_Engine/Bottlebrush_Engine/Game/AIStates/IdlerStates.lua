@@ -88,7 +88,7 @@ Chase = {
 		if Detection.SeePlayer(NPC) then
 			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
 			if not Movement.ChasePlayer(NPC) then
-				FSM.ChangeState(NPC, "Attack")
+				FSM.ChangeState(NPC, "Attack");
 			end
 		elseif not Detection.SeePlayer(NPC) and not NPC:IsMoving() then
 			FSM.ChangeState(NPC, "Idle");
@@ -140,8 +140,7 @@ Investigate = {
 -------------------------------------------------------------------------------
 Attack = {
 	onEnter = function(NPC)
-		print("Enter Attack")
-		Animation.SetAnimation(NPC, "attak")
+		Animation.SetAnimation(NPC, "attak");
 	end,
 
 	Update = function(NPC)
