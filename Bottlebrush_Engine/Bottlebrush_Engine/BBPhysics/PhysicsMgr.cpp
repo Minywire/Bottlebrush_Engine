@@ -11,9 +11,9 @@ const PhysicsBody& PhysicsMgr::GetPhysicsBody(uint32_t index) const {
     return physics_bodies_.at(index);
 }
 
-void PhysicsMgr::CreatePhysicsBody(PhysicsBody::PhysicsBodyType type,
-                                   glm::vec3 position, glm::vec3 rotation,
-                                   glm::vec3 scale) {
+void PhysicsMgr::SetPhysicsBody(PhysicsBody::PhysicsBodyType type,
+                                glm::vec3 position, glm::vec3 rotation,
+                                glm::vec3 scale) {
     auto p = rp3d::Vector3(position.x, position.y, position.z);
     auto o = rp3d::Quaternion::identity();
     auto t = rp3d::Transform(p, o);
