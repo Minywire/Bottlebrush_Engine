@@ -85,6 +85,13 @@ class Scene
     void createEntityAndTransform(const std::string & lua_file, float xPos, float yPos, float zPos);
 
     /**
+    * Gets the terrain height at a specified x and z value (used in scripts)
+    * @param x X position of specified item
+    * @param z Z position of specified item
+    */
+    const float getTerrainHeight(float x, float z);
+
+    /**
      *
      * @param shaderType
      * @param vertexSource
