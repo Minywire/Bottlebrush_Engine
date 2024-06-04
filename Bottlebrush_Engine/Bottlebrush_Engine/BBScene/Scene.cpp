@@ -172,7 +172,7 @@ void Scene::init()
     mainCamera.SetSpeed(100.0f);
     mainCamera.SetZoom(30.0f);
 
-    bbSystems.RegisterAIFunctions(bbECS, lua.getLuaState(), mainCamera, this->aiEndGame); // register functions before running scripts
+    bbSystems.RegisterAIFunctions(bbECS, lua.getLuaState(), mainCamera, aiEndedGame); // register functions before running scripts
     if(!lua.getLuaState().do_file(masterLuaFile).valid())
     {
         std::cout << "Could not load master game script file\n";
@@ -188,7 +188,7 @@ void Scene::init()
 void Scene::update()
 {
     while (!window.GetShouldClose()) {
-        if(menuActive) {
+        if(menuActive && !gameOver && !exitScreen) {
             updateBBGUIFrameStart();
             if(ImGui::CollapsingHeader("Controls")) {
                 if(ImGui::TreeNode("Movement")) {
@@ -221,7 +221,7 @@ void Scene::update()
                 exitScreen = true;
             }
         }
-        if(gameOver) {
+        if(gameOver && !exitScreen) {
             updateBBGUIFrameStart();
             ImGui::Text("GAME OVER!");
             if(ImGui::Button("Exit Program")) {
@@ -324,11 +324,11 @@ void Scene::update()
 
         glDepthFunc(GL_LESS);  // set depth function back to default
 
-        if(menuActive || gameOver) {
+        if((menuActive || gameOver) && !exitScreen) {
             updateBBGUIFrameEnd();
         }
 
-        if (aiEndGame && !gameOver) {
+        if (aiEndedGame && !gameOver) {
             window.SetCursorMode(Window::CURSOR_NORMAL);
             gameOver = true;
         }

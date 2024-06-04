@@ -157,7 +157,7 @@ class Scene
 
     bool exitScreen = false;
     bool gameOver = false;
-    bool aiEndGame = false;
+    bool aiEndedGame = false;
     float last_frame = 0;
 
     float interpolation = 0.f;
