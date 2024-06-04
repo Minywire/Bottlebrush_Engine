@@ -9,12 +9,21 @@ class PhysicsBody {
     using Quat = rp3d::Quaternion;
     using Transform = rp3d::Transform;
 
+    inline static glm::vec3 kDefaultHalfExtents = {0.0f, 0.0f, 0.0f};
+    inline static float kDefaultHeight = 0.0f;
     inline static glm::vec3 kDefaultPosition = {0.0f, 0.0f, 0.0f};
+    inline static float kDefaultRadius = 0.0f;
     inline static glm::vec3 kDefaultRotation = {0.0f, 0.0f, 0.0f};
     inline static glm::vec3 kDefaultScale = {1.0f, 1.0f, 1.0f};
 
    public:
+    using BoxShape = rp3d::BoxShape*;
+    using CapsuleShape = rp3d::CapsuleShape*;
+    using Collider = rp3d::Collider*;
     using RigidBody = rp3d::RigidBody*;
+    using SphereShape = rp3d::SphereShape*;
+
+    enum ColliderType { kBox, kCapsule, kSphere };
 
     enum PhysicsBodyType { kStatic, kKinematic, kDynamic };
 
@@ -23,13 +32,15 @@ class PhysicsBody {
                          glm::vec3 rotation = kDefaultRotation,
                          glm::vec3 scale = kDefaultScale);
 
+    [[nodiscard]] const Collider& GetCollider() const;
     [[nodiscard]] const glm::vec3& GetPosition() const;
-    [[nodiscard]] RigidBody GetRigidBody() const;
+    [[nodiscard]] const RigidBody& GetRigidBody() const;
     [[nodiscard]] const glm::vec3& GetRotation() const;
     [[nodiscard]] const glm::vec3& GetScale() const;
     [[nodiscard]] PhysicsBodyType GetType() const;
+    void SetCollider(const Collider& collider);
     void SetPosition(const glm::vec3& position);
-    void SetRigidBody(RigidBody body);
+    void SetRigidBody(const RigidBody& body);
     void SetRotation(const glm::vec3& rotation);
     void SetScale(const glm::vec3& scale);
     void SetType(PhysicsBodyType type);
@@ -39,6 +50,7 @@ class PhysicsBody {
     void SetRigidBodyType();
 
     RigidBody body_ = nullptr;
+    Collider collider_ = nullptr;
     glm::vec3 position_;
     glm::vec3 rotation_;
     glm::vec3 scale_;

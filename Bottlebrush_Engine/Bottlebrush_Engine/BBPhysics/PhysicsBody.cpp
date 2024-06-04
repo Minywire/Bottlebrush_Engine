@@ -4,9 +4,15 @@ PhysicsBody::PhysicsBody(PhysicsBodyType type, glm::vec3 position,
                          glm::vec3 rotation, glm::vec3 scale)
     : position_(position), rotation_(rotation), scale_(scale), type_(type) {}
 
+const PhysicsBody::Collider& PhysicsBody::GetCollider() const {
+    return collider_;
+}
+
 const glm::vec3& PhysicsBody::GetPosition() const { return position_; }
 
-PhysicsBody::RigidBody PhysicsBody::GetRigidBody() const { return body_; }
+const PhysicsBody::RigidBody& PhysicsBody::GetRigidBody() const {
+    return body_;
+}
 
 const glm::vec3& PhysicsBody::GetRotation() const { return rotation_; }
 
@@ -14,12 +20,17 @@ const glm::vec3& PhysicsBody::GetScale() const { return scale_; }
 
 PhysicsBody::PhysicsBodyType PhysicsBody::GetType() const { return type_; }
 
+void PhysicsBody::SetCollider(const Collider& collider) {
+    auto t = Transform::identity();
+    collider_ = body_->addCollider(collider->getCollisionShape(), t);
+}
+
 void PhysicsBody::SetPosition(const glm::vec3& position) {
     position_ = position;
     SetRigidBodyTrns();
 }
 
-void PhysicsBody::SetRigidBody(RigidBody body) {
+void PhysicsBody::SetRigidBody(const RigidBody& body) {
     body_ = body;
     SetRigidBodyTrns();
     SetRigidBodyType();
