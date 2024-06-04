@@ -45,9 +45,14 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
 
     // register EventDispatcher table functions that depend on lua_state
     auto dispatchTable = lua_state["Dispatch"].get_or_create<sol::table>();
-    dispatchTable["SendMessage"] = [&ecs, &lua_state](std::string event, NPC& npc) 
+    dispatchTable["SendMessage"] = [&ecs, &lua_state](std::string event, NPC& npc, float delayTime = 0) 
     {
-        Message msg(event, &npc);
+        auto msg = Message{
+            .m_Event = event,
+            .m_Sender = &npc,
+            .m_DelayTime = delayTime,
+        };
+
         npc.SendMessage(ecs, lua_state, msg);
     };
     dispatchTable["InMessageRange"] = [&ecs](NPC& npc, Message& msg, float range) 
@@ -56,6 +61,10 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
         glm::vec2 theirPos = msg.m_Sender->GetVec2Position(ecs);
         float distance = glm::length(theirPos - curPos);
         return distance < range;
+    };
+    dispatchTable["GetVec2SenderLocation"] = [&ecs](Message& msg)
+    {
+        return msg.m_Sender->GetVec2Position(ecs);
     };
 }
 
@@ -69,8 +78,7 @@ void registerScriptedGLM(sol::state& lua_state) {
 void registerScriptedMessage(sol::state& lua_state) {
     // register Message system
     lua_state.new_usertype<Message>("Message",
-        "GetEvent", &Message::m_Event,
-        "GetSender", &Message::m_Sender
+        "Event", &Message::m_Event
     );
 }
 

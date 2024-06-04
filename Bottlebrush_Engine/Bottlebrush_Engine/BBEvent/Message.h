@@ -14,4 +14,5 @@ struct Message
 {
     std::string m_Event;
     NPC* m_Sender;
+    const float m_DelayTime; // adding delay time to sending the message
 };

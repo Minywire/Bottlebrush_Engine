@@ -5,6 +5,8 @@
 #include "Systems.h"
 #include "BBScript.h"
 #include "RegisterAIScripts.h"
+#include "EventDispatcher.h"
+#include "Singleton.h"
 
 void Systems::generateModelFromComponent(const ModelComponent & modelComp, std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels)
 {
@@ -265,6 +267,9 @@ void Systems::updateAI(ECS& ecs, sol::state& lua_state, float deltaTime) {
 
       aic.npc.Update(lua_state, deltaTime);
     }
+
+    // dispatch any delayed messages
+    Singleton<EventDispatcher>::Instance().DispatchDelayedMessages(lua_state, deltaTime);
 }
 
 void Systems::updateCameraTerrainHeight(const ECS& ecs, const std::unordered_map<std::string, Terrain> & terrains, Camera & camera,  float offset_y)
