@@ -176,7 +176,7 @@ void Scene::init()
     mainCamera.SetPosition(1000.0f, 100.0f, 1000.0f);
     mainCamera.SetSensitivity(0.05f);
     mainCamera.SetSpeed(1000.0f);
-    mainCamera.SetZoom(30.0f);
+    mainCamera.SetZoom(45.0f);
 
     bbSystems.RegisterAIFunctions(bbECS, lua.getLuaState(), mainCamera); // register functions before running scripts
     if(!lua.getLuaState().do_file(masterLuaFile).valid())
