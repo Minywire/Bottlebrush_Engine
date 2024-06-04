@@ -7,7 +7,6 @@
 function setMovingAnimation(NPC)
 	if NPC:IsMoving() then
 		if Animation.GetAnimation(NPC) == "stand" then
-			print(Animation.GetAnimation(NPC))
 			Animation.SetAnimation(NPC, "run");
 		end
 	elseif not NPC:IsMoving() then
