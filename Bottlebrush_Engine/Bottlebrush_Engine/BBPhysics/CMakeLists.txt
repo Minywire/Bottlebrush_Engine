@@ -6,7 +6,9 @@ target_include_directories(BBPhysics
 )
 target_sources(BBPhysics
         PRIVATE PhysicsMgr.cpp
+        PRIVATE PhysicsBody.cpp
 )
 target_link_libraries(BBPhysics
+        PRIVATE glm
         PRIVATE reactphysics3d
 )
