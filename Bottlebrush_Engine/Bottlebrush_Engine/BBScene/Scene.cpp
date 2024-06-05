@@ -240,8 +240,11 @@ void Scene::update()
             }
         }
         if(gameOver && !exitScreen) {
+            const std::string time = std::to_string(static_cast<int>(sceneTime));
             updateBBGUIFrameStart();
             ImGui::Text("GAME OVER!");
+            ImGui::Text("Time survived in seconds: ");
+            ImGui::Text(time.data());
             if(ImGui::Button("Exit Program")) {
                 exitScreen = true;
             }
@@ -251,6 +254,11 @@ void Scene::update()
         float deltaTime = current_frame - last_frame;
         last_frame = current_frame;
         accumulatedFrameTime += deltaTime;
+
+        if (!aiEndedGame)
+        {
+            sceneTime += current_frame / 1000;
+        }
 
         // Process user input
         ProcessInput(deltaTime);

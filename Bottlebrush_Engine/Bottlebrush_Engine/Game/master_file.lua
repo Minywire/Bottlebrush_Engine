@@ -1,7 +1,7 @@
 --Load all game entities from scripts here!
 
 create_entity("Game/Terrain/MainTerrain.lua");
-create_entity("Game/MD2Models/doomguy.lua");
+create_entity("Game/MD2Models/necro.lua");
 
 math.randomseed(os.time())
 local centre = 40960
@@ -21,8 +21,8 @@ for i = min, max, increment do
     end
 end
 
-for i = min, max, 8 * increment do
-    for j = min, max, 8 * increment do
+for i = min, max, 9 * increment do
+    for j = min, max, 9 * increment do
         local random_x = math.random(500)
         local random_z = math.random(500)
         local x = i - random_x
@@ -31,11 +31,11 @@ for i = min, max, 8 * increment do
     end
 end
 
-local offset = 4000
+local offset = 2000
 local min = centre - offset
 local max = centre + offset
 local range = max - min
-local sqrt_num_wanderer = 6
+local sqrt_num_wanderer = 4
 local sqrt_num_idler = 2
 local sqrt_num_patrollers = 4
 

@@ -1,28 +1,23 @@
 Entity = {
     Transform = {
         Position = {
-            x = 500,
+            x = 0,
             y = 50,
-            z = 450
+            z = 0
         },
         Rotation = {
             x = 0,
             y = 0,
-            z = 0
+            z = 0,
         },
         Scale = {
-            x = 0.6,
-            y = 0.6,
-            z = 0.6
+            x = 1,
+            y = 1,
+            z = 1
         }
     },
     MD2Model = {
         ModelPath = "Resources/MD2Models/Models/necro.md2",
         TexturePath = "Resources/MD2Models/Textures/necro.png"
-    },
-    AI = {
-        StatesPath = "Game/AIStates/PatrollerStates.lua",
-        InitialState = "Idle",
-        Waypoints = {vec2(44100, 41500), vec2(42500, 44600)}
     }
 }
