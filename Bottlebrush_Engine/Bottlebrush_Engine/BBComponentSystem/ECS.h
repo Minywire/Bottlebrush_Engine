@@ -15,13 +15,13 @@ public:
 
     /**
      *
-     * @return
+     * @return The ECS registry (const) for read-access
      */
     const entt::registry & getReg() const;
 
     /**
      *
-     * @return
+     * @return The ECS registry (non-const) for editing
      */
     entt::registry& getReg();
 

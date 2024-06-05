@@ -101,37 +101,73 @@ public:
     int GetSpecificAnim(std::string animName);
     std::string GetSpecificAnim(int animIndex);
 
+    /**
+    * @return List containing all animation names
+    */
     std::vector<std::string> AnimationNames();
+
+    /**
+     * @reutrn Number of animations
+     */
     int getNumAnims() { return m_animation.size(); }
+
+    /**
+     * @return The container with all of the animation state data for MD2
+     */
     std::map<std::string, anim_md2>& getAnimations() { return m_animation; }
 
+    /**
+     * @return The header containing all of the metadata for a loaded MD2 file
+     */
     std::unique_ptr<MD2Header>& GetHeader() { return m_header; }
 
+    /**
+     * @return The container containing all vertex array objects
+     */
     const std::vector<unsigned int> & returnVaos() const;
 
+    /**
+     * @return The number of faces in the loaded MD2 model
+     */
     const int getNumTris() const { return m_header->numTriangles * 3; }
 
+    /**
+     *@brief binds the MD2 model texture
+     */
     void setTexture() const;
    private:
+    /**
+     *@brief Loads an MD2 model from a specified file path
+     * @param filename The MD2 model file name/path to read from
+     * @return True if file loading succeeds
+     */
     bool LoadModel(std::string filename);
+    /**
+     *@brief Loads an MD2 texture from a specified file path
+     * @param filename The png file name/path to read from
+     *  @return True if file loading succeeds
+     */
     bool LoadTexture(std::string texturefile);
+    /**
+     *@brief sets up all specific Core-profile OpenGL data needed for MD2 use in modern render engines
+     */
     void InitBuffers();
 
     template<typename T>
     static std::vector<T> ReadDataFromFile(std::ifstream& file, int dataSize, int offset);
 
     // MD2 file contents
-    std::unique_ptr<MD2Header> m_header;                    // header file with details about the mesh
-    std::vector<skin_md2> m_skins;                          // Skin names
-    std::vector<texCoord_md2> m_texCoords;                  // TexCoords
-    std::vector<triangle_md2> m_triIndex;                   // triangle indices
+    std::unique_ptr<MD2Header> m_header;                    /// header file with details about the mesh
+    std::vector<skin_md2> m_skins;                          /// Skin names
+    std::vector<texCoord_md2> m_texCoords;                  /// TexCoords
+    std::vector<triangle_md2> m_triIndex;                   /// triangle indices
 
-    std::map<std::string, anim_md2> m_animation;            // map for animation start and end
+    std::map<std::string, anim_md2> m_animation;            /// map for animation start and end
     std::map<int, std::pair<std::string, std::vector<vec3_md2>>> m_frameVerts;      // Vertex data per frame
 
     // OpenGL variables
-    std::unique_ptr<Texture> m_texture;                     // texture buffer
-    std::vector<float> m_vertices;                          // stream of vertex data to upload
+    std::unique_ptr<Texture> m_texture;                     /// texture buffer
+    std::vector<float> m_vertices;                          /// stream of vertex data to upload
 
-    std::vector<unsigned int> m_vertexArray;                // vertex array object
+    std::vector<unsigned int> m_vertexArray;                /// vertex array object
 };

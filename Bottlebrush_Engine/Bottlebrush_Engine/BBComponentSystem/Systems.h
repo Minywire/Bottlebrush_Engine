@@ -65,7 +65,10 @@ public:
     static void drawMD2Models(const ECS &ecs, const ShaderType & shaderType, RenderEngine & renderEngine, std::unordered_map<std::string, BBMD2> & MD2s, glm::mat4 projection, glm::mat4 view);
     
     /**
-    *
+    *@brief updates the interpolation value needed to transition between MD2 model animation frames
+    * @param ecs The ECS registry
+    * @param MD2s The resource map containing MD2 models
+    * @param deltaTime The accumulated frame time between last frame and current frame
     */
     static void updateMD2Interpolation(ECS &ecs, std::unordered_map<std::string, BBMD2> &MD2s, float deltaTime);
 
@@ -102,7 +105,21 @@ public:
      */
     static void updateAI(ECS &ecs, sol::state &lua_state, float deltaTime);
 
+    /**
+    * @brief Sets the camera to the proper terrain height based on whether the camera is on top of a valid terrain component
+    * @param ecs The ECS registry
+    * @param terrains The resource container containing all of the terrains
+    * @param camera The specified camera which gets its position updated
+    * @param offset_y A y-offset to adjust player height
+    */
     static void updateCameraTerrainHeight(const ECS& ecs, const std::unordered_map<std::string, Terrain> & terrains, Camera & camera, float offset_y = 10.0f);
     
+    /**
+    * @brief Fetches a height value from a valid terrain component if an x and z value are present within it
+    * @param ecs The ECS registry
+    * @param terrains The resource map containing terrain objects
+    * @param x The x position from which to fetch the height value
+    * @param z The z position from which to fetch the height value
+    */
     static const std::optional<float> getTerrainHeight(const ECS& ecs, const std::unordered_map<std::string, Terrain> & terrains, float x, float z);
 };

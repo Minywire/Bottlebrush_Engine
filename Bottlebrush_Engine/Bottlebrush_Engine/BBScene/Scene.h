@@ -23,38 +23,35 @@
 class Scene
 {
  public:
+    /**
+    * @brief Processes all the keyboard and mouse input from the callbacks.
+    * @param deltaTime The time elapsed in scene
+    */
     void ProcessInput(float deltaTime);
     
     /**
      *
-     * @param lua_master
+     * @param lua_master The master script to be executed for this scene
+     * @param screenwidth The viewport width
+     * @param screenheight The viewport height
      */
     explicit Scene(const std::string & lua_master, float screenwidth, float screenheight);
     /**
      *
-     * @param projMatrix
+     * @param projMatrix the projection matrix for the scene
      */
     void setProjectionMatrix(glm::mat4 projMatrix);
 
     /**
      *
-     * @param viewMatrix
+     * @param viewMatrix The viewmatrix for the scene
      */
     void setViewMatrix(glm::mat4 viewMatrix);
 
-    /**
-    * 
-    */
     void setExitFlag(bool flag);
 
-    /**
-     *
-     */
     void setFirstMouseFlag(bool flag);
 
-    /**
-    *
-    */
     void setWireFrameFlag(bool flag);
 
     void setCameraRestriction(bool flag);
@@ -64,12 +61,11 @@ class Scene
     void setLastY(float lY);
 
     /**
-     *
+     *@brief initializes objects which otherwise can't be in the Scene constructor
      */
     void init();
 
     /**
-     *
      * @param lua_file
      */
     void createEntity(const std::string & lua_file);
@@ -100,18 +96,15 @@ class Scene
     void setRendererShaderSource(ShaderType shaderType, const std::string & vertexSource, const std::string & fragSource);
 
     /**
-     *
+     * @brief refreshes the render engine in the scene.
      */
     void clearRenderEngine();
 
     /**
-     * @param deltaTime time difference between frames
+     * @brief Updates the current Scene.
      */
     void update();
 
-    /**
-    * 
-    */
     const Camera & getCamera() const;
 
     Camera& getCamera();
