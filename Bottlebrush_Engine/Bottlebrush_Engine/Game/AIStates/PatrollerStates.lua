@@ -5,7 +5,7 @@
 -------------------------------------------------------------------------------
 
 function setMovingAnimation(NPC)
-	if Animation.GetAnimation(NPC) == "punch" then
+	if Animation.GetAnimation(NPC) == "attack" then
 		
 	elseif NPC:IsMoving() then
 		if Animation.GetAnimation(NPC) ~= "run" then
@@ -175,7 +175,7 @@ Investigate = {
 -------------------------------------------------------------------------------
 Attack = {
 	onEnter = function(NPC)
-		Animation.SetAnimation(NPC, "punch");
+		Animation.SetAnimation(NPC, "attack");
 	end,
 
 	Update = function(NPC)

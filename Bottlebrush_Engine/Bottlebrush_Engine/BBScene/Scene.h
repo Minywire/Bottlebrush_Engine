@@ -171,4 +171,5 @@ class Scene
     bool menuActive = false;
 
     bool cameraRestriction = true;
+    float sceneTime = 0;
 };

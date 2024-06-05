@@ -1,7 +1,7 @@
 --Load all game entities from scripts here!
 
 create_entity("Game/Terrain/MainTerrain.lua");
-create_entity("Game/MD2Models/doomguy.lua");
+create_entity("Game/MD2Models/necro.lua");
 
 math.randomseed(os.time())
 local centre = 40960
