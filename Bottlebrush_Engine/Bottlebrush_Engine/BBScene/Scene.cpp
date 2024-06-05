@@ -184,7 +184,7 @@ void Scene::init()
     
     mainCamera.SetPosition(1000.0f, 100.0f, 1000.0f);
     mainCamera.SetSensitivity(0.05f);
-    mainCamera.SetSpeed(1000.0f);
+    mainCamera.SetSpeed(100.0f);
     mainCamera.SetZoom(45.0f);
 
     //PhysicsBody cameraBody = physicsManager.CreateBody(PhysicsBody::PhysicsBodyType::kDynamic,
@@ -199,6 +199,7 @@ void Scene::init()
         glm::vec3(10.f, 10.f, 10.f)
     );
     physicsManager.CreateBoxCollider(camPhyBodIndx, {5.0f, 5.0f, 5.0f});
+    printf("Nb Colliders %d: %d\n", camPhyBodIndx, physicsManager.ObtainBody(camPhyBodIndx).GetRigidBody()->getNbColliders());
     
     PhysicsScripts::registerPhysicsType(lua.getLuaState());
     
@@ -295,6 +296,9 @@ void Scene::update()
                              resources.getSceneTerrain(), false,
                              projectionMatrix, viewMatrix);
 
+        glm::vec3 cam_pos = mainCamera.GetPosition();
+        rp3d::Transform cam_trn(rp3d::Vector3(cam_pos.x, cam_pos.y, cam_pos.z), rp3d::Quaternion::identity());
+        physicsManager.ObtainBody(camPhyBodIndx).GetRigidBody()->getCollider(0)->setLocalToBodyTransform(cam_trn);
         physicsManager.Update(deltaTime);
 
         if (cameraRestriction)
@@ -354,10 +358,6 @@ void Scene::update()
 
         // Draw the Skybox
         skybox.ActiveTexture();
-
-        printf("Nb Colliders: %d\n", physicsManager.ObtainBody(camPhyBodIndx)
-                                         .GetRigidBody()
-                                         ->getNbColliders());
 
         // Draw the meshes
         for (unsigned int i = 0; i < skybox.getModel()->GetSubMeshes().size();

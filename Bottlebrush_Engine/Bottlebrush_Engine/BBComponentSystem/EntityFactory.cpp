@@ -223,12 +223,11 @@ void EntityFactory::loadPhysicsBody(ECS & ecs, Entity & entity, const sol::table
     const auto & transform = entity.GetComponent<TransformComponent>(ecs.getReg());
     auto & currentPhysBody = entity.GetComponent<PhysicsBodyComponent>(ecs.getReg());
 
-    uint32_t physbodindx = physicsManager.CreateBody(currentPhysBody.physics_body);
+    uint32_t physbodindx = physicsManager.CreateBody(type, transform.position, transform.rotation, transform.scale);
+    physicsManager.CreateBoxCollider(physbodindx, {10.0f, 10.0f, 10.0f});
 
-    currentPhysBody.physics_body.SetType(type);
-    currentPhysBody.physics_body.SetPosition(transform.position);
-    currentPhysBody.physics_body.SetRotation(transform.rotation);
-    currentPhysBody.physics_body.SetScale(transform.scale);
-
-    physicsManager.CreateBoxCollider(physbodindx, {5.0f * transform.scale.x, 5.0f * transform.scale.y, 5.0f * transform.scale.z});
+    printf("Position %d: %f, %f, %f\n", physbodindx, transform.position.x, transform.position.y, transform.position.z);
+    printf("Rotation %d: %f, %f, %f\n", physbodindx, transform.rotation.x, transform.rotation.y, transform.rotation.z);
+    printf("Scale %d: %f, %f, %f\n", physbodindx, transform.scale.x, transform.scale.y, transform.scale.z);
+    printf("Nb Colliders %d: %d\n", physbodindx, physicsManager.ObtainBody(physbodindx).GetRigidBody()->getNbColliders());
 }

@@ -9,6 +9,7 @@
 class PhysicsMgr {
     using PhysicsCommn = rp3d::PhysicsCommon;
     using PhysicsWorld = rp3d::PhysicsWorld*;
+    using Quat = rp3d::Quaternion;
     using Transform = rp3d::Transform;
     using Vec3 = rp3d::Vector3;
 
@@ -31,7 +32,6 @@ class PhysicsMgr {
                         glm::vec3 position = kDefaultPosition,
                         glm::vec3 rotation = kDefaultRotation,
                         glm::vec3 scale = kDefaultScale);
-    uint32_t CreateBody(PhysicsBody& body);
     const PhysicsBody& ObtainBody(uint32_t index) const;
     uint32_t RemoveBody(uint32_t index);
 
