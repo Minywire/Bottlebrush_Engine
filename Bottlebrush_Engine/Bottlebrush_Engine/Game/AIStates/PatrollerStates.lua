@@ -5,7 +5,9 @@
 -------------------------------------------------------------------------------
 
 function setMovingAnimation(NPC)
-	if NPC:IsMoving() then
+	if Animation.GetAnimation(NPC) == "punch" then
+		
+	elseif NPC:IsMoving() then
 		if Animation.GetAnimation(NPC) ~= "run" then
 			Animation.SetAnimation(NPC, "run");
 		end
@@ -54,7 +56,7 @@ Idle = {
 		if not NPC:IsWaiting() then 
 			FSM.ChangeState(NPC, "Patrol");
 		end
-		if Detection.SeePlayer(NPC) then
+		if Detection.SeePlayer(NPC, 1000.0, 160.0) then
 			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
 			FSM.ChangeState(NPC, "Chase");
 		end	
@@ -86,7 +88,7 @@ Patrol = {
 
 	Update = function(NPC)
 		Movement.Patrol(NPC)
-		if Detection.SeePlayer(NPC) then
+		if Detection.SeePlayer(NPC, 1000.0, 160.0) then
 			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
 			FSM.ChangeState(NPC, "Chase");
 		end	
@@ -118,10 +120,12 @@ Chase = {
 
 	Update = function(NPC)
 		Movement.MoveTo(NPC, NPC:GetLastMoveTo());
-		if Detection.SeePlayer(NPC) then
-			Movement.ChasePlayer(NPC);
+		if Detection.SeePlayer(NPC, 1000.0, 160.0) then
 			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
-		elseif not Detection.SeePlayer(NPC) and not NPC:IsMoving() then
+			if not Movement.ChasePlayer(NPC) then
+				FSM.ChangeState(NPC, "Attack");
+			end
+		elseif not Detection.SeePlayer(NPC, 1000.0, 160.0) and not NPC:IsMoving() then
 			FSM.ChangeState(NPC, "Idle");
 		end
 	end,
@@ -143,10 +147,10 @@ Investigate = {
 
 	Update = function(NPC)
 		Movement.MoveTo(NPC, NPC:GetLastMoveTo());
-		if Detection.SeePlayer(NPC) then
+		if Detection.SeePlayer(NPC, 1000.0, 160.0) then
 			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
 			FSM.ChangeState(NPC, "Chase");
-		elseif not Detection.SeePlayer(NPC) and not NPC:IsMoving() then
+		elseif not Detection.SeePlayer(NPC, 1000.0, 160.0) and not NPC:IsMoving() then
 			FSM.ChangeState(NPC, "Idle");
 		end
 	end,
@@ -162,4 +166,23 @@ Investigate = {
 			end
 		end
 	end
+}
+
+-------------------------------------------------------------------------------
+
+-- create the attack state
+
+-------------------------------------------------------------------------------
+Attack = {
+	onEnter = function(NPC)
+		Animation.SetAnimation(NPC, "punch");
+	end,
+
+	Update = function(NPC)
+		Game.GameOver();
+	end,
+
+	onExit = function(NPC)
+
+	end,
 }
