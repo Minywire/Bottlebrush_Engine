@@ -113,6 +113,8 @@ bool MD2Model::LoadModel(std::string filename)
         }
     }
 
+    displayAnimNames();
+
     //file.close();
     return true;
 }

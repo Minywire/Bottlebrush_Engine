@@ -8,10 +8,10 @@
 #include "EventDispatcher.h"
 #include "Singleton.h"
 
-void Systems::RegisterAIFunctions(ECS& ecs, sol::state & lua_state, const Camera& player) 
+void Systems::RegisterAIFunctions(ECS& ecs, sol::state & lua_state, const Camera& player, bool& endGame) 
 {
     AIScripts::registerScriptedFSM(lua_state);
-    AIScripts::registerScriptedNPC(lua_state, ecs, player);
+    AIScripts::registerScriptedNPC(lua_state, ecs, player, endGame);
     AIScripts::registerScriptedGLM(lua_state);
     AIScripts::registerScriptedAnimation(lua_state, ecs);
     AIScripts::registerScriptedMessage(lua_state);

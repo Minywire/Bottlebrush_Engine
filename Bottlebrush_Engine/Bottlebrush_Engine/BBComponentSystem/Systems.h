@@ -25,8 +25,9 @@ public:
      * @brief Registers the appropriate AI functions to lua
      * @param ecs The registry to pass into the lua registers to dependencyinject into NPC
      * @param lua_state to read in the AI scripts to the state
+     * @param endGame bool to end the game
      */
-    void RegisterAIFunctions(ECS &ecs, sol::state &lua_state, const Camera &player);
+    void RegisterAIFunctions(ECS &ecs, sol::state &lua_state, const Camera &player, bool& endGame);
 
     /**
      *

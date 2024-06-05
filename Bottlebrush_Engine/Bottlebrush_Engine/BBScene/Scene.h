@@ -122,6 +122,8 @@ class Scene
 
     bool getFirstMouseFlag() const;
 
+    bool getGameOverFlag() const;
+
     float getLastX() const;
 
     float getLastY() const;
@@ -161,7 +163,8 @@ class Scene
     bool first_mouse_click = true;
 
     bool exitScreen = false;
-
+    bool gameOver = false;
+    bool aiEndedGame = false;
     float last_frame = 0;
 
     float interpolation = 0.f;

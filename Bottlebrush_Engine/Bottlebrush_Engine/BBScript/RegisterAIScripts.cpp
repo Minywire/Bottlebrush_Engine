@@ -16,7 +16,7 @@ void registerScriptedFSM(sol::state& lua_state) {
     };
 }
 
-void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) {
+void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player, bool& endGame) {
     // register player functions
     lua_state.new_usertype<NPC>("NPC", 
         "AddWaypoint", &NPC::AddWaypoint,
@@ -35,13 +35,16 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
     movementTable["ChasePlayer"] = [&ecs, &player](NPC& npc) 
     { 
         glm::vec2 pos = {player.GetPositionX(), player.GetPositionZ()};
-        npc.MoveTo(pos, ecs); 
+        npc.MoveTo(pos, ecs, 60.0f);
         return npc.IsMoving();
     };
 
     // register detection functions that depend on transform component
     auto detectionTable = lua_state["Detection"].get_or_create<sol::table>();
-    detectionTable["SeePlayer"] = [&player, &ecs](NPC& npc) { return npc.SeePlayer(glm::vec2(player.GetPositionX(), player.GetPositionZ()), ecs); };
+    detectionTable["SeePlayer"] = [&player, &ecs](NPC& npc, float coneDistance = 1000.0f, float fov = 160.0f) 
+    { 
+        return npc.SeePlayer(glm::vec2(player.GetPositionX(), player.GetPositionZ()), ecs, coneDistance, fov); 
+    };
 
     // register EventDispatcher table functions that depend on lua_state
     auto dispatchTable = lua_state["Dispatch"].get_or_create<sol::table>();
@@ -66,6 +69,10 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player) 
     {
         return msg.m_Sender->GetVec2Position(ecs);
     };
+
+    // register game mechanics table functions
+    auto gameTable = lua_state["Game"].get_or_create<sol::table>();
+    gameTable["GameOver"] = [&endGame]() { endGame = true; };
 }
 
 void registerScriptedGLM(sol::state& lua_state) {
