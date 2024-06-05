@@ -125,14 +125,16 @@ Chase = {
 	end,
 
 	Update = function(NPC)
-		Movement.MoveTo(NPC, NPC:GetLastMoveTo());
-		if Detection.SeePlayer(NPC, 1000.0, 160.0) then
-			Movement.ChasePlayer(NPC);
-			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
-		elseif not Detection.SeePlayer(NPC, 1000.0, 160.0) and not NPC:IsMoving() then
-			FSM.ChangeState(NPC, "Idle");
-		end
-	end,
+        Movement.MoveTo(NPC, NPC:GetLastMoveTo());
+        if Detection.SeePlayer(NPC, 1000.0, 160.0) then
+            Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
+            if not Movement.ChasePlayer(NPC) then
+                FSM.ChangeState(NPC, "Attack");
+            end
+        elseif not Detection.SeePlayer(NPC, 1000.0, 160.0) and not NPC:IsMoving() then
+            FSM.ChangeState(NPC, "Idle");
+        end
+    end,
 
 	onExit = function(NPC)
 
@@ -170,4 +172,23 @@ Investigate = {
 			end
 		end
 	end
+}
+
+-------------------------------------------------------------------------------
+
+-- create the attack state
+
+-------------------------------------------------------------------------------
+Attack = {
+    onEnter = function(NPC)
+        Animation.SetAnimation(NPC, "punch");
+    end,
+
+    Update = function(NPC)
+        Game.GameOver();
+    end,
+
+    onExit = function(NPC)
+
+    end,
 }

@@ -23,6 +23,6 @@ Entity = {
     AI = {
         StatesPath = "Game/AIStates/PatrollerStates.lua",
         InitialState = "Idle",
-        Waypoints = {vec2(150, 150), vec2(450, 450)}
+        Waypoints = {vec2(41500, 42500), vec2(42300, 42000), vec2(44000, 41000)}
     }
 }

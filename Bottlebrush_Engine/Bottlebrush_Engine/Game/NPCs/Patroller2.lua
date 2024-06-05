@@ -1,8 +1,8 @@
 Entity = {
     Transform = {
         Position = {
-            x = 400,
-            y = 40,
+            x = 500,
+            y = 50,
             z = 450
         },
         Rotation = {
@@ -23,6 +23,6 @@ Entity = {
     AI = {
         StatesPath = "Game/AIStates/PatrollerStates.lua",
         InitialState = "Idle",
-        Waypoints = {vec2(250, 100), vec2(600, 450), vec2(250, 600)}
+        Waypoints = {vec2(44100, 41500), vec2(42500, 44600)}
     }
 }
