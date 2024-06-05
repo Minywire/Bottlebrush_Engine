@@ -9,7 +9,7 @@ local centre = 40960
 local offset = 30000
 local min = centre - offset
 local max = centre + offset
-local increment = 1000
+local increment = 2000
 
 for i = min, max, increment do
     for j = min, max, increment do
@@ -21,8 +21,8 @@ for i = min, max, increment do
     end
 end
 
-for i = min, max, 4 * increment do
-    for j = min, max, 4 * increment do
+for i = min, max, 8 * increment do
+    for j = min, max, 8 * increment do
         local random_x = math.random(500)
         local random_z = math.random(500)
         local x = i - random_x
@@ -31,12 +31,12 @@ for i = min, max, 4 * increment do
     end
 end
 
-local offset = 10000
+local offset = 4000
 local min = centre - offset
 local max = centre + offset
 local range = max - min
-local sqrt_num_wanderer = 12
-local sqrt_num_idler = 3
+local sqrt_num_wanderer = 6
+local sqrt_num_idler = 2
 local sqrt_num_patrollers = 4
 
 for i = min, max, range / sqrt_num_wanderer do
