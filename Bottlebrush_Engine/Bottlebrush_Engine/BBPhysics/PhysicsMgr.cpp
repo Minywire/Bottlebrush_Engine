@@ -8,7 +8,7 @@ uint32_t PhysicsMgr::CreateBody(PhysicsBody::PhysicsBodyType type,
                                 glm::vec3 position, glm::vec3 rotation,
                                 glm::vec3 scale) {
     auto p = rp3d::Vector3(position.x, position.y, position.z);
-    auto o = rp3d::Quaternion(rotation.x, rotation.y, rotation.z, 1.0f);
+    auto o = rp3d::Quaternion(rp3d::Quaternion::identity());
     auto t = rp3d::Transform(p, o);
     PhysicsBody::RigidBody rigid_body = world_->createRigidBody(t);
 
@@ -29,7 +29,7 @@ uint32_t PhysicsMgr::CreateBody(PhysicsBody& body) {
     auto position = body.GetPosition();
     auto rotation = body.GetRotation();
     auto p = rp3d::Vector3(position.x, position.y, position.z);
-    auto o = rp3d::Quaternion(rotation.x, rotation.y, rotation.z, 1.0f);
+    auto o = rp3d::Quaternion(rp3d::Quaternion::identity());
     auto t = rp3d::Transform(p, o);
     PhysicsBody::RigidBody rigid_body = world_->createRigidBody(t);
 
@@ -87,4 +87,7 @@ void PhysicsMgr::CreateSphereCollider(uint32_t index, float radius) {
     physics_bodies_.at(index).SetCollider(shape, t);
 }
 
-void PhysicsMgr::Update(float delta) { world_->update(delta); }
+void PhysicsMgr::Update(float delta) {
+    world_->update(delta);
+    //printf("Nb Rigid Bodies: %d\n", world_->getNbRigidBodies());
+}

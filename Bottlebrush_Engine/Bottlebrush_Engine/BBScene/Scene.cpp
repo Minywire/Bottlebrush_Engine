@@ -181,11 +181,24 @@ void Scene::init()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
     mainCamera.SetPosition(1000.0f, 100.0f, 1000.0f);
     mainCamera.SetSensitivity(0.05f);
-  
     mainCamera.SetSpeed(1000.0f);
     mainCamera.SetZoom(45.0f);
+
+    //PhysicsBody cameraBody = physicsManager.CreateBody(PhysicsBody::PhysicsBodyType::kDynamic,
+    //    mainCamera.GetPosition(),
+    //    glm::vec3(mainCamera.GetPitch(), mainCamera.GetYaw(), 0.0f),
+    //    glm::vec3(10.f, 10.f, 10.f)
+    //);
+    camPhyBodIndx = physicsManager.CreateBody(
+        PhysicsBody::PhysicsBodyType::kDynamic, 
+        mainCamera.GetPosition(),
+        glm::vec3(mainCamera.GetPitch(), mainCamera.GetYaw(), 0.0f),
+        glm::vec3(10.f, 10.f, 10.f)
+    );
+    physicsManager.CreateBoxCollider(camPhyBodIndx, {5.0f, 5.0f, 5.0f});
     
     PhysicsScripts::registerPhysicsType(lua.getLuaState());
     
@@ -342,7 +355,9 @@ void Scene::update()
         // Draw the Skybox
         skybox.ActiveTexture();
 
-
+        printf("Nb Colliders: %d\n", physicsManager.ObtainBody(camPhyBodIndx)
+                                         .GetRigidBody()
+                                         ->getNbColliders());
 
         // Draw the meshes
         for (unsigned int i = 0; i < skybox.getModel()->GetSubMeshes().size();
