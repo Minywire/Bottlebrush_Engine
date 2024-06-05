@@ -5,10 +5,16 @@
 -------------------------------------------------------------------------------
 
 function setMovingAnimation(NPC)
-	if NPC:IsMoving() then
-		Animation.SetAnimation(NPC, "run");
+	if Animation.GetAnimation(NPC) == "punch" then
+		
+	elseif NPC:IsMoving() then
+		if Animation.GetAnimation(NPC) ~= "run" then
+			Animation.SetAnimation(NPC, "run");
+		end
 	elseif not NPC:IsMoving() then
-		Animation.SetAnimation(NPC, "stand");
+		if Animation.GetAnimation(NPC) ~= "stand" then
+			Animation.SetAnimation(NPC, "stand");
+		end
 	end
 end
 
@@ -50,7 +56,7 @@ Idle = {
 		if not NPC:IsWaiting() then 
 			FSM.ChangeState(NPC, "Wander");
 		end
-		if Detection.SeePlayer(NPC) then
+		if Detection.SeePlayer(NPC, 1000.0, 160.0) then
 			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
 			FSM.ChangeState(NPC, "Chase");
 		end	
@@ -61,7 +67,7 @@ Idle = {
 	end,
 
 	onMessage = function(NPC, Message)
-		if Dispatch.InMessageRange(NPC, Message, 1000.0) then
+		if Dispatch.InMessageRange(NPC, Message, 2000.0) then
 			if Message.Event == "PlayerSpotted" then
 				Movement.MoveTo(NPC, Dispatch.GetSenderLocation(Message))
 				FSM.ChangeState(NPC, "Investigate");
@@ -88,7 +94,7 @@ Wander = {
 			NPC:ClearWaitTimeElapsed();
 			Movement.Wander(NPC);
 		end
-		if Detection.SeePlayer(NPC) then
+		if Detection.SeePlayer(NPC, 1000.0, 160.0) then
 			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
 			FSM.ChangeState(NPC, "Chase");
 		end	
@@ -120,10 +126,10 @@ Chase = {
 
 	Update = function(NPC)
 		Movement.MoveTo(NPC, NPC:GetLastMoveTo());
-		if Detection.SeePlayer(NPC) then
+		if Detection.SeePlayer(NPC, 1000.0, 160.0) then
 			Movement.ChasePlayer(NPC);
 			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
-		elseif not Detection.SeePlayer(NPC) and not NPC:IsMoving() then
+		elseif not Detection.SeePlayer(NPC, 1000.0, 160.0) and not NPC:IsMoving() then
 			FSM.ChangeState(NPC, "Idle");
 		end
 	end,
@@ -145,10 +151,10 @@ Investigate = {
 
 	Update = function(NPC)
 		Movement.MoveTo(NPC, NPC:GetLastMoveTo());
-		if Detection.SeePlayer(NPC) then
+		if Detection.SeePlayer(NPC, 1000.0, 160.0) then
 			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
 			FSM.ChangeState(NPC, "Chase");
-		elseif not Detection.SeePlayer(NPC) and not NPC:IsMoving() then
+		elseif not Detection.SeePlayer(NPC, 1000.0, 160.0) and not NPC:IsMoving() then
 			FSM.ChangeState(NPC, "Idle");
 		end
 	end,
