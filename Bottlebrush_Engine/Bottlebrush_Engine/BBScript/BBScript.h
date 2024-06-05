@@ -16,6 +16,9 @@ class BBScript
 public:
     BBScript();
 
+    /*
+    * @return The encapsulated lua state for modification.
+    */
     sol::state& getLuaState();
 private:
     sol::state luaState; ///The lua state for the script system
