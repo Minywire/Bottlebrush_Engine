@@ -17,12 +17,12 @@ Entity = {
         }
     },
     MD2Model = {
-        ModelPath = "Resources/MD2Models/Models/doomguy.md2",
-        TexturePath = "Resources/MD2Models/Textures/doomguy.png"
+        ModelPath = "Resources/MD2Models/Models/necro.md2",
+        TexturePath = "Resources/MD2Models/Textures/necro.png"
     },
     AI = {
         StatesPath = "Game/AIStates/PatrollerStates.lua",
         InitialState = "Idle",
-        Waypoints = {vec2(150, 150), vec2(450, 450)}
+        Waypoints = {vec2(41500, 42500), vec2(42300, 42000), vec2(44000, 41000)}
     }
 }

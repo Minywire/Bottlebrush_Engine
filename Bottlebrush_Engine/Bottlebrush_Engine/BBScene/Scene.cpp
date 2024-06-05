@@ -34,7 +34,7 @@ void MouseCallback(Window::WindowContext window, double pos_x, double pos_y)
     auto* data = glfwGetWindowUserPointer(window);
     auto* scene = reinterpret_cast<Scene*>(data);
 
-    if (scene->getExitScreenFlag() || scene->getMenuActive() || scene->getGameOverFlag()) return;
+    if (scene->getMenuActive() || (scene->getGameOverFlag() && !scene->getExitScreenFlag())) return;
 
     if (scene->getFirstMouseFlag()) 
     {
@@ -179,10 +179,10 @@ void Scene::init()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    mainCamera.SetPosition(1000.0f, 100.0f, 1000.0f);
+    mainCamera.SetPosition(40960.0f, 0.0f, 40960.0f);
     mainCamera.SetSensitivity(0.05f);
   
-    mainCamera.SetSpeed(1000.0f);
+    mainCamera.SetSpeed(100.0f);
     mainCamera.SetZoom(45.0f);
 
     bbSystems.RegisterAIFunctions(bbECS, lua.getLuaState(), mainCamera, aiEndedGame); // register functions before running scripts
@@ -198,6 +198,10 @@ void Scene::init()
 void Scene::update()
 {
     while (!window.GetShouldClose()) {
+
+        std::string x = std::to_string(mainCamera.GetPosition().x);
+        std::string y = std::to_string(mainCamera.GetPosition().y);
+        std::string z = std::to_string(mainCamera.GetPosition().z);
         if(menuActive && !gameOver && !exitScreen) {
             updateBBGUIFrameStart();
             if(ImGui::CollapsingHeader("Controls")) {
@@ -213,6 +217,9 @@ void Scene::update()
                 }
 
                 if(ImGui::TreeNode("Scene")) {
+                    ImGui::Text(x.data());
+                    ImGui::Text(y.data());
+                    ImGui::Text(z.data());
                     ImGui::Text("Toggle wireframe: C");
                     ImGui::TreePop();
                 }
@@ -228,13 +235,18 @@ void Scene::update()
             }
 
             if(ImGui::Button("Exit")) {
+                toggleMenuActive();
                 exitScreen = true;
             }
         }
         if(gameOver && !exitScreen) {
+            const std::string time = std::to_string(static_cast<int>(sceneTime));
             updateBBGUIFrameStart();
             ImGui::Text("GAME OVER!");
+            ImGui::Text("Time survived in seconds: ");
+            ImGui::Text(time.data());
             if(ImGui::Button("Exit Program")) {
+                window.SetCursorMode(Window::CURSOR_DISABLED);
                 exitScreen = true;
             }
         }
@@ -243,6 +255,11 @@ void Scene::update()
         float deltaTime = current_frame - last_frame;
         last_frame = current_frame;
         accumulatedFrameTime += deltaTime;
+
+        if (!aiEndedGame)
+        {
+            sceneTime += current_frame / 1000;
+        }
 
         // Process user input
         ProcessInput(deltaTime);
@@ -300,11 +317,12 @@ void Scene::update()
         }
 
         if (exitScreen) {
-            glm::vec3 position = {-4825, 0, -5000}, front = {-5000, 0, 0},
+            glm::vec3 position = {-4995, -27, -4978}, front = {0, 0, 1},
                     up = {0, 1, 0};
             mainCamera.SetSpeed(0);
-            mainCamera.SetZoom(45);
-            mainCamera.SetViewMatrix(position, front, up);
+            mainCamera.SetZoom(90);
+            if (mainCamera.GetPosition() != position) mainCamera.SetViewMatrix(position, front, up);
+            mainCamera.SetPosition(position);
         }
 
         glm::vec3 waterTransformOffset;

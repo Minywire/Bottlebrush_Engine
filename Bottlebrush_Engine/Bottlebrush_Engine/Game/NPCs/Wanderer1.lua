@@ -17,8 +17,8 @@ Entity = {
         }
     },
     MD2Model = {
-        ModelPath = "Resources/MD2Models/Models/doomguy.md2",
-        TexturePath = "Resources/MD2Models/Textures/doomguy.png"
+        ModelPath = "Resources/MD2Models/Models/necro.md2",
+        TexturePath = "Resources/MD2Models/Textures/necro.png"
     },
     AI = {
         StatesPath = "Game/AIStates/WanderStates.lua",

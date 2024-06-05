@@ -4,7 +4,7 @@
 
 #include "BBScript.h"
 
-BBScript::BBScript() { luaState.open_libraries(sol::lib::base); }
+BBScript::BBScript() { luaState.open_libraries(sol::lib::base, sol::lib::math, sol::lib::os); }
 
 sol::state & BBScript::getLuaState()
 {
