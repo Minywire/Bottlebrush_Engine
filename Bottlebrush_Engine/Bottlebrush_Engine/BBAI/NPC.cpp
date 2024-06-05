@@ -2,6 +2,8 @@
 // Created by Alan 17/05/2024
 //
 
+#include <numbers>
+
 #include "NPC.h"
 #include "Components.h"
 #include "ECS.h"
@@ -60,6 +62,38 @@ void NPC::Patrol(ECS& ecs)
     }
 }
 
+void NPC::SetWander(float wanderRadius, float wanderDistance, float wanderJitter) 
+{
+    std::srand(std::time(nullptr));
+    m_WanderRadius = wanderRadius;
+    m_WanderDistance = wanderDistance;
+    m_WanderJitter = wanderJitter;
+    float theta = ((rand()) / (RAND_MAX + 1.0)) * (2 * std::numbers::pi);
+    m_WanderTarget = glm::vec2(wanderRadius * cos(theta), wanderRadius * sin(theta));
+}
+
+void NPC::Wander(ECS& ecs)
+{
+    float randNum = (static_cast<float>(std::rand()) - (RAND_MAX/2)) / (RAND_MAX/2);
+
+    // this behavior is dependent on the update rate, so this line
+    // must be included when using time independent frame rate.
+    double jitterThisTimeSlice = m_WanderJitter * m_DeltaTime;
+    // first, add a small random vector to the target's position
+    m_WanderTarget += glm::vec2(randNum * jitterThisTimeSlice, randNum * jitterThisTimeSlice);
+    // reproject this new vector back on to a unit circle
+    m_WanderTarget = glm::normalize(m_WanderTarget);
+
+    // move the centre of wander circle by wanderDistance directly in front of the agent
+    glm::vec2 heading = glm::normalize(m_direction);
+    glm::vec2 wanderCircleWorldCentre = GetVec2Position(ecs) + (heading * m_WanderDistance);
+
+    // project the wanderTarget to the enlarged wander circle in the world
+    glm::vec2 targetWorld = wanderCircleWorldCentre + (m_WanderTarget * m_WanderRadius);
+    // move to the new target position.
+    MoveTo(targetWorld, ecs);
+}
+
 bool NPC::SeePlayer(const glm::vec2& targetPos, ECS& ecs, float coneDistance, float fov)
 {
     return Movement::SeeTarget(GetVec2Position(ecs), targetPos, m_direction, coneDistance, fov);
@@ -114,6 +148,16 @@ void NPC::SetWaitDuration(float wait)
 }
 
 void NPC::ClearWaitDuration()
+{
+    m_WaitTimerDuration = 0;
+}
+
+void NPC::ClearWaitTimeElapsed() 
+{
+    m_WaitTimeElapsed = 0;
+}
+
+void NPC::ClearAllTimers()
 {
     m_WaitTimerDuration = 0;
     m_WaitTimeElapsed = 0;

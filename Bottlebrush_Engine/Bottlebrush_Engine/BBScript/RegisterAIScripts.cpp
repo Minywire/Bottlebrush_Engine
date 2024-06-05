@@ -24,8 +24,11 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player, 
         "SetWaitDuration", &NPC::SetWaitDuration,
         "IsWaiting", &NPC::IsWaiting,
         "ClearWaitDuration", &NPC::ClearWaitDuration,
+        "ClearWaitTimeElapsed", &NPC::ClearWaitTimeElapsed,
+        "ClearAllTimers", &NPC::ClearAllTimers,
         "GetLastMoveTo", &NPC::GetLastMoveTo,
-        "IsMoving", &NPC::IsMoving
+        "IsMoving", &NPC::IsMoving,
+        "SetWander", &NPC::SetWander
     );
 
     // register movement functions that depend on transform component
@@ -38,6 +41,7 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player, 
         npc.MoveTo(pos, ecs, 60.0f);
         return npc.IsMoving();
     };
+    movementTable["Wander"] = [&ecs](NPC& npc) { npc.Wander(ecs); };
 
     // register detection functions that depend on transform component
     auto detectionTable = lua_state["Detection"].get_or_create<sol::table>();

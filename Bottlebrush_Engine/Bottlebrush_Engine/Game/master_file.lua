@@ -6,7 +6,7 @@ create_entity("Game/Cube.lua");
 create_entity("Game/NPCs/Patroller1.lua");
 create_entity("Game/NPCs/Patroller2.lua");
 create_entity("Game/NPCs/Idler1.lua");
-
+create_entity("Game/NPCs/Wanderer1.lua");
 create_entity("Game/MD2Models/doomguy.lua");
 
 for start=0, 4000, 1000 do

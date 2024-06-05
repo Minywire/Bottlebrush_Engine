@@ -35,7 +35,7 @@ Global = {
 	onExit = function(NPC)
 		
 	end,
-
+	
 	onMessage = function(NPC, Message)
 		
 	end
@@ -54,7 +54,7 @@ Idle = {
 
 	Update = function(NPC)
 		if not NPC:IsWaiting() then 
-			FSM.ChangeState(NPC, "Patrol");
+			FSM.ChangeState(NPC, "Wander");
 		end
 		if Detection.SeePlayer(NPC, 1000.0, 160.0) then
 			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
@@ -69,7 +69,7 @@ Idle = {
 	onMessage = function(NPC, Message)
 		if Dispatch.InMessageRange(NPC, Message, 2000.0) then
 			if Message.Event == "PlayerSpotted" then
-				Movement.MoveTo(NPC, Dispatch.GetVec2SenderLocation(Message))
+				Movement.MoveTo(NPC, Dispatch.GetSenderLocation(Message))
 				FSM.ChangeState(NPC, "Investigate");
 			end
 		end
@@ -78,16 +78,22 @@ Idle = {
 
 -------------------------------------------------------------------------------
 
--- create the patrol state
+-- create the Wander state
 
 -------------------------------------------------------------------------------
-Patrol = {
+Wander = {
 	onEnter = function(NPC)
+		NPC:SetWander(200.0, 300.0, 50.0);
+		Movement.Wander(NPC);
 		NPC:SetWaitDuration(3.0);
 	end,
 
 	Update = function(NPC)
-		Movement.Patrol(NPC)
+		Movement.MoveTo(NPC, NPC:GetLastMoveTo());
+		if not NPC:IsWaiting() and not NPC:IsMoving() then
+			NPC:ClearWaitTimeElapsed();
+			Movement.Wander(NPC);
+		end
 		if Detection.SeePlayer(NPC, 1000.0, 160.0) then
 			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
 			FSM.ChangeState(NPC, "Chase");
@@ -99,9 +105,9 @@ Patrol = {
 	end,
 
 	onMessage = function(NPC, Message)
-		if Dispatch.InMessageRange(NPC, Message, 2000.0) then
+		if Dispatch.InMessageRange(NPC, Message, 1000.0) then
 			if Message.Event == "PlayerSpotted" then
-				Movement.MoveTo(NPC, Dispatch.GetVec2SenderLocation(Message))
+				Movement.MoveTo(NPC, Dispatch.GetSenderLocation(Message))
 				FSM.ChangeState(NPC, "Investigate");
 			end
 		end
@@ -121,10 +127,8 @@ Chase = {
 	Update = function(NPC)
 		Movement.MoveTo(NPC, NPC:GetLastMoveTo());
 		if Detection.SeePlayer(NPC, 1000.0, 160.0) then
+			Movement.ChasePlayer(NPC);
 			Dispatch.SendMessage("PlayerSpotted", NPC, 3.0);
-			if not Movement.ChasePlayer(NPC) then
-				FSM.ChangeState(NPC, "Attack");
-			end
 		elseif not Detection.SeePlayer(NPC, 1000.0, 160.0) and not NPC:IsMoving() then
 			FSM.ChangeState(NPC, "Idle");
 		end
@@ -142,7 +146,7 @@ Chase = {
 -------------------------------------------------------------------------------
 Investigate = {
 	onEnter = function(NPC)
-
+		
 	end,
 
 	Update = function(NPC)
@@ -160,29 +164,10 @@ Investigate = {
 	end,
 
 	onMessage = function(NPC, Message)
-		if Dispatch.InMessageRange(NPC, Message, 2000.0) then
+		if Dispatch.InMessageRange(NPC, Message, 1000.0) then
 			if Message.Event == "PlayerSpotted" then
-				Movement.MoveTo(NPC, Dispatch.GetVec2SenderLocation(Message))
+				Movement.MoveTo(NPC, Dispatch.GetSenderLocation(Message))
 			end
 		end
 	end
-}
-
--------------------------------------------------------------------------------
-
--- create the attack state
-
--------------------------------------------------------------------------------
-Attack = {
-	onEnter = function(NPC)
-		Animation.SetAnimation(NPC, "punch");
-	end,
-
-	Update = function(NPC)
-		Game.GameOver();
-	end,
-
-	onExit = function(NPC)
-
-	end,
 }

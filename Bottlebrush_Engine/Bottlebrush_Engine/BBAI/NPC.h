@@ -44,6 +44,18 @@ public:
     void Patrol(ECS& ecs);
 
     /// @author Alan
+    /// @brief Sets the wandering variables
+    /// @param wanderRadius size of circle used to grab a random point
+    /// @param wanderDistance distance at which to project the circle
+    /// @param wanderJitter used to slightly move the target point around the circle
+    void SetWander(float wanderRadius = 100.0f, float wanderDistance = 300.0f, float wanderJitter = 10.0f); 
+
+    /// @author Alan
+    /// @brief This is the movement function called by the AI scripts
+    /// @param ecs register to retrieve NPC transform
+    void Wander(ECS& ecs);
+
+    /// @author Alan
     /// @brief Determine if NPC can see the player by a cone projection
     /// @param targetPos Player's position
     /// @param ecs register to retrieve NPC transform
@@ -80,8 +92,16 @@ public:
     void SetWaitDuration(float wait);
 
     /// @author Alan
-    /// @brief clears wait timers
+    /// @brief clears wait duration
     void ClearWaitDuration();
+
+    /// @author Alan
+    /// @brief clears wait time elapsed
+    void ClearWaitTimeElapsed();
+
+    /// @author Alan
+    /// @brief clears both wait time elapsed and the wait duration timer
+    void ClearAllTimers();
 
     /// @author Alan
     /// @brief sees if there is a wait timer
@@ -128,5 +148,8 @@ private:
 
     glm::vec2 m_LastMoveTo = {0.0f, 0.0f};  // last move to location
 
-    
+    glm::vec2 m_WanderTarget = {0.0f, 0.0f};
+    float m_WanderRadius = 100.0f;
+    float m_WanderDistance = 300.0f;
+    float m_WanderJitter = 10.f;
 };
