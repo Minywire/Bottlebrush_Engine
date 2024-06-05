@@ -34,7 +34,7 @@ void MouseCallback(Window::WindowContext window, double pos_x, double pos_y)
     auto* data = glfwGetWindowUserPointer(window);
     auto* scene = reinterpret_cast<Scene*>(data);
 
-    if (scene->getMenuActive() || scene->getGameOverFlag()) return;
+    if (scene->getMenuActive() || (scene->getGameOverFlag() && !scene->getExitScreenFlag())) return;
 
     if (scene->getFirstMouseFlag()) 
     {
@@ -246,6 +246,7 @@ void Scene::update()
             ImGui::Text("Time survived in seconds: ");
             ImGui::Text(time.data());
             if(ImGui::Button("Exit Program")) {
+                window.SetCursorMode(Window::CURSOR_DISABLED);
                 exitScreen = true;
             }
         }
