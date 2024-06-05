@@ -179,10 +179,10 @@ void Scene::init()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    mainCamera.SetPosition(1000.0f, 100.0f, 1000.0f);
+    mainCamera.SetPosition(40960.0f, 0.0f, 40960.0f);
     mainCamera.SetSensitivity(0.05f);
   
-    mainCamera.SetSpeed(1000.0f);
+    mainCamera.SetSpeed(100.0f);
     mainCamera.SetZoom(45.0f);
 
     bbSystems.RegisterAIFunctions(bbECS, lua.getLuaState(), mainCamera, aiEndedGame); // register functions before running scripts
