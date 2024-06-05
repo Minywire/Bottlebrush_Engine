@@ -34,7 +34,7 @@ void MouseCallback(Window::WindowContext window, double pos_x, double pos_y)
     auto* data = glfwGetWindowUserPointer(window);
     auto* scene = reinterpret_cast<Scene*>(data);
 
-    if (scene->getExitScreenFlag() || scene->getMenuActive() || scene->getGameOverFlag()) return;
+    if (scene->getMenuActive() || scene->getGameOverFlag()) return;
 
     if (scene->getFirstMouseFlag()) 
     {
@@ -198,6 +198,10 @@ void Scene::init()
 void Scene::update()
 {
     while (!window.GetShouldClose()) {
+
+        std::string x = std::to_string(mainCamera.GetPosition().x);
+        std::string y = std::to_string(mainCamera.GetPosition().y);
+        std::string z = std::to_string(mainCamera.GetPosition().z);
         if(menuActive && !gameOver && !exitScreen) {
             updateBBGUIFrameStart();
             if(ImGui::CollapsingHeader("Controls")) {
@@ -213,6 +217,9 @@ void Scene::update()
                 }
 
                 if(ImGui::TreeNode("Scene")) {
+                    ImGui::Text(x.data());
+                    ImGui::Text(y.data());
+                    ImGui::Text(z.data());
                     ImGui::Text("Toggle wireframe: C");
                     ImGui::TreePop();
                 }
@@ -228,6 +235,7 @@ void Scene::update()
             }
 
             if(ImGui::Button("Exit")) {
+                toggleMenuActive();
                 exitScreen = true;
             }
         }
@@ -300,11 +308,12 @@ void Scene::update()
         }
 
         if (exitScreen) {
-            glm::vec3 position = {-4825, 0, -5000}, front = {-5000, 0, 0},
+            glm::vec3 position = {-4995, -27, -4978}, front = {0, 0, 1},
                     up = {0, 1, 0};
             mainCamera.SetSpeed(0);
-            mainCamera.SetZoom(45);
-            mainCamera.SetViewMatrix(position, front, up);
+            mainCamera.SetZoom(90);
+            if (mainCamera.GetPosition() != position) mainCamera.SetViewMatrix(position, front, up);
+            mainCamera.SetPosition(position);
         }
 
         glm::vec3 waterTransformOffset;
