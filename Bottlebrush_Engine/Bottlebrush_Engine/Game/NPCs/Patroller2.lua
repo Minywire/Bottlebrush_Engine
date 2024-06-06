@@ -24,5 +24,14 @@ Entity = {
         StatesPath = "Game/AIStates/PatrollerStates.lua",
         InitialState = "Idle",
         Waypoints = {vec2(44100, 41500), vec2(42500, 44600)}
+    },
+    Collider = {
+        Type = 0,
+        IsStatic = 0,
+        HalfExtents = {
+            x = 5.0,
+            y = 7.5,
+            z = 5.0
+        }
     }
 }

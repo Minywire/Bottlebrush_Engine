@@ -23,5 +23,14 @@ Entity = {
     AI = {
         StatesPath = "Game/AIStates/IdlerStates.lua",
         InitialState = "Idle"
+    },
+    Collider = {
+        Type = 0,
+        IsStatic = 0,
+        HalfExtents = {
+            x = 5.0,
+            y = 7.5,
+            z = 5.0
+        }
     }
 }
