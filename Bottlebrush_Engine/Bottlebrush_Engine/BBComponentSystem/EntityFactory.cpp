@@ -69,6 +69,10 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     {
         loadMD2(ecs, entity, table["MD2Model"], resources);
     }
+    if (table["Collider"].valid())
+    {
+        LoadCollider(ecs, entity, table["Collider"]);
+    }
 }
 
 void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& table, BBResourceManager & resources, float xPos, float yPos, float zPos)
@@ -92,6 +96,10 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     if (table["MD2Model"].valid()) 
     {
       loadMD2(ecs, entity, table["MD2Model"], resources);
+    }
+    if (table["Collider"].valid())
+    {
+        LoadCollider(ecs, entity, table["Collider"]);
     }
 }
 
@@ -203,5 +211,32 @@ void EntityFactory::loadMD2(ECS & ecs, Entity & entity, const sol::table & MD2, 
     if (!MD2map.contains(MD2Path))
     {
         MD2map.emplace(std::pair<std::string, BBMD2>(MD2Path, BBMD2(MD2Path, MD2TexPath)));
+    }
+}
+
+void EntityFactory::LoadCollider(ECS& ecs, Entity& entity,
+                                 const sol::table& Collider) {
+    // Get collider type and half extents from the Lua script definition
+    const Collider::ColliderType type = Collider["Type"];
+    const uint8_t is_static = Collider["IsStatic"];
+    const std::array<float, 3> half_extents = {Collider["HalfExtents"]["x"],
+                                               Collider["HalfExtents"]["y"],
+                                               Collider["HalfExtents"]["z"]};
+
+    // Get current transform and assign the position to collider centre so that
+    // collider is located with the entity
+    const auto& transform =
+        entity.GetComponent<TransformComponent>(ecs.getReg());
+    const glm::vec3 centre = transform.position;
+
+    // Determine the type of collider shape to create based on the type
+    switch (type) {
+        case Collider::kColliderBox:
+            entity.AddComponent<ColliderComponent>(
+                ecs.getReg(),
+                std::make_unique<BBox>(centre, half_extents, is_static));
+            break;
+        default:
+            break;
     }
 }

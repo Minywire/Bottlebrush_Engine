@@ -10,6 +10,8 @@
 #include <ECS.h>
 #include <BBResourceManager.hpp>
 
+#include "CollisionMgr.h"
+
 class EntityFactory {
 public:
     /**
@@ -105,4 +107,11 @@ private:
      * @param resources The resource interface containing all resource containers
      */
     void loadMD2(ECS &ecs, Entity &entity, const sol::table &MD2, BBResourceManager & resources);
+
+    /**
+     * @param ecs the ecs registry to load model component from
+     * @param entity the entity to attach to
+     * @param Collider the Collider table to compare against
+     */
+    void LoadCollider(ECS &ecs, Entity &entity, const sol::table &Collider);
 };

@@ -3,12 +3,14 @@
 //
 #pragma once
 
+#include <array>
 #include <string>
 #include <glm/glm.hpp>
 #include <sol/sol.hpp>
 
 #include "NPC.h"
 #include "BBMD2.h"
+#include "Collider.h"
 
 /** forward decl to avoid circle linking */
 class Entity;
@@ -85,4 +87,8 @@ struct TerrainComponent
 {
     std::string terrain_path;
     std::string terrain_texture;
+};
+
+struct ColliderComponent {
+    std::unique_ptr<Collider> collider;
 };

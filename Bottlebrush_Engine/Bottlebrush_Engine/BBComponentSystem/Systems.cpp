@@ -263,4 +263,42 @@ const std::optional<float> Systems::getTerrainHeight(const ECS& ecs, const std::
         }
     }
     return std::nullopt;
-}   
+}
+
+void Systems::UpdateCollider(ECS& ecs) {
+    auto components =
+        ecs.GetAllEntitiesWith<ColliderComponent, TransformComponent>();
+
+    for (auto& i : components) {
+        auto& c = components.get<ColliderComponent>(i);
+
+        // If the collider is marked as a static body, simply return and do not
+        // bother updating
+        if (c.collider->IsStatic()) return;
+
+        // Update the centre position of each collider in the game scene based
+        // on its attached entity so that it updates with each position
+        auto& t = components.get<TransformComponent>(i);
+        c.collider->SetCentre(t.position);
+    }
+}
+
+void Systems::CheckCollision(const ECS& ecs) {
+    auto components = ecs.GetAllEntitiesWith<ColliderComponent>();
+
+    // TODO: Make this less expensive, currently per-frame and very brute-force
+    // Go through all colliders in the game scene and check for collisions
+    for (auto& i : components) {
+        const auto& a = components.get<ColliderComponent>(i);
+        for (auto& j : components) {
+            const auto& b = components.get<ColliderComponent>(j);
+
+            // If both bodies are marked as static, do not bother checking for a
+            // collision since they cannot move
+            if (a.collider->IsStatic() && b.collider->IsStatic()) return;
+
+            bool collision = CollisionMgr::IsCollision(a.collider, b.collider);
+            if (collision) printf("Collision!\n");
+        }
+    }
+}
