@@ -149,6 +149,7 @@ class Scene
     Skybox skybox;
     std::unique_ptr<Model> water;
     Camera mainCamera; // main scene camera. Scene realistically only needs one camera for this project
+    ColliderComponent cameraCollider;
     unsigned int screen_width = 1920, screen_height = 1080;
     bool wireframe = false;
 

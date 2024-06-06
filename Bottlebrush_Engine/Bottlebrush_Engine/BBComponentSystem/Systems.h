@@ -13,6 +13,8 @@
 #include "Camera.h"
 #include <BBMD2.h>
 
+#include "CollisionMgr.h"
+
 /**
  * @class systems
  * @Author Marco Garzon Lara
@@ -122,4 +124,15 @@ public:
     * @param z The z position from which to fetch the height value
     */
     static const std::optional<float> getTerrainHeight(const ECS& ecs, const std::unordered_map<std::string, Terrain> & terrains, float x, float z);
+
+    static void UpdateColliders(ECS &ecs);
+
+    static void CheckObjectCollision(ECS &ecs);
+    static void ReslvObjectCollision(TransformComponent &t,
+                                     const ColliderComponent &collider);
+
+    static void CheckCameraCollision(const ECS &ecs, Camera &camera,
+                                     const ColliderComponent &collider);
+    static void ReslvCameraCollision(Camera &camera,
+                                     const ColliderComponent &collider);
 };
