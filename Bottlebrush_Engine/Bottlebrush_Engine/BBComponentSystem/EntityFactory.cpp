@@ -217,11 +217,15 @@ void EntityFactory::loadMD2(ECS & ecs, Entity & entity, const sol::table & MD2, 
 void EntityFactory::LoadCollider(ECS& ecs, Entity& entity,
                                  const sol::table& Collider) {
     // Get collider type and half extents from the Lua script definition
+
+    float x = Collider["HalfExtents"]["x"], y = Collider["HalfExtents"]["y"],
+          z = Collider["HalfExtents"]["z"];
+
     const Collider::ColliderType type = Collider["Type"];
     const uint8_t is_static = Collider["IsStatic"];
-    const std::array<float, 3> half_extents = {Collider["HalfExtents"]["x"],
-                                               Collider["HalfExtents"]["y"],
-                                               Collider["HalfExtents"]["z"]};
+    const std::array<float, 3> half_extents = {x,
+                                               y,
+                                               z };
 
     // Get current transform and assign the position to collider centre so that
     // collider is located with the entity
