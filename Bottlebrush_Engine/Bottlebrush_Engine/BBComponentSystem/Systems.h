@@ -125,6 +125,14 @@ public:
     */
     static const std::optional<float> getTerrainHeight(const ECS& ecs, const std::unordered_map<std::string, Terrain> & terrains, float x, float z);
 
-    static void UpdateCollider(ECS &ecs);
-    static void CheckCollision(const ECS &ecs);
+    static void UpdateColliders(ECS &ecs);
+
+    static void CheckObjectCollision(ECS &ecs);
+    static void ReslvObjectCollision(TransformComponent &t,
+                                     const ColliderComponent &collider);
+
+    static void CheckCameraCollision(const ECS &ecs, Camera &camera,
+                                     const ColliderComponent &collider);
+    static void ReslvCameraCollision(Camera &camera,
+                                     const ColliderComponent &collider);
 };
