@@ -3,14 +3,14 @@
 //
 #pragma once
 
-#include <array>
 #include <string>
 #include <glm/glm.hpp>
+#include <memory>
 #include <sol/sol.hpp>
 
 #include "NPC.h"
 #include "BBMD2.h"
-#include "Collider.h"
+#include "CollisionMgr.h"
 
 /** forward decl to avoid circle linking */
 class Entity;
