@@ -264,6 +264,10 @@ void Scene::update()
         // Process user input
         ProcessInput(deltaTime);
 
+        // Update colliders and process collisions
+        Systems::UpdateCollider(bbECS);
+        Systems::CheckCollision(bbECS);
+
         // Clear colours and buffers
         clearRenderEngine();
 
