@@ -22,7 +22,8 @@ Entity = {
     },
     AI = {
         StatesPath = "Game/AIStates/PatrollerStates.lua",
-        InitialState = "Idle",
+        InitialState = "PatrollerIdle",
+        GlobalState = "PatrollerGlobal",
         Waypoints = {vec2(41500, 42500), vec2(42300, 42000), vec2(44000, 41000)}
     },
     Collider = {

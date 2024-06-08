@@ -1,9 +1,9 @@
 Entity = {
     Transform = {
         Position = {
-            x = 700,
-            y = 40,
-            z = 500
+            x = 0,
+            y = 0,
+            z = 0
         },
         Rotation = {
             x = 0,
@@ -22,7 +22,8 @@ Entity = {
     },
     AI = {
         StatesPath = "Game/AIStates/WanderStates.lua",
-        InitialState = "Idle"
+        InitialState = "WandererIdle",
+        GlobalState = "WandererGlobal"
     },
     Collider = {
         Type = 0,

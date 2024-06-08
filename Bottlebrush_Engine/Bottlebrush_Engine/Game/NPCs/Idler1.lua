@@ -2,7 +2,7 @@ Entity = {
     Transform = {
         Position = {
             x = 600,
-            y = 40,
+            y = 0,
             z = 500
         },
         Rotation = {
@@ -22,7 +22,8 @@ Entity = {
     },
     AI = {
         StatesPath = "Game/AIStates/IdlerStates.lua",
-        InitialState = "Idle"
+        InitialState = "IdlerIdle",
+        GlobalState = "IdlerGlobal"
     },
     Collider = {
         Type = 0,

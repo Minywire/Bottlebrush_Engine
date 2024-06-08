@@ -89,8 +89,9 @@ private:
      * @param ecs the ecs registry to load model component from
      * @param entity the entity to attach to
      * @param ai the ai table to compare against
+     * @param resources The resource interface containing all resource containers
      */
-    void loadAIController(ECS &ecs, Entity &entity, const sol::table &ai);
+    void loadAIController(ECS &ecs, Entity &entity, const sol::table &ai, BBResourceManager& resources);
 
     /**
     *  @param ecs the ecs registry to load model component from

@@ -59,7 +59,7 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     }
     if(table["AI"].valid())
     {
-        loadAIController(ecs, entity, table["AI"]);
+        loadAIController(ecs, entity, table["AI"], resources);
     }
     if (table["Terrain"].valid()) 
     {
@@ -87,7 +87,7 @@ void EntityFactory::load_components(ECS& ecs, Entity& entity, const sol::table& 
     }
     if(table["AI"].valid())
     {
-        loadAIController(ecs, entity, table["AI"]);
+        loadAIController(ecs, entity, table["AI"], resources);
     }
     if (table["Terrain"].valid()) 
     {
@@ -163,14 +163,23 @@ void EntityFactory::loadModel(ECS &ecs, Entity &entity, const sol::table &model,
     }
 }
 
-void EntityFactory::loadAIController(ECS& ecs, Entity& entity, const sol::table& ai)
+void EntityFactory::loadAIController(ECS& ecs, Entity& entity, const sol::table& ai, BBResourceManager& resources)
 {
     std::string statesPath = ai["StatesPath"];
     std::string initialState = ai["InitialState"];
+    std::string globalState = ai["GlobalState"];
 
-    AIControllerComponent& aic = entity.AddComponent<AIControllerComponent>(ecs.getReg(), statesPath, initialState, entity); // add an AI controller to entity
+    AIControllerComponent& aic = entity.AddComponent<AIControllerComponent>(ecs.getReg(), statesPath, initialState, globalState, entity); // add an AI controller to entity
     if (aic.npc.GetFSM().GetStatePath().extension() != ".lua") {
-        throw std::runtime_error("Lua file is no lua file");
+        const std::string err = "AI States Lua file is no lua file: " + aic.npc.GetFSM().GetStatePath().string();
+        throw std::runtime_error(err);
+    }
+
+    // add filepath if not registered already
+    auto& aiStatesMap = resources.getSceneAIStates();
+    if (!aiStatesMap.contains(statesPath)) 
+    {
+        aiStatesMap.emplace(statesPath);
     }
 
     // if NPC has waypoints add them

@@ -214,10 +214,9 @@ void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<st
 void Systems::updateAI(ECS& ecs, sol::state& lua_state, float deltaTime) {
     auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
 
-    for (auto entity : group)
+    for (auto& entity : group)
     {
       auto& aic = group.get<AIControllerComponent>(entity);
-      lua_state.script_file(aic.npc.GetFSM().GetStatePath().string());
 
       aic.npc.Update(lua_state, deltaTime);
     }
