@@ -12,6 +12,7 @@
 #include "Platform/OpenGL/OpenGLRenderer.h"
 #include "Platform/OpenGL/OpenGLModel.h"
 #include "Platform/OpenGL/OpenGLMesh.h"
+#include "Platform/OpenGL/OpenGLFrameBuffer.h"
 
 /// @author Alan
 /// @brief Enum class to define which Graphics API to be used

@@ -5,9 +5,29 @@
 #ifndef BOTTLEBRUSH_ENGINE_OPENGLFRAMEBUFFER_H
 #define BOTTLEBRUSH_ENGINE_OPENGLFRAMEBUFFER_H
 
+#include "FrameBuffer.h"
 
-class OpenGLFrameBuffer {
+class OpenGLFrameBuffer : public FrameBuffer{
+public:
+    OpenGLFrameBuffer();
+    ~OpenGLFrameBuffer() override;
 
+    /**
+     * @author Niamh
+     * @brief Binds a buffer to draw / manipulate
+     */
+    void Bind() const override;
+
+    /**
+     * @author Niamh
+     * @brief Unbinds the buffer
+     */
+    void Unbind() const override;
+private:
+    // store colour attachments
+    // store depth attachments
+    // store stencil attachments
+    // store depth-stencil attachments
 };
 
 
