@@ -24,6 +24,7 @@ public:
      */
     void Unbind() const override;
 private:
+    unsigned int m_FramebufferID;
     // store colour attachments
     // store depth attachments
     // store stencil attachments
