@@ -1,0 +1,14 @@
+//
+// Created by niamh on 20/06/2024.
+//
+
+#ifndef BOTTLEBRUSH_ENGINE_OPENGLFRAMEBUFFER_H
+#define BOTTLEBRUSH_ENGINE_OPENGLFRAMEBUFFER_H
+
+
+class OpenGLFrameBuffer {
+
+};
+
+
+#endif //BOTTLEBRUSH_ENGINE_OPENGLFRAMEBUFFER_H
