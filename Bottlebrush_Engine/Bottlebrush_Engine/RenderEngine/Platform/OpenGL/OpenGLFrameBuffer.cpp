@@ -12,3 +12,11 @@ OpenGLFrameBuffer::OpenGLFrameBuffer() {
 OpenGLFrameBuffer::~OpenGLFrameBuffer() {
     glDeleteFramebuffers(1, &m_FramebufferID);
 }
+
+void OpenGLFrameBuffer::Bind() const {
+    glBindFramebuffer(GL_FRAMEBUFFER, m_FramebufferID);
+}
+
+void OpenGLFrameBuffer::Unbind() const {
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
