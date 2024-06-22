@@ -41,6 +41,11 @@ public:
     /// @param msg event message
     void HandleMessage(sol::state& lua_state, const Message& msg);
 
+    /// @author Alan
+    /// @brief gets the initial state the AI was in
+    /// @return string of initial state
+    std::string& getInitialState();
+
 private:
     NPC* m_npcReference; // reference to the NPC that owns this FSM
 
@@ -49,4 +54,5 @@ private:
     std::string m_previousState;
     std::string m_globalState;
     std::string m_currentState;
+    std::string m_initState;
 };

@@ -12,7 +12,8 @@ FSM::FSM(NPC* FSMOwner, const std::filesystem::path& statesPath,
     m_statePath(statesPath),
     m_previousState(initialState),
     m_globalState(globalState),
-    m_currentState(initialState)
+    m_currentState(initialState),
+    m_initState(initialState)
 {
 
 }
@@ -71,4 +72,9 @@ void FSM::HandleMessage(sol::state& lua_state, const Message& msg)
     if (lua_state[m_globalState]["onMessage"].valid()) {
         lua_state[m_globalState]["onMessage"](*m_npcReference, msg);
     }
+}
+
+std::string& FSM::getInitialState()
+{
+    return m_initState;
 }
