@@ -171,7 +171,7 @@ void EntityFactory::loadAIController(ECS& ecs, Entity& entity, const sol::table&
 
     AIControllerComponent& aic = entity.AddComponent<AIControllerComponent>(ecs.getReg(), statesPath, initialState, globalState, entity); // add an AI controller to entity
     if (aic.npc.GetFSM().GetStatePath().extension() != ".lua") {
-        const std::string err = "AI States Lua file is no lua file: " + aic.npc.GetFSM().GetStatePath().string();
+        const std::string err = "AI States Lua file is not a lua file: " + aic.npc.GetFSM().GetStatePath().string();
         throw std::runtime_error(err);
     }
 
