@@ -46,7 +46,6 @@ void FSM::ChangeState(const std::string& newState, sol::state& lua_state)
         "AI state: " + newState + " not found on change state method";
     throw std::runtime_error(errMsg);
     }
-    
     m_previousState = m_currentState;                      // track previous state
     lua_state[m_currentState]["onExit"](*m_npcReference);    // execute exit code
     m_currentState = newState;                             // change states

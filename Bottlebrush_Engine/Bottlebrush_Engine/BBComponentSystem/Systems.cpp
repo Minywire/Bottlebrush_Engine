@@ -210,13 +210,13 @@ void Systems::updateAIMovements(ECS& ecs, float deltaTime, std::unordered_map<st
             // set the new y position
             transform.position.y = heightOpt.value() + 20 * transform.scale.y; // plus an offset, should be taken out once other physics is implemented
         }
-    }   
+    }
 }
 
 void Systems::updateAI(ECS& ecs, sol::state& lua_state, float deltaTime) {
     auto group = ecs.GetAllEntitiesWith<AIControllerComponent>();
 
-    for (auto& entity : group)
+    for (auto entity : group)
     {
       auto& aic = group.get<AIControllerComponent>(entity);
 

@@ -193,6 +193,6 @@ WandererAttack = {
     end,
 
     onExit = function(NPC)
-		Animation.SetAnimation(NPC, "run");
+		Animation.SetAnimation(NPC, "stand");
     end,
 }
