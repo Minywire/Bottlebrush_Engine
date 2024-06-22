@@ -21,9 +21,9 @@ Entity = {
         TexturePath = "Resources/MD2Models/Textures/necro.png"
     },
     AI = {
-        StatesPath = "Game/AIStates/WanderStates.lua",
-        InitialState = "WandererIdle",
-        GlobalState = "WandererGlobal"
+        StatesPath = "Game/AIStates/States.lua",
+        InitialState = "Wander",
+        GlobalState = "Global"
     },
     Collider = {
         Type = 0,

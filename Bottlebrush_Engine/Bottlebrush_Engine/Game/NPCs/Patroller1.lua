@@ -21,9 +21,9 @@ Entity = {
         TexturePath = "Resources/MD2Models/Textures/necro.png"
     },
     AI = {
-        StatesPath = "Game/AIStates/PatrollerStates.lua",
-        InitialState = "PatrollerIdle",
-        GlobalState = "PatrollerGlobal",
+        StatesPath = "Game/AIStates/States.lua",
+        InitialState = "Patrol",
+        GlobalState = "Global",
         Waypoints = {vec2(41500, 42500), vec2(42300, 42000), vec2(44000, 41000)}
     },
     Collider = {
