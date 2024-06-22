@@ -3,8 +3,8 @@ math.randomseed(os.time())
 
 -- Globals
 local CENTRE = 40960
-local NUM_TREES = 200
-local NUM_HOUSE = 5
+local NUM_TREES = 1200
+local NUM_HOUSE = 20
 local NUM_WANDERER = 20
 local NUM_IDLER = 10
 local NUM_PATROLLER = 5

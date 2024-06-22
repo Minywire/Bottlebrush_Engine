@@ -18,7 +18,7 @@ class NPC;
 class FSM
 {
 public:
-    FSM(NPC* FSMOwner, const std::filesystem::path& statesPath, const std::string& initialState);
+    FSM(NPC* FSMOwner, const std::filesystem::path& statesPath, const std::string& initialState, const std::string& globalState);
 
     /// @author Alan
     /// @brief normal update call for state machine
@@ -33,11 +33,6 @@ public:
     /// @param lua_state used to reference to the next section of the script to run
     void ChangeState(const std::string& newState, sol::state& lua_state);
 
-    /// @author Alan
-    /// @brief evaluate if path extension is correct and then sets the member statePath its value
-    /// @param path the string to get the ai script
-    void SetStatePath(const std::filesystem::path& path);
-
     std::filesystem::path& GetStatePath();
 
     /// @author Alan
@@ -45,6 +40,11 @@ public:
     /// @param lua_state used to reference to the next section of the script to run
     /// @param msg event message
     void HandleMessage(sol::state& lua_state, const Message& msg);
+
+    /// @author Alan
+    /// @brief gets the initial state the AI was in
+    /// @return string of initial state
+    std::string& getInitialState();
 
 private:
     NPC* m_npcReference; // reference to the NPC that owns this FSM
@@ -54,4 +54,5 @@ private:
     std::string m_previousState;
     std::string m_globalState;
     std::string m_currentState;
+    std::string m_initState;
 };

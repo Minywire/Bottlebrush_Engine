@@ -14,6 +14,10 @@ void registerScriptedFSM(sol::state& lua_state) {
     {
         npc.GetFSM().ChangeState(state, lua_state);
     };
+    fsmTable["ReturnToInitialState"] = [&lua_state](NPC& npc)
+    {
+        npc.GetFSM().ChangeState(npc.GetFSM().getInitialState(), lua_state);
+    };
 }
 
 void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player, bool& endGame) {
@@ -76,7 +80,10 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player, 
 
     // register game mechanics table functions
     auto gameTable = lua_state["Game"].get_or_create<sol::table>();
-    gameTable["GameOver"] = [&endGame]() { endGame = true; };
+    gameTable["GameOver"] = [&endGame]()
+    {
+        //endGame = true;
+    };
 }
 
 void registerScriptedGLM(sol::state& lua_state) {

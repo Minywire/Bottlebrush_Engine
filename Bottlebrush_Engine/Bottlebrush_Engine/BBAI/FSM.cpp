@@ -5,15 +5,17 @@
 #include "FSM.h"
 #include "NPC.h"
 
-FSM::FSM(NPC* FSMOwner, const std::filesystem::path& statesPath, const std::string& initialState) : 
+FSM::FSM(NPC* FSMOwner, const std::filesystem::path& statesPath,
+         const std::string& initialState, const std::string& globalState)
+    : 
     m_npcReference(FSMOwner),
+    m_statePath(statesPath),
+    m_previousState(initialState),
+    m_globalState(globalState),
     m_currentState(initialState),
-    m_globalState("Global"),
-    m_previousState(initialState) 
+    m_initState(initialState)
 {
-    SetStatePath(statesPath);
-    std::cout << "State Path: " << statesPath.string() << std::endl;  //@Debug Line, to be removed
-    std::cout << "Initial State: " << initialState << std::endl;  //@Debug Line, to be removed
+
 }
 
 void FSM::update(sol::state & lua_state)
@@ -52,12 +54,6 @@ void FSM::ChangeState(const std::string& newState, sol::state& lua_state)
     lua_state[m_currentState]["onEnter"](*m_npcReference);  // execute enter code of new state
 }
 
-void FSM::SetStatePath(const std::filesystem::path& path)
-{
-    if(path.extension() != ".lua") { throw std::runtime_error("Lua file is no lua file"); }
-    m_statePath = path;
-}
-
 std::filesystem::path& FSM::GetStatePath() 
 { 
     return m_statePath; 
@@ -76,4 +72,9 @@ void FSM::HandleMessage(sol::state& lua_state, const Message& msg)
     if (lua_state[m_globalState]["onMessage"].valid()) {
         lua_state[m_globalState]["onMessage"](*m_npcReference, msg);
     }
+}
+
+std::string& FSM::getInitialState()
+{
+    return m_initState;
 }

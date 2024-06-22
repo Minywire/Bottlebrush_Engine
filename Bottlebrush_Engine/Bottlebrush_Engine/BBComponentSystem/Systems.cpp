@@ -33,6 +33,10 @@ void Systems::setLight(RenderEngine & renderEngine, const ShaderType & shaderTyp
 
 void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEngine & renderEngine, const std::unordered_map<std::string, std::unique_ptr<Model>> & sceneModels, glm::mat4 projection, glm::mat4 view)
 {
+    // set static uniforms
+    renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("projection", projection);
+    renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("view", view);
+
     auto group = ecs.GetAllEntitiesWith<ModelComponent, TransformComponent>(); //the container with all the matching entities
 
     for(auto entity : group)
@@ -50,8 +54,6 @@ void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEn
         if(sceneModels.count(currentModelComponent.model_path) != 0)
         {
             //set uniforms for model
-            renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("projection", projection);
-            renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("view", view);
             renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("model", transform);
 
             //draw model
@@ -67,6 +69,11 @@ void Systems::drawModels(const ECS &ecs, const ShaderType & shaderType, RenderEn
 
 void Systems::drawMD2Models(const ECS& ecs, const ShaderType& shaderType, RenderEngine& renderEngine, std::unordered_map<std::string, BBMD2> & MD2s, glm::mat4 projection, glm::mat4 view)
 {
+    // set static uniforms
+    renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("projection", projection);
+    renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("view", view);
+    renderEngine.GetShader(shaderType)->SetUniform1i("texSampler1", 0);
+
     auto group = ecs.GetAllEntitiesWith<MD2Component, TransformComponent>();
 
     for (auto entity : group)
@@ -87,12 +94,9 @@ void Systems::drawMD2Models(const ECS& ecs, const ShaderType& shaderType, Render
         transform = glm::rotate(transform, glm::radians(-90.f), glm::vec3(0,1,0));
         transform = glm::rotate(transform, glm::radians(-90.f), glm::vec3(1,0,0));
         transform = glm::scale(transform, currentTransformComponent.scale);
-
-        renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("projection", projection);
-        renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("view", view);
+        
         renderEngine.GetShader(shaderType)->SetUniformMatrix4fv("model", transform);
         renderEngine.GetShader(shaderType)->SetUniform1f("interpolation", currentMD2Component.interpolation);
-        renderEngine.GetShader(shaderType)->SetUniform1i("texSampler1", 0);
 
         MD2Model.setTexture();
         renderEngine.Draw(shaderType, MD2Model.getVecArrays().at(currentMD2Component.current_frame), MD2Model.getModelSize());
@@ -128,6 +132,14 @@ void Systems::updateMD2Interpolation(ECS& ecs, std::unordered_map<std::string, B
 
 void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, RenderEngine& renderEngine, std::unordered_map<std::string, Terrain> & sceneTerrain, bool grayscale, glm::mat4 projection, glm::mat4 view)
 {
+    // set static uniforms
+    renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("gView", view);
+    renderEngine.GetShader(terrainShader)->SetUniformMatrix4fv("gProjection", projection);
+    // set static Frag Uniforms
+    renderEngine.GetShader(terrainShader)->SetUniform1i("gGrayscale", grayscale);
+    renderEngine.GetShader(terrainShader)->SetUniform1i("gTex", 0);
+    renderEngine.GetShader(terrainShader)->SetUniform3fv("gReversedLightDir", {-0.2f, 0.7f, -0.4f});
+
     auto group = ecs.GetAllEntitiesWith<TerrainComponent, TransformComponent>(); //the container with all the matching entities
 
     for(auto entity : group)
@@ -143,22 +155,12 @@ void Systems::drawTerrain(const ECS& ecs, const ShaderType& terrainShader, Rende
         // Vert Uniforms
         renderEngine.GetShader(terrainShader)
             ->SetUniformMatrix4fv("gModel", transform);
-        renderEngine.GetShader(terrainShader)
-            ->SetUniformMatrix4fv("gView", view);
-        renderEngine.GetShader(terrainShader)
-            ->SetUniformMatrix4fv("gProjection", projection);
+        
         renderEngine.GetShader(terrainShader)
             ->SetUniform1f("gMinHeight", terrain.GetMinHeight());
         renderEngine.GetShader(terrainShader)
             ->SetUniform1f("gMaxHeight", terrain.GetMaxHeight());
-
-        // Frag Uniforms
-        renderEngine.GetShader(terrainShader)
-            ->SetUniform1i("gGrayscale", grayscale);
-        renderEngine.GetShader(terrainShader)->SetUniform1i("gTex", 0);
-        renderEngine.GetShader(terrainShader)
-            ->SetUniform3fv("gReversedLightDir", {-0.2f, 0.7f, -0.4f});
-
+        
         // draw
         terrain.GetMesh()->SetTexture(0);
         renderEngine.Draw(terrainShader, *terrain.GetMesh()->GetVertexArray(),
@@ -217,7 +219,6 @@ void Systems::updateAI(ECS& ecs, sol::state& lua_state, float deltaTime) {
     for (auto entity : group)
     {
       auto& aic = group.get<AIControllerComponent>(entity);
-      lua_state.script_file(aic.npc.GetFSM().GetStatePath().string());
 
       aic.npc.Update(lua_state, deltaTime);
     }

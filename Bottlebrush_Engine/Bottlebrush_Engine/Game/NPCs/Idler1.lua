@@ -2,7 +2,7 @@ Entity = {
     Transform = {
         Position = {
             x = 600,
-            y = 40,
+            y = 0,
             z = 500
         },
         Rotation = {
@@ -21,8 +21,9 @@ Entity = {
         TexturePath = "Resources/MD2Models/Textures/necro.png"
     },
     AI = {
-        StatesPath = "Game/AIStates/IdlerStates.lua",
-        InitialState = "Idle"
+        StatesPath = "Game/AIStates/States.lua",
+        InitialState = "Idle",
+        GlobalState = "Global"
     },
     Collider = {
         Type = 0,
