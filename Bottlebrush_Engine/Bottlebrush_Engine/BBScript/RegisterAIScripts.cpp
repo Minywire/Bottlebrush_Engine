@@ -76,7 +76,10 @@ void registerScriptedNPC(sol::state& lua_state, ECS& ecs, const Camera& player, 
 
     // register game mechanics table functions
     auto gameTable = lua_state["Game"].get_or_create<sol::table>();
-    gameTable["GameOver"] = [&endGame]() { endGame = true; };
+    gameTable["GameOver"] = [&endGame]()
+    {
+        //endGame = true;
+    };
 }
 
 void registerScriptedGLM(sol::state& lua_state) {

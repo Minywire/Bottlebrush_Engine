@@ -7,6 +7,7 @@
 #include "GraphicsFactory.h"
 #include "Terrain.h"
 #include <unordered_map>
+#include <unordered_set>
 #include <BBMD2.h>
 /**
  * @class BBResourceManager
@@ -48,10 +49,15 @@ public:
      */
     std::unordered_map<std::string, BBMD2>& getSceneMD2Models();
 
+    const std::unordered_set<std::string>& getSceneAIStates() const;
+    std::unordered_set<std::string>& getSceneAIStates();
+
 private:
     std::unordered_map<std::string, std::unique_ptr<Model>> sceneModels; ///The models stored in a scene
 
     std::unordered_map <std::string, BBMD2> sceneMD2Models; //The MD2 models stored in a scene
 
     std::unordered_map<std::string, Terrain> sceneTerrain; //The terrain stored in a scene
+
+    std::unordered_set<std::string> sceneAIStates; // AI states in lua
 };

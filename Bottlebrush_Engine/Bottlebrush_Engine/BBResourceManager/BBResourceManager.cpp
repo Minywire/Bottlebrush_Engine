@@ -33,3 +33,13 @@ std::unordered_map<std::string, BBMD2> & BBResourceManager::getSceneMD2Models()
 {
     return sceneMD2Models;
 }
+
+const std::unordered_set<std::string>& BBResourceManager::getSceneAIStates() const
+{
+    return sceneAIStates;
+}
+
+std::unordered_set<std::string>& BBResourceManager::getSceneAIStates()
+{
+    return sceneAIStates;
+}

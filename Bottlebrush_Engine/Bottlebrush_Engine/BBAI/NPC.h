@@ -18,7 +18,7 @@ class ECS;
 class NPC 
 {
 public:
-    NPC(const std::filesystem::path& statesPath, const std::string& initialState, Entity& entity);
+    NPC(const std::filesystem::path& statesPath, const std::string& initialState, const std::string& globalState, Entity& entity);
     
     /// @author Alan
     /// @brief update call for FSM

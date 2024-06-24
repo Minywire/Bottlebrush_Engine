@@ -194,6 +194,12 @@ void Scene::init()
         return;
     }//load the master lua scene script containing all entities
 
+    // read all ai scripts
+    for (auto& aiStates : resources.getSceneAIStates()) 
+    {
+        lua.getLuaState().script_file(aiStates);
+    }
+
     initBBGUI(window.GetContext());
 }
 

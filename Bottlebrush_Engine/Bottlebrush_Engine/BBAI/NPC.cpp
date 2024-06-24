@@ -12,8 +12,9 @@
 #include "Singleton.h"
 
 NPC::NPC(const std::filesystem::path& statesPath,
-         const std::string& initialState, Entity& entity)
-    : m_FSM(this, statesPath, initialState), 
+         const std::string& initialState, const std::string& globalState,
+         Entity& entity)
+    : m_FSM(this, statesPath, initialState, globalState), 
     m_DeltaTime(0.f),
     m_Entity(entity),
     m_CurrentWaypoint(0),
@@ -78,7 +79,7 @@ void NPC::Wander(ECS& ecs)
 
     // this behavior is dependent on the update rate, so this line
     // must be included when using time independent frame rate.
-    double jitterThisTimeSlice = m_WanderJitter * m_DeltaTime;
+    float jitterThisTimeSlice = m_WanderJitter * m_DeltaTime;
     // first, add a small random vector to the target's position
     m_WanderTarget += glm::vec2(randNum * jitterThisTimeSlice, randNum * jitterThisTimeSlice);
     // reproject this new vector back on to a unit circle
