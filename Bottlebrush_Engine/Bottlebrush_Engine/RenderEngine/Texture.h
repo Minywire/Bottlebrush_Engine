@@ -4,6 +4,7 @@
 #pragma once
 
 #include <filesystem> //@TODO maybe delete?
+#include "FrameBuffer.h"
 
 /// @author Alan
 /// @brief Class to create and store textures, this can hold up to 32 different texture slots
@@ -22,6 +23,7 @@ public:
     /// @param data is the image data
     virtual void CreateTexture(const std::filesystem::path& imageFilePath, bool flip = 0) = 0;
 
+    virtual void CreateTexture(const FrameBuffer& frameBuffer) = 0;
     /// @author Alan
     /// @brief Sets up the tex parameters for a cubemap.
     virtual void InitCubeMap() = 0;

@@ -7,6 +7,7 @@
 #include <string>
 #include <filesystem>
 #include "Image.h"
+#include "OpenGLFrameBuffer.h"
 
 class OpenGLTexture : public Texture
 {
